@@ -20,7 +20,7 @@ Dipersiapkan oleh:
 | NIM | Nama |
 |---|---|
 | 13525033 | Davin Farel Santoso |
-| *[NIM 2]* | *[Nama Anggota 2]* |
+| 13525102 | Karmel Tua Haloho |
 | *[NIM 3]* | *[Nama Anggota 3]* |
 | *[NIM 4]* | *[Nama Anggota 4]* |
 | *[NIM 5]* | *[Nama Anggota 5]* |
