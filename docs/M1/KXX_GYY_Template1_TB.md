@@ -57,7 +57,9 @@ Lebih jauh lagi, terdapat kesenjangan pada sistem rekam jejak profesional. Peker
 # BAB 2: Analisis Solusi
 
 ## 2.1 Deskripsi Perangkat Lunak
-Abstraksikan solusi perangkat lunak yang diusulkan dari sudut pandang pengguna. Jelaskan target platform yang akan digunakan (misalnya: desktop application) beserta alasan pemilihannya. Deskripsikan juga nilai unik (inovasi inti) dari perangkat lunak kalian dan apa yang membedakannya dari solusi yang sudah ada.
+Perangkat lunak yang diusulkan adalah sebuah platform marketplace jasa berbasis web yang mempertemukan pencari jasa (Client) dengan pekerja sektor informal (Tenaga Kerja) secara langsung. Dari sudut pandang pengguna, Client dapat dengan mudah mencari, memilih, dan mempekerjakan bantuan harian, seperti tukang kebersihan, kuli angkat, atau asisten perbaikan ringan dengan berdasarkan lokasi, harga, dan ulasan. Sebaliknya, Tenaga kerja dapat membuat profil, menerima tawaran pekerjaan di sekitar mereka, dan membangun reputasi/portofolio dari setiap pekerjaan yang diselesaikan.
+Target platform untuk sistem ini adalah Web Application yang responsif. Pemilihan platform tersebut didasarkan pada keunggulannya yang serbaguna dan inklusif. Aplikasi web dapat diakses secara mulus terhadap berbagai macam perangkat, misalnya smartphone, tablet, maupun desktop dan berbagai sistem operasi tanpa kendala kompatibilitas. Khusus bagi Tenaga kerja di sektor informal yang mungkin memiliki ponsel dengan spesifikasi atau kapasitas penyimpanan terbatas, pendekatan ini sangat ideal karena mereka tidak perlu mengunduh atau menginstal aplikasi berat dari toko aplikasi, sistem cukup diakses langsung melalui browser secara instan.
+Platform ini dengan unik memberikan ruang bagi pekerja informal untuk memiliki rekam jejak atau portofolio digital yang valid berdasarkan rating dan ulasan dari pengguna jasa. Hal ini menyelesaikan masalah ketiadaan bukti kredibilitas bagi pekerja lepas.
 
 ## 2.2 Asumsi dan Batasan
 ### 2.2.1 Asumsi Pengembangan
