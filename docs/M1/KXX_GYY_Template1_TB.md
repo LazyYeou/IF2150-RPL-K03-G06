@@ -44,7 +44,13 @@ Selain itu, terdapat juga persoalan mengenai kesesuaian antara karakteristik ten
 
 
 ## 1.2 Analisis Kondisi Saat Ini
-Lakukan analisis terhadap proses yang berjalan saat ini di dunia nyata, baik itu sistem lama ataupun solusi yang sudah ada. Soroti kesenjangan atau celah dari kondisi tersebut yang nantinya akan diselesaikan oleh perangkat lunak kalian.
+Saat ini, proses pencarian tenaga kerja harian untuk sektor informal atau serabutan masih sangat bergantung pada metode konvensional. Umumnya, masyarakat mengandalkan rekomendasi dari mulut ke mulut atau mencari pekerjaan fisik secara mandiri. Apabila menggunakan lembaga, yayasan, atau agen penyalur tenaga kerja, prosesnya seringkali birokratis dan dikenakan biaya potongan agen yang cukup besar bagi para pekerja.
+
+Di sisi lain, solusi perangkat lunak yang sudah ada belum sepenuhnya menangani masalah ini. Platform pencari kerja seperti LinkedIn atau JobStreet terlalu berorientasi pada pekerja profesional dan pekerjaan purnawaktu. Sementara itu, platform seperti Gojek, Grab, Maxim, dan sejenisnya memang menyediakan layanan jasa, tetapi vertikal layanannya sangat spesifik dan tidak memfasilitasi pertukaran jasa terhadap perkerjaan mikro secara bebas antarpengguna. 
+
+Dalam kasus ini, terdapat celah utama yaitu ketiadaan sebuah platform terpusat yang mampu mempertemukan masyarakat umum dengan pekerja serabutan di sekitarnya secara aman, transparan, dan inklusif. Pekerja harian kehilangan potensi pendapatan karena jangkauan pemasaran mereka yang terbatas, sementara masyarakat kesulitan menemukan bantuan harian yang tepercaya secara cepat. Selain masalah ketersediaan platform, proses konvensional saat ini juga memiliki kelemahan kritis dari segi keamanan dan standarisasi. Dari sisi pengguna jasa, merekrut pekerja harian yang tidak dikenal (misalnya dari jalanan atau pangkalan) untuk bekerja di area privat seperti rumah membawa risiko keamanan yang tinggi karena ketiadaan verifikasi identitas resmi. Sebaliknya, dari sisi pekerja, mereka sering menghadapi ketimpangan daya tawar yang berujung pada eksploitasi upah karena tidak adanya standar harga pasar yang transparan. Tawar-menawar yang terjadi seringkali merugikan salah satu pihak.
+
+Lebih jauh lagi, terdapat kesenjangan pada sistem rekam jejak profesional. Pekerja sektor informal sebagian besar tidak memiliki media layaknya Curriculum Vitae (CV) untuk mendokumentasikan pengalaman, kejujuran, maupun etos kerja mereka. Sementara itu, terdapat seorang pekerja yang berdedikasi tinggi kesulitan untuk membuktikan kredibilitasnya kepada pelanggan baru. Hal ini sangat kontras dengan solusi yang sudah ada untuk pekerja profesional, di mana rekam jejak dan portofolio dapat dengan mudah diakses dan menjadi kelebihan bagi mereka.
 
 ---
 
