@@ -22,8 +22,8 @@ Dipersiapkan oleh:
 | 13525033 | Davin Farel Santoso |
 | 13525102 | Karmel Tua Haloho |
 | 13525123 | Sebastio Nugroho |
-| *[NIM 4]* | *[Nama Anggota 4]* |
-| *[NIM 5]* | *[Nama Anggota 5]* |
+| 13525039 | Aditya Rasyid|
+| 13525096 | Muhammad Ridwan Nasir Firdaus |
 ---
 
 <br>
@@ -169,14 +169,15 @@ Berdasarkan identifikasi aktor sebelumnya, kebutuhan dan aktivitas pengguna disa
 | US-16 | Customer Service | Membantu menindaklanjuti kendala terkait pekerjaan, pembayaran, atau akun pengguna | Menyelesaikan permasalahan yang dialami pengguna dengan cepat dan tepat |
 
 ## 3.3 Model Proses Bisnis
-Buatlah *Activity Diagram* atau *Swimlane Diagram* yang menunjukkan alur kerja proses bisnis dari sistem solusi. Diagram ini harus memvisualisasikan bagaimana alur operasional di dunia nyata berjalan lebih efisien dengan adanya interaksi antara aktor (yang didefinisikan pada poin 3.1) dan sistem perangkat lunak. Perhatikan notasi yang digunakan dalam pembuatannya.
-<br>
+Untuk Model Proses Bisnis yang akan digunakan dibagi menjadi 2 model utama :
 
-<p align="center">
-<img alt="Contoh Activity Diagram" src="./assets/diagram/diagram-act-1.avif" width="70%">
+<img width="893" height="535" alt="image" src="https://github.com/user-attachments/assets/3845608c-9d76-401d-970a-9c99807f9b01" />
+
+<i>Gambar 1. 1.	Software as a Service (SaaS)</i>
 </p>
-<p align="center">
-<i>Gambar 1. Contoh Activity Diagram</i>
+
+<img width="975" height="507" alt="image" src="https://github.com/user-attachments/assets/9e248038-971d-4ab1-83cf-1067b12e8a39" />
+<i>Gambar 2. Commision Fee</i>
 </p>
 
 <br>
