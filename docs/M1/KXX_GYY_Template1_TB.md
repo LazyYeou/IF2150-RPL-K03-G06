@@ -9,7 +9,7 @@ TOPIC BRAINSTORMING
 
 ## *Nama Perangkat Lunak*
 
-### Untuk: *[Nama Asisten]*
+### Untuk: Agatha 
 
 Dipersiapkan oleh:
 | Informasi | Keterangan |
@@ -40,7 +40,7 @@ Berdasarkan data Badan Pusat Statistik (BPS), pada Agustus 2025 terdapat 154 jut
 
 Namun, tingkat pengangguran tidak bisa dijadikan sebagai satu-satunya parameter dalam menilai kondisi ketenagakerjaan. Pada Agustus 2025, BPS mencatat bahwa 84.7 juta orang atau 57.8% dari penduduk yang bekerja berada dalam kegiatan informal, sedangkan pekerja formal berjumlah 61.84 juta orang atau 42.2%. Tingginya jumlah pekerja informal menunjukkan bahwa lebih dari separuh pekerja di Indonesia masih berada dalam bentuk pekerjaan yang memiliki karakteristik berbeda dari pekerjaan formal, seperti kestabilan pekerjaan dan perlindungan hak kerja. Kondisi ini menunjukkan bahwa seseorang yang telah bekerja pun belum tentu memeroleh pekerjaan yang layak seperti yang menjadi fokus pada SDG 8.
 
-Selain itu, terdapat juga persoalan mengenai kesesuaian antara karakteristik tenaga kerja dengan pekerjaan yang didapat. Dalam kajian education-employment mismatch pada pemuda Indonesia, BPS menemukan bahwa lebih dari sepertiga pemuda bekerja pada posisi yang tidak sesuai dengan tingkat pendidikannya. Ketidaksesuaian ini dapat terjadi ketika tingkat pendidikan seseorang lebih tinggi maupun lebih rendah jika dibandingkan dengan tingkat kemampuan yang dibutuhkan oleh pekerjaannya. Dalam skala yang lebih luas, kondisi ini dapat menyebabkan potensi sumber daya manusia belum dimanfaatkan secara maksimal dan menghambat terciptanya pasar kerja yang produktif dan inklusif. Oleh karena itu diperlukan upaya untuk meningkatkan kesesuaian antara keterampilan tenaga kerja dengan kebutuhan pekerjaan agar potensi sumber daya manusia yang ada dapat dimanfaatkan secara lebih optimal dan masyarakat memiliki kesempatan yang lebih luas untuk berpartisipasi dalam kegiatan ekonomi.
+Selain itu, terdapat juga persoalan mengenai kesesuaian antara karakteristik tenaga kerja dengan pekerjaan yang didapat. Dalam kajian *education-employment mismatch* pada pemuda Indonesia, BPS menemukan bahwa lebih dari sepertiga pemuda bekerja pada posisi yang tidak sesuai dengan tingkat pendidikannya. Ketidaksesuaian ini dapat terjadi ketika tingkat pendidikan seseorang lebih tinggi maupun lebih rendah jika dibandingkan dengan tingkat kemampuan yang dibutuhkan oleh pekerjaannya. Dalam skala yang lebih luas, kondisi ini dapat menyebabkan potensi sumber daya manusia belum dimanfaatkan secara maksimal dan menghambat terciptanya pasar kerja yang produktif dan inklusif. Oleh karena itu diperlukan upaya untuk meningkatkan kesesuaian antara keterampilan tenaga kerja dengan kebutuhan pekerjaan agar potensi sumber daya manusia yang ada dapat dimanfaatkan secara lebih optimal dan masyarakat memiliki kesempatan yang lebih luas untuk berpartisipasi dalam kegiatan ekonomi.
 
 
 ## 1.2 Analisis Kondisi Saat Ini
@@ -65,8 +65,8 @@ Buatlah daftar seluruh aktor (pengguna) yang akan berinteraksi langsung dengan s
 
 | Aktor | Deskripsi |
 | :--- | :--- |
-| *Kasir* | *Pengguna ini bertindak sebagai pihak yang bertanggung jawab untuk memproses transaksi harian dan melayani pembayaran pelanggan. Karakteristik dari pengguna ini adalah mengutamakan kecepatan dan keakuratan saat bertransaksi.* |
-| ... | ... |
+| Tenaga Kerja (Job Seeker) | Pengguna yang bertindak sebagai pihak yang menawarkan keterampilan dan tenaga kerja untuk menyelesaikan suatu pekerjaan. Karakteristik utama pengguna adalah memiliki satu atau lebih keterampilan yang dapat ditawarkan dan membutuhkan kesempatan kerja yang sesuai dengan kemampuan yang dimiliki pengguna. |
+| Client (Job Provider) | Pengguna yang bertindak sebagai pihak yang memiliki kebutuhan terhadap tenaga kerja untuk menyelesaikan suatu pekerjaan. Karakteristik pengguna ini adalah memiliki kebutuhan terhadap suatu pekerjaan tertentu dan membutuhkan membutuhkan tenaga kerja dengan keterampilan yang sesuai, bak untuk kebutuhan pribadi maupun usaha. |
 
 
 ## 3.2 Kebutuhan Pengguna Awal
