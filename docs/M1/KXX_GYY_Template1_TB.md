@@ -67,7 +67,7 @@ Definisikan secara tegas asumsi (baik teknis maupun dari sisi pengguna) yang men
 # BAB 3: Spesifikasi Kebutuhan dan Proses Bisnis
 
 ## 3.1 Identifikasi Aktor
-Berikut adalah daftar dan deskripsi dari seluruh aktor yang berinteraksi langsung dalam sistem 
+Berikut adalah daftar dan deskripsi dari seluruh aktor yang berinteraksi langsung dalam sistem:
 
 | Aktor | Deskripsi |
 | :--- | :--- |
@@ -79,13 +79,26 @@ Berikut adalah daftar dan deskripsi dari seluruh aktor yang berinteraksi langsun
 
 
 ## 3.2 Kebutuhan Pengguna Awal
-Definisikan apa yang ingin dicapai oleh pengguna saat menggunakan sistem ini dalam format *User Story* (Sebagai [Aktor], saya ingin [Aktivitas/Kebutuhan], sehingga [Tujuan/Nilai]). Pastikan kalian berfokus pada "apa yang ingin dilakukan pengguna".
+Berdasarkan identifikasi aktor sebelumnya, kebutuhan dan aktivitas pengguna disajikan dalam bentuk User Story pada tabel di bawah ini:
 
 | ID | Aktor | Kebutuhan / Aktivitas | Tujuan / Nilai |
 | :--- | :--- | :--- | :--- |
-| US-01 | *Kasir* |  *Memindai barcode barang* | *Proses pembayaran berjalan cepat dan akurat* |
-| US-02 | *[Nama Aktor]* | *[Kebutuhan pengguna]* | *[Tujuan yang dicapai pengguna]* |
-| ... | ... | ... | ... |
+| US-01 | Tenaga Kerja | Melakukan registrasi dan mengisi profil diri | Memiliki profil yang merepresentasikan kemampuan dan pengalaman yang dimiliki |
+| US-02 | Tenaga Kerja | Melakukan verifikasi identitas dan berlangganan layanan | Memperoleh akses ke platform sebagai pengguna yang terverifikasi |
+| US-03 | Tenaga Kerja | Mencari dan memilih pekerjaan berdasarkan keahlian dan kebutuhan pekerjaan | Memperoleh pekerjaan yang sesuai dengan keterampilan yang dimiliki |
+| US-04 | Tenaga Kerja | Mengajukan diri, menerima pekerjaan, dan menyelesaikan pekerjaan sesuai kesepakatan | Memperoleh penghasilan dengan memanfaatkan keterampilan yang dimiliki |
+| US-05 | Tenaga Kerja | Menerima pembayaran setelah pekerjaan selesai dan diverifikasi | Memperoleh upah sesuai dengan pekerjaan yang telah diselesaikan |
+| US-06 | Job Provider | Melakukan registrasi dan mengisi profil diri atau usaha | Memiliki identitas yang jelas dan dipercaya dalam menggunakan platform |
+| US-07 | Job Provider | Membuat kebutuhan pekerjaan dengan menentukan spesifikasi, keterampilan, waktu, dan upah | Menemukan tenaga kerja yang sesuai dengan kebutuhan pekerjaan |
+| US-08 | Job Provider | Mencari dan memilih tenaga kerja berdasarkan keterampilan, pengalaman, dan reputasi | Agar pekerjaan dapat dilakukan oleh tenaga kerja yang sesuai dan terpercaya |
+| US-09 | Job Provider | Menyepakati pekerjaan dan melakukan pembayaran upah beserta *commission fee* | Agar pekerjaan dapat dimulai dengan kesepakatan dan pembayaran yang tercatat secara aman |
+| US-10 | Job Provider | Memverifikasi hasil pekerjaan dan mengonfirmasi penyelesaian pekerjaan | Agar pembayaran dapat diberikan setelah pekerjaan selesai sesuai kesepakatan |
+| US-11 | Admin | Memeriksa dan menyetujui verifikasi identitas pengguna | Agar hanya pengguna yang telah memenuhi persyaratan yang dapat menggunakan platform |
+| US-12 | Admin | Mengelola dan memantau akun serta aktivitas pengguna | Sehingga keamanan, keteraturan, dan kepercayaan dalam platform tetap terjaga |
+| US-13 | Admin | Mengawasi proses pekerjaan dan penyelesaian sengketa antara pengguna | Menangani permasalahan antara Tenaga Kerja dan Job Provider secara adil |
+| US-14 | Admin | Mengatur pencairan pembayaran dari *escrow* berdasarkan status dan hasil pekerjaan | Pembayaran kepada Tenaga Kerja dilakukan sesuai dengan kesepakatan dan ketentuan platform |
+| US-15 | Customer Service | Menerima dan menangani pertanyaan serta keluhan dari pengguna | Sehingga pengguna memperoleh bantuan ketika mengalami kendala dalam menggunakan platform |
+| US-16 | Customer Service | Membantu menindaklanjuti kendala terkait pekerjaan, pembayaran, atau akun pengguna | Menyelesaikan permasalahan yang dialami pengguna dengan cepat dan tepat |
 
 ## 3.3 Model Proses Bisnis
 Buatlah *Activity Diagram* atau *Swimlane Diagram* yang menunjukkan alur kerja proses bisnis dari sistem solusi. Diagram ini harus memvisualisasikan bagaimana alur operasional di dunia nyata berjalan lebih efisien dengan adanya interaksi antara aktor (yang didefinisikan pada poin 3.1) dan sistem perangkat lunak. Perhatikan notasi yang digunakan dalam pembuatannya.
