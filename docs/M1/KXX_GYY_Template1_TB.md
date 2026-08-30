@@ -147,7 +147,7 @@ Berikut adalah daftar dan deskripsi dari seluruh aktor yang berinteraksi langsun
 
 
 ## 3.2 Kebutuhan Pengguna Awal
-Berdasarkan identifikasi aktor sebelumnya, kebutuhan dan aktivitas pengguna disajikan dalam bentuk User Story pada tabel di bawah ini:
+Berdasarkan identifikasi aktor sebelumnya, kebutuhan dan aktivitas pengguna disajikan dalam tabel di bawah ini:
 
 | ID | Aktor | Kebutuhan / Aktivitas | Tujuan / Nilai |
 | :--- | :--- | :--- | :--- |
