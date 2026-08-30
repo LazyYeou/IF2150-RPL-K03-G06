@@ -67,7 +67,7 @@ Definisikan secara tegas asumsi (baik teknis maupun dari sisi pengguna) yang men
 # BAB 3: Spesifikasi Kebutuhan dan Proses Bisnis
 
 ## 3.1 Identifikasi Aktor
-Buatlah daftar seluruh aktor (pengguna) yang akan berinteraksi langsung dengan sistem solusi yang kalian kembangkan. Berikan penjelasan singkat mengenai peran dan karakteristik dari masing-masing aktor tersebut.
+Berikut adalah daftar dan deskripsi dari seluruh aktor yang berinteraksi langsung dalam sistem 
 
 | Aktor | Deskripsi |
 | :--- | :--- |
