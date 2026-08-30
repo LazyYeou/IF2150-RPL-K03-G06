@@ -67,18 +67,16 @@ Asumsi-asumsi yang mendasari perancangan dan implementasi perangkat lunak ini te
 
 #### A. Asumsi dari Sisi Pengguna
 1. **Profil Pengguna:**
-   * **Pekerja:** Diasumsikan didominasi oleh kalangan pengangguran, mahasiswa, lulusan baru, atau pencari penghasilan sampingan yang memiliki keterampilan dasar dan mencari pekerjaan fleksibel jangka pendek.
-   * **Pemberi Kerja (*Client*):** Diasumsikan merupakan individu, pelaku usaha, komunitas, atau siapa saja yang memerlukan bantuan pengerjaan tanpa harus melalui proses rekrutmen formal atau kontrak jangka panjang.
-2. **Batasan Usia dan Kapasitas Hukum:** Seluruh pengguna aktif diasumsikan berusia **minimal 17 tahun** (dan telah memiliki Kartu Tanda Penduduk/KTP yang sah secara hukum) untuk memastikan kelayakan perikatan perjanjian dan pengelolaan transaksi keuangan mandiri.
-3. **Literasi Digital & Finansial:** Pengguna diasumsikan telah memiliki akses internet stabil, perangkat smartphone pribadi, serta terbiasa menggunakan layanan perbankan digital atau dompet digital (*e-wallet* seperti GoPay, OVO, DANA) untuk transaksi penarikan/pembayaran dana.
-4. **Keaslian Identitas:** Pengguna diasumsikan memberikan data identitas, rekam jejak keterampilan, dan nomor rekening/e-wallet yang valid dan dapat dipertanggungjawabkan secara pribadi.
+   * **Pekerja:** Diasumsikan didominasi oleh kalangan pengangguran, mahasiswa, lulusan baru, atau pencari penghasilan sampingan yang memiliki keterampilan dasar dan mencari pekerjaan fleksibel jangka pendek serta familiar dengan perangkat smartphone dan terbiasa menggunakan layanan dompet digital.
+   * **Pemberi Kerja (*Client*):** Diasumsikan merupakan individu, pelaku usaha, komunitas, atau siapa saja yang memerlukan bantuan pengerjaan tanpa harus melalui proses rekrutmen formal atau kontrak jangka panjang serta familiar dengan perangkat smartphone dan terbiasa menggunakan layanan dompet digital.
+2. **Batasan Usia dan Kapasitas Hukum:** Seluruh pengguna aktif diasumsikan berusia **minimal 17 tahun** (dan telah memiliki KTP yang sah) untuk memastikan kelayakan perikatan perjanjian dan pengelolaan transaksi keuangan mandiri.
+3. **Keaslian Identitas:** Pengguna diasumsikan memberikan data identitas, rekam jejak keterampilan, dan nomor rekening/e-wallet yang valid dan dapat dipertanggungjawabkan secara pribadi.
 
 #### B. Asumsi dari Sisi Teknis
 1. **Kapasitas Beban dan Konkurensi:** Sistem pada tahap pengembangan ini diasumsikan berjalan untuk skala MVP (*Minimum Viable Product*), melayani perkiraan beban 100–500 pengguna terdaftar dengan konkurensi simultan skala demo (10–50 *concurrent requests*).
 2. **Ketersediaan Infrastruktur Pihak Ketiga:**
    * Sistem diasumsikan bergantung pada penyedia layanan komputasi database (misal: Supabase/PostgreSQL, Firebase, atau server VPS) dengan tingkat ketersediaan (*uptime*) standar.
    * Modul transaksi keuangan diasumsikan terhubung ke *sandbox environment* dari *Payment Gateway* resmi (misal: Midtrans atau Xendit) selama periode pengujian perangkat lunak.
-3. **Kompatibilitas Antarmuka:** Perangkat lunak diasumsikan diakses melalui browser modern yang mendukung standar web terkini (Google Chrome, Mozilla Firefox, Safari, Microsoft Edge) dengan resolusi layar fleksibel (desktop, tablet, maupun smartphone).
 
 ---
 
@@ -86,18 +84,17 @@ Asumsi-asumsi yang mendasari perancangan dan implementasi perangkat lunak ini te
 Pengembangan sistem memperhatikan dan dibatasi oleh kerangka regulasi yang berlaku di Indonesia sebagai berikut:
 
 1. **UU Perlindungan Data Pribadi (UU No. 27 Tahun 2022 - UU PDP):**
-   * Platform wajib membatasi pengumpulan data pribadi hanya pada data yang relevan untuk transaksi (nama, email, nomor kontak, portfolio, dan nomor rekening penarikan).
-   * Data sensitif seperti kata sandi dan token transaksi wajib dienkripsi.
-   * Sistem harus menyediakan mekanisme persetujuan eksplisit (*user consent*) dan kebijakan privasi (*Privacy Policy*) saat registrasi akun.
+   
+    Platform wajib membatasi pengumpulan data pribadi hanya pada data yang relevan untuk transaksi (nama, email, nomor kontak, portfolio, dan nomor rekening penarikan). Data sensitif seperti kata sandi dan token transaksi wajib dienkripsi. Sistem harus menyediakan mekanisme persetujuan eksplisit (*user consent*) dan kebijakan privasi (*Privacy Policy*) saat registrasi akun.
 2. **UU Informasi dan Transaksi Elektronik (UU No. 11 Tahun 2008 dan UU No. 1 Tahun 2024 - UU ITE):**
-   * Kesepakatan kerja, pengajuan tugas (*bidding*), dan serah-terima hasil kerja melalui platform dianggap sebagai dokumen dan transaksi elektronik yang sah.
-   * Platform menyediakan pencatatan log transaksi dan riwayat aktivitas (*audit trail*) untuk pembuktian jika terjadi sengketa pengerjaan tugas.
+   
+    Kesepakatan kerja, pengajuan tugas (*bidding*), dan serah-terima hasil kerja melalui platform dianggap sebagai dokumen dan transaksi elektronik yang sah. Platform menyediakan pencatatan log transaksi dan riwayat aktivitas..
 3. **Karakteristik Hubungan Kerja (Hukum Ketenagakerjaan & UU Cipta Kerja):**
-   * Platform bertindak murni sebagai **penyedia sarana perantara teknologi (*marketplace/intermediary*)**, bukan sebagai pemberi kerja langsung (*employer*).
-   * Tidak timbul hubungan kerja formal (perjanjian kerja waktu tertentu/tidak tertentu) antara pengembang platform dengan pengguna pekerja; platform tidak mengelola kewajiban upah minimum regional (UMR), pesangon, maupun kepesertaan BPJS Ketenagakerjaan secara otomatis.
+   
+    Platform bertindak murni sebagai **penyedia sarana perantara teknologi (*marketplace/intermediary*)**, bukan sebagai pemberi kerja langsung (*employer*). Sehingga, tidak timbul hubungan kerja formal antara pengembang platform dengan pengguna pekerja. Platform juga tidak mengelola kewajiban upah minimum regional (UMR), maupun kepesertaan BPJS Ketenagakerjaan secara otomatis.
 4. **Regulasi Pengelolaan Transaksi & Finansial (Bank Indonesia & OJK):**
-   * Untuk menghindari perlunya izin *Penyelenggara Jasa Pembayaran (PJP)* atau izin penghimpunan dana publik, platform tidak bertindak sebagai bank atau lembaga penyimpanan dana (*custody* mandiri).
-   * Seluruh mekanisme penampungan dana sementara (*escrow*) diserahkan mekanismenya melalui integrasi resmi API Payment Gateway berlisensi.
+   
+    Untuk menghindari perlunya izin *Penyelenggara Jasa Pembayaran (PJP)* atau izin penghimpunan dana publik, platform tidak bertindak sebagai bank/lembaga penyimpanan dana (*custody* mandiri). Seluruh mekanisme penampungan dana sementara (*escrow*) diserahkan mekanismenya melalui integrasi resmi API Payment Gateway berlisensi.
 
 ---
 
