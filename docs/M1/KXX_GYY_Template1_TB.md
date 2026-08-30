@@ -21,7 +21,7 @@ Dipersiapkan oleh:
 |---|---|
 | 13525033 | Davin Farel Santoso |
 | 13525102 | Karmel Tua Haloho |
-| *[NIM 3]* | *[Nama Anggota 3]* |
+| 13525123 | Sebastio Nugroho |
 | *[NIM 4]* | *[Nama Anggota 4]* |
 | *[NIM 5]* | *[Nama Anggota 5]* |
 ---
@@ -60,7 +60,73 @@ Lebih jauh lagi, terdapat kesenjangan pada sistem rekam jejak profesional. Peker
 Abstraksikan solusi perangkat lunak yang diusulkan dari sudut pandang pengguna. Jelaskan target platform yang akan digunakan (misalnya: desktop application) beserta alasan pemilihannya. Deskripsikan juga nilai unik (inovasi inti) dari perangkat lunak kalian dan apa yang membedakannya dari solusi yang sudah ada.
 
 ## 2.2 Asumsi dan Batasan
-Definisikan secara tegas asumsi (baik teknis maupun dari sisi pengguna) yang menjadi dasar pengembangan. Tuliskan batasan seperti regulasi/hukum, keterbatasan sumber daya, dan ruang lingkup solusi.
+### 2.2.1 Asumsi Pengembangan
+Asumsi-asumsi yang mendasari perancangan dan implementasi perangkat lunak ini terbagi ke dalam dua aspek utama:
+
+#### A. Asumsi dari Sisi Pengguna
+1. **Profil Pengguna:**
+   * **Pekerja:** Diasumsikan didominasi oleh kalangan pengangguran, mahasiswa, lulusan baru, atau pencari penghasilan sampingan yang memiliki keterampilan dasar dan mencari pekerjaan fleksibel jangka pendek.
+   * **Pemberi Kerja (*Client*):** Diasumsikan merupakan individu, pelaku usaha, komunitas, atau siapa saja yang memerlukan bantuan pengerjaan tanpa harus melalui proses rekrutmen formal atau kontrak jangka panjang.
+2. **Batasan Usia dan Kapasitas Hukum:** Seluruh pengguna aktif diasumsikan berusia **minimal 17 tahun** (dan telah memiliki Kartu Tanda Penduduk/KTP yang sah secara hukum) untuk memastikan kelayakan perikatan perjanjian dan pengelolaan transaksi keuangan mandiri.
+3. **Literasi Digital & Finansial:** Pengguna diasumsikan telah memiliki akses internet stabil, perangkat smartphone pribadi, serta terbiasa menggunakan layanan perbankan digital atau dompet digital (*e-wallet* seperti GoPay, OVO, DANA) untuk transaksi penarikan/pembayaran dana.
+4. **Keaslian Identitas:** Pengguna diasumsikan memberikan data identitas, rekam jejak keterampilan, dan nomor rekening/e-wallet yang valid dan dapat dipertanggungjawabkan secara pribadi.
+
+#### B. Asumsi dari Sisi Teknis
+1. **Kapasitas Beban dan Konkurensi:** Sistem pada tahap pengembangan ini diasumsikan berjalan untuk skala MVP (*Minimum Viable Product*), melayani perkiraan beban 100–500 pengguna terdaftar dengan konkurensi simultan skala demo (10–50 *concurrent requests*).
+2. **Ketersediaan Infrastruktur Pihak Ketiga:**
+   * Sistem diasumsikan bergantung pada penyedia layanan komputasi database (misal: Supabase/PostgreSQL, Firebase, atau server VPS) dengan tingkat ketersediaan (*uptime*) standar.
+   * Modul transaksi keuangan diasumsikan terhubung ke *sandbox environment* dari *Payment Gateway* resmi (misal: Midtrans atau Xendit) selama periode pengujian perangkat lunak.
+3. **Kompatibilitas Antarmuka:** Perangkat lunak diasumsikan diakses melalui browser modern yang mendukung standar web terkini (Google Chrome, Mozilla Firefox, Safari, Microsoft Edge) dengan resolusi layar fleksibel (desktop, tablet, maupun smartphone).
+
+---
+
+### 2.2.2 Batasan Hukum dan Regulasi
+Pengembangan sistem memperhatikan dan dibatasi oleh kerangka regulasi yang berlaku di Indonesia sebagai berikut:
+
+1. **UU Perlindungan Data Pribadi (UU No. 27 Tahun 2022 - UU PDP):**
+   * Platform wajib membatasi pengumpulan data pribadi hanya pada data yang relevan untuk transaksi (nama, email, nomor kontak, portfolio, dan nomor rekening penarikan).
+   * Data sensitif seperti kata sandi dan token transaksi wajib dienkripsi.
+   * Sistem harus menyediakan mekanisme persetujuan eksplisit (*user consent*) dan kebijakan privasi (*Privacy Policy*) saat registrasi akun.
+2. **UU Informasi dan Transaksi Elektronik (UU No. 11 Tahun 2008 dan UU No. 1 Tahun 2024 - UU ITE):**
+   * Kesepakatan kerja, pengajuan tugas (*bidding*), dan serah-terima hasil kerja melalui platform dianggap sebagai dokumen dan transaksi elektronik yang sah.
+   * Platform menyediakan pencatatan log transaksi dan riwayat aktivitas (*audit trail*) untuk pembuktian jika terjadi sengketa pengerjaan tugas.
+3. **Karakteristik Hubungan Kerja (Hukum Ketenagakerjaan & UU Cipta Kerja):**
+   * Platform bertindak murni sebagai **penyedia sarana perantara teknologi (*marketplace/intermediary*)**, bukan sebagai pemberi kerja langsung (*employer*).
+   * Tidak timbul hubungan kerja formal (perjanjian kerja waktu tertentu/tidak tertentu) antara pengembang platform dengan pengguna pekerja; platform tidak mengelola kewajiban upah minimum regional (UMR), pesangon, maupun kepesertaan BPJS Ketenagakerjaan secara otomatis.
+4. **Regulasi Pengelolaan Transaksi & Finansial (Bank Indonesia & OJK):**
+   * Untuk menghindari perlunya izin *Penyelenggara Jasa Pembayaran (PJP)* atau izin penghimpunan dana publik, platform tidak bertindak sebagai bank atau lembaga penyimpanan dana (*custody* mandiri).
+   * Seluruh mekanisme penampungan dana sementara (*escrow*) diserahkan mekanismenya melalui integrasi resmi API Payment Gateway berlisensi.
+
+---
+
+### 2.2.3 Batasan Sumber Daya
+Sebagai proyek perangkat lunak dalam perkuliahan, pengembangan memiliki sejumlah keterbatasan sumber daya:
+
+1. **Keterbatasan Anggaran & Infrastruktur Server:**
+   * Penggunaan layanan hosting, komputasi, dan basis data difokuskan pada tingkat gratis (*free tier*) atau anggaran minimal (misal: Vercel, Supabase Free Tier, Railway).
+   * Batasan kapasitas penyimpanan media: unggahan dokumen portofolio dan lampiran hasil kerja akan dibatasi ukurannya (untuk meminimalisir penuhnya database) atau dialihkan menggunakan tautan eksternal (Google Drive / GitHub).
+2. **Ketiadaan Akses API Korporat / Berbayar:**
+   * Tidak tersedianya anggaran untuk integrasi API verifikasi e-KTP langsung ke database kependudukan resmi (Dukcapil) maupun layanan SMS OTP berbayar. Verifikasi identitas dibatasi pada verifikasi alamat email (Magic Link / Email OTP) dan validasi manual dasar oleh admin.
+3. **Keterbatasan Pemasaran & Akuisisi Pengguna:**
+   * Tidak ada alokasi dana untuk pemasaran berbayar (*paid digital ads*) atau program insentif rujukan (*referral reward*).
+   * Evaluasi kegunaan (*usability testing*) dan pengujian beta dibatasi pada lingkup mahasiswa internal kampus dan komunitas terdekat.
+
+---
+
+### 2.2.4 Batasan Ruang Lingkup Solusi (*Scope Limitations*)
+
+#### A. Fitur di Dalam Cakupan (*In-Scope*)
+* **Autentikasi & Profil Pengguna:** Registrasi, autentikasi multi-peran (Pekerja dan Pemberi Kerja), serta pengelolaan profil keahlian dan portofolio mikro.
+* **Manajemen Pekerjaan (*Job Board & Bidding*):** Pembuatan posting lowongan kerja serabutan, pencarian dan penyaringan kategori tugas, serta pengajuan penawaran kerja (*bid/proposal* singkat).
+* **Alur Kontrak Kerja Mikro (*Work Lifecycle*):** Penetapan status pekerjaan (*Open*, *Assigned*, *In Progress*, *Submitted*, *Completed*, *Cancelled*).
+* **Sistem Ulasan & Reputasi:** Penilaian rating (bintang 1–5) dan ulasan timbal balik antara pekerja dan pemberi kerja setelah tugas selesai.
+* **Simulasi Transaksi & Escrow:** Alur pembayaran tugas ke rekening perantara/payment gateway sebelum tugas dikerjakan dan pencairan dana setelah hasil disetujui.
+
+#### B. Fitur di Luar Cakupan (*Out-of-Scope*)
+* **Pelacakan Geografis / GPS *Real-Time*:** Tidak mencakup pelacakan posisi fisik langsung untuk kerja serabutan lapangan (*offline gig*).
+* **Penggajian Formal & Pajak Otomatis:** Tidak menangani penggajian bulanan periodik (*payroll system*) maupun pemotongan otomatis PPh Pasal 21.
+* **Penyelesaian Sengketa Hukum Formal / Arbitrase:** Penanganan sengketa pada sistem dibatasi pada peninjauan internal oleh admin (*admin dispute resolution*) untuk pengembalian/pencairan dana, tanpa melibatkan mediasi hukum perdata formal.
+* **Fitur Obrolan Video / Panggilan Suara:** Komunikasi di dalam sistem dibatasi pada obrolan teks (*direct messaging*) dan lampiran berkas tanpa fitur panggilan audio-video bawaan.
 
 ---
 
@@ -102,3 +168,7 @@ Buatlah *Activity Diagram* atau *Swimlane Diagram* yang menunjukkan alur kerja p
 
 # Referensi
 - Diagram UML: https://www.drawio.com/, https://staruml.io/
+- UU PDP: https://peraturan.bpk.go.id/Details/229798/uu-no-27-tahun-2022
+- UU ITE: https://peraturan.bpk.go.id/details/37589/uu-no-11-tahun-2008, https://jdih.komdigi.go.id/index.php/produk_hukum/view/id/884/t/undangundang+nomor+1+tahun+2024
+- UU Cipta Kerja: https://ejournal.unsrat.ac.id/v3/index.php/lexcrimen/article/download/59263/48158/147525
+- 
