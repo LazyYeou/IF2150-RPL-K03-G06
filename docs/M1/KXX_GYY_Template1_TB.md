@@ -171,4 +171,4 @@ Buatlah *Activity Diagram* atau *Swimlane Diagram* yang menunjukkan alur kerja p
 - UU PDP: https://peraturan.bpk.go.id/Details/229798/uu-no-27-tahun-2022
 - UU ITE: https://peraturan.bpk.go.id/details/37589/uu-no-11-tahun-2008, https://jdih.komdigi.go.id/index.php/produk_hukum/view/id/884/t/undangundang+nomor+1+tahun+2024
 - UU Cipta Kerja: https://ejournal.unsrat.ac.id/v3/index.php/lexcrimen/article/download/59263/48158/147525
-- 
+- Regulasi BI: https://www.bi.go.id/id/fungsi-utama/sistem-pembayaran/perizinan/default.aspx 
