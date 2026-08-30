@@ -67,6 +67,7 @@ Buatlah daftar seluruh aktor (pengguna) yang akan berinteraksi langsung dengan s
 | :--- | :--- |
 | Tenaga Kerja (Job Seeker) | Pengguna yang bertindak sebagai pihak yang menawarkan keterampilan dan tenaga kerja untuk menyelesaikan suatu pekerjaan. Karakteristik utama pengguna adalah memiliki satu atau lebih keterampilan yang dapat ditawarkan dan membutuhkan kesempatan kerja yang sesuai dengan kemampuan yang dimiliki pengguna. |
 | Client (Job Provider) | Pengguna yang bertindak sebagai pihak yang memiliki kebutuhan terhadap tenaga kerja untuk menyelesaikan suatu pekerjaan. Karakteristik pengguna ini adalah memiliki kebutuhan terhadap suatu pekerjaan tertentu dan membutuhkan membutuhkan tenaga kerja dengan keterampilan yang sesuai, bak untuk kebutuhan pribadi maupun usaha. |
+| Administrator | Pengguna yang bertindak sebagai pihak yang bertanggung jawab dalam mengelola dan mengawasi operasional sistem. Karakteristik pengguna ini adalah memiliki hak akses khusus untuk mengelola data pengguna, memantau aktivitas, serta menangani laporan atau pelanggaran yang terjadi dalam platform. |
 
 
 ## 3.2 Kebutuhan Pengguna Awal
