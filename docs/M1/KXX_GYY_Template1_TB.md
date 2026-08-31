@@ -165,7 +165,29 @@ Berdasarkan identifikasi aktor sebelumnya, kebutuhan dan aktivitas pengguna disa
 | US-15 | Customer Service | Menerima dan menangani pertanyaan serta keluhan dari pengguna | Sehingga pengguna memperoleh bantuan ketika mengalami kendala dalam menggunakan platform |
 | US-16 | Customer Service | Membantu menindaklanjuti kendala terkait pekerjaan, pembayaran, atau akun pengguna | Menyelesaikan permasalahan yang dialami pengguna dengan cepat dan tepat |
 
-## 3.3 Model Proses Bisnis
+## 3.3 Deskripsi Aktivitas
+
+Berikut merupakan aktivitas utama yang terdapat dalam sistem berdasarkan kebutuhan awal pengguna yang disajikan dalam tabel di bawah ini:
+
+| ID | Aktivitas | Penjelasan | ID User Story |
+| :--- | :--- | :--- | :--- |
+| A01 | Registrasi dan Mengisi Profil | Pengguna membuat akun dan melengkapi profil sesuai perannya sebagai Tenaga Kerja atau Job Provider. | US-01, US-06 |
+| A02 | Mengajukan Verifikasi Identitas | Tenaga Kerja mengunggah data identitas untuk diverifikasi sebelum menggunakan layanan platform. | US-02 |
+| A03 | Memverifikasi Identitas Pengguna | Administrator memeriksa dan menyetujui atau menolak verifikasi identitas pengguna. | US-11 |
+| A04 | Melakukan Pembayaran Subscription | Tenaga Kerja melakukan pembayaran subscription untuk mengaktifkan akses layanan. | US-02 |
+| A05 | Membuat Lowongan Pekerjaan | Job Provider membuat pekerjaan dengan menentukan deskripsi, keterampilan, waktu, dan upah. | US-07 |
+| A06 | Mencari Pekerjaan | Tenaga Kerja mencari dan memilih pekerjaan yang sesuai dengan keterampilan dan kebutuhannya. | US-03 |
+| A07 | Mengajukan Penawaran Pekerjaan | Tenaga Kerja mengajukan diri atau memberikan proposal terhadap pekerjaan yang tersedia. | US-04 |
+| A08 | Memilih Tenaga Kerja | Job Provider meninjau kandidat dan memilih Tenaga Kerja yang sesuai untuk menyelesaikan pekerjaan. | US-08 |
+| A09 | Melakukan Pembayaran Pekerjaan | Job Provider melakukan pembayaran upah dan *commission fee* melalui Payment Gateway sebelum pekerjaan dimulai. | US-09 |
+| A10 | Melaksanakan Pekerjaan | Tenaga Kerja mengerjakan pekerjaan sesuai dengan kesepakatan yang telah dibuat. | US-04 |
+| A11 | Mengirimkan Hasil Pekerjaan | Tenaga Kerja menyelesaikan dan menyerahkan hasil pekerjaan kepada Job Provider. | US-04 |
+| A12 | Memverifikasi Penyelesaian Pekerjaan | Job Provider memeriksa hasil pekerjaan dan mengonfirmasi bahwa pekerjaan telah selesai. | US-10 |
+| A13 | Mencairkan Pembayaran | Setelah pekerjaan dikonfirmasi selesai, pembayaran diteruskan kepada Tenaga Kerja melalui mekanisme yang tersedia. | US-05, US-14 |
+| A14 | Memberikan Rating dan Ulasan | Tenaga Kerja dan Job Provider dapat memberikan rating dan ulasan setelah pekerjaan selesai. | US-05, US-10 |
+| A15 | Menangani Keluhan atau Sengketa | Customer Service dan Administrator menangani kendala atau sengketa yang terjadi antara pengguna. | US-13, US-15, US-16 |
+
+## 3.4 Model Proses Bisnis
 Untuk Model Proses Bisnis yang akan digunakan dibagi menjadi 2 model utama :
 
 <img width="893" height="535" alt="image" src="https://github.com/user-attachments/assets/3845608c-9d76-401d-970a-9c99807f9b01" />
