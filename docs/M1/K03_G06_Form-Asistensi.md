@@ -4,41 +4,40 @@
 
 | Informasi | Keterangan |
 | --- | --- |
-| **Hari** | *\[Hari\]* |
-| **Tanggal** | *\[DD/MM/YYYY\]* |
-| **Kelas** | *\[Kelas\]* |
-| **Nomor Kelompok** | *\[Nomor Kelompok\]*  |
-| **Nama Kelompok** | *\[Nama Kelompok\]*  |
-| **Nama Perangkat Lunak** | *\[Nama P/L\]*  |
-| **Dokumen** | *\[Nama Dokumen yang diasistensikan\]*  |
+| **Hari** | Selasa |
+| **Tanggal** | 1 September 2026 |
+| **Kelas** | K-03 |
+| **Nomor Kelompok** | 6  |
+| **Nama Kelompok** | Shifu  |
+| **Nama Perangkat Lunak** | Ngerja-In |
+| **Dokumen** | K03_G06_Template1_TB.md  |
 
 ### Anggota Kelompok
 
 | NIM | Nama |
 | --- | --- |
-| *\[NIM 1\]* | *\[Nama Anggota 1\]* |
-| *\[NIM 2\]* | *\[Nama Anggota 2\]* |
-| *\[NIM 3\]* | *\[Nama Anggota 3\]* |
-| *\[NIM 4\]* | *\[Nama Anggota 4\]* |
-| *\[NIM 5\]* | *\[Nama Anggota 5\]* |
+| 13525033 | Davin Farel Santoso |
+| 13525039 | Aditya Rasyid|
+| 13525102 | Karmel Tua Haloho |
+| 13525096 | Muhammad Ridwan Nasir Firdaus |
+| 13525123 | Sebastio Nugroho |
 
 ### Catatan
 
 | Catatan |
 | --- |
-| 1. *\[Berikan catatan hasil asistensi\]*  |
-| 2. ... |
-| 3. ... |
-| 4. ... |
+| 1. Tidak memerlukan administrator dan payment gateaway sebagai aktor, karena tidak berhubungan langsung dengan pennguna platform. |
+| 2. Deskripsi mengenai kegiatan yang dapat dilakukan aktor pada Bab 3 lebih dispesifikkan. |
+| 3. Beberapa poin pada Bab 3.3 bisa digabungkan jika mengandung kegiatan yang serupa.  |
+| 4. Aktivitas pada Bab 3.3 bisa dihapus jika dilakukan oleh developer software. |
+| 5. Pada Bab 3.4 bisa difokuskan pada kegiatan spesifik yang dilakukan oleh pengguna utama, seperti tenaga kerja dan penyedia pekerjaan kepada sistem platform. |
 
-**Notes for this section:**  
-*Catatan dapat dituliskan dalam bentuk paragraf atau poin-poin, disesuaikan saja.* 
 
 ## Dokumentasi
 
 <!-- ![](./assets/foto-asistensi.jpg) -->
 <p align="center">
-  <img src="./assets/foto-asistensi.jpg" width="100%">
+  <img src="./assets/Foto-Asistensi.png" width="100%">
 </p>
 
 <p align="center">
