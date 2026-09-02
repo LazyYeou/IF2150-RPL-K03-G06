@@ -20,10 +20,10 @@ Dipersiapkan oleh:
 | NIM | Nama |
 |---|---|
 | 13525033 | Davin Farel Santoso |
-| 13525102 | Karmel Tua Haloho |
-| 13525123 | Sebastio Nugroho |
 | 13525039 | Aditya Rasyid|
+| 13525102 | Karmel Tua Haloho |
 | 13525096 | Muhammad Ridwan Nasir Firdaus |
+| 13525123 | Sebastio Nugroho |
 ---
 
 <br>
