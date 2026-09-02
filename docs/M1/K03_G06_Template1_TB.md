@@ -187,7 +187,7 @@ Untuk Model Proses Bisnis yang akan digunakan dibagi menjadi 2 model utama :
 <i>Gambar 1. 1.	Software as a Service (SaaS)</i>
 </p>
 
-<img width="975" height="507" alt="image" src="https://github.com/user-attachments/assets/9e248038-971d-4ab1-83cf-1067b12e8a39" />
+<img width="975" height="507" alt="image" src=docs/M1/assets/diagram/Alur Kerja Aplikasi Kerja-In.png />
 <i>Gambar 2. Commision Fee</i>
 </p>
 
