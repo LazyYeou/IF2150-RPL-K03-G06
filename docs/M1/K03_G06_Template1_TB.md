@@ -138,9 +138,7 @@ Berikut adalah daftar dan deskripsi dari seluruh aktor yang berinteraksi langsun
 | :--- | :--- |
 | Tenaga Kerja (Job Seeker) | Pengguna yang bertindak sebagai pihak yang menawarkan keterampilan dan tenaga kerja untuk menyelesaikan suatu pekerjaan. Karakteristik utama pengguna adalah memiliki satu atau lebih keterampilan yang dapat ditawarkan dan membutuhkan kesempatan kerja yang sesuai dengan kemampuan yang dimiliki pengguna. |
 | Client (Job Provider) | Pengguna yang bertindak sebagai pihak yang memiliki kebutuhan terhadap tenaga kerja untuk menyelesaikan suatu pekerjaan. Karakteristik pengguna ini adalah memiliki kebutuhan terhadap suatu pekerjaan tertentu dan membutuhkan membutuhkan tenaga kerja dengan keterampilan yang sesuai, bak untuk kebutuhan pribadi maupun usaha. |
-| Administrator | Pengguna yang bertindak sebagai pihak yang bertanggung jawab dalam mengelola dan mengawasi operasional sistem. Karakteristik pengguna ini adalah memiliki hak akses khusus untuk mengelola data pengguna, memantau aktivitas, serta menangani laporan atau pelanggaran yang terjadi dalam platform. |
 | Customer Service (CS) | Pengguna yang bertindak sebagai pihak yang menangani keluhan, sengketa (dispute) transaksi, dan memberikan bantuan langsung kepada pengguna platform. Karakteristik pengguna ini adalah memiliki hak akses operasional untuk menengahi konflik antara Tenaga Kerja dan Client, serta menangani laporan pelanggaran tingkat awal. |
-| Payment Gateway | Sistem eksternal pihak ketiga yang bertindak sebagai pihak untuk memproses transaksi keuangan secara digital antara Client dan Tenaga Kerja. Karakteristik sistem ini adalah berjalan secara otomatis (otomasi) untuk memfasilitasi berbagai metode pembayaran dengan aman dan memberikan pembaruan status keberhasilan transaksi ke dalam platform. |
 
 
 ## 3.2 Kebutuhan Pengguna Awal
@@ -158,12 +156,8 @@ Berdasarkan identifikasi aktor sebelumnya, kebutuhan dan aktivitas pengguna disa
 | US-08 | Job Provider | Mencari dan memilih tenaga kerja berdasarkan keterampilan, pengalaman, dan reputasi | Agar pekerjaan dapat dilakukan oleh tenaga kerja yang sesuai dan terpercaya |
 | US-09 | Job Provider | Menyepakati pekerjaan dan melakukan pembayaran upah beserta *commission fee* | Agar pekerjaan dapat dimulai dengan kesepakatan dan pembayaran yang tercatat secara aman |
 | US-10 | Job Provider | Memverifikasi hasil pekerjaan dan mengonfirmasi penyelesaian pekerjaan | Agar pembayaran dapat diberikan setelah pekerjaan selesai sesuai kesepakatan |
-| US-11 | Admin | Memeriksa dan menyetujui verifikasi identitas pengguna | Agar hanya pengguna yang telah memenuhi persyaratan yang dapat menggunakan platform |
-| US-12 | Admin | Mengelola dan memantau akun serta aktivitas pengguna | Sehingga keamanan, keteraturan, dan kepercayaan dalam platform tetap terjaga |
-| US-13 | Admin | Mengawasi proses pekerjaan dan penyelesaian sengketa antara pengguna | Menangani permasalahan antara Tenaga Kerja dan Job Provider secara adil |
-| US-14 | Admin | Mengatur pencairan pembayaran dari *escrow* berdasarkan status dan hasil pekerjaan | Pembayaran kepada Tenaga Kerja dilakukan sesuai dengan kesepakatan dan ketentuan platform |
-| US-15 | Customer Service | Menerima dan menangani pertanyaan serta keluhan dari pengguna | Sehingga pengguna memperoleh bantuan ketika mengalami kendala dalam menggunakan platform |
-| US-16 | Customer Service | Membantu menindaklanjuti kendala terkait pekerjaan, pembayaran, atau akun pengguna | Menyelesaikan permasalahan yang dialami pengguna dengan cepat dan tepat |
+| US-11 | Customer Service | Menerima dan menangani pertanyaan serta keluhan dari pengguna | Sehingga pengguna memperoleh bantuan ketika mengalami kendala dalam menggunakan platform |
+| US-12 | Customer Service | Membantu menindaklanjuti kendala terkait pekerjaan, pembayaran, atau akun pengguna | Menyelesaikan permasalahan yang dialami pengguna dengan cepat dan tepat |
 
 ## 3.3 Deskripsi Aktivitas
 
@@ -173,19 +167,18 @@ Berikut merupakan aktivitas utama yang terdapat dalam sistem berdasarkan kebutuh
 | :--- | :--- | :--- | :--- |
 | A01 | Registrasi dan Mengisi Profil | Pengguna membuat akun dan melengkapi profil sesuai perannya sebagai Tenaga Kerja atau Job Provider. | US-01, US-06 |
 | A02 | Mengajukan Verifikasi Identitas | Tenaga Kerja mengunggah data identitas untuk diverifikasi sebelum menggunakan layanan platform. | US-02 |
-| A03 | Memverifikasi Identitas Pengguna | Administrator memeriksa dan menyetujui atau menolak verifikasi identitas pengguna. | US-11 |
-| A04 | Melakukan Pembayaran Subscription | Tenaga Kerja melakukan pembayaran subscription untuk mengaktifkan akses layanan. | US-02 |
-| A05 | Membuat Lowongan Pekerjaan | Job Provider membuat pekerjaan dengan menentukan deskripsi, keterampilan, waktu, dan upah. | US-07 |
-| A06 | Mencari Pekerjaan | Tenaga Kerja mencari dan memilih pekerjaan yang sesuai dengan keterampilan dan kebutuhannya. | US-03 |
-| A07 | Mengajukan Penawaran Pekerjaan | Tenaga Kerja mengajukan diri atau memberikan proposal terhadap pekerjaan yang tersedia. | US-04 |
-| A08 | Memilih Tenaga Kerja | Job Provider meninjau kandidat dan memilih Tenaga Kerja yang sesuai untuk menyelesaikan pekerjaan. | US-08 |
-| A09 | Melakukan Pembayaran Pekerjaan | Job Provider melakukan pembayaran upah dan *commission fee* melalui Payment Gateway sebelum pekerjaan dimulai. | US-09 |
-| A10 | Melaksanakan Pekerjaan | Tenaga Kerja mengerjakan pekerjaan sesuai dengan kesepakatan yang telah dibuat. | US-04 |
-| A11 | Mengirimkan Hasil Pekerjaan | Tenaga Kerja menyelesaikan dan menyerahkan hasil pekerjaan kepada Job Provider. | US-04 |
-| A12 | Memverifikasi Penyelesaian Pekerjaan | Job Provider memeriksa hasil pekerjaan dan mengonfirmasi bahwa pekerjaan telah selesai. | US-10 |
-| A13 | Mencairkan Pembayaran | Setelah pekerjaan dikonfirmasi selesai, pembayaran diteruskan kepada Tenaga Kerja melalui mekanisme yang tersedia. | US-05, US-14 |
-| A14 | Memberikan Rating dan Ulasan | Tenaga Kerja dan Job Provider dapat memberikan rating dan ulasan setelah pekerjaan selesai. | US-05, US-10 |
-| A15 | Menangani Keluhan atau Sengketa | Customer Service dan Administrator menangani kendala atau sengketa yang terjadi antara pengguna. | US-13, US-15, US-16 |
+| A03 | Melakukan Pembayaran Subscription | Tenaga Kerja melakukan pembayaran subscription untuk mengaktifkan akses layanan. | US-02 |
+| A04 | Membuat Lowongan Pekerjaan | Job Provider membuat pekerjaan dengan menentukan deskripsi, keterampilan, waktu, dan upah. | US-07 |
+| A05 | Mencari Pekerjaan | Tenaga Kerja mencari dan memilih pekerjaan yang sesuai dengan keterampilan dan kebutuhannya. | US-03 |
+| A06 | Mengajukan Penawaran Pekerjaan | Tenaga Kerja mengajukan diri atau memberikan proposal terhadap pekerjaan yang tersedia. | US-04 |
+| A07 | Memilih Tenaga Kerja | Job Provider meninjau kandidat dan memilih Tenaga Kerja yang sesuai untuk menyelesaikan pekerjaan. | US-08 |
+| A08 | Melakukan Pembayaran Pekerjaan | Job Provider melakukan pembayaran upah dan *commission fee* melalui Payment Gateway sebelum pekerjaan dimulai. | US-09 |
+| A09 | Melaksanakan Pekerjaan | Tenaga Kerja mengerjakan pekerjaan sesuai dengan kesepakatan yang telah dibuat. | US-04 |
+| A10 | Mengirimkan Hasil Pekerjaan | Tenaga Kerja menyelesaikan dan menyerahkan hasil pekerjaan kepada Job Provider. | US-04 |
+| A11 | Memverifikasi Penyelesaian Pekerjaan | Job Provider memeriksa hasil pekerjaan dan mengonfirmasi bahwa pekerjaan telah selesai. | US-10 |
+| A12 | Mencairkan Pembayaran | Setelah pekerjaan dikonfirmasi selesai, pembayaran diteruskan kepada Tenaga Kerja melalui mekanisme yang tersedia. | US-05 |
+| A13 | Memberikan Rating dan Ulasan | Tenaga Kerja dan Job Provider dapat memberikan rating dan ulasan setelah pekerjaan selesai. | US-05, US-10 |
+| A14 | Menangani Keluhan atau Sengketa | Customer Service menangani kendala atau sengketa yang terjadi antara pengguna. | US-11, US-12 |
 
 ## 3.4 Model Proses Bisnis
 Untuk Model Proses Bisnis yang akan digunakan dibagi menjadi 2 model utama :
