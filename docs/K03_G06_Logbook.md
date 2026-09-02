@@ -29,13 +29,13 @@
 ---
 
 ### Milestone 1
-**Periode:** [Tanggal Mulai] - [Tanggal Selesai]
+**Periode:** 27 Agustus 2026 - 2 September 2026
 
 | Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
 | :--- | :--- | :--- | :--- | :--- | :--- | 
-| *04-05-2026* | *[Nama Mahasiswa]* | *[Jelaskan Pekerjaan secara Singkat]* | *[Durasi Pengerjaan]* | *[On Progress/Done]* | [Kendala yang dialami, jika tidak ada cukup tandai "-"] | 
-| *05-05-2026* | *John Doe* | *Mendesain diagram kelas* | *3* | *Done* | *-* | 
-| | | | | | | |
+| 30-07-2026 | Davin Farel Santoso | Mencari dan menulis informasi mengenai latar belakang masalah | 2 | Done | - | 
+| 30-07-2026 | Davin Farel Santoso | Mengerjakan Bab 3.1 Identifikasi Aktor | 1 | Done | - | 
+| 30-07-2026 | Davin Farel Santoso | Mengerjakan Bab 3.2 Kebutuhan Pengguna Awal | 1 | Done | - | 
 
 **Catatan/Evaluasi Milestone 1:**
 * *(Isi jika ada catatan khusus untuk asisten atau evaluasi singkat kerja tim)*
