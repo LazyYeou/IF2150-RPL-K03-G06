@@ -194,12 +194,13 @@ Untuk Model Proses Bisnis yang akan digunakan dibagi menjadi 2 model utama :
 
 <br>
 
-# Referensi
+# Daftar Pustaka
 - Diagram UML: https://www.drawio.com/, https://staruml.io/
-- UU PDP: https://peraturan.bpk.go.id/Details/229798/uu-no-27-tahun-2022
-- UU ITE: https://peraturan.bpk.go.id/details/37589/uu-no-11-tahun-2008, https://jdih.komdigi.go.id/index.php/produk_hukum/view/id/884/t/undangundang+nomor+1+tahun+2024
-- UU Cipta Kerja: https://ejournal.unsrat.ac.id/v3/index.php/lexcrimen/article/download/59263/48158/147525
-- Regulasi BI: https://www.bi.go.id/id/fungsi-utama/sistem-pembayaran/perizinan/default.aspx 
-- Data *missmatch*: https://www.bps.go.id/id/publication/2025/10/31/c35e3066258c837175d3b097/cerita-data-statistik-untuk-indonesia-mismatch-pendidikan-pekerjaan-pemuda-indonesia-implikasi-bagi-bonus-demografi.html 
-- Data TPT: https://www.bps.go.id/id/pressrelease/2025/11/05/2479/tingkat-pengangguran-terbuka-tpt-sebesar-4-85-persen-rata-rata-upah-buruh-sebesar-3-33-juta-rupiah-.html 
-- SDG 8: https://sdgs.bappenas.go.id/17-goals/08 
+- Badan Perencanaan Pembangunan Nasional. (n.d.). Tujuan 8: Pekerjaan layak dan pertumbuhan ekonomi. SDGs Indonesia. https://sdgs.bappenas.go.id/17-goals/08
+- Badan Pusat Statistik. (2025, Oktober 31). Cerita data statistik untuk Indonesia: Mismatch pendidikan-pekerjaan pemuda Indonesia, implikasi bagi bonus demografi. https://www.bps.go.id/id/publication/2025/10/31/c35e3066258c837175d3b097/cerita-data-statistik-untuk-indonesia-mismatch-pendidikan-pekerjaan-pemuda-indonesia-implikasi-bagi-bonus-demografi.html
+- Badan Pusat Statistik. (2025, November 5). Tingkat Pengangguran Terbuka (TPT) sebesar 4,85 persen, rata-rata upah buruh sebesar 3,33 juta rupiah. https://www.bps.go.id/id/pressrelease/2025/11/05/2479/tingkat-pengangguran-terbuka-tpt-sebesar-4-85-persen-rata-rata-upah-buruh-sebesar-3-33-juta-rupiah-.html
+- Bank Indonesia. (n.d.). Perizinan sistem pembayaran. https://www.bi.go.id/id/fungsi-utama/sistem-pembayaran/perizinan/default.aspx
+- Pemerintah Republik Indonesia. (2008). Undang-Undang Republik Indonesia Nomor 11 Tahun 2008 tentang Informasi dan Transaksi Elektronik. JDIH BPK RI. https://peraturan.bpk.go.id/details/37589/uu-no-11-tahun-2008
+- Pemerintah Republik Indonesia. (2022). Undang-Undang Republik Indonesia Nomor 27 Tahun 2022 tentang Perlindungan Data Pribadi. JDIH BPK RI. https://peraturan.bpk.go.id/Details/229798/uu-no-27-tahun-2022
+- Pemerintah Republik Indonesia. (2023). Undang-Undang Republik Indonesia Nomor 6 Tahun 2023 tentang Penetapan Peraturan Pemerintah Pengganti Undang-Undang Nomor 2 Tahun 2022 tentang Cipta Kerja Menjadi Undang-Undang. Lex Crimen. https://ejournal.unsrat.ac.id/v3/index.php/lexcrimen/article/download/59263/48158/147525
+- Pemerintah Republik Indonesia. (2024). Undang-Undang Republik Indonesia Nomor 1 Tahun 2024 tentang Perubahan Kedua atas Undang-Undang Nomor 11 Tahun 2008 tentang Informasi dan Transaksi Elektronik. JDIH Kementerian Komunikasi dan Digital. https://jdih.komdigi.go.id/index.php/produk_hukum/view/id/884/t/undangundang+nomor+1+tahun+2024
