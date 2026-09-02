@@ -181,7 +181,7 @@ Berikut merupakan aktivitas utama yang terdapat dalam sistem berdasarkan kebutuh
 
 ## 3.4 Model Proses Bisnis
 
-<img width="975" height="507" alt="image" src="assets/diagram/Alur Kerja Aplikasi Kerja-In.png" />
+<img alt="image" src="assets/diagram/Alur Kerja Aplikasi Kerja-In.png" />
 <i> Alur Kerja Aplikasi Kerja-In
 </p>
 
