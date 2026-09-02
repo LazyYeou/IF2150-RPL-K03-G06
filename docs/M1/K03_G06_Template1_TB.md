@@ -173,12 +173,11 @@ Berikut merupakan aktivitas utama yang terdapat dalam sistem berdasarkan kebutuh
 | A06 | Mengajukan Penawaran Pekerjaan | Tenaga Kerja mengajukan diri atau memberikan proposal terhadap pekerjaan yang tersedia. | US-04 |
 | A07 | Memilih Tenaga Kerja | Penyedia Kerja meninjau kandidat dan memilih Tenaga Kerja yang sesuai untuk menyelesaikan pekerjaan. | US-08 |
 | A08 | Melakukan Pembayaran Pekerjaan | Penyedia Kerja melakukan pembayaran upah dan *commission fee* melalui Payment Gateway sebelum pekerjaan dimulai. | US-09 |
-| A09 | Melaksanakan Pekerjaan | Tenaga Kerja mengerjakan pekerjaan sesuai dengan kesepakatan yang telah dibuat. | US-04 |
-| A10 | Mengirimkan Hasil Pekerjaan | Tenaga Kerja menyelesaikan dan menyerahkan hasil pekerjaan kepada Penyedia Kerja. | US-04 |
-| A11 | Memverifikasi Penyelesaian Pekerjaan | Penyedia Kerja memeriksa hasil pekerjaan dan mengonfirmasi bahwa pekerjaan telah selesai. | US-10 |
-| A12 | Mencairkan Pembayaran | Setelah pekerjaan dikonfirmasi selesai, pembayaran diteruskan kepada Tenaga Kerja melalui mekanisme yang tersedia. | US-05 |
-| A13 | Memberikan Rating dan Ulasan | Tenaga Kerja dan Penyedia Kerja dapat memberikan rating dan ulasan setelah pekerjaan selesai. | US-05, US-10 |
-| A14 | Menangani Keluhan atau Sengketa | Customer Service menangani kendala atau sengketa yang terjadi antara pengguna. | US-11, US-12 |
+| A09 | Melaksanakan dan Mengirimkan Hasil Pekerjaan | Tenaga Kerja mengerjakan pekerjaan sesuai dengan kesepakatan yang telah dibuat, kemudian menyelesaikan dan menyerahkan hasil pekerjaan kepada Penyedia Kerja. | US-04 |
+| A10 | Memverifikasi Penyelesaian Pekerjaan | Penyedia Kerja memeriksa hasil pekerjaan dan mengonfirmasi bahwa pekerjaan telah selesai. | US-10 |
+| A11 | Mencairkan Pembayaran | Setelah pekerjaan dikonfirmasi selesai, pembayaran diteruskan kepada Tenaga Kerja melalui mekanisme yang tersedia. | US-05 |
+| A12 | Memberikan Rating dan Ulasan | Tenaga Kerja dan Penyedia Kerja dapat memberikan rating dan ulasan setelah pekerjaan selesai. | US-05, US-10 |
+| A13 | Menangani Keluhan atau Sengketa | Customer Service menangani kendala atau sengketa yang terjadi antara pengguna. | US-11, US-12 |
 
 ## 3.4 Model Proses Bisnis
 Untuk Model Proses Bisnis yang akan digunakan dibagi menjadi 2 model utama :
