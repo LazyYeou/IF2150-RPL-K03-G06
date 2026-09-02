@@ -55,4 +55,4 @@ Kami yang bertanda tangan di bawah ini menyatakan bahwa seluruh log penggunaan A
 | <img src="./M1/assets/TTD-13525123-Sebastio Nugroho.jpg" width="100"> | 13525123 - Sebastio Nugroho |
 | <img src="./M1/assets/image.png" width="100"> | 13525039 - Aditya Rasyid |
 | <img src="./M1/assets/TTD-13525096-Muhammad Ridwan Nasir Firdaus.png" width="100"> | 13525096 - Muhammad Ridwan Nasir Firdaus |
-| <img src="./M1/assets/tanda tangan.png" width="100"> | **[NIM - Nama Anggota 5]** |
+| <img src="./M1/assets/tanda tangan.png" width="100"> | 3525102 - Karmel Tua Haloho |
