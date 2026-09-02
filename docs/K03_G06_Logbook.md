@@ -41,6 +41,7 @@
 | 30-08-2026 | Karmel Tua Haloho | Menganalisis bagian Bab 1.2 | 2 | Done | - | 
 | 30-08-2026 | Karmel Tua Haloho | Menelusuri dan menambahkan aktor lain pada Bab 3.1 Identifikasi Aktor | 1 | Done | - |
 | 30-08-2026 | Karmel Tua Haloho | Merevisi Bab 3.3 Deskripsi Aktivitas | 1 | Done | - | 
+| 01-09-2026 | Muhammad Ridwan Nasir Firdaus | Menyusun Bab 3.3 Deskripsi Aktivitas berdasarkan kebutuhan pengguna dan user story | 1 | Done | - |
 
 **Catatan/Evaluasi Milestone 1:**
 * *(Isi jika ada catatan khusus untuk asisten atau evaluasi singkat kerja tim)*
