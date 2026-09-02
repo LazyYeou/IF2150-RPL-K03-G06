@@ -9,7 +9,7 @@
 | **Kelas** | K-03 |
 | **Nomor Kelompok** | 6  |
 | **Nama Kelompok** | Shifu  |
-| **Nama Perangkat Lunak** | Ngerja-In |
+| **Nama Perangkat Lunak** | Kerja-In |
 | **Dokumen** | K03_G06_Template1_TB.md  |
 
 ### Anggota Kelompok
@@ -18,8 +18,8 @@
 | --- | --- |
 | 13525033 | Davin Farel Santoso |
 | 13525039 | Aditya Rasyid|
-| 13525102 | Karmel Tua Haloho |
 | 13525096 | Muhammad Ridwan Nasir Firdaus |
+| 13525102 | Karmel Tua Haloho |
 | 13525123 | Sebastio Nugroho |
 
 ### Catatan
