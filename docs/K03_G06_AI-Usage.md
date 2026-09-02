@@ -51,7 +51,7 @@ Kami yang bertanda tangan di bawah ini menyatakan bahwa seluruh log penggunaan A
 
 | Tanda Tangan | Nama Anggota |
 | :---: | :--- |
-| <img src="./M1/assets/TTD-13525033-Davin Farel Santoso.jpeg" width="100%"> | 13525033 - Davin Farel Santoso |
+| <img src="./M1/assets/TTD-13525033-Davin Farel Santoso.jpeg" width="100"> | 13525033 - Davin Farel Santoso |
 | <img src="./M1/assets/TTD-13525123-Sebastio Nugroho.jpg" width="100"> | 13525123 - Sebastio Nugroho |
 | <img src="./M1/assets/image.png" width="100"> | 13525039 - Aditya Rasyid |
 | <img src="./assets/ttd-anggota4.png" width="100"> | **[NIM - Nama Anggota 4]** |
