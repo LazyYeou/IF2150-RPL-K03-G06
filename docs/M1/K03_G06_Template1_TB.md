@@ -180,15 +180,9 @@ Berikut merupakan aktivitas utama yang terdapat dalam sistem berdasarkan kebutuh
 | A13 | Menangani Keluhan atau Sengketa | Customer Service menangani kendala atau sengketa yang terjadi antara pengguna. | US-11, US-12 |
 
 ## 3.4 Model Proses Bisnis
-Untuk Model Proses Bisnis yang akan digunakan dibagi menjadi 2 model utama :
 
-<img width="893" height="535" alt="image" src="https://github.com/user-attachments/assets/3845608c-9d76-401d-970a-9c99807f9b01" />
-
-<i>Gambar 1. 1.	Software as a Service (SaaS)</i>
-</p>
-
-<img width="975" height="507" alt="image" src=docs/M1/assets/diagram/Alur Kerja Aplikasi Kerja-In.png />
-<i>Gambar 2. Commision Fee</i>
+<img width="975" height="507" alt="image" src="docs/M1/assets/diagram/Alur Kerja Aplikasi Kerja-In.png" />
+<i> Alur Kerja Aplikasi Kerja-In
 </p>
 
 <br>
