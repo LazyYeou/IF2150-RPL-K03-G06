@@ -15,16 +15,16 @@ Dipersiapkan oleh:
 
 | Informasi | Keterangan |
 | --- | --- |
-| Kelas | *\[Kelas\]* |
-| Kelompok | *\[Nomor Kelompok\]* |
+| Kelas | 03 |
+| Kelompok | Shifu  |
 
 | NIM | Nama |
 | --- | --- |
-| *\[NIM 1\]* | *\[Nama Anggota 1\]* |
-| *\[NIM 2\]* | *\[Nama Anggota 2\]* |
-| *\[NIM 3\]* | *\[Nama Anggota 3\]* |
-| *\[NIM 4\]* | *\[Nama Anggota 4\]* |
-| *\[NIM 5\]* | *\[Nama Anggota 5\]* |
+| 13525033 | Davin Farel Santoso |
+| 13525039 | Aditya Rasyid|
+| 13525096 | Muhammad Ridwan Nasir Firdaus |
+| 13525102 | Karmel Tua Haloho |
+| 13525123 | Sebastio Nugroho |
 
 ---
 
