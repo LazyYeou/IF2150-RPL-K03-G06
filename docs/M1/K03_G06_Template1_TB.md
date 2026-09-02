@@ -136,9 +136,9 @@ Berikut adalah daftar dan deskripsi dari seluruh aktor yang berinteraksi langsun
 
 | Aktor | Deskripsi |
 | :--- | :--- |
-| Tenaga Kerja (Job Seeker) | Pengguna yang bertindak sebagai pihak yang menawarkan keterampilan dan tenaga kerja untuk menyelesaikan suatu pekerjaan. Karakteristik utama pengguna adalah memiliki satu atau lebih keterampilan yang dapat ditawarkan dan membutuhkan kesempatan kerja yang sesuai dengan kemampuan yang dimiliki pengguna. |
-| Client (Job Provider) | Pengguna yang bertindak sebagai pihak yang memiliki kebutuhan terhadap tenaga kerja untuk menyelesaikan suatu pekerjaan. Karakteristik pengguna ini adalah memiliki kebutuhan terhadap suatu pekerjaan tertentu dan membutuhkan membutuhkan tenaga kerja dengan keterampilan yang sesuai, bak untuk kebutuhan pribadi maupun usaha. |
-| Customer Service (CS) | Pengguna yang bertindak sebagai pihak yang menangani keluhan, sengketa (dispute) transaksi, dan memberikan bantuan langsung kepada pengguna platform. Karakteristik pengguna ini adalah memiliki hak akses operasional untuk menengahi konflik antara Tenaga Kerja dan Client, serta menangani laporan pelanggaran tingkat awal. |
+| Tenaga Kerja (Job Seeker) | Pengguna yang dapat mendaftar dan melengkapi profil untuk menawarkan suatu keahlian di bidang tertentu. Aktivitas utamanya adalah mencari dan memilih pekerjaan yang sesuai, mengajukan diri, menyelesaikan pekerjaan sesuai kesepakatan, serta menerima pembayaran upah setelah pekerjaan diverifikasi. |
+| Client (Job Provider) | Pengguna merupakan individu maupun pemilik usaha yang dapat mendaftar dan melengkapi profil untuk mempublikasikan kebutuhan pekerjaan. Aktivitas utamanya adalah menentukan spesifikasi pekerjaan dan upah, mencari serta memilih tenaga kerja terpercaya, menyepakati pekerjaan, membayar upah beserta commission fee, dan memverifikasi hasil pekerjaan. |
+| Customer Service (CS) | Pengguna merupakan tim internal platform yang memegang hak akses operasional untuk menjaga kelancaran transaksi dan interaksi. Aktivitas utamanya meliputi menerima serta menangani pertanyaan, membantu menindaklanjuti kendala akun, pekerjaan, dan pembayaran, serta menengahi sengketa (dispute) atau keluhan pengguna secara cepat dan tepat. |
 
 
 ## 3.2 Kebutuhan Pengguna Awal
