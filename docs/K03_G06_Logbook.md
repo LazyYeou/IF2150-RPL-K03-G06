@@ -36,7 +36,8 @@
 | 30-08-2026 | Davin Farel Santoso | Mencari dan menulis informasi mengenai latar belakang masalah | 2 | Done | - | 
 | 30-08-2026 | Davin Farel Santoso | Mengerjakan Bab 3.1 Identifikasi Aktor | 1 | Done | - | 
 | 30-08-2026 | Davin Farel Santoso | Mengerjakan Bab 3.2 Kebutuhan Pengguna Awal | 1 | Done | - | 
-| 02-09-2026 | Davin Farel Santoso | Merevisi Bab 3.1 Identifikasi Aktor | 0.5 | Done | - | 
+| 02-09-2026 | Davin Farel Santoso | Merevisi Bab 3.1 Identifikasi Aktor | 0.5 | Done | - |
+| 30-08-2026 | Sebastio Nugroho | Mengerjakan Bab 2.2 Asumsi dan Batasan | 2 | Done | - | 
 
 **Catatan/Evaluasi Milestone 1:**
 * *(Isi jika ada catatan khusus untuk asisten atau evaluasi singkat kerja tim)*
