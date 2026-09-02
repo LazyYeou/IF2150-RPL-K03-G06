@@ -57,7 +57,7 @@ Lebih jauh lagi, terdapat kesenjangan pada sistem rekam jejak profesional. Peker
 # BAB 2: Analisis Solusi
 
 ## 2.1 Deskripsi Perangkat Lunak
-Perangkat lunak yang diusulkan adalah sebuah platform marketplace jasa berbasis web yang mempertemukan pencari jasa (Client) dengan pekerja sektor informal (Tenaga Kerja) secara langsung. Dari sudut pandang pengguna, Client dapat dengan mudah mencari, memilih, dan mempekerjakan bantuan harian, seperti tukang kebersihan, kuli angkat, atau asisten perbaikan ringan dengan berdasarkan lokasi, harga, dan ulasan. Sebaliknya, Tenaga kerja dapat membuat profil, menerima tawaran pekerjaan di sekitar mereka, dan membangun reputasi/portofolio dari setiap pekerjaan yang diselesaikan.
+Perangkat lunak yang diusulkan adalah sebuah platform marketplace jasa berbasis web yang mempertemukan pencari jasa (Penyedia Kerja) dengan pekerja sektor informal (Tenaga Kerja) secara langsung. Dari sudut pandang pengguna, Penyedia Kerja dapat dengan mudah mencari, memilih, dan mempekerjakan bantuan harian, seperti tukang kebersihan, kuli angkat, atau asisten perbaikan ringan dengan berdasarkan lokasi, harga, dan ulasan. Sebaliknya, Tenaga kerja dapat membuat profil, menerima tawaran pekerjaan di sekitar mereka, dan membangun reputasi/portofolio dari setiap pekerjaan yang diselesaikan.
 Target platform untuk sistem ini adalah Web Application yang responsif. Pemilihan platform tersebut didasarkan pada keunggulannya yang serbaguna dan inklusif. Aplikasi web dapat diakses secara mulus terhadap berbagai macam perangkat, misalnya smartphone, tablet, maupun desktop dan berbagai sistem operasi tanpa kendala kompatibilitas. Khusus bagi Tenaga kerja di sektor informal yang mungkin memiliki ponsel dengan spesifikasi atau kapasitas penyimpanan terbatas, pendekatan ini sangat ideal karena mereka tidak perlu mengunduh atau menginstal aplikasi berat dari toko aplikasi, sistem cukup diakses langsung melalui browser secara instan.
 Platform ini dengan unik memberikan ruang bagi pekerja informal untuk memiliki rekam jejak atau portofolio digital yang valid berdasarkan rating dan ulasan dari pengguna jasa. Hal ini menyelesaikan masalah ketiadaan bukti kredibilitas bagi pekerja lepas.
 
@@ -68,7 +68,7 @@ Asumsi-asumsi yang mendasari perancangan dan implementasi perangkat lunak ini te
 #### A. Asumsi dari Sisi Pengguna
 1. **Profil Pengguna:**
    * **Pekerja:** Diasumsikan didominasi oleh kalangan pengangguran, mahasiswa, lulusan baru, atau pencari penghasilan sampingan yang memiliki keterampilan dasar dan mencari pekerjaan fleksibel jangka pendek serta familiar dengan perangkat smartphone dan terbiasa menggunakan layanan dompet digital.
-   * **Pemberi Kerja (*Client*):** Diasumsikan merupakan individu, pelaku usaha, komunitas, atau siapa saja yang memerlukan bantuan pengerjaan tanpa harus melalui proses rekrutmen formal atau kontrak jangka panjang serta familiar dengan perangkat smartphone dan terbiasa menggunakan layanan dompet digital.
+   * **Penyedia Kerja:** Diasumsikan merupakan individu, pelaku usaha, komunitas, atau siapa saja yang memerlukan bantuan pengerjaan tanpa harus melalui proses rekrutmen formal atau kontrak jangka panjang serta familiar dengan perangkat smartphone dan terbiasa menggunakan layanan dompet digital.
 2. **Batasan Usia dan Kapasitas Hukum:** Seluruh pengguna aktif diasumsikan berusia **minimal 17 tahun** (dan telah memiliki KTP yang sah) untuk memastikan kelayakan perikatan perjanjian dan pengelolaan transaksi keuangan mandiri.
 3. **Keaslian Identitas:** Pengguna diasumsikan memberikan data identitas, rekam jejak keterampilan, dan nomor rekening/e-wallet yang valid dan dapat dipertanggungjawabkan secara pribadi.
 
@@ -136,8 +136,8 @@ Berikut adalah daftar dan deskripsi dari seluruh aktor yang berinteraksi langsun
 
 | Aktor | Deskripsi |
 | :--- | :--- |
-| Tenaga Kerja (Job Seeker) | Pengguna yang dapat mendaftar dan melengkapi profil untuk menawarkan suatu keahlian di bidang tertentu. Aktivitas utamanya adalah mencari dan memilih pekerjaan yang sesuai, mengajukan diri, menyelesaikan pekerjaan sesuai kesepakatan, serta menerima pembayaran upah setelah pekerjaan diverifikasi. |
-| Client (Job Provider) | Pengguna merupakan individu maupun pemilik usaha yang dapat mendaftar dan melengkapi profil untuk mempublikasikan kebutuhan pekerjaan. Aktivitas utamanya adalah menentukan spesifikasi pekerjaan dan upah, mencari serta memilih tenaga kerja terpercaya, menyepakati pekerjaan, membayar upah beserta commission fee, dan memverifikasi hasil pekerjaan. |
+| Tenaga Kerja | Pengguna yang dapat mendaftar dan melengkapi profil untuk menawarkan suatu keahlian di bidang tertentu. Aktivitas utamanya adalah mencari dan memilih pekerjaan yang sesuai, mengajukan diri, menyelesaikan pekerjaan sesuai kesepakatan, serta menerima pembayaran upah setelah pekerjaan diverifikasi. |
+| Penyedia Kerja | Pengguna merupakan individu maupun pemilik usaha yang dapat mendaftar dan melengkapi profil untuk mempublikasikan kebutuhan pekerjaan. Aktivitas utamanya adalah menentukan spesifikasi pekerjaan dan upah, mencari serta memilih tenaga kerja terpercaya, menyepakati pekerjaan, membayar upah beserta commission fee, dan memverifikasi hasil pekerjaan. |
 | Customer Service (CS) | Pengguna merupakan tim internal platform yang memegang hak akses operasional untuk menjaga kelancaran transaksi dan interaksi. Aktivitas utamanya meliputi menerima serta menangani pertanyaan, membantu menindaklanjuti kendala akun, pekerjaan, dan pembayaran, serta menengahi sengketa (dispute) atau keluhan pengguna secara cepat dan tepat. |
 
 
@@ -151,11 +151,11 @@ Berdasarkan identifikasi aktor sebelumnya, kebutuhan dan aktivitas pengguna disa
 | US-03 | Tenaga Kerja | Mencari dan memilih pekerjaan berdasarkan keahlian dan kebutuhan pekerjaan | Memperoleh pekerjaan yang sesuai dengan keterampilan yang dimiliki |
 | US-04 | Tenaga Kerja | Mengajukan diri, menerima pekerjaan, dan menyelesaikan pekerjaan sesuai kesepakatan | Memperoleh penghasilan dengan memanfaatkan keterampilan yang dimiliki |
 | US-05 | Tenaga Kerja | Menerima pembayaran setelah pekerjaan selesai dan diverifikasi | Memperoleh upah sesuai dengan pekerjaan yang telah diselesaikan |
-| US-06 | Job Provider | Melakukan registrasi dan mengisi profil diri atau usaha | Memiliki identitas yang jelas dan dipercaya dalam menggunakan platform |
-| US-07 | Job Provider | Membuat kebutuhan pekerjaan dengan menentukan spesifikasi, keterampilan, waktu, dan upah | Menemukan tenaga kerja yang sesuai dengan kebutuhan pekerjaan |
-| US-08 | Job Provider | Mencari dan memilih tenaga kerja berdasarkan keterampilan, pengalaman, dan reputasi | Agar pekerjaan dapat dilakukan oleh tenaga kerja yang sesuai dan terpercaya |
-| US-09 | Job Provider | Menyepakati pekerjaan dan melakukan pembayaran upah beserta *commission fee* | Agar pekerjaan dapat dimulai dengan kesepakatan dan pembayaran yang tercatat secara aman |
-| US-10 | Job Provider | Memverifikasi hasil pekerjaan dan mengonfirmasi penyelesaian pekerjaan | Agar pembayaran dapat diberikan setelah pekerjaan selesai sesuai kesepakatan |
+| US-06 | Penyedia Kerja | Melakukan registrasi dan mengisi profil diri atau usaha | Memiliki identitas yang jelas dan dipercaya dalam menggunakan platform |
+| US-07 | Penyedia Kerja | Membuat kebutuhan pekerjaan dengan menentukan spesifikasi, keterampilan, waktu, dan upah | Menemukan tenaga kerja yang sesuai dengan kebutuhan pekerjaan |
+| US-08 | Penyedia Kerja | Mencari dan memilih tenaga kerja berdasarkan keterampilan, pengalaman, dan reputasi | Agar pekerjaan dapat dilakukan oleh tenaga kerja yang sesuai dan terpercaya |
+| US-09 | Penyedia Kerja | Menyepakati pekerjaan dan melakukan pembayaran upah beserta *commission fee* | Agar pekerjaan dapat dimulai dengan kesepakatan dan pembayaran yang tercatat secara aman |
+| US-10 | Penyedia Kerja | Memverifikasi hasil pekerjaan dan mengonfirmasi penyelesaian pekerjaan | Agar pembayaran dapat diberikan setelah pekerjaan selesai sesuai kesepakatan |
 | US-11 | Customer Service | Menerima dan menangani pertanyaan serta keluhan dari pengguna | Sehingga pengguna memperoleh bantuan ketika mengalami kendala dalam menggunakan platform |
 | US-12 | Customer Service | Membantu menindaklanjuti kendala terkait pekerjaan, pembayaran, atau akun pengguna | Menyelesaikan permasalahan yang dialami pengguna dengan cepat dan tepat |
 
@@ -165,19 +165,19 @@ Berikut merupakan aktivitas utama yang terdapat dalam sistem berdasarkan kebutuh
 
 | ID | Aktivitas | Penjelasan | ID User Story |
 | :--- | :--- | :--- | :--- |
-| A01 | Registrasi dan Mengisi Profil | Pengguna membuat akun dan melengkapi profil sesuai perannya sebagai Tenaga Kerja atau Job Provider. | US-01, US-06 |
+| A01 | Registrasi dan Mengisi Profil | Pengguna membuat akun dan melengkapi profil sesuai perannya sebagai Tenaga Kerja atau Penyedia Kerja. | US-01, US-06 |
 | A02 | Mengajukan Verifikasi Identitas | Tenaga Kerja mengunggah data identitas untuk diverifikasi sebelum menggunakan layanan platform. | US-02 |
 | A03 | Melakukan Pembayaran Subscription | Tenaga Kerja melakukan pembayaran subscription untuk mengaktifkan akses layanan. | US-02 |
-| A04 | Membuat Lowongan Pekerjaan | Job Provider membuat pekerjaan dengan menentukan deskripsi, keterampilan, waktu, dan upah. | US-07 |
+| A04 | Membuat Lowongan Pekerjaan | Penyedia Kerja membuat pekerjaan dengan menentukan deskripsi, keterampilan, waktu, dan upah. | US-07 |
 | A05 | Mencari Pekerjaan | Tenaga Kerja mencari dan memilih pekerjaan yang sesuai dengan keterampilan dan kebutuhannya. | US-03 |
 | A06 | Mengajukan Penawaran Pekerjaan | Tenaga Kerja mengajukan diri atau memberikan proposal terhadap pekerjaan yang tersedia. | US-04 |
-| A07 | Memilih Tenaga Kerja | Job Provider meninjau kandidat dan memilih Tenaga Kerja yang sesuai untuk menyelesaikan pekerjaan. | US-08 |
-| A08 | Melakukan Pembayaran Pekerjaan | Job Provider melakukan pembayaran upah dan *commission fee* melalui Payment Gateway sebelum pekerjaan dimulai. | US-09 |
+| A07 | Memilih Tenaga Kerja | Penyedia Kerja meninjau kandidat dan memilih Tenaga Kerja yang sesuai untuk menyelesaikan pekerjaan. | US-08 |
+| A08 | Melakukan Pembayaran Pekerjaan | Penyedia Kerja melakukan pembayaran upah dan *commission fee* melalui Payment Gateway sebelum pekerjaan dimulai. | US-09 |
 | A09 | Melaksanakan Pekerjaan | Tenaga Kerja mengerjakan pekerjaan sesuai dengan kesepakatan yang telah dibuat. | US-04 |
-| A10 | Mengirimkan Hasil Pekerjaan | Tenaga Kerja menyelesaikan dan menyerahkan hasil pekerjaan kepada Job Provider. | US-04 |
-| A11 | Memverifikasi Penyelesaian Pekerjaan | Job Provider memeriksa hasil pekerjaan dan mengonfirmasi bahwa pekerjaan telah selesai. | US-10 |
+| A10 | Mengirimkan Hasil Pekerjaan | Tenaga Kerja menyelesaikan dan menyerahkan hasil pekerjaan kepada Penyedia Kerja. | US-04 |
+| A11 | Memverifikasi Penyelesaian Pekerjaan | Penyedia Kerja memeriksa hasil pekerjaan dan mengonfirmasi bahwa pekerjaan telah selesai. | US-10 |
 | A12 | Mencairkan Pembayaran | Setelah pekerjaan dikonfirmasi selesai, pembayaran diteruskan kepada Tenaga Kerja melalui mekanisme yang tersedia. | US-05 |
-| A13 | Memberikan Rating dan Ulasan | Tenaga Kerja dan Job Provider dapat memberikan rating dan ulasan setelah pekerjaan selesai. | US-05, US-10 |
+| A13 | Memberikan Rating dan Ulasan | Tenaga Kerja dan Penyedia Kerja dapat memberikan rating dan ulasan setelah pekerjaan selesai. | US-05, US-10 |
 | A14 | Menangani Keluhan atau Sengketa | Customer Service menangani kendala atau sengketa yang terjadi antara pengguna. | US-11, US-12 |
 
 ## 3.4 Model Proses Bisnis
