@@ -148,8 +148,15 @@ Untuk setiap kebutuhan yang telah diidentifikasi sebagai "didukung oleh perangka
 
 | ID KF | ID Kebutuhan | Penjelasan |
 | :--- | :--- | :--- |
-| *KF01* | *R01* | *Perangkat lunak dapat menampilkan pilihan antarmuka metode pembayaran (transfer bank, e-wallet, kartu kredit) setelah pengguna melakukan checkout.* |
-| *KF02* | *R01* | *Perangkat lunak dapat mengirimkan permintaan otorisasi transaksi ke API Payment Gateway beserta nominal tagihan dan ID Pesanan.* |
+| *KF01* | *R33* | Perangkat lunak dapat menampilkan notifikasi dan status penerimaan pembayaran/upah pada halaman dashboard Tenaga Kerja setelah pekerjaan diverifikasi selesai. |
+| *KF02* | *R34* | Perangkat lunak dapat memvalidasi nomor rekening bank atau nomor e-wallet Tenaga Kerja serta mengirimkan instruksi payout/disbursement secara otomatis ke API Payment Gateway. |
+| *KF03* | *R35* | Perangkat lunak dapat mencatat riwayat transaksi pencairan dana secara lengkap (ID transaksi, nominal upah, ID penerima, waktu pencairan, dan status transfer). |
+| *KF04* | *R36* | Perangkat lunak dapat menyediakan formulir penilaian (skala 1–5 dan kolom ulasan teks) bagi Tenaga Kerja dan Penyedia Kerja setelah transaksi pembayaran selesai. |
+| *KF05* | *R37* | Perangkat lunak dapat membatasi pengiriman ulasan sehingga setiap pengguna hanya dapat memberikan maksimal satu kali ulasan untuk satu nomor transaksi pekerjaan yang sama. |
+| *KF06* | *R38* | Perangkat lunak dapat menghitung ulang rata-rata rating secara otomatis dan memperbarui portofolio digital pada profil pengguna secara langsung setelah ulasan baru disimpan. |
+| *KF07* | *R39* | Perangkat lunak dapat menyediakan antarmuka bagi pengguna untuk mengajukan tiket sengketa/keluhan serta dashboard khusus bagi Customer Service untuk melihat antrean keluhan terkait akun, pekerjaan, dan transaksi. |
+| *KF08* | *R40* | Perangkat lunak dapat menyediakan aksi penindakan keputusan sengketa bagi Customer Service untuk mengeksekusi pengembalian dana (*refund*) ke Penyedia Kerja atau pelepasan dana upah ke Tenaga Kerja. |
+| *KF09* | *R41* | Perangkat lunak dapat mencatat data kronologis kasus sengketa, unggahan bukti pendukung (foto/dokumen), status penanganan (*Open*, *Under Review*, *Resolved*), dan riwayat log aktivitas yang dilakukan oleh Customer Service. |
 | ... | ... | ... |
 
 ## 2.5 Kebutuhan Non-Fungsional (KNF)
@@ -158,8 +165,11 @@ Uraikan dengan ringkas Kebutuhan Non-Fungsional dalam tabel sebagai berikut. Isi
 
 | ID KNF | ID Kebutuhan | Parameter | Deskripsi Kebutuhan |
 | :--- | :--- | :--- | :--- |
-| *KNF01* | *R03* | *Reliability* | *Proses transaksi pembayaran harus memenuhi prinsip ACID untuk mencegah terjadinya data tersangkut (lost update) apabila terjadi kegagalan jaringan di tengah proses.* |
-| *KNF02* | *R04* | *Security* | *Sistem harus mengenkripsi PIN atau password pengguna menggunakan algoritma SHA-256 sebelum data dikirimkan ke server, serta tidak menyimpannya dalam bentuk plain-text di database.* |
+| *KNF01* | *R34, R35* | *Reliability* | Mekanisme instruksi pencairan dana ke Payment Gateway harus menerapkan prinsip *idempotency* dan transaksi ACID untuk menjamin tidak terjadi pencairan ganda (*double payout*) jika terjadi kegagalan jaringan atau *timeout*. |
+| *KNF02* | *R34, R35* | *Security* | Pengiriman instruksi pencairan ke API Payment Gateway harus menggunakan protokol terenkripsi (HTTPS/TLS 1.3) serta enkripsi pada data nomor rekening/e-wallet pengguna. |
+| *KNF03* | *R38* | *Response time* | Sistem harus mampu menyimpan ulasan baru dan memperbarui rating pada profil publik dalam waktu singkat. |
+| *KNF04* | *R41* | *Security* | Hak akses modul sengketa/keluhan harus menerapkan *Role-Based Access Control* (RBAC) yang ketat sehingga hanya akun dengan peran Customer Service/Admin terverifikasi yang dapat melihat bukti sengketa dan mengeksekusi keputusan dana. |
+| *KNF05* | *R41* | *Reliability* | Riwayat log aktivitas penanganan sengketa dan mutasi pencairan dana bersifat *tamper-proof* (tidak dapat diubah atau dihapus) untuk keperluan jejak audit (*audit trail*). |
 | ... | ... | ... | ... |
 
 Silakan pilih yang relevan. Tidak perlu semua parameter menjadi kebutuhan non-fungsional. Berikut merupakan penjelasan dari setiap parameter. **Parameter dari Kebutuhan Non-Fungsional tidak terbatas hanya di bawah ini** karena hanya merupakan panduan sehingga dapat ditambah KNF yang lain, misalnya *constraint* dari sistem.
