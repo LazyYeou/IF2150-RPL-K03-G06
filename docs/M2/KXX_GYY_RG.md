@@ -164,6 +164,10 @@ Untuk setiap kebutuhan yang telah diidentifikasi sebagai "didukung oleh perangka
 | *KF14* | *R19* | Perangkat lunak dapat menyimpan data pengajuan penawaran yang mencakup ID Tenaga Kerja (pelamar), ID Lowongan, pesan penawaran, dan timestamp.|
 | *KF15* | *R20, R21* | Perangkat lunak dapat menampilkan daftar pelamar kepada Penyedia Kerja dan mengizinkan penyetujuan (accept) lebih dari satu Tenaga Kerja sesuai dengan batas kuota lowongan, di mana setiap persetujuan akan menghasilkan entri ID Transaksi Pekerjaan yang unik.|
 | *KF16* | *R22* | Perangkat lunak secara dinamis mengubah status lowongan dari Open menjadi Closed/Full secara otomatis apabila jumlah Tenaga Kerja yang disetujui telah memenuhi kuota yang dibutuhkan.|
+| *KF17* | *R23, R24* | Perangkat lunak dapat menyediakan fitur pembayaran upah dan commission fee melalui Payment Gateway bagi Penyedia Kerja, serta menahan status pekerjaan sebelum pembayaran diterima. |
+| *KF18* | *R25, R26* | Perangkat lunak dapat memproses pembayaran melalui Payment Gateway dan menyimpan dana pengguna, serta mencatat riwayat dan status setiap transaksi pembayaran. |
+| *KF19* | *R27, R28, R29* | Perangkat lunak dapat menyediakan fitur bagi Tenaga Kerja untuk mengunggah dan mengirimkan hasil pekerjaan setelah pembayaran diterima. |
+| *KF20* | *R30, R31, R32* | Perangkat lunak dapat menyediakan fitur bagi Penyedia Kerja untuk memeriksa dan mengonfirmasi hasil pekerjaan, yang kemudian mengubah status menjadi "Selesai" dan memicu pencairan dana kepada Tenaga Kerja. |
 | ... | ... | ... |
 
 ## 2.5 Kebutuhan Non-Fungsional (KNF)
