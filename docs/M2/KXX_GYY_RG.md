@@ -224,3 +224,10 @@ Silakan pilih yang relevan. Tidak perlu semua parameter menjadi kebutuhan non-fu
 
 # Referensi
 - Diagram UML: https://www.drawio.com/, https://staruml.io/
+- Republik Indonesia. (2003). Undang-Undang Nomor 13 Tahun 2003 tentang Ketenagakerjaan. JDIH Nasional. https://jdih.kemnaker.go.id/asset/data_puu/2003uu013.pdf
+- Republik Indonesia. (n.d.). Kitab Undang-Undang Hukum Perdata (KUHPerdata). Pusat Data Hukumonline. https://www.hukumonline.com/pusatdata/detail/17229/burgerlijk-wetboek/document/
+- Kementerian Komunikasi dan Informatika Republik Indonesia. (2020). Peraturan Menteri Komunikasi dan Informatika Nomor 5 Tahun 2020 tentang Penyelenggara Sistem Elektronik Lingkup Privat. JDIH BPK RI. https://jdih.komdigi.go.id/produk_hukum/view/id/759/t/peraturan+menteri+komunikasi+dan+informatika+nomor+5+tahun+2020
+- Bank Indonesia. (2006). Peraturan Bank Indonesia Nomor 8/14/PBI/2006 Tahun 2006 tentang Perubahan atas Peraturan Bank Indonesia Nomor 8/4/PBI/2006 tentang Pelaksanaan Good Corporate Governance bagi Bank Umum. https://peraturan.bpk.go.id/Details/137962/peraturan-bi-no-814pbi2006
+- Pemerintah Republik Indonesia. (2022). Undang-Undang Nomor 27 Tahun 2022 tentang Pelindungan Data Pribadi. JDIH Kemkomdigi. https://jdih.komdigi.go.id/produk_hukum/view/id/832/t/undangundang+nomor+27+tahun+2022
+- Bank Indonesia. (2021). Peraturan Bank Indonesia Nomor 23/6/PBI/2021 tentang Penyedia Jasa Pembayaran. Peraturan Bank Indonesia. https://www.bi.go.id/en/publikasi/peraturan/Pages/PBI_230621.aspx
+- Republik Indonesia. (2011). Undang-Undang Nomor 3 Tahun 2011 tentang Transfer Dana. Peraturan Bank Indonesia. https://peraturan.bpk.go.id/Details/39133/uu-no-3-tahun-2011
