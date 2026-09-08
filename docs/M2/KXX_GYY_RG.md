@@ -185,7 +185,13 @@ Uraikan dengan ringkas Kebutuhan Non-Fungsional dalam tabel sebagai berikut. Isi
 | *KNF07* | *R12, R17* | *Ergonomy* | Antarmuka formulir pembuatan lowongan dan pengajuan penawaran mengadopsi pendekatan design Mobile-First, sehingga elemen input dan tombol dapat ditekan dengan nyaman menggunakan jari. |
 | *KNF08* | *R18, R21* | *Security* | Sistem harus memvalidasi hak akses pengguna secara ketat. Pengguna dipastikan tidak dapat memanipulasi atau menyetujui lowongan milik orang lain, meskipun mereka mencoba mengubah URL atau angka ID secara manual di browser. |
 | *KNF09* | *R22* | *Reliability* | Sistem harus mencegah terjadinya bentrokan data atau pemesanan ganda. Jika sistem sedang sibuk dan menerima dua persetujuan di detik yang sama, sistem dijamin hanya akan memproses salah satu saja, sehingga tidak ada satu lowongan yang tidak sengaja diberikan kepada dua Tenaga Kerja sekaligus. |
+| *KNF10* | *R24, R25, R26* | *Reliability* | Sistem harus memastikan proses pembayaran tidak terjadi dua kali untuk transaksi yang sama, meskipun terjadi gangguan seperti gangguan jaringan atau koneksi saat proses berlangsung. |
+| *KNF11* | *R23, R25* | *Security* | Seluruh data pembayaran yang dikirim ke Payment Gateway harus dilindungi dengan koneksi aman, sehingga tidak dapat dilihat atau diubah oleh pihak lain saat diproses |
+| *KNF12* | *R27, R29* | *Response Time* | Sistem harus dapat memproses unggahan hasil pekerjaan (baik foto atau sebagainya) dan memperbarui status pekerjaan dalam waktu singkat setelah dikirim oleh Tenaga Kerja. |
+| *KNF13* | *R28* | *Security* | Sistem harus memastikan hanya Tenaga Kerja yang ditugaskan pada pekerjaan tersebut yang bisa mengirimkan hasil pekerjaan. |
+| *KNF14* | *R31, R32* | *Reliability* | Sistem harus memastikan proses pencairan dana hanya berjalan satu kali setelah Penyedia Kerja mengonfirmasi pekerjaan selesai, agar dana tidak tercairkan berulang kali akibat klik ganda, gangguan sistem, dan lain sebagainya. |
 | ... | ... | ... | ... |
+
 
 Silakan pilih yang relevan. Tidak perlu semua parameter menjadi kebutuhan non-fungsional. Berikut merupakan penjelasan dari setiap parameter. **Parameter dari Kebutuhan Non-Fungsional tidak terbatas hanya di bawah ini** karena hanya merupakan panduan sehingga dapat ditambah KNF yang lain, misalnya *constraint* dari sistem.
 
