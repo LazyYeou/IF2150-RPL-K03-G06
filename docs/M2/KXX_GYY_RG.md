@@ -157,6 +157,13 @@ Untuk setiap kebutuhan yang telah diidentifikasi sebagai "didukung oleh perangka
 | *KF07* | *R39* | Perangkat lunak dapat menyediakan antarmuka bagi pengguna untuk mengajukan tiket sengketa/keluhan serta dashboard khusus bagi Customer Service untuk melihat antrean keluhan terkait akun, pekerjaan, dan transaksi. |
 | *KF08* | *R40* | Perangkat lunak dapat menyediakan aksi penindakan keputusan sengketa bagi Customer Service untuk mengeksekusi pengembalian dana (*refund*) ke Penyedia Kerja atau pelepasan dana upah ke Tenaga Kerja. |
 | *KF09* | *R41* | Perangkat lunak dapat mencatat data kronologis kasus sengketa, unggahan bukti pendukung (foto/dokumen), status penanganan (*Open*, *Under Review*, *Resolved*), dan riwayat log aktivitas yang dilakukan oleh Customer Service. |
+| *KF10* | *R12, R13* | Perangkat lunak menyediakan antarmuka formulir bagi Penyedia Kerja untuk memublikasikan lowongan baru dan secara otomatis menetapkan status lowongan tersebut menjadi Open sebagai status bawaan.|
+| *KF11* | *R14* | Perangkat lunak dapat memvalidasi kelengkapan data formulir, seperti judul, deskripsi, kuota Tenaga Kerja yang diperlukan, lokasi, dan upah sebelum menyimpannya ke dalam basis data lowongan pekerjaan.|
+| *KF12* | *R15, R16* | Perangkat lunak menyediakan fitur pencarian dan filtering berdasarkan kategori/keterampilan yang menampilkan daftar lowongan dengan beberapa status, salah satunya ialah status masih menerima Tenaga Kerja yakni Open.|
+| *KF13* | *R17, R18* | Perangkat lunak menyediakan tombol Ajukan Penawaran pada halaman detail pekerjaan yang hanya dapat diakses oleh Tenaga Kerja dengan status akun Terverifikasi.|
+| *KF14* | *R19* | Perangkat lunak dapat menyimpan data pengajuan penawaran yang mencakup ID Tenaga Kerja (pelamar), ID Lowongan, pesan penawaran, dan timestamp.|
+| *KF15* | *R20, R21* | Perangkat lunak dapat menampilkan daftar pelamar kepada Penyedia Kerja dan mengizinkan penyetujuan (accept) lebih dari satu Tenaga Kerja sesuai dengan batas kuota lowongan, di mana setiap persetujuan akan menghasilkan entri ID Transaksi Pekerjaan yang unik.|
+| *KF16* | *R22* | Perangkat lunak secara dinamis mengubah status lowongan dari Open menjadi Closed/Full secara otomatis apabila jumlah Tenaga Kerja yang disetujui telah memenuhi kuota yang dibutuhkan.|
 | ... | ... | ... |
 
 ## 2.5 Kebutuhan Non-Fungsional (KNF)
