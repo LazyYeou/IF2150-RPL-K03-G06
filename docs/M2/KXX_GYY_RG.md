@@ -177,6 +177,10 @@ Uraikan dengan ringkas Kebutuhan Non-Fungsional dalam tabel sebagai berikut. Isi
 | *KNF03* | *R38* | *Response time* | Sistem harus mampu menyimpan ulasan baru dan memperbarui rating pada profil publik dalam waktu singkat. |
 | *KNF04* | *R41* | *Security* | Hak akses modul sengketa/keluhan harus menerapkan *Role-Based Access Control* (RBAC) yang ketat sehingga hanya akun dengan peran Customer Service/Admin terverifikasi yang dapat melihat bukti sengketa dan mengeksekusi keputusan dana. |
 | *KNF05* | *R41* | *Reliability* | Riwayat log aktivitas penanganan sengketa dan mutasi pencairan dana bersifat *tamper-proof* (tidak dapat diubah atau dihapus) untuk keperluan jejak audit (*audit trail*). |
+| *KNF06* | *R15, R16* | *Response Time* | Sistem mampu memuat dan menampilkan hasil pencarian serta filtering lowongan pekerjaan dalam waktu kurang dari 5 detik dengan koneksi internet standar. |
+| *KNF07* | *R12, R17* | *Ergonomy* | Antarmuka formulir pembuatan lowongan dan pengajuan penawaran mengadopsi pendekatan design Mobile-First, sehingga elemen input dan tombol dapat ditekan dengan nyaman menggunakan jari. |
+| *KNF08* | *R18, R21* | *Security* | Sistem harus memvalidasi hak akses pengguna secara ketat. Pengguna dipastikan tidak dapat memanipulasi atau menyetujui lowongan milik orang lain, meskipun mereka mencoba mengubah URL atau angka ID secara manual di browser. |
+| *KNF09* | *R22* | *Reliability* | Sistem harus mencegah terjadinya bentrokan data atau pemesanan ganda. Jika sistem sedang sibuk dan menerima dua persetujuan di detik yang sama, sistem dijamin hanya akan memproses salah satu saja, sehingga tidak ada satu lowongan yang tidak sengaja diberikan kepada dua Tenaga Kerja sekaligus. |
 | ... | ... | ... | ... |
 
 Silakan pilih yang relevan. Tidak perlu semua parameter menjadi kebutuhan non-fungsional. Berikut merupakan penjelasan dari setiap parameter. **Parameter dari Kebutuhan Non-Fungsional tidak terbatas hanya di bawah ini** karena hanya merupakan panduan sehingga dapat ditambah KNF yang lain, misalnya *constraint* dari sistem.
