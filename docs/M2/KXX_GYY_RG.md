@@ -7,9 +7,9 @@ REQUIREMENT GATHERING
 </h1>
 <br>
 
-## *Nama Perangkat Lunak*
+## *Nama Perangkat Lunak*: Kerja-In
 
-### Untuk: *[Nama Asisten]*
+### Untuk: Agatha Tatianingseto
 
 Dipersiapkan oleh:
 
@@ -97,22 +97,50 @@ Platform ini dengan unik memberikan ruang bagi pekerja informal untuk memiliki r
 
 ## 2.3 Pemetaan Kebutuhan
 
-Perhatikan kembali semua aktivitas yang telah didefinisikan pada tabel deskripsi aktivitas atau *activity diagram*. Jabarkan kebutuhan sistem yang akan dibuat dengan mengacu pada aktivitas-aktivitas tersebut. Setiap aktivitas (ID Aktivitas) dapat memiliki satu atau lebih kebutuhan yang berbeda. Pastikan untuk mengidentifikasi dan mengisi semua jenis kebutuhan yang relevan untuk setiap aktivitas, yaitu:
-
-- **User Requirement**, yaitu kebutuhan dari sudut pandang pengguna (apa yang dapat dilakukan pengguna).
-- **Business Requirement**, yaitu aturan, kebijakan, atau standar bisnis yang harus dipenuhi oleh sistem.
-- **System Requirement**, yaitu kebutuhan yang menjelaskan apa yang harus dilakukan sistem dan bagaimana sistem harus bekerja dari segi performa, keamanan, keandalan, dsb.
-
-Lengkapi juga dengan penjelasannya dan apakah keperluan tersebut perlu didukung oleh perangkat lunak atau tidak. Jenis kebutuhan tidak terbatas hanya dari tiga jenis di atas, dapat ditambahkan yang lain juga bila diperlukan, misalnya kebutuhan regulasi (*Legal*).
-
 | ID Kebutuhan | ID Aktivitas | Jenis Kebutuhan | Deskripsi Kebutuhan | P/L |
 | :--- | :--- | :--- | :--- | :--- |
-| *R01* | *A01* | *User* | *Pengguna dapat memilih metode pembayaran dan melakukan pembayaran secara digital.* | *Ya* |
-| *R02* | *A01* | *Business* | *Transaksi digital sesuai dengan ketentuan UU ITE yang berlaku.* | *Tidak* |
-| *R03* | *A01* | *System* | *Sistem harus mengintegrasikan API Payment Gateway dengan prinsip ACID (Atomicity, Consistency, Isolation, Durability), jika terjadi kegagalan jaringan saat saldo terpotong, sistem harus secara otomatis membatalkan transaksi atau meneruskan dana (reliable).* | *Ya* |
-| *R04* | *A01* | *System* | *Kata sandi (password) atau PIN pengguna saat otorisasi pembayaran harus di-hash menggunakan algoritma SHA-256 dan tidak disimpan dalam bentuk plain-text.* | *Ya* |
-| *R05* | *A02* | *Business* | *Toko harus memiliki rekening bank aktif dan valid untuk menerima pencairan dana dari sistem.* | *Tidak* |
-| ... | ... | ... | ... | ... |
+| R01 | A01 | User | Pengguna dapat melakukan registrasi dan mengisi profil sesuai perannya sebagai Tenaga Kerja atau Penyedia Kerja. | Ya |
+| R02 | A01 | Business | Pengguna aktif harus berusia minimal 17 tahun, memiliki KTP yang sah, dan memberikan data profil yang dapat dipertanggungjawabkan. | Ya |
+| R03 | A01 | System | Sistem harus meminta persetujuan pengguna terhadap kebijakan privasi saat registrasi. | Ya |
+| R04 | A01 | System | Sistem harus menyediakan autentikasi dan enskripsi data seperti kata sandi dan token autentikasi agar tidak tersimpan dalam bentuk teks biasa. | Ya |
+| R05 | A02 | User | Tenaga Kerja dapat mengunggah data identitas untuk mengajukan verifikasi. | Ya |
+| R06 | A02 | Business | Verifikasi identitas dilakukan melalui verifikasi email dan pemeriksaan manual. | Ya |
+| R07 | A02 | System | Sistem hanya boleh mengumpulkan data identitas yang relevan dan memprosesnya berdasarkan persetujuan pengguna. | Ya |
+| R08 | A02 | System | Sistem harus menyimpan status verifikasi dan membatasi akses fitur Tenaga Kerja sampai verifikasi disetujui. | Ya |
+| R09 | A03 | User | Tenaga Kerja dapat memilih metode pembayaran dan membayar biaya langganan secara digital. | Ya |
+| R10 | A03 | Business | Akses layanan Tenaga Kerja hanya diaktifkan setelah pembayaran langganan dinyatakan berhasil. | Ya |
+| R11 | A03 | System | Sistem harus terintegrasi dengan lingkungan Payment Gateway dan mencatat status pembayaran langganan. | Ya |
+| R12 | A04 | User | Penyedia Kerja dapat membuat lowongan dengan mengisi data yang diperlukan. | Ya |
+| R13 | A04 | Business | Hanya Penyedia Kerja yang dapat memublikasikan lowongan, dan lowongan baru harus berstatus Open. | Ya |
+| R14 | A04 | System | Sistem harus melakukkn validasi kelengkapan data lowongan dan menyimpannya pada data lowongan pekerjaan. | Ya |
+| R15 | A05 | User | Tenaga Kerja dapat mencari dan melakukan filtering pekerjaan berdasarkan kategori atau keterampilan yang dibutuhkan. | Ya |
+| R16 | A05 | System | Sistem harus menampilkan hanya lowongan yang masih berstatus Open beserta informasi pekerjaan yang diperlukan untuk memilih lowongan. | Ya |
+| R17 | A06 | User | Tenaga Kerja dapat mengajukan penawaran pada lowongan yang tersedia. | Ya |
+| R18 | A06 | Business | Hanya Tenaga Kerja yang  terverifikasi yang dapat mengajukan penawaran pada lowongan berstatus Open. | Ya |
+| R19 | A06 | System | Sistem harus mencatat isi, waktu, data pengaju, dan lowongan tujuan dari setiap penawaran. | Ya |
+| R20 | A07 | User | Penyedia Kerja dapat meninjau kandidat berdasarkan keterampilan, pengalaman, dan reputasi lalu memilih satu Tenaga Kerja. | Ya |
+| R21 | A07 | Business | Hanya pemilik lowongan yang dapat memilih kandidat dan satu lowongan tidak boleh diberikan kepada lebih dari satu Tenaga Kerja. | Ya |
+| R22 | A07 | System | Sistem harus mengubah status pekerjaan dari Open menjadi Assigned dan mencatat Tenaga Kerja terpilih. | Ya |
+| R23 | A08 | User | Penyedia Kerja dapat membayar upah dan commission fee melalui Payment Gateway sebelum pekerjaan dimulai. | Ya |
+| R24 | A08 | Business | Pekerjaan hanya dapat dimulai setelah pembayaran upah dan commission fee berhasil diterima. | Ya |
+| R25 | A08 | Business | Dana harus diproses melalui Payment Gateway dan dana tidak disimpan oleh platform. | Ya |
+| R26 | A08 | System | Sistem harus mengirim permintaan pembayaran, memverifikasi hasil transaksi, dan mencatat riwayat serta status pembayaran. | Ya |
+| R27 | A09 | User | Tenaga Kerja dapat melaksanakan pekerjaan lalu mengirimkan hasil pekerjaan dan lmpiran atau bukti kepada Penyedia Kerja. | Ya |
+| R28 | A09 | Business | Pengiriman buktu hanya dapat dilakukan untuk pekerjaan yang telah dibayar dan berstatus In Progress, kemudian statusnya menjadi Submitted. | Ya |
+| R29 | A09 | System | Sistem harus menyimpan hasil atau lampiran, waktu penyerahan, dan perubahan status pekerjaan. | Ya |
+| R30 | A10 | User | Penyedia Kerja dapat memeriksa hasil dan mengonfirmasi penyelesaian pekerjaan. | Ya |
+| R31 | A10 | Business | Dana hanya dapat dicairkan kepada Tenaga Kerja setelah Penyedia Kerja mengonfirmasi bahwa pekerjaan selesai. | Ya |
+| R32 | A10 | System | Sistem harus mengubah status pekerjaan dari Submitted menjadi Completed dan memicu proses pencairan setelah konfirmasi. | Ya |
+| R33 | A11 | User | Tenaga Kerja dapat menerima pembayaran untuk pekerjaan yang telah selesai dan diverifikasi. | Ya |
+| R34 | A11 | Business | Pencairan dilakukan melalui Payment Gateway ke rekening atau dompet digital valid milik Tenaga Kerja. | Ya |
+| R35 | A11 | System | Sistem harus mengirim instruksi pencairan serta mencatat nominal, penerima, waktu, dan status pencairan. | Ya |
+| R36 | A12 | User | Tenaga Kerja dan Penyedia Kerja dapat saling memberikan rating dan ulasan setelah pekerjaan selesai. | Ya |
+| R37 | A12 | Business | Setiap pihak hanya dapat memberi satu rating dan ulasan per pekerjaan yang berstatus Completed. | Ya |
+| R38 | A12 | System | Sistem harus menyimpan rating dan ulasan serta memperbarui reputasi atau portofolio pengguna yang dinilai. | Ya |
+| R39 | A13 | User | Customer Service dapat menerima, meninjau, dan menindaklanjuti keluhan atau sengketa terkait akun, pekerjaan, dan pembayaran. | Ya |
+| R40 | A13 | Business | Customer Service dapat memutuskan tindak lanjut seperti pencairan atau pengembalian dana berdasarkan bukti yang tersedia. | Ya |
+| R41 | A13 | System | Sistem harus menyediakan akses khusus Customer Service untuk mencatat kasus, bukti, status penanganan, keputusan, dan riwayat aktivitas. | Ya |
+| R42 | A13 | Business | Penanganan sengketa oleh platform terbatas pada penyelesaian internal dan tidak mencakup penyelesaian melalui jalur hukum. | Tidak |
 
 ## 2.4 Kebutuhan Fungsional (KF)
 
