@@ -5,12 +5,12 @@
 | Informasi | Keterangan |
 | --- | --- |
 | **Hari** | Selasa |
-| **Tanggal** | 1 September 2026 |
+| **Tanggal** | 8 September 2026 |
 | **Kelas** | K-03 |
 | **Nomor Kelompok** | 6  |
 | **Nama Kelompok** | Shifu  |
 | **Nama Perangkat Lunak** | Kerja-In |
-| **Dokumen** | K03_G06_Template1_TB.md  |
+| **Dokumen** | K03_G06_RG.md  |
 
 ### Anggota Kelompok
 
