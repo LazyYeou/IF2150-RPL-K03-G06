@@ -57,6 +57,7 @@
 | 8-09-2026 | Davin Farel Santoso | Mengerjakan Bab 2.4 dan 2.5 bagian A01 hingga A03 | 1 | Done | - | 
 | 8-09-2026 | Aditya Rasyid | Mengerjakan Bab 2.4 dan 2.5 bagian A08-A10 | 3 | Done | - | 
 | 8-09-2026 | Karmel Tua Haloho | Mengerjakan Bab 2.4 dan 2.5 bagian A04-A7 | 3 | Done | - | 
+| 8-09-2026 | Sebastio Nugroho | Mengerjakan Bab 2.4 dan 2.5 bagian A11-A13 | 2 | Done | - | 
 | :--- | :--- | :--- | :--- | :--- | :--- | 
 
 **Catatan/Evaluasi Milestone :**
