@@ -23,6 +23,7 @@
 
 ### Daftar Isi
 * [Milestone 1](#milestone-1)
+* [Milestone 2](#milestone-2)
 * Notes: Copy bagian Daftar Isi seperti Milestone 1 untuk Milestone berikutnya, contoh ``* [Milestone 2](#milestone-2)``. Ketika Daftar isi diklik maka akan langsung diarahkan ke bagian bawah sesuai dengan Milestone tujuan.
 
 
@@ -46,6 +47,18 @@
 | 02-09-2026 | Aditya Rasyid | Merevisi Diagram Alur Kerja Aplikasi | 1 | Done | - |
 
 **Catatan/Evaluasi Milestone 1:**
+* *(Isi jika ada catatan khusus untuk asisten atau evaluasi singkat kerja tim)*
+
+### Milestone 1
+**Periode:** 2 September 2026 - 9 September 2026
+
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
+| :--- | :--- | :--- | :--- | :--- | :--- | 
+| 8-09-2026 | Davin Farel Santoso | Mengerjakan Bab 2.4 dan 2.5 bagian A01 hingga A03 | 1 | Done | - | 
+| --- | --- | --- | --- | --- | --- | 
+
+
+**Catatan/Evaluasi Milestone :**
 * *(Isi jika ada catatan khusus untuk asisten atau evaluasi singkat kerja tim)*
 
 ---
