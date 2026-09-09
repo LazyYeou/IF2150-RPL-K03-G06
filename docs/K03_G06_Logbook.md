@@ -55,8 +55,8 @@
 | Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
 | :--- | :--- | :--- | :--- | :--- | :--- | 
 | 8-09-2026 | Davin Farel Santoso | Mengerjakan Bab 2.4 dan 2.5 bagian A01 hingga A03 | 1 | Done | - | 
-| --- | --- | --- | --- | --- | --- | 
-
+| 8-09-2026 | Aditya Rasyid | Mengerjakan Bab 2.4 dan 2.5 bagian A08-A10 | 3 | Done | - | 
+| :--- | :--- | :--- | :--- | :--- | :--- | 
 
 **Catatan/Evaluasi Milestone :**
 * *(Isi jika ada catatan khusus untuk asisten atau evaluasi singkat kerja tim)*
