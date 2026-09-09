@@ -41,7 +41,7 @@ Silakan catat penggunaan AI yang berdampak signifikan pada pengerjaan tugas (mis
 ### Milestone 2
 | Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
 | :--- | :--- | :--- | :--- |
-| | | | | |
+| *Gemini* | *Brainstorming mengenai deksripsi kebutuhan dan list kebutuhan yang mungkin terlewat* | *Berdasarkan aktivitas A01 mengenai Registrasi dan Mengisi Profil, pecah menjadi beberapa poin utama yang harus dibahas dalam pemenuhan kebutuhannya* | *AI memberikan garis besar hal-hal yang harus dibahas seperti pendaftaran harus berdasarkan peran pengguna, validasi legalitas usia pengguna, privasi, dan keamanan akun pengguna. Dari sini, kami mengkaji ulang dan list ulang semua hal yang dibutuhkan untuk setiap aktivitas pengguna* |
 | | | | | |
 
 ---
