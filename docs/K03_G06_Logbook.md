@@ -49,7 +49,7 @@
 **Catatan/Evaluasi Milestone 1:**
 * *(Isi jika ada catatan khusus untuk asisten atau evaluasi singkat kerja tim)*
 
-### Milestone 1
+### Milestone 2
 **Periode:** 2 September 2026 - 9 September 2026
 
 | Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
