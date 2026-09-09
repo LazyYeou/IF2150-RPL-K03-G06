@@ -26,10 +26,11 @@
 
 | Catatan |
 | --- |
-| 1. *\[Berikan catatan hasil asistensi\]*  |
-| 2. ... |
-| 3. ... |
-| 4. ... |
+| 1. Tambahkan referensi yang digunakan dalam pemodelan kebutuhan business |
+| 2. Sesuaikan struktur atau urutan KF dan KNF supaya lebih rapi dan konsisten |
+| 3. Memperbarui deskripsi pada aktivitas A08 dengan skema pembayaran yang baru. Aspek legalisasi formal terkait regulasi pembayaran dijadikan sebagai batasan asumsi. |
+| 4. Memastikan agar rumusan KNF menggunakan minimal 5 parameter pengujian. |
+| 5. Setelah pemotongan biaya dilakukan dari suatu transaksi, pastikan agar upah tersebut langsung di transfer kepada pihak Tenaga Kerja.
 
 **Notes for this section:**  
 *Catatan dapat dituliskan dalam bentuk paragraf atau poin-poin, disesuaikan saja.* 
