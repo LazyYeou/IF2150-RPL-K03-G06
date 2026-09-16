@@ -70,7 +70,7 @@
 | Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
 | :--- | :--- | :--- | :--- | :--- | :--- | 
 | 14-09-2026 | Karmel Tua Haloho | Sinkronisasi kolom kebutuhan terhadap KF pada Bab 2 dan mengidentifikasi use case bagian 3.2 | 3 | Done | - | 
-|  |  |  |  |  | - | 
+| 14-09-2026 | Davin farel Santoso | Mengerjakan Use Case Scenario (Bab 3.4.1 hingga 3.4.4) untuk Use Case 1 hingga 4 | 2.5 | Done | - | 
 |  |  |  |  |  | - | 
 |  |  |  |  |  | - | 
 |  |  |  |  |  | - |
