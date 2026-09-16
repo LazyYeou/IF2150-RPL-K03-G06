@@ -60,7 +60,21 @@
 | 8-09-2026 | Sebastio Nugroho | Mengerjakan Bab 2.4 dan 2.5 bagian A11-A13 | 2 | Done | - | 
 | 7-09-2026 | Muhammad Ridwan Nasir Firdaus | Mengerjakan Bab 2.3 | 2 jam | Done | - |
 
-**Catatan/Evaluasi Milestone :**
+**Catatan/Evaluasi Milestone 2:**
+* *(Isi jika ada catatan khusus untuk asisten atau evaluasi singkat kerja tim)*
+
+### Milestone 3
+**Periode:** 9 September 2026 - 16 September 2026
+
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
+| :--- | :--- | :--- | :--- | :--- | :--- | 
+| 14-09-2026 | Karmel Tua Haloho | Sinkronisasi kolom kebutuhan terhadap KF pada Bab 2 dan mengidentifikasi use case bagian 3.2 | 3 | Done | - | 
+|  |  |  |  |  | - | 
+|  |  |  |  |  | - | 
+|  |  |  |  |  | - | 
+|  |  |  |  |  | - |
+
+**Catatan/Evaluasi Milestone 3:**
 * *(Isi jika ada catatan khusus untuk asisten atau evaluasi singkat kerja tim)*
 
 ---
