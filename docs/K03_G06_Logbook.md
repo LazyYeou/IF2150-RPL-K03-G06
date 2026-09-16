@@ -72,8 +72,9 @@
 | 14-09-2026 | Karmel Tua Haloho | Sinkronisasi kolom kebutuhan terhadap KF pada Bab 2 dan mengidentifikasi use case bagian 3.2 | 3 | Done | - | 
 | 14-09-2026 | Davin farel Santoso | Mengerjakan Use Case Scenario (Bab 3.4.1 hingga 3.4.4) untuk Use Case 1 hingga 4 | 2.5 | Done | - | 
 | 14-09-2026 | Sebastio Nugroho | Mengerjakan Use Case Scenario (Bab 3.4.6 sampai 3.4.9) untuk Use Case 6 sampai 9 | 2 | Done | - | 
-|  |  |  |  |  | - | 
-|  |  |  |  |  | - |
+| 15-09-2026 | Muhammad Ridwan Nasir Firdaus | Mengerjakan Use Case Diagram | 1 | Done | - | 
+| 15-09-2026 | Aditya Rasyid | Mengerjakan Use Scenario(Bab 3.4.10 sampai 3.4.12) | 2 | Done | - |
+
 
 **Catatan/Evaluasi Milestone 3:**
 * *(Isi jika ada catatan khusus untuk asisten atau evaluasi singkat kerja tim)*
