@@ -4,13 +4,13 @@
 
 | Informasi | Keterangan |
 | --- | --- |
-| **Hari** | --- |
-| **Tanggal** | --- |
+| **Hari** | Rabu |
+| **Tanggal** | 16-09-2026 |
 | **Kelas** | K-03 |
 | **Nomor Kelompok** | 6  |
 | **Nama Kelompok** | Shifu  |
 | **Nama Perangkat Lunak** | Kerja-In |
-| **Dokumen** |  |
+| **Dokumen** | K03_G06_UC.md |
 
 ### Anggota Kelompok
 
@@ -26,9 +26,9 @@
 
 | Catatan |
 | --- |
-| 1. *\[Berikan catatan hasil asistensi\]*  |
-| 2. ... |
-| 3. ... |
+| 1. *Untuk UC 4 dipisah antara mencari dan mengajukan*  |
+| 2. *UC 1 registrasi saja tidak perlu autentikasi, registrasi dan login berbeda, dipisah saja skenarionya* |
+| 3. *Diagram registrasi dan login dipisah* |
 | 4. ... |
 
 **Notes for this section:**  
@@ -38,7 +38,7 @@
 
 <!-- ![](./assets/foto-asistensi.jpg) -->
 <p align="center">
-  <img src="./assets/foto-asistensi.jpg" width="100%">
+  <img src="./assets/Foto Asistensi Milestone 3.png" width="100%">
 </p>
 
 <p align="center">
