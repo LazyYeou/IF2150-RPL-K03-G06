@@ -89,6 +89,7 @@
 | Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
 | :--- | :--- | :--- | :--- | :--- | :--- | 
 | 22-09-2025 | Sebastio Nugroho | Mengerjakan Class Dragram (Bab 4.2.6 - Bab 4.2.8) | 2 | Done | - |
+| 23-09-2025 | Sebastio Nugroho | Mengerjakan Revisi Class Dragram (Bab 4.2.6 - Bab 4.2.8) | 2 | Done | - |
 
 
 **Catatan/Evaluasi Milestone 3:**

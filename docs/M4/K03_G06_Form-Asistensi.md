@@ -26,10 +26,9 @@
 
 | Catatan |
 | --- |
-| 1. *\[Berikan catatan hasil asistensi\]*  |
-| 2. ... |
-| 3. ... |
-| 4. ... |
+| 1. Class VerifikasiIdentitas dihilangkan saja  |
+| 2. Tambahkan UI dan Controller untuk semua entity |
+| 3. Controller dan UI tidak perlu atribut |
 
 **Notes for this section:**  
 *Catatan dapat dituliskan dalam bentuk paragraf atau poin-poin, disesuaikan saja.* 

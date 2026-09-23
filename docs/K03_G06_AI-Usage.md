@@ -50,6 +50,12 @@ Silakan catat penggunaan AI yang berdampak signifikan pada pengerjaan tugas (mis
 | *Gemini* | *Brainstorming, formatting dan merapikan kesalahan penulisan (typo)* | *Berikan beberapa opsi skenario alternatif dari Use Case Memverifikasi Penyelesaian Pekerjaan* | *AI memberikan garis besar hal-hal alternatif yang mungkin dari use case ini, seperti saat pekerjaan tidak sesuai permintaan dan saat terjadi pertengkaran dalam pekerjaan. Dari sini, kami mengkaji ulang dan mendapatkan skenario alternatifnya berupa hasil pekerjaan yang belum sesuai dan terjadi perselisihan dalam kerja, lalu mengembangkannya lagi.* |
 | | | | | |
 
+### Milestone 4
+| Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
+| :--- | :--- | :--- | :--- |
+| *Gemini* | *Brainstorming, menanyakan bagaimana implementasi kelas entity, ui, dan controller* | *Untuk UC berikut tolong jelaskan gambaran besar bagaimana hubungan antara entity, ui, dan controllernya* | *AI memberikan garis besar mengenai hubungan dari berbagai class yang ada antara entity, ui, dan controller.* |
+| | | | | |
+
 ---
 ### Pernyataan Integritas dan Persetujuan
 
