@@ -90,7 +90,9 @@
 | :--- | :--- | :--- | :--- | :--- | :--- | 
 | 22-09-2025 | Sebastio Nugroho | Mengerjakan Class Dragram (Bab 4.2.6 - Bab 4.2.8) | 2 | Done | - |
 | 23-09-2025 | Sebastio Nugroho | Mengerjakan Revisi Class Dragram (Bab 4.2.6 - Bab 4.2.8) | 2 | Done | - |
-
+| 22-09-2025 | Davin Farel Santoso | Mengerjakan Bab 4.1 Identifikasi Kelas | 1.5 | Done | - |
+| 22-09-2025 | Davin Farel Santoso | Mengerjakan Class Diagram (Bab 4.2.1 dan Bab 4.2.2) | 1 | Done | - |
+| 23-09-2025 | Davin Farel Santoso | Mengerjakan Revisi Class Diagram (Bab 4.2.1 dan Bab 4.2.2) | 2 | Done | - |
 
 **Catatan/Evaluasi Milestone 3:**
 * *(Isi jika ada catatan khusus untuk asisten atau evaluasi singkat kerja tim)*
