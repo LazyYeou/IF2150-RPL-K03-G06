@@ -29,6 +29,7 @@
     - [Milestone 2](#milestone-2)
     - [Milestone 3](#milestone-3)
     - [Milestone 4](#milestone-4)
+    - [Milestone 4](#milestone-4-1)
 
 
 ---
@@ -108,6 +109,7 @@ Diagram 4.3 | 2 | Done | - |
 | Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
 | :--- | :--- | :--- | :--- | :--- | :--- | 
 | 30-09-2026 | Aditya Rasyid | Menyusun Bab 1.5 Referensi dan Bab 1.6 Deskripsi Umum Dokumen pada SKPL, memperbaiki diagram | 2 | Done | - |
+| 30-09-2026 | Aditya Rasyid | Menyusun Bab 2.4 Batasan pada SKPL, memperbaiki diagram/UC | 2 | Done | - |
 
 
 
