@@ -4,8 +4,8 @@
 
 | Informasi | Keterangan |
 | --- | --- |
-| **Hari** | Rabu |
-| **Tanggal** | 23-09-2026 |
+| **Hari** | Senin |
+| **Tanggal** | 28-09-2026 |
 | **Kelas** | K-03 |
 | **Nomor Kelompok** | 6  |
 | **Nama Kelompok** | Shifu  |
@@ -26,10 +26,9 @@
 
 | Catatan |
 | --- |
-| 1. *\[Berikan catatan hasil asistensi\]*  |
-| 2. ... |
-| 3. ... |
-| 4. ... |
+| 1. Memperbaiki class diagram |
+| 2. Memperbaiki hubungan antar kelas |
+| 3. Memperjelas atribut beberapa kelas |
 
 **Notes for this section:**  
 *Catatan dapat dituliskan dalam bentuk paragraf atau poin-poin, disesuaikan saja.* 
@@ -38,7 +37,7 @@
 
 <!-- ![](./assets/foto-asistensi.jpg) -->
 <p align="center">
-  <img src="./assets/foto-asistensi.jpg" width="100%">
+  <img src="./assets/Foto Asistensi Milestone 5.jpeg" width="100%">
 </p>
 
 <p align="center">
