@@ -111,11 +111,13 @@ Tuliskan seluruh jenis pengguna (*role*/aktor) yang terlibat dalam perangkat lun
 | *...* | *...* |
 
 ## 2.4 Batasan Perangkat Lunak
-Batasan yang harus dituliskan, di antaranya:
-1. *P/L harus memakai file data/API dari sistem lain (sebutkan, misal Payment Gateway dummy).*
-2. *P/L harus memakai format data yang sama dengan sistem lain.*
-3. *P/L harus berfungsi pada platform tertentu (misal: web browser modern, atau desktop Windows dan Linux).*
-4. *...*
+Batasan perangkat lunak Kerja-In ditetapkan agar platform tetap fokus pada ruang lingkup layanan utama dan tidak melampaui mekanisme yang telah disepakati dalam sistem. Adapun batasan tersebut adalah sebagai berikut:
+1. P/L harus menggunakan API atau layanan pihak ketiga untuk memproses transaksi pembayaran, termasuk pembayaran upah beserta biaya administrasi, pencairan dana kepada Tenaga Kerja, dan validasi status transaksi melalui Payment Gateway dummy atau sistem pembayaran yang setara.
+2. P/L harus memakai format data transaksi yang kompatibel dengan sistem eksternal, seperti ID transaksi, nominal pembayaran, status transaksi, timestamp, dan identitas penerima agar proses verifikasi dan pencatatan riwayat pembayaran dapat berjalan konsisten.
+3. P/L hanya dapat diakses melalui browser modern yang mendukung tampilan responsif, seperti Chrome, Edge, atau Firefox pada perangkat desktop, tablet, dan smartphone, dengan pendekatan desain mobile-first.
+4. P/L harus membatasi akses fitur berdasarkan peran pengguna dan status verifikasi akun; fitur seperti pengajuan penawaran, pembayaran pekerjaan, dan penanganan sengketa hanya dapat digunakan oleh pengguna yang memiliki otorisasi yang sesuai.
+5. P/L tidak mencakup mekanisme penyelesaian sengketa di luar proses internal Customer Service serta tidak menggantikan jalur hukum atau kebijakan formal yang berlaku di luar platform.
+6. P/L memerlukan koneksi internet yang stabil untuk menjalankan seluruh fitur utama, terutama pada proses pengajuan pekerjaan, pembayaran, verifikasi dokumen, dan penanganan keluhan, karena sistem tidak dirancang sebagai aplikasi offline-first untuk transaksi finansial.
 
 ## 2.5 Lingkungan Operasi Perangkat Lunak
 Spesifikasi *operating system* atau lingkungan yang dibutuhkan P/L untuk beroperasi. Bagian ini digunakan untuk memastikan pengguna memiliki spesifikasi yang cukup untuk menjalankan P/L. Misalnya mencakup komponen server, client, OS, DBMS, tetapi tidak menutupi kemungkinan komponen lain.
