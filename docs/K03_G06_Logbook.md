@@ -101,6 +101,16 @@ Diagram 4.3 | 2 | Done | - |
 | 23-09-2025 | Karmel Tua Haloho | Mengerjakan Revisi Class Dragram (Bab 4.2.9 - Bab 4.2.12) | 2 | In Progress | - |
 **Catatan/Evaluasi Milestone 3:**
 * *(Isi jika ada catatan khusus untuk asisten atau evaluasi singkat kerja tim)*
+
+
+### Milestone 4
+**Periode:** 23 September 2026 - 30 September 2026
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
+| :--- | :--- | :--- | :--- | :--- | :--- | 
+| 30-09-2026 | Aditya Rasyid | Menyusun Bab 1.5 Referensi dan Bab 1.6 Deskripsi Umum Dokumen pada SKPL, memperbaiki diagram | 2 | Done | - |
+
+
+
 ---
 
 
