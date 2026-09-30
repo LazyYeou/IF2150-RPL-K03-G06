@@ -116,17 +116,16 @@ Platform ini dengan unik memberikan ruang bagi pekerja informal untuk memiliki r
 </p>
 
 ## 2.2 Deskripsi Umum Perangkat Lunak
-Diisi dengan deskripsi umum perangkat lunak untuk mendukung proses bisnis yang telah diuraikan pada sub-bab sebelumnya. Uraian harus menunjukkan lingkup perangkat lunak, mencakup keterkaitan perangkat lunak dengan sistem lain di luar (misalnya *Payment Gateway* atau layanan pihak ketiga lain yang dipakai).
-
-*Contoh narasi:* "*[Nama P/L]* merupakan aplikasi *[deskripsi singkat]* yang berinteraksi dengan *Payment Gateway (dummy)* untuk memproses otorisasi pembayaran. Sistem menerima input dari *Pelanggan* melalui antarmuka aplikasi dan mengirimkan permintaan transaksi ke *Payment Gateway* setiap kali pelanggan melakukan checkout."
+Kerja-In merupakan aplikasi marketplace jasa pekerja informal berbasis web yang mempertemukan penyedia kerja dengan tenaga kerja secara digital. Perangkat lunak ini berinteraksi dengan Payment Gateway dummy atau sistem pembayaran yang setara. untuk memproses otorisasi pembayaran upah dan pencairan dana secara aman. Sistem menerima input dari pengguna (penyedia kerja dan tenaga kerja) melalui antarmuka aplikasi, mengelola siklus transaksi pekerjaan, serta mengirimkan permintaan transaksi ke Payment Gateway setiap kali penyedia kerja melakukan pembayaran tagihan atau tenaga kerja mengajukan penarikan saldo pendapatan.
 
 ## 2.3 Pengguna dan Kebutuhan Pengguna Perangkat Lunak
-Tuliskan seluruh jenis pengguna (*role*/aktor) yang terlibat dalam perangkat lunak (P/L), beserta kebutuhannya secara umum. Bagian ini dapat disalin dari 1.2 *Deskripsi Pengguna Perangkat Lunak* (dokumen Requirement Gathering) atau 3.1 *Identifikasi Aktor* (dokumen Use Case), pastikan sudah konsisten dengan aktor final yang dipakai di BAB 4.
 
 | Pengguna | Kebutuhan |
 | :--- | :--- |
-| *Pelanggan* | *Pelanggan harus dapat memesan produk, mengelola keranjang, dan menyelesaikan pembayaran melalui sistem.* |
-| *...* | *...* |
+| Tenaga Kerja | Tenaga kerja dapat mendaftar, melengkapi profil keahlian, mencari serta memfilter lowongan pekerjaan, mengajukan penawaran pekerjaan, mengunggah bukti penyelesaian pekerjaan, menerima pembayaran upah, dan mengajukan pencairan dana. |
+| Penyedia Kerja | Penyedia kerja dapat mendaftar, melengkapi profil, membuat lowongan pekerjaan beserta spesifikasi dan upahnya, melihat daftar pelamar, memilih tenaga kerja yang melamar pekerjaan, membayar tagihan beserta commission fee, serta memverifikasi hasil penyelesaian pekerjaan. |
+| Customer Service (CS) | Customer service dapat menggunakan hak akses operasional untuk meninjau verifikasi identitas, meninjau tiket sengketa, serta menengahi dan memutuskan sengketa atau keluhan pengguna. |
+
 
 ## 2.4 Batasan Perangkat Lunak
 Batasan perangkat lunak Kerja-In ditetapkan agar platform tetap fokus pada ruang lingkup layanan utama dan tidak melampaui mekanisme yang telah disepakati dalam sistem. Adapun batasan tersebut adalah sebagai berikut:
