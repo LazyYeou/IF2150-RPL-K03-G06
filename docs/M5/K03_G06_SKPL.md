@@ -159,13 +159,14 @@ Batasan perangkat lunak Kerja-In ditetapkan agar platform tetap fokus pada ruang
 ## 2.5 Lingkungan Operasi Perangkat Lunak
 Spesifikasi *operating system* atau lingkungan yang dibutuhkan P/L untuk beroperasi. Bagian ini digunakan untuk memastikan pengguna memiliki spesifikasi yang cukup untuk menjalankan P/L. Misalnya mencakup komponen server, client, OS, DBMS, tetapi tidak menutupi kemungkinan komponen lain.
 
-| Komponen | Spesifikasi |
-| :--- | :--- |
-| *Server* | *[contoh: Node.js v20, dijalankan pada layanan cloud]* |
-| *Client* | *[contoh: Web Browser modern (Chrome, Firefox terbaru)]* |
-| *DBMS* | *[contoh: PostgreSQL 15]* |
-| *OS* | *[contoh: Cross-platform (Windows/Linux/MacOS) melalui browser]* |
-| *...* | *...* |
+| **Komponen** | **Spesifikasi** |
+| --- | --- |
+| *Server* | Node.js dengan framework Hono, dijalankan pada layanan Railway. |
+| *Client* | Web browser modern yang mendukung JavaScript, seperti Google Chrome, Mozilla Firefox, Microsoft Edge, dan Safari versi terbaru. |
+| *DBMS* | PostgreSQL yang disediakan melalui layanan Supabase. |
+| *Authentication* | Supabase Auth sebagai layanan autentikasi dan pengelolaan sesi pengguna. |
+| *File Storage* | Supabase Storage |
+| *OS* | Cross-platform melalui web browser pada Windows, Linux, macOS, Android, dan iOS. |
 
 ---
 
