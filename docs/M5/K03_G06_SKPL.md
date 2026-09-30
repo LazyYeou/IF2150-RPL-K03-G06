@@ -136,7 +136,7 @@ Platform ini dengan unik memberikan ruang bagi pekerja informal untuk memiliki r
 </p>
 
 ## 2.2 Deskripsi Umum Perangkat Lunak
-Kerja-In merupakan aplikasi marketplace jasa pekerja informal berbasis web yang mempertemukan penyedia kerja dengan tenaga kerja secara digital. Perangkat lunak ini berinteraksi dengan Payment Gateway dummy atau sistem pembayaran yang setara. untuk memproses otorisasi pembayaran upah dan pencairan dana secara aman. Sistem menerima input dari pengguna (penyedia kerja dan tenaga kerja) melalui antarmuka aplikasi, mengelola siklus transaksi pekerjaan, serta mengirimkan permintaan transaksi ke Payment Gateway setiap kali penyedia kerja melakukan pembayaran tagihan atau tenaga kerja mengajukan penarikan saldo pendapatan.
+Kerja-In merupakan aplikasi marketplace jasa pekerja informal berbasis web yang mempertemukan penyedia kerja dengan tenaga kerja secara digital. Perangkat lunak ini berinteraksi dengan Payment Gateway dummy atau sistem pembayaran yang setara untuk memproses otorisasi pembayaran upah dan pencairan dana secara aman. Sistem menerima input dari pengguna (penyedia kerja dan tenaga kerja) melalui antarmuka aplikasi, mengelola siklus transaksi pekerjaan, serta mengirimkan permintaan transaksi ke Payment Gateway setiap kali penyedia kerja melakukan pembayaran tagihan atau tenaga kerja mengajukan penarikan saldo pendapatan.
 
 ## 2.3 Pengguna dan Kebutuhan Pengguna Perangkat Lunak
 
@@ -173,7 +173,7 @@ Spesifikasi *operating system* atau lingkungan yang dibutuhkan P/L untuk beroper
 # BAB 3: Deskripsi Kebutuhan Perangkat Lunak
 
 ## 3.1 Kebutuhan Fungsional (KF)
-Berikut merupakan kebutuhan non-fungsional yang telah disesuaikan dengan pemetaan kebutuhan perangkat lunak:
+Berikut merupakan kebutuhan fungsional yang telah disesuaikan dengan pemetaan kebutuhan perangkat lunak:
 
 | ID KF | ID Kebutuhan | Penjelasan |
 | :--- | :--- | :--- |
@@ -237,7 +237,7 @@ Tabel 3.2. Kebutuhan Non-Fungsional
 | KNF23 | R08, R18 | Availability | Selama platform beroperasi, sistem harus menjamin ketersediaan akses data status verifikasi akun dengan *uptime* 99,9% agar proses validasi hak akses saat Tenaga Kerja mengajukan penawaran lowongan tidak mengalami kegagalan fungsi. |
 | ... | ... | ... | ... |
 
-Dalam memnentukan berbagai kebutuhan non-fungsional yang diperlukan oleh sistem, terdapat beberapa parameter yang digunakan, diantaranya seperti berikut:
+Dalam menentukan berbagai kebutuhan non-fungsional yang diperlukan oleh sistem, terdapat beberapa parameter yang digunakan, di antaranya sebagai berikut:
 
 | Parameter | Penjelasan |
 | :--- | :--- |
@@ -815,7 +815,7 @@ Buat diagram kelas untuk setiap use case pada 3.2.
 
 ### 5.2.2 Use Case UC02
 
-**Nama Use Case:** *Mengolola Verivikasi Identitas*
+**Nama Use Case:** *Mengelola Verifikasi Identitas*
 
 #### Identifikasi Kelas
 

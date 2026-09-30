@@ -108,8 +108,11 @@ Diagram 4.3 | 2 | Done | - |
 **Periode:** 23 September 2026 - 30 September 2026
 | Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
 | :--- | :--- | :--- | :--- | :--- | :--- | 
-| 30-09-2026 | Aditya Rasyid | Menyusun Bab 1.5 Referensi dan Bab 1.6 Deskripsi Umum Dokumen pada SKPL, memperbaiki diagram | 2 | Done | - |
-| 30-09-2026 | Aditya Rasyid | Menyusun Bab 2.4 Batasan pada SKPL, memperbaiki diagram/UC | 2 | Done | - |
+| 30-09-2026 | Aditya Rasyid | Menyusun Bab 1.5 Referensi dan Bab 1.6 Deskripsi Umum Dokumen pada SKPL, memperbaiki kesalahan pada penulisan SKPL | 3 | Done | - |
+| 30-09-2026 | Sebastio Nugroho | Menyusun Bab 2.4 Batasan pada SKPL, memperbaiki diagram/UC | 2 | Done | - |
+| 30-09-2026 | Karmel Tua Haloho | Menyusun Bab 2.1 - 2.3 Deskripsi Umum Sistem, Perangkat Lunak, Pengguna dan Kebutuhan Pengguna Perangkat Lunak pada SKPL| 3 | Done | - |
+| 30-09-2026 | Davin Farel Santoso | Menyusun Bab 1.1 - 1.4 Pendahuluan, Tujuan, Lingkup, dan Definisi pada pada SKPL| 2 | Done | - |
+| 30-09-2026 | Muhammad Ridwan Nasir Firdaus | Menyusun Bab 2.5 Lingkungan Spesifikasi Perangkat Lunak| 2 | Done | - |
 
 
 
