@@ -183,26 +183,26 @@ Berikut merupakan kebutuhan fungsional yang telah disesuaikan dengan pemetaan ke
 | KF04 | R05, R07 | Ketika Tenaga Kerja mengajukan verifikasi, sistem harus menyediakan antarmuka pengunggahan dokumen identitas yang relevan berdasarkan persetujuan pengguna. |
 | KF05 | R06 | Ketika pengguna mengklik tautan verifikasi email atau ketika admin menyetujui verifikasi manual, sistem harus memperbarui status verifikasi identitas pengguna. |
 | KF06 | R08 | Selama status verifikasi Tenaga Kerja belum disetujui, sistem harus membatasi akses ke fitur-fitur utama platform. |
-| KF07 | R12, R13 | Ketika Penyedia Kerja berhasil menyimpan data lowongan baru melalui antarmuka formulir, sistem harus menetapkan status lowongan tersebut menjadi Open secara bawaan. |
-| KF08 | R14 | Jika terdapat isian formulir lowongan (judul, deskripsi, kuota, lokasi, atau upah) yang kosong atau tidak valid saat disimpan, sistem harus menampilkan pesan peringatan dan menggagalkan penyimpanan. |
-| KF09 | R15, R16 | Ketika Tenaga Kerja melakukan pencarian atau pemfilteran (berdasarkan kategori/keterampilan), sistem harus hanya menampilkan daftar lowongan yang berstatus Open secara bawaan. |
-| KF10 | R17, R18 | Selama akun pengguna berstatus Terverifikasi dan bertindak sebagai Tenaga Kerja, sistem harus menyediakan akses ke tombol Ajukan Penawaran pada halaman detail pekerjaan. |
-| KF11 | R19 | Ketika Tenaga Kerja menekan konfirmasi pengajuan penawaran, sistem harus menyimpan data pengajuan (ID Tenaga Kerja, ID Lowongan, pesan penawaran, dan timestamp) ke dalam basis data. |
-| KF12 | R20, R21 | Ketika Penyedia Kerja menyetujui (accept) seorang pelamar pada antarmuka daftar pelamar, sistem harus menghasilkan dan menyimpan entri ID Transaksi Pekerjaan yang unik untuk pelamar tersebut, selama batas kuota lowongan belum terlampaui. |
-| KF13 | R22 | Ketika jumlah Tenaga Kerja yang disetujui telah mencapai batas kuota dari sebuah lowongan, sistem harus secara otomatis mengubah status lowongan tersebut dari Open menjadi Closed/Full. |
-| KF14 | R23, R24 | Ketika Penyedia Kerja menekan tombol bayar upah dan commission fee, sistem harus meneruskan pembayaran ke Payment Gateway lalu mengubah status pekerjaan menjadi "In Progress" setelah pembayaran berhasil dikonfirmasi. |
-| KF15 | R25, R26 | Sistem harus meneruskan seluruh dana transaksi langsung ke Payment Gateway, serta mencatat status dan riwayat setiap transaksi pembayaran yang terjadi. |
-| KF16 | R27, R28, R29 | Ketika Tenaga Kerja mengunggah dan mengirimkan hasil pekerjaan, sistem harus menyimpan lampiran tersebut, mencatat waktu pengiriman, dan mengubah status pekerjaan menjadi "Submitted". |
-| KF17 | R30, R31, R32 | Ketika Penyedia Kerja memeriksa hasil pekerjaan dan menekan tombol konfirmasi penyelesaian, sistem harus mengubah status pekerjaan menjadi "Completed" dan langsung memicu proses pencairan dana ke Tenaga Kerja. |
-| KF18 | R33 | Ketika pekerjaan telah selesai diverifikasi oleh Penyedia Kerja, sistem harus menampilkan notifikasi penerimaan upah dan memperbarui saldo pada antarmuka Tenaga Kerja. |
-| KF19 | R34 | Ketika Tenaga Kerja mengajukan pencairan dana, sistem harus memvalidasi rekening bank/e-wallet tujuan dan mengirimkan instruksi disbursement ke API Payment Gateway. |
-| KF20 | R35 | Ketika instruksi pencairan diproses oleh Payment Gateway, sistem harus mencatat rincian transaksi (ID transaksi, nominal upah, identitas penerima, waktu, dan status transfer) ke log pencairan. |
-| KF21 | R36 | Ketika status transaksi pekerjaan selesai, sistem harus menyediakan antarmuka formulir rating (skala 1–5) dan ulasan bagi Tenaga Kerja maupun Penyedia Kerja. |
-| KF22 | R37 | Bila pengguna telah mengirimkan ulasan untuk suatu pekerjaan, maka sistem harus mengunci formulir ulasan dan menolak pengiriman ulasan tambahan pada pekerjaan yang sama. |
-| KF23 | R38 | Ketika ulasan baru berhasil disimpan, sistem harus menghitung ulang rata-rata rating dan langsung memperbarui tampilan portofolio pada profil pengguna. |
-| KF24 | R39 | Ketika pengguna mengirimkan laporan keluhan atau sengketa, sistem harus menerbitkan tiket sengketa dan menampilkannya pada dashboard Customer Service. |
-| KF25 | R40 | Ketika Customer Service menetapkan keputusan sengketa, sistem harus mengeksekusi tindakan pengembalian dana (refund) kepada Penyedia Kerja atau pencairan dana kepada Tenaga Kerja sesuai bukti. |
-| KF26 | R41 | Ketika Customer Service menangani tiket sengketa, sistem harus mencatat unggahan bukti pendukung, perubahan status penanganan, dan riwayat aktivitas penanganan secara kronologis. |
+| KF07 | R09, R10 | Ketika Penyedia Kerja berhasil menyimpan data lowongan baru melalui antarmuka formulir, sistem harus menetapkan status lowongan tersebut menjadi Open secara bawaan. |
+| KF08 | R11 | Jika terdapat isian formulir lowongan (judul, deskripsi, kuota, lokasi, atau upah) yang kosong atau tidak valid saat disimpan, sistem harus menampilkan pesan peringatan dan menggagalkan penyimpanan. |
+| KF09 | R12, R13 | Ketika Tenaga Kerja melakukan pencarian atau pemfilteran (berdasarkan kategori/keterampilan), sistem harus hanya menampilkan daftar lowongan yang berstatus Open secara bawaan. |
+| KF10 | R14, R15 | Selama akun pengguna berstatus Terverifikasi dan bertindak sebagai Tenaga Kerja, sistem harus menyediakan akses ke tombol Ajukan Penawaran pada halaman detail pekerjaan. |
+| KF11 | R16 | Ketika Tenaga Kerja menekan konfirmasi pengajuan penawaran, sistem harus menyimpan data pengajuan (ID Tenaga Kerja, ID Lowongan, pesan penawaran, dan timestamp) ke dalam basis data. |
+| KF12 | R17, R18, R19 | Ketika Penyedia Kerja menyetujui (accept) seorang pelamar pada antarmuka daftar pelamar, sistem harus menghasilkan dan menyimpan entri ID Transaksi Pekerjaan yang unik untuk pelamar tersebut, selama batas kuota lowongan belum terlampaui. |
+| KF13 | R19 | Ketika jumlah Tenaga Kerja yang disetujui telah mencapai batas kuota dari sebuah lowongan, sistem harus secara otomatis mengubah status lowongan tersebut dari Open menjadi Closed/Full. |
+| KF14 | R20, R21 | Ketika Penyedia Kerja menekan tombol bayar upah dan commission fee, sistem harus meneruskan pembayaran ke Payment Gateway lalu mengubah status pekerjaan menjadi "In Progress" setelah pembayaran berhasil dikonfirmasi. |
+| KF15 | R22, R23 | Sistem harus meneruskan seluruh dana transaksi langsung ke Payment Gateway, serta mencatat status dan riwayat setiap transaksi pembayaran yang terjadi. |
+| KF16 | R24, R25, R26 | Ketika Tenaga Kerja mengunggah dan mengirimkan hasil pekerjaan, sistem harus menyimpan lampiran tersebut, mencatat waktu pengiriman, dan mengubah status pekerjaan menjadi "Submitted". |
+| KF17 | R27, R28, R29 | Ketika Penyedia Kerja memeriksa hasil pekerjaan dan menekan tombol konfirmasi penyelesaian, sistem harus mengubah status pekerjaan menjadi "Completed" dan langsung memicu proses pencairan dana ke Tenaga Kerja. |
+| KF18 | R30 | Ketika pekerjaan telah selesai diverifikasi oleh Penyedia Kerja, sistem harus menampilkan notifikasi penerimaan upah dan memperbarui saldo pada antarmuka Tenaga Kerja. |
+| KF19 | R31 | Ketika Tenaga Kerja mengajukan pencairan dana, sistem harus memvalidasi rekening bank/e-wallet tujuan dan mengirimkan instruksi disbursement ke API Payment Gateway. |
+| KF20 | R32 | Ketika instruksi pencairan diproses oleh Payment Gateway, sistem harus mencatat rincian transaksi (ID transaksi, nominal upah, identitas penerima, waktu, dan status transfer) ke log pencairan. |
+| KF21 | R33 | Ketika status transaksi pekerjaan selesai, sistem harus menyediakan antarmuka formulir rating (skala 1–5) dan ulasan bagi Tenaga Kerja maupun Penyedia Kerja. |
+| KF22 | R34 | Bila pengguna telah mengirimkan ulasan untuk suatu pekerjaan, maka sistem harus mengunci formulir ulasan dan menolak pengiriman ulasan tambahan pada pekerjaan yang sama. |
+| KF23 | R35 | Ketika ulasan baru berhasil disimpan, sistem harus menghitung ulang rata-rata rating dan langsung memperbarui tampilan portofolio pada profil pengguna. |
+| KF24 | R36 | Ketika pengguna mengirimkan laporan keluhan atau sengketa, sistem harus menerbitkan tiket sengketa dan menampilkannya pada dashboard Customer Service. |
+| KF25 | R37 | Ketika Customer Service menetapkan keputusan sengketa, sistem harus mengeksekusi tindakan pengembalian dana (refund) kepada Penyedia Kerja atau pencairan dana kepada Tenaga Kerja sesuai bukti. |
+| KF26 | R38 | Ketika Customer Service menangani tiket sengketa, sistem harus mencatat unggahan bukti pendukung, perubahan status penanganan, dan riwayat aktivitas penanganan secara kronologis. |
 | ... | ... | ... |
 
 ## 3.2 Kebutuhan Non-Fungsional (KNF)
@@ -215,25 +215,25 @@ Tabel 3.2. Kebutuhan Non-Fungsional
 | KNF01 | R04 | Security | Sistem harus mengenkripsi kata sandi menggunakan algoritma *hashing* dan mengamankan token autentikasi agar tidak tersimpan sebagai teks biasa. |
 | KNF02 | R07 | Security | Sistem harus mengenkripsi berkas dokumen identitas pengguna (*data at rest*) yang tersimpan pada media penyimpanan. |
 | KNF03 | R08 | Response time | Ketika Tenaga Kerja mencoba mengakses fitur platform, sistem harus mampu memverifikasi status akses atau verifikasi akun dalam waktu kurang dari 1 detik. |
-| KNF04 | R15, R16 | Response Time | Ketika pengguna mengirimkan pencarian atau filtering lowongan pekerjaan, sistem harus merender dan menampilkan hasilnya dalam waktu maksimal 5 detik. |
-| KNF05 | R12, R17 | Ergonomy | Sistem harus menampilkan seluruh elemen dengan interaktif seperti tombol Ajukan Penawaran dan input formulir dengan pendekatan design Mobile-First. |
-| KNF06 | R18, R21 | Security | Jika pengguna mencoba memanipulasi parameter URL atau ID untuk menyetujui/mengakses lowongan yang bukan miliknya, sistem harus memblokir aksi tersebut berdasarkan validasi otorisasi di backend. |
-| KNF07 | R22 | Reliability | Jika terjadi persetujuan ganda secara bersamaan pada sisa satu kuota lowongan terakhir, sistem harus memproses antrean secara atomic dan menjamin lowongan tersebut hanya diberikan kepada satu Tenaga Kerja. |
-| KNF08 | R16, R21 | Memory | Ketika sistem memuat halaman daftar lowongan atau daftar pelamar dalam jumlah banyak, sistem harus membatasi penggunaan memori RAM peramban klien maksimal 150 MB untuk mencegah crash pada ponsel berspesifikasi rendah. |
-| KNF09 | R12, R14 | Safety | Ketika Penyedia Kerja membuat lowongan yang melibatkan aktivitas berisiko tinggi misal kelistrikan, sistem harus menampilkan kotak centang pernyataan risiko yang wajib disetujui sebelum formulir dapat disimpan. |
-| KNF10 | R12 - R22 | Availability | Selama pengguna mengakses platform, sistem harus memastikan basis data lowongan selalu dapat diakses dengan batas maksimal gangguan layanan tidak lebih dari 24 jam dalam satu bulan. |
-| KNF11 | R24, R25, R26 | Reliability | Selama proses pembayaran berlangsung, sistem harus memastikan tidak ada pembayaran ganda untuk transaksi yang sama. |
-| KNF12 | R23, R25 | Security | Sistem harus mengirimkan seluruh data pembayaran ke Payment Gateway melalui koneksi terenkripsi sehingga data transaksi tidak dapat dilihat atau diubah oleh pihak lain saat proses pengiriman berlangsung. |
-| KNF13 | R27, R29 | Response Time | Ketika Tenaga Kerja selesai mengunggah hasil pekerjaan, sistem harus menyimpan lampiran dan memperbarui status pekerjaan dalam rentang waktu yang singkat agar Penyedia Kerja dapat langsung meninjaunya. |
-| KNF14 | R28 | Security | Sistem harus memastikan hanya Tenaga Kerja yang ditugaskan pada pekerjaan tersebut yang bisa mengirimkan hasil pekerjaan. |
-| KNF15 | R31, R32 | Reliability | Selama Penyedia Kerja belum memberikan konfirmasi penyelesaian pekerjaan, sistem harus menahan dan tidak memproses pencairan dana kepada Tenaga Kerja. |
-| KNF16 | R34, R35 | Reliability | Bila terjadi gangguan koneksi atau timeout saat pemanggilan API pencairan dana, maka sistem harus menerapkan idempotency key dan transaksi ACID guna mencegah terjadinya pencairan ganda. |
-| KNF17 | R34, R35 | Security | Ketika sistem mentransfer data atau mengirim instruksi ke Payment Gateway, sistem harus menggunakan protokol terenkripsi HTTPS/TLS 1.3 serta mengenkripsi data rekening pengguna. |
-| KNF18 | R38 | Response time | Ketika ulasan baru diserahkan oleh pengguna, sistem harus merespons serta memperbarui data agregat rating pada halaman profil dalam waktu singkat. |
-| KNF19 | R41 | Security | Selama pengguna tidak memiliki peran (role) Customer Service atau Administrator yang terotentikasi, sistem harus memblokir akses ke modul pengelolaan bukti dan penindakan sengketa. |
-| KNF20 | R41 | Reliability | Selama data riwayat penanganan sengketa dan log mutasi pencairan tersimpan di sistem, sistem harus mengunci data tersebut sebagai catatan permanen (tamper-proof) yang tidak dapat diubah maupun dihapus. |
+| KNF04 | R12, R13 | Response Time | Ketika pengguna mengirimkan pencarian atau filtering lowongan pekerjaan, sistem harus merender dan menampilkan hasilnya dalam waktu maksimal 5 detik. |
+| KNF05 | R09, R14 | Ergonomy | Sistem harus menampilkan seluruh elemen dengan interaktif seperti tombol Ajukan Penawaran dan input formulir dengan pendekatan design Mobile-First. |
+| KNF06 | R18 | Security | Jika pengguna mencoba memanipulasi parameter URL atau ID untuk menyetujui/mengakses lowongan yang bukan miliknya, sistem harus memblokir aksi tersebut berdasarkan validasi otorisasi di backend. |
+| KNF07 | R19 | Reliability | Jika terjadi persetujuan ganda secara bersamaan pada sisa satu kuota lowongan terakhir, sistem harus memproses antrean secara atomic dan menjamin lowongan tersebut hanya diberikan kepada satu Tenaga Kerja. |
+| KNF08 | R12, R17 | Memory | Ketika sistem memuat halaman daftar lowongan atau daftar pelamar dalam jumlah banyak, sistem harus membatasi penggunaan memori RAM peramban klien maksimal 150 MB untuk mencegah crash pada ponsel berspesifikasi rendah. |
+| KNF09 | R09, R11 | Safety | Ketika Penyedia Kerja membuat lowongan yang melibatkan aktivitas berisiko tinggi misal kelistrikan, sistem harus menampilkan kotak centang pernyataan risiko yang wajib disetujui sebelum formulir dapat disimpan. |
+| KNF10 | R09 - R23 | Availability | Selama pengguna mengakses platform, sistem harus memastikan basis data lowongan selalu dapat diakses dengan batas maksimal gangguan layanan tidak lebih dari 24 jam dalam satu bulan. |
+| KNF11 | R20, R21, R23 | Reliability | Selama proses pembayaran berlangsung, sistem harus memastikan tidak ada pembayaran ganda untuk transaksi yang sama. |
+| KNF12 | R20, R22, R23 | Security | Sistem harus mengirimkan seluruh data pembayaran ke Payment Gateway melalui koneksi terenkripsi sehingga data transaksi tidak dapat dilihat atau diubah oleh pihak lain saat proses pengiriman berlangsung. |
+| KNF13 | R24, R26 | Response Time | Ketika Tenaga Kerja selesai mengunggah hasil pekerjaan, sistem harus menyimpan lampiran dan memperbarui status pekerjaan dalam rentang waktu yang singkat agar Penyedia Kerja dapat langsung meninjaunya. |
+| KNF14 | R25 | Security | Sistem harus memastikan hanya Tenaga Kerja yang ditugaskan pada pekerjaan tersebut yang bisa mengirimkan hasil pekerjaan. |
+| KNF15 | R28 | Reliability | Selama Penyedia Kerja belum memberikan konfirmasi penyelesaian pekerjaan, sistem harus menahan dan tidak memproses pencairan dana kepada Tenaga Kerja. |
+| KNF16 | R31, R32 | Reliability | Bila terjadi gangguan koneksi atau timeout saat pemanggilan API pencairan dana, maka sistem harus menerapkan idempotency key dan transaksi ACID guna mencegah terjadinya pencairan ganda. |
+| KNF17 | R31, R32 | Security | Ketika sistem mentransfer data atau mengirim instruksi ke Payment Gateway, sistem harus menggunakan protokol terenkripsi HTTPS/TLS 1.3 serta mengenkripsi data rekening pengguna. |
+| KNF18 | R35 | Response time | Ketika ulasan baru diserahkan oleh pengguna, sistem harus merespons serta memperbarui data agregat rating pada halaman profil dalam waktu singkat. |
+| KNF19 | R38 | Security | Selama pengguna tidak memiliki peran (role) Customer Service atau Administrator yang terotentikasi, sistem harus memblokir akses ke modul pengelolaan bukti dan penindakan sengketa. |
+| KNF20 | R38 | Reliability | Selama data riwayat penanganan sengketa dan log mutasi pencairan tersimpan di sistem, sistem harus mengunci data tersebut sebagai catatan permanen (tamper-proof) yang tidak dapat diubah maupun dihapus. |
 | KNF21 | R01, R12, R17 | Portability | Ketika pengguna mengakses platform untuk tahapan registrasi, membuat lowongan, atau mengajukan penawaran , sistem harus mampu menampilkan tata letak antarmuka secara adaptif dalam setiap perangkat maupun sistem operasi yang berbeda. |
-| KNF22 | R05, R27, R29 | Memory | Ketika pengguna mengunggah dokumen bukti identitas diri maupun lampiran hasil penyelesaian pekerjaan, sistem harus secara otomatis mengompresi ukuran berkas maksimum menjadi 10 MB guna menjaga efisiensi ruang penyimpanan server. |
+| KNF22 | R05, R24, R26 | Memory | Ketika pengguna mengunggah dokumen bukti identitas diri maupun lampiran hasil penyelesaian pekerjaan, sistem harus secara otomatis mengompresi ukuran berkas maksimum menjadi 10 MB guna menjaga efisiensi ruang penyimpanan server. |
 | KNF23 | R08, R18 | Availability | Selama platform beroperasi, sistem harus menjamin ketersediaan akses data status verifikasi akun dengan *uptime* 99,9% agar proses validasi hak akses saat Tenaga Kerja mengajukan penawaran lowongan tidak mengalami kegagalan fungsi. |
 | ... | ... | ... | ... |
 
