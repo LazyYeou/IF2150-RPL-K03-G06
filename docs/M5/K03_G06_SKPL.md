@@ -86,10 +86,7 @@ Tuliskan sistematika pembahasan dokumen SKPL ini secara runut (misalnya: BAB 2 m
 # BAB 2: Deskripsi Perangkat Lunak
 
 ## 2.1 Deskripsi Umum Sistem
-
-Perangkat lunak Kerja-In merupakan platform marketplace jasa berbasis web yang mempertemukan Penyedia Kerja dengan Tenaga Kerja untuk pekerjaan onsite maupun remote. Penyedia Kerja dapat membuat lowongan dalam satu bidang pekerjaan, menentukan tarif awal dan jumlah pekerja yang dibutuhkan, serta memilih tenaga kerja berdasarkan profil, portofolio, reputasi, dan penawaran upah. Tenaga Kerja dapat melengkapi profil dan portofolio setelah registrasi, mencari lowongan yang sesuai, serta mengajukan penawaran sebesar tarif awal atau lebih tinggi. Kedua jenis pengguna wajib menjalani verifikasi identitas menggunakan foto KTP yang diperiksa oleh Customer Service.
-
-Setelah penawaran diterima, Penyedia Kerja membayar upah yang disepakati beserta biaya admin melalui layanan pembayaran. Hasil pekerjaan dinilai secara terpisah untuk setiap pekerja, dan upah diteruskan setelah hasil disetujui. Sistem juga membantu mengatur jadwal pekerjaan, menyediakan rating dan ulasan untuk membangun reputasi, serta memfasilitasi penanganan keluhan oleh Customer Service. Aplikasi dirancang responsif agar dapat diakses melalui browser pada ponsel maupun komputer.
+Bagian ini dapat disalin dari BAB 1.1 *Deskripsi Umum Sistem* pada dokumen *Requirement Gathering*, disesuaikan bila ada perubahan alur bisnis. Lengkapi dengan gambaran proses bisnis dalam bentuk *Activity Diagram* (boleh disalin dan diperbarui dari 3.3 *Model Proses Bisnis* pada dokumen *Topic Brainstorming*).
 
 <p align="center">
 <img alt="Contoh Activity Diagram" src="./assets/diagram/diagram-act-1.avif" width="70%">
@@ -104,12 +101,12 @@ Diisi dengan deskripsi umum perangkat lunak untuk mendukung proses bisnis yang t
 *Contoh narasi:* "*[Nama P/L]* merupakan aplikasi *[deskripsi singkat]* yang berinteraksi dengan *Payment Gateway (dummy)* untuk memproses otorisasi pembayaran. Sistem menerima input dari *Pelanggan* melalui antarmuka aplikasi dan mengirimkan permintaan transaksi ke *Payment Gateway* setiap kali pelanggan melakukan checkout."
 
 ## 2.3 Pengguna dan Kebutuhan Pengguna Perangkat Lunak
+Tuliskan seluruh jenis pengguna (*role*/aktor) yang terlibat dalam perangkat lunak (P/L), beserta kebutuhannya secara umum. Bagian ini dapat disalin dari 1.2 *Deskripsi Pengguna Perangkat Lunak* (dokumen Requirement Gathering) atau 3.1 *Identifikasi Aktor* (dokumen Use Case), pastikan sudah konsisten dengan aktor final yang dipakai di BAB 4.
 
 | Pengguna | Kebutuhan |
 | :--- | :--- |
-| Tenaga Kerja | Melengkapi profil/KTP/portofolio, mengajukan penawaran, mengerjakan penugasan, menerima upah otomatis, memberi ulasan, dan melapor kendala. |
-| Penyedia Kerja | Melengkapi profil/KTP, membuat lowongan satu bidang, memilih beberapa pekerja, membayar per pekerja, menilai hasil, dan memberi ulasan/keluhan. |
-| Customer Service | Memeriksa KTP kedua peran, meninjau bukti keluhan, mencatat keputusan dan mengawasi tindak lanjut dana. |
+| *Pelanggan* | *Pelanggan harus dapat memesan produk, mengelola keranjang, dan menyelesaikan pembayaran melalui sistem.* |
+| *...* | *...* |
 
 ## 2.4 Batasan Perangkat Lunak
 Batasan yang harus dituliskan, di antaranya:
@@ -134,49 +131,37 @@ Spesifikasi *operating system* atau lingkungan yang dibutuhkan P/L untuk beroper
 # BAB 3: Deskripsi Kebutuhan Perangkat Lunak
 
 ## 3.1 Kebutuhan Fungsional (KF)
-
-Tabel 3.1. Daftar Kebutuhan Fungsional
+Berikut merupakan kebutuhan non-fungsional yang telah disesuaikan dengan pemetaan kebutuhan perangkat lunak:
 
 | ID KF | ID Kebutuhan | Penjelasan |
 | :--- | :--- | :--- |
-| KF01 | R01, R03 | Ketika pengguna mendaftar, sistem harus menyimpan data diri dan tepat satu peran publik (Tenaga Kerja atau Penyedia Kerja) setelah persetujuan kebijakan privasi; portofolio dilengkapi setelah registrasi. |
-| KF02 | R02 | Jika usia pendaftar kurang dari 17 tahun atau email sudah digunakan, sistem harus menolak registrasi dan menjelaskan isian yang perlu diperbaiki. |
-| KF03 | R04 | Ketika pengguna login, sistem harus memverifikasi kredensial dan membuat sesi autentikasi sesuai peran akun. |
-| KF04 | R05, R07 | Ketika Tenaga Kerja atau Penyedia Kerja mengajukan verifikasi, sistem harus memvalidasi kelengkapan profil dan foto KTP, lalu mencatat status MenungguPersetujuan. |
-| KF05 | R06 | Ketika Customer Service memutuskan verifikasi, sistem harus menyimpan pemeriksa, waktu, status Terverifikasi atau Ditolak, serta alasan jika ditolak. Verifikasi email tidak menggantikan persetujuan KTP. |
-| KF06 | R08 | Selama akun belum Terverifikasi, sistem harus menolak publikasi lowongan oleh penyedia dan pengajuan penawaran oleh pekerja; akses profil, verifikasi, dan penelusuran lowongan tetap tersedia. |
-| KF07 | R09, R10 | Ketika penyedia terverifikasi memublikasikan lowongan valid, sistem harus menyimpan satu bidang pekerjaan, kuota, tarif awal per pekerja, serta menetapkan status Open. |
-| KF08 | R11 | Jika rincian wajib lowongan tidak lengkap atau tidak valid (judul, deskripsi, satu bidang, keterampilan, kuota positif, tarif per pekerja positif, mode kerja, jadwal, batas pengajuan, serta lokasi untuk onsite), sistem harus menolak penyimpanan serta menunjukkan kesalahan pada isian. |
-| KF09 | R12, R13 | Ketika pengguna mencari lowongan, sistem harus menampilkan lowongan Open yang masih menerima pengajuan dan sesuai kata kunci, bidang/keterampilan, mode kerja, serta filter lokasi atau tarif yang dipilih. |
-| KF10 | R08, R15 | Ketika pekerja mengajukan penawaran, sistem harus memeriksa verifikasi, profil lengkap, minimal satu portofolio valid yang dipilih, ketersediaan lowongan, dan konflik dengan penugasan yang sudah diterima. |
-| KF11 | R14, R16 | Ketika penawaran valid dikirim, sistem harus menyimpan nominal minimal sebesar tarif awal, pesan dan pengalaman opsional, ringkasan portofolio saat dikirim, serta waktu dan status Menunggu; salinan portofolio tetap tersimpan meskipun atribut portofolio pada profil diubah. |
-| KF12 | R17, R18, R19 | Ketika pemilik lowongan menerima penawaran Menunggu, sistem harus memeriksa ulang kuota dan konflik jadwal secara atomik, mencatat penawaran Diterima, dan membuat satu TransaksiPekerjaan berstatus Assigned tanpa konfirmasi ulang pekerja. |
-| KF13 | R18, R19 | Ketika kuota terisi, sistem harus menetapkan lowongan Full dan menutup pengajuan baru. Jika penugasan dibatalkan, sistem harus menghitung ulang kuota dan membuka lowongan jika batas pengajuan belum lewat. |
-| KF14 | R20, R21, R23 | Ketika penyedia membayar tagihan, sistem harus menyediakan metode yang didukung integrasi pembayaran dan memulai pekerjaan hanya setelah pembayaran berhasil diverifikasi. |
-| KF15 | R20, R22, R23 | Sistem harus mencatat referensi dan status pembayaran dari layanan pembayaran, dengan totalBayar = upahDisepakati + biayaAdmin (nominal biaya admin belum ditetapkan); dana dikelola melalui layanan pembayaran dan upah pekerja tidak dipotong biaya admin. |
-| KF16 | R24, R25, R26 | Ketika pekerja yang ditugaskan menyerahkan hasil untuk penugasan InProgress, sistem harus menyimpan deskripsi dan bukti sebagai versi baru, mencatat waktu, dan mengubah status pekerjaan menjadi Submitted. |
-| KF17 | R27, R28, R29 | Ketika penyedia menyetujui hasil Submitted tanpa sengketa dana aktif, sistem harus mengubah status menjadi Completed dan memicu pencairan otomatis sebesar upahDisepakati. |
-| KF18 | R30, R32 | Ketika hasil disetujui atau status pencairan berubah, sistem harus menampilkan notifikasi yang membedakan pekerjaan selesai, pencairan diproses, dan upah berhasil ditransfer. |
-| KF19 | R28, R30, R31, R32 | Ketika penugasan Completed memenuhi syarat pencairan dan tidak ditahan sengketa, sistem harus memvalidasi tujuan pembayaran lalu mengirim instruksi pencairan otomatis; tidak ada pengajuan penarikan saldo manual. |
-| KF20 | R32 | Ketika layanan pembayaran mengirim status pencairan, sistem harus memverifikasi dan mencatat nominal, penerima, waktu, referensi, dan status untuk ditampilkan pada riwayat pekerja. |
-| KF21 | R33 | Ketika penugasan Completed, sistem harus menyediakan rating 1–5 dan ulasan bagi kedua pihak pada penugasan tersebut. |
-| KF22 | R34 | Jika pemberi telah memberikan ulasan kepada penerima untuk penugasan yang sama, sistem harus menolak ulasan duplikat tanpa menghalangi ulasan pihak lainnya. |
-| KF23 | R35 | Ketika ulasan disimpan, sistem harus menghitung ulang rata-rata rating penerima dan menampilkan reputasinya pada profil. |
-| KF24 | R36, R38 | Ketika pengguna mengirim keluhan, sistem harus membuat tiket dengan kategori, deskripsi, bukti bila tersedia, serta referensi penugasan jika terkait pekerjaan. |
-| KF25 | R37, R39 | Ketika CS memutuskan sengketa, sistem harus mencatat alasan, memeriksa status dana dan kewenangan, lalu meneruskan instruksi refund atau pencairan sesuai keputusan yang sah tanpa mengeksekusi keduanya untuk dana yang sama. |
-| KF26 | R38 | Setiap tindakan penanganan tiket harus dicatat kronologis dengan pelaku, waktu, bukti tambahan, dan perubahan status serta diberitahukan kepada pihak terkait. |
-| KF27 | R09, R11 | Sistem harus membedakan mode Onsite/Remote dan jadwal Tetap/Fleksibel; Onsite wajib memiliki lokasi serta jadwal Tetap, sedangkan Remote dapat menggunakan jadwal Tetap atau tenggat Fleksibel. |
-| KF28 | R14, R15, R16 | Sistem harus mengizinkan pengajuan tanpa batas harian, tetapi hanya satu penawaran Menunggu atau Diterima per pekerja per lowongan; riwayat Ditolak melarang pengajuan ulang pada lowongan yang sama. |
-| KF29 | R14, R16 | Ketika pekerja mengedit atau menarik penawaran Menunggu, sistem harus memvalidasi kepemilikan dan menyimpan perubahan; penawaran yang sudah Diterima atau Ditolak tidak dapat diedit atau ditarik melalui fitur penawaran. |
-| KF30 | R14, R16 | Ketika pekerja mengajukan ulang setelah penawaran Ditarik atau DibatalkanSistem, sistem harus memvalidasi syarat pengajuan kembali dan membuat catatan baru tanpa menghapus riwayat sebelumnya. |
-| KF31 | R15, R18, R19 | Sistem harus menolak jadwal tetap yang bertumpang tindih dengan penugasan yang diterima, serta mensyaratkan jeda minimal 120 menit jika salah satu pekerjaan Onsite (tepat 120 menit diperbolehkan); dua pekerjaan Remote cukup tidak bertumpang tindih; persetujuan pertama yang berhasil tercatat membatalkan penawaran Menunggu lain yang konflik. |
-| KF32 | R19, R20, R23 | Ketika penawaran diterima, sistem harus menerbitkan satu tagihan per penugasan dengan salinan upah, rincian pekerjaan, jadwal, dan biaya admin yang berlaku saat kesepakatan. |
-| KF33 | R19, R21, R23 | Ketika invoice belum dibayar dibatalkan atau kedaluwarsa, sistem harus membatalkan penugasan, melepas jadwal dan kuota; penawaran lain yang sebelumnya dibatalkan tidak diaktifkan otomatis. |
-| KF34 | R27, R29, R36, R37 | Ketika hasil perlu diperbaiki, sistem harus menyimpan catatan revisi dan mengembalikan Submitted ke InProgress; pembatalan setelah pembayaran atau perselisihan ruang lingkup diproses melalui UC12. |
-| KF35 | R01, R05, R08 | Setelah registrasi, sistem harus menyediakan pengelolaan profil sesuai peran dan tujuan penerimaan upah pekerja; perubahan data identitas terverifikasi memerlukan pemeriksaan ulang sebelum aksi baru yang mensyaratkan verifikasi. |
-| KF36 | R01, R15 | Sistem harus menyediakan pengelolaan portofolio pekerja berisi judul, deskripsi, bidang, dan minimal foto atau tautan bukti, termasuk pengalaman informal; kelengkapan portofolio dipisahkan dari status verifikasi KTP. |
-
----
+| KF01 | R01, R03 | Ketika pengguna melakukan registrasi, sistem harus menyediakan pilihan peran (Tenaga Kerja atau Penyedia Kerja), formulir pengisian profil, dan meminta persetujuan terhadap kebijakan privasi. |
+| KF02 | R02 | Bila tanggal lahir yang dimasukkan menunjukkan usia di bawah 17 tahun saat registrasi, maka sistem harus menampilkan pesan kesalahan dan memblokir pendaftaran. |
+| KF03 | R04 | Ketika pengguna melakukan *login*, sistem harus memverifikasi kredensial dan menerbitkan token autentikasi. |
+| KF04 | R05, R07 | Ketika Tenaga Kerja mengajukan verifikasi, sistem harus menyediakan antarmuka pengunggahan dokumen identitas yang relevan berdasarkan persetujuan pengguna. |
+| KF05 | R06 | Ketika pengguna mengklik tautan verifikasi email atau ketika admin menyetujui verifikasi manual, sistem harus memperbarui status verifikasi identitas pengguna. |
+| KF06 | R08 | Selama status verifikasi Tenaga Kerja belum disetujui, sistem harus membatasi akses ke fitur-fitur utama platform. |
+| KF07 | R12, R13 | Ketika Penyedia Kerja berhasil menyimpan data lowongan baru melalui antarmuka formulir, sistem harus menetapkan status lowongan tersebut menjadi Open secara bawaan. |
+| KF08 | R14 | Jika terdapat isian formulir lowongan (judul, deskripsi, kuota, lokasi, atau upah) yang kosong atau tidak valid saat disimpan, sistem harus menampilkan pesan peringatan dan menggagalkan penyimpanan. |
+| KF09 | R15, R16 | Ketika Tenaga Kerja melakukan pencarian atau pemfilteran (berdasarkan kategori/keterampilan), sistem harus hanya menampilkan daftar lowongan yang berstatus Open secara bawaan. |
+| KF10 | R17, R18 | Selama akun pengguna berstatus Terverifikasi dan bertindak sebagai Tenaga Kerja, sistem harus menyediakan akses ke tombol Ajukan Penawaran pada halaman detail pekerjaan. |
+| KF11 | R19 | Ketika Tenaga Kerja menekan konfirmasi pengajuan penawaran, sistem harus menyimpan data pengajuan (ID Tenaga Kerja, ID Lowongan, pesan penawaran, dan timestamp) ke dalam basis data. |
+| KF12 | R20, R21 | Ketika Penyedia Kerja menyetujui (accept) seorang pelamar pada antarmuka daftar pelamar, sistem harus menghasilkan dan menyimpan entri ID Transaksi Pekerjaan yang unik untuk pelamar tersebut, selama batas kuota lowongan belum terlampaui. |
+| KF13 | R22 | Ketika jumlah Tenaga Kerja yang disetujui telah mencapai batas kuota dari sebuah lowongan, sistem harus secara otomatis mengubah status lowongan tersebut dari Open menjadi Closed/Full. |
+| KF14 | R23, R24 | Ketika Penyedia Kerja menekan tombol bayar upah dan commission fee, sistem harus meneruskan pembayaran ke Payment Gateway lalu mengubah status pekerjaan menjadi "In Progress" setelah pembayaran berhasil dikonfirmasi. |
+| KF15 | R25, R26 | Sistem harus meneruskan seluruh dana transaksi langsung ke Payment Gateway, serta mencatat status dan riwayat setiap transaksi pembayaran yang terjadi. |
+| KF16 | R27, R28, R29 | Ketika Tenaga Kerja mengunggah dan mengirimkan hasil pekerjaan, sistem harus menyimpan lampiran tersebut, mencatat waktu pengiriman, dan mengubah status pekerjaan menjadi "Submitted". |
+| KF17 | R30, R31, R32 | Ketika Penyedia Kerja memeriksa hasil pekerjaan dan menekan tombol konfirmasi penyelesaian, sistem harus mengubah status pekerjaan menjadi "Completed" dan langsung memicu proses pencairan dana ke Tenaga Kerja. |
+| KF18 | R33 | Ketika pekerjaan telah selesai diverifikasi oleh Penyedia Kerja, sistem harus menampilkan notifikasi penerimaan upah dan memperbarui saldo pada antarmuka Tenaga Kerja. |
+| KF19 | R34 | Ketika Tenaga Kerja mengajukan pencairan dana, sistem harus memvalidasi rekening bank/e-wallet tujuan dan mengirimkan instruksi disbursement ke API Payment Gateway. |
+| KF20 | R35 | Ketika instruksi pencairan diproses oleh Payment Gateway, sistem harus mencatat rincian transaksi (ID transaksi, nominal upah, identitas penerima, waktu, dan status transfer) ke log pencairan. |
+| KF21 | R36 | Ketika status transaksi pekerjaan selesai, sistem harus menyediakan antarmuka formulir rating (skala 1–5) dan ulasan bagi Tenaga Kerja maupun Penyedia Kerja. |
+| KF22 | R37 | Bila pengguna telah mengirimkan ulasan untuk suatu pekerjaan, maka sistem harus mengunci formulir ulasan dan menolak pengiriman ulasan tambahan pada pekerjaan yang sama. |
+| KF23 | R38 | Ketika ulasan baru berhasil disimpan, sistem harus menghitung ulang rata-rata rating dan langsung memperbarui tampilan portofolio pada profil pengguna. |
+| KF24 | R39 | Ketika pengguna mengirimkan laporan keluhan atau sengketa, sistem harus menerbitkan tiket sengketa dan menampilkannya pada dashboard Customer Service. |
+| KF25 | R40 | Ketika Customer Service menetapkan keputusan sengketa, sistem harus mengeksekusi tindakan pengembalian dana (refund) kepada Penyedia Kerja atau pencairan dana kepada Tenaga Kerja sesuai bukti. |
+| KF26 | R41 | Ketika Customer Service menangani tiket sengketa, sistem harus mencatat unggahan bukti pendukung, perubahan status penanganan, dan riwayat aktivitas penanganan secara kronologis. |
+| ... | ... | ... |
 
 ## 3.2 Kebutuhan Non-Fungsional (KNF)
 Berikut merupakan kebutuhan non-fungsional yang telah disesuaikan dengan parameter yang ada dan pemetaan kebutuhan perangkat lunak:
@@ -230,1286 +215,523 @@ Dalam memnentukan berbagai kebutuhan non-fungsional yang diperlukan oleh sistem,
 # BAB 4: Pemodelan Use Case
 
 ## 4.1 Identifikasi Aktor
+Salin ulang daftar aktor final dari BAB 3.1 dokumen *Use Case & Scenario Use Case* atau *Class Diagram*. Tambahkan ID Aktor mengikuti Aturan Penomoran pada 1.4.
 
-| Aktor | Deskripsi |
-| :--- | :--- |
-| Tenaga Kerja | Melengkapi profil/KTP/portofolio, mengajukan penawaran, mengerjakan penugasan, menerima upah otomatis, memberi ulasan, dan melapor kendala. |
-| Penyedia Kerja | Melengkapi profil/KTP, membuat lowongan satu bidang, memilih beberapa pekerja, membayar per pekerja, menilai hasil, dan memberi ulasan/keluhan. |
-| Customer Service | Memeriksa KTP kedua peran, meninjau bukti keluhan, mencatat keputusan dan mengawasi tindak lanjut dana. |
+| ID Aktor | Aktor | Deskripsi |
+| :--- | :--- | :--- |
+| A01 | Tenaga Kerja | Pengguna yang dapat mendaftar dan melengkapi profil untuk menawarkan suatu keahlian di bidang tertentu. Aktivitas utamanya adalah mencari dan memilih pekerjaan yang sesuai, mengajukan diri, menyelesaikan pekerjaan sesuai kesepakatan, serta menerima pembayaran upah setelah pekerjaan diverifikasi. |
+| A02 | Penyedia Kerja | Pengguna merupakan individu maupun pemilik usaha yang dapat mendaftar dan melengkapi profil untuk mempublikasikan kebutuhan pekerjaan. Aktivitas utamanya adalah menentukan spesifikasi pekerjaan dan upah, mencari serta memilih tenaga kerja terpercaya, menyepakati pekerjaan, membayar upah beserta commission fee, dan memverifikasi hasil pekerjaan. |
+| A03 | Customer Service (CS) | Pengguna merupakan tim internal platform yang memegang hak akses operasional untuk menjaga kelancaran transaksi dan interaksi. Aktivitas utamanya meliputi menerima serta menangani pertanyaan, membantu menindaklanjuti kendala akun, pekerjaan, dan pembayaran, serta menengahi sengketa (dispute) atau keluhan pengguna secara cepat dan tepat. |
 
 ## 4.2 Identifikasi Use Case
+Salin ulang daftar Use Case versi terbaru dari BAB 3.2 dokumen *Class Diagram*, pastikan seluruh ID KF yang dirujuk sudah sesuai dengan tabel pada 3.1.
 
 | ID UC | Nama Use Case | Deskripsi Singkat | Aktor | ID KF |
 | :--- | :--- | :--- | :--- | :--- |
-| UC01 | Melakukan Registrasi dan Login | Registrasi data diri dengan satu peran dan autentikasi untuk mengakses profil. | Tenaga Kerja, Penyedia Kerja | KF01, KF02, KF03 |
-| UC02 | Mengelola Verifikasi Identitas | Kedua peran mengunggah KTP dan CS menyetujui atau menolak verifikasi. | Tenaga Kerja, Penyedia Kerja, Customer Service | KF04, KF05, KF06 |
-| UC03 | Mengelola Lowongan Pekerjaan | Penyedia memublikasikan lowongan satu bidang, kuota dan tarif per pekerja. | Penyedia Kerja | KF07, KF08, KF27 |
-| UC04 | Mencari Lowongan Pekerjaan | Pengguna menelusuri lowongan yang masih menerima pengajuan. | Tenaga Kerja | KF09 |
-| UC05 | Mengajukan dan Mengelola Penawaran Pekerjaan | Pekerja mengirim, mengedit atau menarik penawaran sesuai status dan syarat. | Tenaga Kerja | KF10, KF11, KF28, KF29, KF30, KF31 |
-| UC06 | Memilih Tenaga Kerja | Penyedia menerima kandidat; sistem memesan jadwal dan menerbitkan invoice per pekerja. | Penyedia Kerja | KF12, KF13, KF31, KF32 |
-| UC07 | Melakukan Pembayaran Pekerjaan | Penyedia membayar upah disepakati beserta biaya admin tambahan. | Penyedia Kerja | KF14, KF15, KF32, KF33 |
-| UC08 | Menyerahkan Hasil Pekerjaan | Pekerja menyerahkan deskripsi hasil dan bukti per penugasan. | Tenaga Kerja | KF16 |
-| UC09 | Memverifikasi Penyelesaian Pekerjaan | Penyedia menyetujui hasil atau meminta revisi per pekerja. | Penyedia Kerja | KF17, KF18, KF34 |
-| UC10 | Memantau Pencairan Upah Otomatis | Sistem menyalurkan upah otomatis; pekerja memantau status dan riwayat. | Tenaga Kerja | KF19, KF20 |
-| UC11 | Memberikan Penilaian Kerja | Kedua pihak memberi rating dan ulasan per penugasan selesai. | Tenaga Kerja, Penyedia Kerja | KF21, KF22, KF23 |
-| UC12 | Menangani Keluhan dan Sengketa | Pengguna melaporkan kendala dan CS meninjau bukti serta menetapkan tindak lanjut. | Tenaga Kerja, Penyedia Kerja, Customer Service | KF24, KF25, KF26, KF34 |
-| UC13 | Mengelola Profil dan Portofolio | Pengguna melengkapi profil; pekerja mengelola portofolio setelah registrasi. | Tenaga Kerja, Penyedia Kerja | KF35, KF36 |
+| UC01 | Melakukan Registrasi | Pengguna mendaftarkan akun baru, memvalidasi batasan usia, dan melakukan proses login untuk masuk ke dalam sistem. | Tenaga Kerja, Penyedia Kerja | KF01, KF02, KF03 |
+| UC02 | Mengelola Verifikasi Identitas | Tenaga Kerja mengunggah dokumen identitas untuk diverifikasi agar mendapatkan akses ke fitur-fitur utama platform. | Tenaga Kerja, Customer Service | KF04, KF05, KF06 |
+| UC03 | Mengelola Lowongan Pekerjaan | Penyedia Kerja membuat dan mempublikasikan lowongan pekerjaan baru beserta spesifikasi pekerjaan tersebut melalui isian formulirnya. | Penyedia Kerja | KF07, KF08 |
+| UC04 | Mencari Lowongan Pekerjaan | Tenaga Kerja menelusuri dan memfilter daftar lowongan pekerjaan yang sedang aktif. | Tenaga Kerja | KF09 |
+| UC05 | Mengajukan Penawaran Pekerjaan | Tenaga Kerja mengirimkan pengajuan penawaran pada pekerjaan yang diinginkan. | Tenaga Kerja | KF10, KF11 |
+| UC06 | Memilih Tenaga Kerja | Penyedia Kerja meninjau daftar pelamar dan menyetujui kandidat yang cocok sehingga memicu pembaruan status lowongan secara langsung. | Penyedia Kerja | KF12, KF13 |
+| UC07 | Melakukan Pembayaran Pekerjaan | Penyedia Kerja membayarkan upah dan biaya admin melalui Payment Gateway sebelum pekerjaan dimulai. | Penyedia Kerja | KF14, KF15 |
+| UC08 | Menyerahkan Hasil Pekerjaan | Tenaga Kerja mengunggah lampiran bukti penyelesaian pekerjaan untuk ditinjau oleh Penyedia Kerja. | Tenaga Kerja | KF16 |
+| UC09 | Memverifikasi Penyelesaian Pekerjaan | Penyedia Kerja memeriksa dan menyetujui hasil pekerjaan, yang memicu sistem untuk memberikan notifikasi penerimaan upah. | Penyedia Kerja | KF17, KF18 |
+| UC10 | Melakukan Pencairan Dana | Tenaga Kerja menarik upah pendapatan mereka ke rekening bank atau *e-wallet* melalui sistem Payment Gateway. | Tenaga Kerja | KF19, KF20 |
+| UC11 | Memberikan Penilaian Kerja | Pengguna memberikan penilaian performa setelah pekerjaan selesai untuk memperbarui portofolio dan reputasi. | Tenaga Kerja, Penyedia Kerja | KF21, KF22, KF23 |
+| UC12 | Menangani Keluhan | Pengguna melaporkan kendala yang kemudian ditengahi, diproses, dan diputuskan oleh Customer Service. | Tenaga Kerja, Penyedia Kerja, Customer Service | KF24, KF25, KF26 |
 
 ## 4.3 Use Case Diagram
+Salin ulang Use Case Diagram dari BAB 3.3 dokumen *Use Case & Scenario Use Case* atau *Class Diagram* (gunakan versi paling akhir/terbaru apabila terdapat perubahan).
 
-<br>
 <p align="center">
-<img alt="Contoh Activity Diagram" src="./assets/diagram/Diagram uc/uc-diagram.jpg" width="100%">
+<img alt="Contoh Use Case Diagram" src="./assets/diagram/contoh-uc-diagram.webp" width="70%">
 </p>
 <p align="center">
-<i>Gambar 1. Use Case Diagram</i>
+<i>Gambar 2. Contoh Use Case Diagram</i>
 </p>
-<br>
 
 ## 4.4 Skenario Use Case
+Salin ulang skenario **setiap** use case (skenario normal dan alternatif) dari BAB 3.4 dokumen *Use Case & Scenario Use Case*, sesuaikan dengan daftar UC final pada 4.2. Jika use case melibatkan lebih dari satu aktor manusia yang benar-benar berinteraksi langsung (misalnya *Kasir* yang memverifikasi transaksi setelah *Pelanggan* membayar), tambahkan kolom aksi tersendiri untuk aktor tersebut di samping kolom "Reaksi Perangkat Lunak". Sistem eksternal otomatis seperti *payment gateway* **bukan aktor**, sehingga interaksinya cukup dituliskan sebagai bagian dari "Reaksi Perangkat Lunak", bukan kolom aktor terpisah.
 
 ### 4.4.1 Skenario UC01
 
-**Nama Use Case:** Melakukan Registrasi dan Login
-
+**Nama Use Case:** *Melakukan Registrasi*
 
 **Skenario Normal**
 
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
-| --- | --- | --- |
-| 1 | Pengguna membuka registrasi. | Sistem menampilkan formulir nama, email, password, tanggal lahir, nomor telepon, pilihan satu peran, dan persetujuan kebijakan privasi. |
-| 2 | Pengguna mengisi data diri, memilih satu peran, menyetujui privasi, dan mengirim. | Sistem memvalidasi usia/email, menyimpan passwordHash dan akun BelumDiajukan; portofolio belum diperlukan. |
-| 3 | Pengguna login. | Sistem memverifikasi kredensial dan membuka profil untuk dilengkapi melalui UC13. |
+| :--- | :--- | :--- |
+| 1 | Pengguna memilih opsi registrasi | Sistem menampilkan formulir registrasi, pilihan peran (Tenaga Kerja atau Penyedia Kerja), dan meminta persetujuan kebijakan privasi |
+| 2 | Pengguna mengisi formulir profil lengkap, memasukkan tanggal lahir (usia $\ge$ 17 tahun), dan menyetujui kebijakan privasi lalu menekan daftar | Sistem memvalidasi usia pendaftar dan menyimpan data pengguna |
+| 3 | Pengguna melakukan login dengan kredensial yang baru dibuat | Sistem memverifikasi kredensial, menerbitkan token autentikasi, dan menampilkan halaman beranda |
 
-**Skenario Alternatif 1: Usia/email/isian tidak valid**
+<br>
+
+**Skenario Alternatif 1: Batas Usia Tidak Valid**
 
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
 | :--- | :--- | :--- |
-| 1 | Usia/email/isian tidak valid | Tolak registrasi dan tampilkan alasan; tidak membuat akun parsial. |
+| 1 | Pengguna memilih opsi registrasi | Sistem menampilkan formulir registrasi, pilihan peran, dan kebijakan privasi |
+| 2 | Pengguna memasukkan tanggal lahir yang menunjukkan usia di bawah 17 tahun dan menekan daftar | Sistem memblokir pendaftaran dan menampilkan pesan kesalahan bahwa pengguna harus berusia minimal 17 tahun |
+| 3 | Pengguna memperbaiki input tanggal lahir menjadi valid | Sistem kembali ke langkah 2 skenario normal |
 
-**Skenario Alternatif 2: Kredensial salah**
+<br>
+
+**Skenario Alternatif 2: Email Sudah Terdaftar**
 
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
 | :--- | :--- | :--- |
-| 1 | Kredensial salah | Tolak login dan izinkan percobaan berikutnya sesuai pembatasan keamanan. |
+| 1 | Pengguna memilih opsi registrasi | Sistem menampilkan formulir registrasi, pilihan peran, dan kebijakan privasi |
+| 2 | Pengguna mengisi formulir dengan email yang sudah ada di basis data dan menekan daftar | Sistem menolak pendaftaran dan menampilkan pesan bahwa email sudah digunakan, serta menyarankan pengguna untuk login |
+| 3 | Pengguna memilih opsi menuju halaman login | Sistem mengarahkan pengguna ke halaman login |
+
+<br>
 
 ### 4.4.2 Skenario UC02
 
-**Nama Use Case:** Mengelola Verifikasi Identitas
-
+**Nama Use Case:** *Mengelola Verifikasi Identitas*
 
 **Skenario Normal**
 
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
 | :--- | :--- | :--- |
-| 1 | Tenaga Kerja atau Penyedia Kerja melengkapi profil lalu mengunggah foto KTP. | Sistem memvalidasi kelengkapan data diri dan foto KTP, menyimpan berkas privat, dan mencatat MenungguPersetujuan. |
-| 2 | Customer Service memeriksa kesesuaian data dan menyetujui. | Sistem mencatat pemeriksa/waktu dan Terverifikasi serta mengirim notifikasi. Kelayakan melamar masih memerlukan portofolio lengkap. |
+| 1 | Tenaga Kerja memilih menu verifikasi identitas | Sistem menampilkan antarmuka pengunggahan dokumen identitas |
+| 2 | Tenaga Kerja mengunggah dokumen dan mengirimkan pengajuan | Sistem menyimpan dokumen dan mengubah status menjadi "Menunggu Persetujuan" |
+| 3 | Customer Service menekan tombol setuju verifikasi manual pada dashboard | Sistem memperbarui status identitas pengguna menjadi "Terverifikasi" dan membuka akses fitur utama platform |
 
-**Skenario Alternatif 1: Berkas tidak valid**
+<br>
 
-| No | Aksi Aktor | Reaksi Perangkat Lunak |
-| :--- | :--- | :--- |
-| 1 | Berkas tidak valid | Tolak unggahan dan tampilkan alasan; usulan batas foto KTP JPG/PNG maksimal 5 MB. |
-
-**Skenario Alternatif 2: KTP tidak sesuai/buram**
+**Skenario Alternatif 1: Format atau Ukuran Dokumen Tidak Valid**
 
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
 | :--- | :--- | :--- |
-| 1 | KTP tidak sesuai/buram | CS menolak dengan alasan; pengguna boleh memperbaiki dan mengajukan ulang. |
+| 1 | Tenaga Kerja memilih menu verifikasi identitas | Sistem menampilkan antarmuka pengunggahan dokumen identitas |
+| 2 | Tenaga Kerja mengunggah file dengan ekstensi yang tidak didukung (misal: .exe) atau melebihi batas ukuran (misal: > 5MB) | Sistem menolak unggahan dan menampilkan pesan error format/ukuran file tidak sesuai |
 
-**Skenario Alternatif 3: Belum terverifikasi**
+<br>
+
+**Skenario Alternatif 2: Dokumen Ditolak oleh Customer Service**
 
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
 | :--- | :--- | :--- |
-| 1 | Belum terverifikasi | Blokir publikasi/pengajuan; tetap izinkan profil dan katalog. |
+| 1 | Tenaga Kerja memilih menu verifikasi identitas | Sistem menampilkan antarmuka pengunggahan dokumen identitas |
+| 2 | Tenaga Kerja mengunggah dokumen yang buram atau data tidak cocok | Sistem menyimpan dokumen sebagai "Menunggu Persetujuan" |
+| 3 | Customer Service menolak verifikasi pada dashboard dengan memberikan alasan | Sistem memperbarui status menjadi "Ditolak", mengirim notifikasi revisi beserta alasan, dan fitur utama tetap dibatasi |
+
+<br>
+
+**Skenario Alternatif 3: Mengakses Fitur Utama Sebelum Terverifikasi**
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | Tenaga Kerja (dengan status belum terverifikasi) mencoba menekan menu fitur utama platform | Sistem mendeteksi status akun belum disetujui |
+| 2 | Sistem memblokir akses ke halaman tersebut | Sistem menampilkan pop-up peringatan bahwa akun harus diverifikasi dan mengarahkan pengguna ke halaman verifikasi |
 
 ### 4.4.3 Skenario UC03
 
-**Nama Use Case:** Mengelola Lowongan Pekerjaan
-
+**Nama Use Case:** *Mengelola Lowongan Pekerjaan*
 
 **Skenario Normal**
 
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
-| --- | --- | --- |
-| 1 | Penyedia terverifikasi membuka form lowongan. | Sistem menampilkan formulir judul, deskripsi, bidang, keterampilan, kuota, tarif awal per pekerja, mode kerja, lokasi onsite, jenis jadwal, waktu mulai–selesai atau tenggat hasil, dan batas pengajuan. |
-| 2 | Penyedia mengisi satu bidang, kuota, tarif per pekerja, mode/lokasi, jadwal, dan batas pengajuan. | Sistem memvalidasi satu bidang, kuota dan tarif positif, waktu selesai setelah mulai, serta batas pengajuan sebelum pekerjaan mulai atau tenggat hasil, menyimpan lowongan Open, dan menampilkannya dalam pencarian. |
+| :--- | :--- | :--- |
+| 1 | Penyedia Kerja memilih opsi buat lowongan baru | Sistem menampilkan antarmuka formulir lowongan pekerjaan |
+| 2 | Penyedia Kerja mengisi seluruh isian (judul, deskripsi, kuota, lokasi, upah) secara lengkap lalu menekan simpan | Sistem memvalidasi isian, menyimpan lowongan, dan menetapkan status bawaan menjadi "Open" |
 
-**Skenario Alternatif 1: Bidang/jadwal/lokasi tidak valid**
+<br>
+
+**Skenario Alternatif 1: Isian Formulir Kosong atau Tidak Valid**
 
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
 | :--- | :--- | :--- |
-| 1 | Bidang/jadwal/lokasi tidak valid | Tolak penyimpanan dan tampilkan isian yang perlu diperbaiki. |
+| 1 | Penyedia Kerja memilih opsi buat lowongan baru | Sistem menampilkan antarmuka formulir lowongan pekerjaan |
+| 2 | Penyedia Kerja mengosongkan bagian upah atau kuota dan menekan simpan | Sistem mendeteksi isian tidak valid, menggagalkan penyimpanan, dan menampilkan pesan peringatan atribut mana yang masih kosong |
+| 3 | Penyedia Kerja melengkapi isian yang kosong dengan data valid | Sistem kembali ke langkah 2 skenario normal |
 
-**Skenario Alternatif 2: Mengedit lowongan yang telah memiliki penawaran**
+<br>
+
+**Skenario Alternatif 2: Membatalkan Pembuatan Lowongan**
 
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
 | :--- | :--- | :--- |
-| 1 | Mengedit lowongan yang telah memiliki penawaran | Usulan: tolak perubahan substantif setelah ada pengajuan dan arahkan membuat lowongan baru. |
+| 1 | Penyedia Kerja memilih opsi buat lowongan baru | Sistem menampilkan antarmuka formulir lowongan pekerjaan |
+| 2 | Penyedia Kerja mengisi sebagian isian, lalu menekan tombol batal | Sistem membuang isian yang belum disimpan dan mengarahkan pengguna kembali ke halaman beranda/daftar lowongan |
 
 ### 4.4.4 Skenario UC04
 
-**Nama Use Case:** Mencari Lowongan Pekerjaan
-
+**Nama Use Case:** *Mencari Lowongan Pekerjaan*
 
 **Skenario Normal**
 
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
-| --- | --- | --- |
-| 1 | Pengguna membuka katalog dan memilih kata kunci atau filter. | Sistem mencari lowongan Open yang belum melewati batas pengajuan. |
-| 2 | Pengguna membuka detail lowongan. | Sistem menampilkan rincian, tarif awal, kuota, mode dan jadwal; akses mengajukan tetap mengikuti peran, verifikasi, dan portofolio. |
+| :--- | :--- | :--- |
+| 1 | Tenaga Kerja membuka halaman pencarian pekerjaan atau memasukkan parameter filter seperti kategori/keterampilan | Sistem memproses kriteria pencarian dari pengguna |
+| 2 | Tenaga Kerja menekan tombol cari/terapkan filter | Sistem merender dan menampilkan daftar lowongan pekerjaan yang berstatus "Open" sesuai dengan kriteria yang diminta |
 
-**Skenario Alternatif 1: Tidak ada hasil**
+<br>
+
+**Skenario Alternatif 1: Pencarian Tidak Ditemukan**
 
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
 | :--- | :--- | :--- |
-| 1 | Tidak ada hasil | Tampilkan daftar kosong dan opsi mengubah filter. |
+| 1 | Tenaga Kerja memasukkan kata kunci keterampilan yang sangat spesifik di kolom pencarian | Sistem memfilter lowongan berstatus "Open" dan tidak menemukan kecocokan data |
+| 2 | Tenaga Kerja menekan tombol cari | Sistem menampilkan halaman kosong dengan pesan "Tidak ada lowongan yang sesuai dengan pencarian Anda" |
+
+<br>
 
 ### 4.4.5 Skenario UC05
 
-**Nama Use Case:** Mengajukan dan Mengelola Penawaran Pekerjaan
-
+**Nama Use Case:** *Mengajukan Penawaran Pekerjaan*
 
 **Skenario Normal**
 
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
-| --- | --- | --- |
-| 1 | Pekerja terverifikasi memilih lowongan dan menekan Ajukan Penawaran. | Sistem memeriksa profil, portofolio, riwayat penolakan, penawaran aktif, dan konflik penugasan; menampilkan formulir nominal upah, pilihan portofolio, persetujuan rincian/jadwal, serta pesan dan pengalaman opsional; nominal awal terisi tarif lowongan. |
-| 2 | Pekerja memilih portofolio dan mempertahankan/menaikkan nominal; pesan dan pengalaman boleh kosong. | Sistem menampilkan ringkasan dan konsekuensi penerimaan terhadap jadwal serta penawaran lain. |
-| 3 | Pekerja menyetujui rincian lalu mengirim. | Sistem memvalidasi ulang dan menyimpan Menunggu beserta ringkasan portofolio serta notifikasi kepada penyedia. |
+| :--- | :--- | :--- |
+| 1 | Tenaga Kerja dengan status akun Terverifikasi membuka halaman detail lowongan pekerjaan | Sistem memvalidasi status akun dan menampilkan tombol "Ajukan Penawaran" pada halaman tersebut |
+| 2 | Tenaga Kerja menekan tombol "Ajukan Penawaran" | Sistem menampilkan antarmuka formulir pengajuan penawaran |
+| 3 | Tenaga Kerja mengisi pesan penawaran dan menekan tombol konfirmasi pengajuan | Sistem menyimpan data pengajuan (ID Tenaga Kerja, ID Lowongan, pesan, dan timestamp) ke basis data, lalu menampilkan notifikasi keberhasilan |
 
-**Skenario Alternatif 1: Nominal di bawah tarif/profil atau portofolio belum lengkap**
+<br>
+
+**Skenario Alternatif 1: Akun Belum Terverifikasi**
 
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
 | :--- | :--- | :--- |
-| 1 | Nominal di bawah tarif/profil atau portofolio belum lengkap | Tolak dan jelaskan persyaratan. |
+| 1 | Tenaga Kerja dengan status akun Belum Terverifikasi membuka halaman detail lowongan pekerjaan | Sistem tidak menampilkan tombol "Ajukan Penawaran" atau menonaktifkannya dan memunculkan peringatan bahwa pengguna harus menyelesaikan verifikasi identitas terlebih dahulu |
 
-**Skenario Alternatif 2: Sudah Ditolak di lowongan yang sama**
-
-| No | Aksi Aktor | Reaksi Perangkat Lunak |
-| :--- | :--- | :--- |
-| 1 | Sudah Ditolak di lowongan yang sama | Tolak pengajuan ulang. |
-
-**Skenario Alternatif 3: Ada penawaran aktif atau konflik penugasan termasuk jeda onsite**
+**Skenario Alternatif 2: Pembatalan Pengajuan**
 
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
 | :--- | :--- | :--- |
-| 1 | Ada penawaran aktif atau konflik penugasan termasuk jeda onsite | Tolak pengajuan. Penawaran Menunggu pada lowongan lain belum memesan jadwal. |
+| 1 | Tenaga Kerja menekan tombol "Ajukan Penawaran" pada detail pekerjaan | Sistem menampilkan antarmuka formulir pengajuan penawaran |
+| 2 | Tenaga Kerja berubah pikiran dan menekan tombol "Batal" atau "Kembali" | Sistem menutup formulir pengajuan dan mengembalikan tampilan ke halaman detail pekerjaan tanpa menyimpan data apapun |
 
-**Skenario Alternatif 4: Edit atau tarik sebelum keputusan**
-
-| No | Aksi Aktor | Reaksi Perangkat Lunak |
-| :--- | :--- | :--- |
-| 1 | Edit atau tarik sebelum keputusan | Periksa status Menunggu secara atomik; edit divalidasi ulang, penarikan mengubah status Ditarik. |
-
-**Skenario Alternatif 5: Ajukan ulang setelah Ditarik/DibatalkanSistem**
-
-| No | Aksi Aktor | Reaksi Perangkat Lunak |
-| :--- | :--- | :--- |
-| 1 | Ajukan ulang setelah Ditarik/DibatalkanSistem | Buat catatan baru jika semua syarat terpenuhi; simpan riwayat lama. |
+<br>
 
 ### 4.4.6 Skenario UC06
 
-**Nama Use Case:** Memilih Tenaga Kerja
-
+**Nama Use Case:** *Memilih Tenaga Kerja*
+**Aktor:** Penyedia Kerja
+**Deskripsi:** Penyedia Kerja meninjau daftar pelamar yang mengajukan penawaran pada lowongan pekerjaannya dan menyetujui kandidat yang sesuai, memicu pencatatan ID transaksi unik serta pembaruan status lowongan menjadi *Closed/Full* jika kuota telah terpenuhi.
+**Kebutuhan Terkait:** KF12, KF13
 
 **Skenario Normal**
 
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
-| --- | --- | --- |
-| 1 | Penyedia membuka daftar pelamar lowongan miliknya. | Sistem menampilkan profil, rating, ringkasan portofolio, nominal, dan status penawaran. |
-| 2 | Penyedia memilih kandidat dan mengonfirmasi nominal berikut fee yang ditampilkan. | Sistem memeriksa kepemilikan, penawaran Menunggu, kelayakan pekerja, kuota, jadwal, dan konfigurasi invoice secara atomik. |
-| 3 | Tidak ada aksi tambahan dari pekerja. | Sistem menetapkan Diterima, membuat TransaksiPekerjaan Assigned dan invoice, memesan kuota/jadwal, membatalkan penawaran Menunggu pekerja yang konflik, memperbarui status lowongan, dan mengirim notifikasi. |
+| :--- | :--- | :--- |
+| 1 | Penyedia Kerja membuka halaman lowongan miliknya dan memilih tab "Daftar Pelamar". | Sistem memuat dan menampilkan daftar pelamar yang telah mengajukan penawaran beserta profil singkat, pesan penawaran, rating, dan portofolio pelamar. |
+| 2 | Penyedia Kerja meninjau profil pelamar dan menekan tombol "Pilih" pada salah satu kandidat yang cocok. | Sistem menampilkan dialog konfirmasi persetujuan pelamar beserta rincian lowongan dan sisa kuota yang tersedia. |
+| 3 | Penyedia Kerja mengonfirmasi persetujuan kandidat tersebut. | Sistem memvalidasi sisa kuota lowongan, membuat entri ID Transaksi Pekerjaan yang unik antara Penyedia Kerja dan Tenaga Kerja terpilih, serta mengubah status pelamar menjadi "Accepted". |
+| 4 | - | Sistem memeriksa jumlah pelamar yang disetujui. Karena kuota telah terpenuhi, sistem secara otomatis mengubah status lowongan dari "Open" menjadi "Closed/Full" dan menampilkan pesan berhasil. |
 
-**Skenario Alternatif 1: Kuota penuh, status berubah, atau dua penyedia menerima bersamaan**
+<br>
+
+**Skenario Alternatif 1: Kuota Lowongan Sudah Penuh Saat Konfirmasi**
 
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
 | :--- | :--- | :--- |
-| 1 | Kuota penuh, status berubah, atau dua penyedia menerima bersamaan | Hanya persetujuan pertama yang sah berhasil; lainnya ditolak dengan alasan dan data terbaru. |
+| 1 | Penyedia Kerja membuka daftar pelamar dan menekan tombol "Pilih" pada kandidat. | Sistem menampilkan dialog konfirmasi persetujuan. |
+| 2 | Penyedia Kerja mengonfirmasi persetujuan kandidat. | Sistem mendeteksi bahwa kuota penerimaan untuk lowongan tersebut sudah penuh. |
+| 3 | - | Sistem membatalkan aksi persetujuan, memperbarui status lowongan menjadi "Closed/Full", dan menampilkan pesan error bahwa kuota lowongan telah penuh. |
 
-**Skenario Alternatif 2: Penyedia menolak kandidat**
+<br>
 
-| No | Aksi Aktor | Reaksi Perangkat Lunak |
-| :--- | :--- | :--- |
-| 1 | Penyedia menolak kandidat | Ubah Menunggu menjadi Ditolak dan beri notifikasi; kandidat tidak boleh melamar ulang. |
-
-**Skenario Alternatif 3: Penawaran lain konflik dengan penugasan baru**
+**Skenario Alternatif 2: Penyedia Kerja Membatalkan Pemilihan Pelamar**
 
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
 | :--- | :--- | :--- |
-| 1 | Penawaran lain konflik dengan penugasan baru | Ubah menjadi DibatalkanSistem, simpan alasan dan kirim notifikasi; tidak menghapus riwayat. |
+| 1 | Penyedia Kerja menekan tombol "Pilih" pada kandidat. | Sistem menampilkan dialog konfirmasi persetujuan kandidat. |
+| 2 | Penyedia Kerja menekan tombol "Batal". | Sistem menutup dialog konfirmasi dan mempertahankan status daftar pelamar tanpa ada perubahan data. |
 
-**Skenario Alternatif 4: Fee atau tenggat invoice belum dikonfigurasi**
-
-| No | Aksi Aktor | Reaksi Perangkat Lunak |
-| :--- | :--- | :--- |
-| 1 | Fee atau tenggat invoice belum dikonfigurasi | Jangan menerima kandidat tanpa invoice valid; tampilkan konfigurasi yang belum tersedia. |
+---
 
 ### 4.4.7 Skenario UC07
 
-**Nama Use Case:** Melakukan Pembayaran Pekerjaan
-
+**Nama Use Case:** *Melakukan Pembayaran Pekerjaan*
+**Aktor:** Penyedia Kerja
+**Deskripsi:** Penyedia Kerja melakukan pembayaran upah pekerjaan beserta biaya komisi (*commission fee*) melalui *Payment Gateway* sebelum pekerjaan dapat dimulai (*In Progress*).
+**Kebutuhan Terkait:** KF14, KF15
 
 **Skenario Normal**
 
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
-| --- | --- | --- |
-| 1 | Penyedia membuka invoice per pekerja. | Sistem menampilkan upahDisepakati, biayaAdmin tambahan, totalBayar, dan waktuKedaluwarsa. |
-| 2 | Penyedia memilih metode dan menyelesaikan pembayaran. | Sistem meminta instruksi gateway; setelah callback sah dan cocok dengan invoice/nominal, sistem mencatat Berhasil dan mengubah Assigned menjadi InProgress. Dana belum diteruskan kepada pekerja. |
+| :--- | :--- | :--- |
+| 1 | Penyedia Kerja membuka rincian transaksi pekerjaan yang telah disepakati dan menekan tombol "Bayar". | Sistem menghitung total rincian tagihan (upah tenaga kerja + *commission fee* platform) dan menampilkan rincian pembayaran beserta tombol instruksi pembayaran. |
+| 2 | Penyedia Kerja memilih metode pembayaran dan menekan "Lanjutkan Pembayaran". | Sistem menghubungi API Payment Gateway, menerbitkan ID tagihan/pembayaran, dan menampilkan kode pembayaran / tautan transaksi. |
+| 3 | Penyedia Kerja menyelesaikan pembayaran melalui metode pembayaran yang dipilih. | Sistem menerima notifikasi konfirmasi pembayaran berhasil dari Payment Gateway. |
+| 4 | - | Sistem memverifikasi pembayaran, mencatat riwayat transaksi, mengubah status pekerjaan dari "Assigned" menjadi "In Progress", serta mengirimkan notifikasi kepada Tenaga Kerja bahwa pekerjaan siap dimulai. |
 
-**Skenario Alternatif 1: Pembayaran gagal**
+<br>
+
+**Skenario Alternatif 1: Pembayaran Gagal atau Dibatalkan oleh Payment Gateway**
 
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
 | :--- | :--- | :--- |
-| 1 | Pembayaran gagal | Catat status dan izinkan percobaan ulang selama invoice belum kedaluwarsa; hanya satu pembayaran berhasil diperbolehkan. |
+| 1 | Penyedia Kerja memilih metode pembayaran dan menekan "Lanjutkan Pembayaran". | Sistem mengarahkan Penyedia Kerja ke halaman transaksi Payment Gateway. |
+| 2 | Pembayaran gagal diproses oleh saluran pembayaran (misal: saldo tidak mencukupi atau transaksi ditolak). | Sistem menerima notifikasi kegagalan transaksi dari Payment Gateway, mencatat status transaksi sebagai "Failed", dan menampilkan pesan kesalahan kepada Penyedia Kerja beserta opsi untuk mencoba metode pembayaran lain. |
+| 3 | Penyedia Kerja memilih opsi metode pembayaran lain. | Sistem kembali ke langkah 2 skenario normal untuk membuat instruksi pembayaran baru. |
 
-**Skenario Alternatif 2: Invoice kedaluwarsa/dibatalkan sebelum bayar**
+<br>
 
-| No | Aksi Aktor | Reaksi Perangkat Lunak |
-| :--- | :--- | :--- |
-| 1 | Invoice kedaluwarsa/dibatalkan sebelum bayar | Rekonsiliasi status gateway, batalkan penugasan jika belum dibayar, lepas kuota/jadwal, tanpa memulihkan penawaran lain. |
-
-**Skenario Alternatif 3: Callback terlambat setelah pembatalan atau pembayaran ganda**
+**Skenario Alternatif 2: Waktu Pembayaran Habis (Timeout / Expired)**
 
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
 | :--- | :--- | :--- |
-| 1 | Callback terlambat setelah pembatalan atau pembayaran ganda | Catat untuk rekonsiliasi/refund; jangan mengaktifkan penugasan yang sudah dibatalkan atau menggandakan upah. |
+| 1 | Penyedia Kerja mendapatkan kode pembayaran dengan batas waktu tertentu. | Sistem mencatat batas waktu pembayaran (*expiry timestamp*) dan menunggu konfirmasi pembayaran. |
+| 2 | Penyedia Kerja tidak melakukan pembayaran hingga batas waktu terlewati. | Sistem menerima notifikasi kedaluwarsa dari Payment Gateway, mencatat status pembayaran "Expired", dan mengembalikan status transaksi ke antrean tagihan yang belum dibayar. |
+
+---
 
 ### 4.4.8 Skenario UC08
 
-**Nama Use Case:** Menyerahkan Hasil Pekerjaan
-
+**Nama Use Case:** *Menyerahkan Hasil Pekerjaan*
+**Aktor:** Tenaga Kerja
+**Deskripsi:** Tenaga Kerja mengunggah berkas bukti atau lampiran penyelesaian tugas ke sistem untuk diserahkan kepada Penyedia Kerja, mengubah status pekerjaan menjadi *Submitted*.
+**Kebutuhan Terkait:** KF16
 
 **Skenario Normal**
 
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
-| --- | --- | --- |
-| 1 | Pekerja membuka penugasan InProgress miliknya. | Sistem menampilkan formulir deskripsi hasil dan lampiran bukti yang wajib diisi. |
-| 2 | Pekerja mengirim deskripsi dan lampiran bukti. | Sistem memvalidasi otorisasi/berkas, membuat versi BuktiPenyerahan baru, mengubah pekerjaan menjadi Submitted, dan memberi notifikasi penyedia. |
+| :--- | :--- | :--- |
+| 1 | Tenaga Kerja membuka halaman detail pekerjaan aktif  yang berstatus "In Progress" dan menekan tombol "Serahkan Hasil Pekerjaan". | Sistem menampilkan formulir penyerahan pekerjaan yang berisi catatan penyelesaian dan kolom pengunggahan berkas bukti/lampiran. |
+| 2 | Tenaga Kerja mengisi deskripsi pengerjaan, mengunggah berkas bukti (foto/dokumen dengan limit ukuran file), dan menekan tombol "Kirim Hasil Pekerjaan". | Sistem memvalidasi kelengkapan isian serta format dan ukuran berkas yang diunggah. |
+| 3 | Tenaga Kerja mengonfirmasi penyerahan pada bukti konfirmasi akhir. | Sistem menyimpan berkas lampiran, mencatat stempel waktu pengiriman (*timestamp*), mengubah status pekerjaan menjadi "Submitted", serta mengirimkan notifikasi peninjauan hasil kepada Penyedia Kerja. |
 
-**Skenario Alternatif 1: Bukti kosong atau ukuran/format salah**
+<br>
+
+**Skenario Alternatif 1: Ukuran Berkas Melebihi Batas Maksimal**
 
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
 | :--- | :--- | :--- |
-| 1 | Bukti kosong atau ukuran/format salah | Tolak penyerahan dan pertahankan InProgress. |
+| 1 | Tenaga Kerja memilih berkas bukti yang berukuran lebih besar dari batas ketentuan (misal > 10 MB). | Sistem mendeteksi ukuran berkas melebihi kuota penyimpanan yang diizinkan. |
+| 2 | - | Sistem menggagalkan pengunggahan berkas, menampilkan pesan peringatan "Ukuran berkas melebihi batas maksimal 10 MB", dan meminta Tenaga Kerja memilih berkas lain. |
+| 3 | Tenaga Kerja memilih berkas baru yang sesuai dengan batasan ukuran. | Sistem memvalidasi berkas baru dan kembali ke langkah 2 skenario normal. |
 
-**Skenario Alternatif 2: Pekerja lain atau status bukan InProgress**
+<br>
 
-| No | Aksi Aktor | Reaksi Perangkat Lunak |
-| :--- | :--- | :--- |
-| 1 | Pekerja lain atau status bukan InProgress | Tolak akses/aksi. |
-
-**Skenario Alternatif 3: Pengiriman setelah revisi**
+**Skenario Alternatif 2: Tenaga Kerja Belum Mengunggah Berkas Wajib**
 
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
 | :--- | :--- | :--- |
-| 1 | Pengiriman setelah revisi | Buat versi berikutnya; bukti versi lama tetap tersimpan. |
+| 1 | Tenaga Kerja mengosongkan kolom lampiran bukti dan langsung menekan tombol "Kirim Hasil Pekerjaan". | Sistem mendeteksi bahwa bukti pengerjaan wajib dilampirkan. |
+| 2 | - | Sistem menampilkan pesan peringatan bahwa bukti pekerjaan tidak boleh kosong dan menolak pengiriman formulir hingga berkas diunggah. |
+
+---
 
 ### 4.4.9 Skenario UC09
 
-**Nama Use Case:** Memverifikasi Penyelesaian Pekerjaan
-
+**Nama Use Case:** *Memverifikasi Penyelesaian Pekerjaan*
+**Aktor:** Penyedia Kerja
+**Deskripsi:** Penyedia Kerja meninjau hasil pekerjaan yang diserahkan oleh Tenaga Kerja, mengonfirmasi penyelesaian tugas, mengubah status menjadi *Completed*, dan memicu instruksi pencairan upah ke saldo Tenaga Kerja.
+**Kebutuhan Terkait:** KF17, KF18
 
 **Skenario Normal**
 
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
-| --- | --- | --- |
-| 1 | Penyedia membuka hasil Submitted dari pekerja tertentu. | Sistem menampilkan deskripsi kesepakatan dan seluruh versi bukti. |
-| 2 | Penyedia mengonfirmasi hasil sesuai. | Sistem memeriksa tidak ada sengketa dana aktif, menetapkan Completed, memicu proses pencairan otomatis UC10, dan menampilkan pemberitahuan pencairan Diproses setelah instruksi diterima gateway. |
-| 3 | Penyedia memilih memberi ulasan. | Sistem membuka UC11. Keberhasilan transfer dilaporkan terpisah setelah callback gateway. |
+| :--- | :--- | :--- |
+| 1 | Penyedia Kerja membuka halaman rincian pekerjaan yang berstatus "Submitted". | Sistem menampilkan deskripsi hasil pekerjaan beserta lampiran bukti pengerjaan yang telah diunggah Tenaga Kerja. |
+| 2 | Penyedia Kerja memeriksa hasil kerja dan menekan tombol "Konfirmasi Selesai". | Sistem menampilkan bukti konfirmasi penyelesaian pekerjaan dengan peringatan bahwa dana upah akan langsung diteruskan ke Tenaga Kerja. |
+| 3 | Penyedia Kerja mengonfirmasi persetujuan hasil kerja. | Sistem mengubah status pekerjaan menjadi "Completed", memicu instruksi penyaluran upah ke akun Tenaga Kerja, memperbarui saldo pendapatan Tenaga Kerja, dan mengirimkan notifikasi penerimaan upah. |
+| 4 | - | Sistem secara otomatis mengarahkan Penyedia Kerja ke antarmuka formulir rating dan ulasan (UC10). |
 
-**Skenario Alternatif 1: Hasil belum sesuai**
+<br>
+
+**Skenario Alternatif 1: Hasil Pekerjaan Belum Sesuai (Penyedia Kerja Meminta Revisi)**
 
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
 | :--- | :--- | :--- |
-| 1 | Hasil belum sesuai | Penyedia mengisi catatan revisi; sistem mengubah Submitted ke InProgress dan memberi notifikasi pekerja. |
+| 1 | Penyedia Kerja memeriksa hasil kerja dan mendapati hasil pekerjaan belum sesuai kesepakatan. | Penyedia Kerja menekan tombol "Minta Revisi / Perbaikan". |
+| 2 | Penyedia Kerja mengisi catatan kekurangan pekerjaan pada kolom deskripsi revisi dan menekan "Kirim Permintaan Revisi". | Sistem menyimpan catatan revisi, mengembalikan status pekerjaan menjadi "In Progress", serta mengirimkan notifikasi permintaan revisi kepada Tenaga Kerja. |
 
-**Skenario Alternatif 2: Sengketa atau tidak ada respons**
+<br>
 
-| No | Aksi Aktor | Reaksi Perangkat Lunak |
-| :--- | :--- | :--- |
-| 1 | Sengketa atau tidak ada respons | Buka UC12; tidak ada persetujuan/pencairan otomatis karena waktu berlalu. |
-
-**Skenario Alternatif 3: Instruksi transfer gagal**
+**Skenario Alternatif 2: Terjadi Ketidaksepakatan / Perselisihan Hasil Kerja**
 
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
 | :--- | :--- | :--- |
-| 1 | Instruksi transfer gagal | Pekerjaan tetap Completed, pencairan tercatat Gagal/Diproses sesuai status eksternal; jangan mengirim notifikasi uang diterima. |
+| 1 | Penyedia Kerja memeriksa hasil pekerjaan namun Tenaga Kerja tidak menyelesaikan tanggung jawab sama sekali atau melanggar kesepakatan. | Penyedia Kerja menekan tombol "Ajukan Komplain". |
+| 2 | - | Sistem mengarahkan Penyedia Kerja ke alur penanganan sengketa (UC11 / Menangani Keluhan dan Sengketa) serta menahan status dana pekerjaan. |
+
+<br>
 
 ### 4.4.10 Skenario UC10
 
-**Nama Use Case:** Memantau Pencairan Upah Otomatis
-
+**Nama Use Case:** *Melakukan Pencairan Dana*
+**Aktor:** Tenaga Kerja
+**Deskripsi:** Tenaga Kerja menarik upah yang telah terkumpul ke rekening bank atau e-wallet melalui sistem Payment Gateway.
+**Kebutuhan Terkait:** KF19, KF20
 
 **Skenario Normal**
 
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
-| --- | --- | --- |
-| 1 | Pemicu otomatis: hasil disetujui melalui UC09 atau keputusan CS yang memenuhi syarat. | Sistem memvalidasi pembayaran Berhasil, penugasan Completed, tujuan pencairan, serta tidak ada penahanan/refund atau pencairan berhasil sebelumnya, lalu mencatat satu PencairanDana. |
-| 2 | Tidak ada pengajuan tarik saldo dari pekerja. | Sistem mengirim instruksi sebesar upahDisepakati dengan kunci idempotensi; callback sah memperbarui status transfer. |
-| 3 | Pekerja membuka riwayat pencairan. | Sistem menampilkan nominal, tujuan, waktu, dan status nyata serta notifikasi ketika transfer Berhasil. |
+| :--- | :--- | :--- |
+| 1 | Tenaga Kerja membuka halaman saldo/dompet dan menekan tombol "Tarik Dana". | Sistem menampilkan formulir pencairan dana beserta saldo yang tersedia dan kolom pilihan rekening bank/e-wallet tujuan. |
+| 2 | Tenaga Kerja memilih rekening tujuan, memasukkan nominal penarikan, dan menekan "Ajukan Pencairan". | Sistem memvalidasi data rekening tujuan dan nominal penarikan terhadap saldo yang tersedia. |
+| 3 | Tenaga Kerja mengonfirmasi pengajuan pencairan. | Sistem mengubah status pencairan menjadi "Diproses". |
+| 4 | - | Sistem menerima konfirmasi transfer berhasil dari Payment Gateway, mencatat log pencairan (ID transaksi, nominal, identitas penerima, waktu, status transfer), mengurangi saldo, dan menampilkan notifikasi bahwa pencairan berhasil. |
 
-**Skenario Alternatif 1: Tujuan pembayaran tidak valid**
+<br>
+
+**Skenario Alternatif 1: Data Rekening/E-wallet Tidak Valid**
 
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
 | :--- | :--- | :--- |
-| 1 | Tujuan pembayaran tidak valid | Tahan pencairan dan minta pekerja memperbaiki data lewat UC13, lalu proses ulang otomatis setelah valid. |
+| 1 | Tenaga Kerja memasukkan nomor rekening/e-wallet dengan format tidak valid dan menekan "Ajukan Pencairan". | Sistem gagal memvalidasi data rekening tujuan. |
+| 2 | - | Sistem menampilkan pesan kesalahan bahwa data rekening tidak valid dan meminta Tenaga Kerja memeriksa kembali data tujuan. |
 
-**Skenario Alternatif 2: Timeout atau callback berulang**
+<br>
 
-| No | Aksi Aktor | Reaksi Perangkat Lunak |
-| :--- | :--- | :--- |
-| 1 | Timeout atau callback berulang | Rekonsiliasi dan gunakan identitas pencairan yang sama; tidak membuat transfer kedua. |
-
-**Skenario Alternatif 3: Ada tiket dana aktif/refund**
+**Skenario Alternatif 2: Nominal Penarikan Melebihi Saldo**
 
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
 | :--- | :--- | :--- |
-| 1 | Ada tiket dana aktif/refund | Tunda pencairan sampai syarat terpenuhi; refund dan pencairan saling mengunci. |
+| 1 | Tenaga Kerja memasukkan nominal penarikan yang lebih besar dari saldo yang tersedia. | Sistem mendeteksi nominal melebihi saldo tersedia. |
+| 2 | - | Sistem menolak pengajuan, menampilkan pesan peringatan saldo tidak mencukupi, dan menggagalkan pengiriman instruksi ke Payment Gateway. |
+
+<br>
 
 ### 4.4.11 Skenario UC11
 
-**Nama Use Case:** Memberikan Penilaian Kerja
-
+**Nama Use Case:** *Memberikan Penilaian Kerja*
+**Aktor:** Tenaga Kerja, Penyedia Kerja
+**Deskripsi:** Pengguna memberikan penilaian performa (rating skala 1–5) dan ulasan setelah suatu pekerjaan selesai, yang digunakan untuk memperbarui portofolio dan reputasi pengguna yang dinilai.
+**Kebutuhan Terkait:** KF21, KF22, KF23
 
 **Skenario Normal**
 
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
-| --- | --- | --- |
-| 1 | Salah satu pihak membuka penugasan Completed dan memilih Beri Ulasan. | Sistem memeriksa keterlibatan pengguna dan keunikan pemberi/penerima/penugasan lalu menampilkan formulir rating wajib 1–5 dan teks ulasan opsional. |
-| 2 | Pengguna mengirim rating dan ulasan opsional. | Sistem menyimpan penilaian dan memperbarui rata-rata rating penerima; pihak lain tetap dapat memberi ulasannya sendiri. |
+| :--- | :--- | :--- |
+| 1 | Pengguna membuka halaman pekerjaan berstatus "Completed" dan menekan "Beri Rating & Ulasan". | Sistem menampilkan formulir rating (skala 1–5) dan kolom ulasan teks. |
+| 2 | Pengguna memilih nilai rating, mengisi ulasan, dan menekan "Kirim Ulasan". | Sistem memvalidasi kelengkapan isian dan menyimpan data rating serta ulasan ke basis data. |
+| 3 | - | Sistem mengunci formulir ulasan untuk pekerjaan tersebut, menghitung ulang rata-rata rating pengguna yang dinilai, dan memperbarui tampilan portofolio pada profilnya. |
 
-**Skenario Alternatif 1: Rating di luar 1–5, ulasan ganda, atau pengguna bukan pihak penugasan**
+<br>
+
+**Skenario Alternatif 1: Pengiriman Ulasan Ganda**
 
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
 | :--- | :--- | :--- |
-| 1 | Rating di luar 1–5, ulasan ganda, atau pengguna bukan pihak penugasan | Tolak dan jelaskan alasan tanpa mengubah agregat rating. |
+| 1 | Pengguna yang sudah pernah mengirim ulasan mencoba membuka kembali formulir ulasan untuk pekerjaan yang sama. | Sistem mendeteksi bahwa ulasan untuk pekerjaan tersebut sudah pernah dikirim. |
+| 2 | - | Sistem mengunci formulir, menampilkan pesan bahwa ulasan sudah pernah diberikan, dan menolak pengiriman ulasan tambahan. |
+
+<br>
+
+**Skenario Alternatif 2: Rating Tidak Diisi**
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | Pengguna mengosongkan kolom rating dan langsung menekan "Kirim Ulasan". | Sistem mendeteksi rating wajib belum dipilih. |
+| 2 | - | Sistem menampilkan pesan peringatan bahwa rating wajib diisi dan menggagalkan pengiriman formulir. |
+
+<br>
 
 ### 4.4.12 Skenario UC12
 
-**Nama Use Case:** Menangani Keluhan dan Sengketa
-
-
-**Skenario Normal**
-
-| No | Aksi Aktor | Reaksi Perangkat Lunak |
-| :--- | :--- | :--- |
-| 1 | Pengguna mengirim kategori masalah, deskripsi keluhan, referensi penugasan jika terkait pekerjaan, dan bukti jika tersedia. | Sistem membuat tiket MenungguPeninjauan dan, jika menyangkut dana penugasan yang belum disalurkan, menahan penyaluran. |
-| 2 | Customer Service memeriksa bukti dan mencatat keputusan beserta alasan. | Sistem memvalidasi otorisasi serta status dana. Refund upah membatalkan penugasan dan memicu refund; persetujuan penerusan upah menyelesaikan penugasan jika diperlukan lalu memicu pencairan; tidak ada tindakan dana untuk kendala akun. |
-| 3 | Pihak terkait membuka tiket. | Sistem menampilkan keputusan, riwayat, dan status pelaksanaan dana. Keputusan tidak dianggap bukti bahwa transfer eksternal telah selesai. |
-
-**Skenario Alternatif 1: Bukti belum cukup**
-
-| No | Aksi Aktor | Reaksi Perangkat Lunak |
-| :--- | :--- | :--- |
-| 1 | Bukti belum cukup | CS meminta bukti; sistem mencatat MenungguBukti dan menyimpan tambahan pada riwayat. |
-
-**Skenario Alternatif 2: Keluhan ditolak**
-
-| No | Aksi Aktor | Reaksi Perangkat Lunak |
-| :--- | :--- | :--- |
-| 1 | Keluhan ditolak | Simpan alasan dan lepas penahanan hanya bila tidak ada tiket aktif lain; pencairan hanya jika pekerjaan sudah Completed. |
-
-**Skenario Alternatif 3: Pelapor membatalkan tiket MenungguPeninjauan**
-
-| No | Aksi Aktor | Reaksi Perangkat Lunak |
-| :--- | :--- | :--- |
-| 1 | Pelapor membatalkan tiket MenungguPeninjauan | Ubah Dibatalkan dan evaluasi penahanan dana; tidak otomatis menyetujui hasil. |
-
-**Skenario Alternatif 4: Upah terasa tidak sesuai effort**
-
-| No | Aksi Aktor | Reaksi Perangkat Lunak |
-| :--- | :--- | :--- |
-| 1 | Upah terasa tidak sesuai effort | Jika ruang lingkup tetap, nominal mengikuti kesepakatan. Tambahan ruang lingkup dapat ditolak/dilaporkan. |
-
-**Skenario Alternatif 5: Dana sudah disalurkan**
-
-| No | Aksi Aktor | Reaksi Perangkat Lunak |
-| :--- | :--- | :--- |
-| 1 | Dana sudah disalurkan | CS meninjau secara manual; sistem tidak menjanjikan pengembalian otomatis dari rekening pekerja. |
-
-**Skenario Alternatif 6: Refund/pencairan eksternal gagal**
-
-| No | Aksi Aktor | Reaksi Perangkat Lunak |
-| :--- | :--- | :--- |
-| 1 | Refund/pencairan eksternal gagal | Catat kegagalan dan lakukan rekonsiliasi; keputusan tiket dan status dana ditampilkan terpisah. |
-
-### 4.4.13 Skenario UC13
-
-**Nama Use Case:** Mengelola Profil dan Portofolio
-
+**Nama Use Case:** *Menangani Keluhan*
+**Aktor:** Tenaga Kerja, Penyedia Kerja, Customer Service
+**Deskripsi:** Pengguna melaporkan kendala atau sengketa terkait suatu pekerjaan, yang kemudian ditinjau, ditengahi, dan diputuskan oleh Customer Service, termasuk eksekusi refund atau pencairan dana sesuai bukti.
+**Kebutuhan Terkait:** KF24, KF25, KF26
 
 **Skenario Normal**
 
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
-| --- | --- | --- |
-| 1 | Pengguna yang sudah login membuka profil. | Sistem menampilkan data sesuai peran; pekerja mendapat menu portofolio dan tujuan pencairan. |
-| 2 | Pengguna melengkapi profil; pekerja menambahkan portofolio dengan deskripsi dan foto/tautan bukti. | Sistem memvalidasi kepemilikan dan profil sesuai peran dan portofolio yang memuat judul, deskripsi, bidang, serta foto atau tautan bukti, menyimpan profil/portofolio, dan menampilkan kelengkapan terpisah dari status verifikasi. |
-| 3 | Pekerja memilih portofolio saat melamar. | Sistem hanya menawarkan portofolio lengkap milik pekerja; pengalaman informal diperbolehkan. |
+| :--- | :--- | :--- |
+| 1 | Pengguna membuka halaman pekerjaan bermasalah dan menekan "Ajukan Komplain/Keluhan". | Sistem menampilkan formulir laporan berisi kategori masalah, deskripsi, dan kolom unggah bukti pendukung. |
+| 2 | Pengguna mengisi deskripsi keluhan, mengunggah bukti pendukung, dan menekan "Kirim Laporan". | Sistem menerbitkan tiket sengketa baru, menyimpan bukti yang diunggah, dan menampilkannya pada dashboard Customer Service. |
+| 3 | Customer Service meninjau tiket, memeriksa bukti dari kedua pihak, dan menetapkan keputusan sengketa. | Sistem mengeksekusi tindakan sesuai keputusan (refund ke Penyedia Kerja / pencairan dana ke Tenaga Kerja) dan mencatat perubahan status penanganan. |
+| 4 | - | Sistem mencatat riwayat aktivitas penanganan sengketa secara kronologis dan mengirimkan notifikasi hasil keputusan kepada kedua pihak terkait. |
 
-**Skenario Alternatif 1: Portofolio tanpa deskripsi/bukti atau bukan milik pengguna**
+<br>
+
+**Skenario Alternatif 1: Permintaan Bukti Tambahan**
 
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
 | :--- | :--- | :--- |
-| 1 | Portofolio tanpa deskripsi/bukti atau bukan milik pengguna | Tolak penyimpanan/pemilihan. |
+| 1 | Customer Service menilai bukti yang diberikan belum cukup dan menekan "Minta Bukti Tambahan". | Sistem mengirimkan notifikasi permintaan bukti tambahan kepada pihak terkait dan mencatatnya dalam riwayat penanganan. |
+| 2 | Pengguna mengunggah bukti tambahan yang diminta. | Sistem menyimpan bukti baru dan kembali ke langkah 3 skenario normal. |
 
-**Skenario Alternatif 2: Data identitas terverifikasi berubah**
+<br>
 
-| No | Aksi Aktor | Reaksi Perangkat Lunak |
-| :--- | :--- | :--- |
-| 1 | Data identitas terverifikasi berubah | Kembalikan kebutuhan pemeriksaan identitas sebelum publikasi/pengajuan baru; pekerjaan berjalan tetap tercatat. |
-
-**Skenario Alternatif 3: Portofolio diubah/dihapus setelah melamar**
+**Skenario Alternatif 2: Keluhan Ditolak karena Bukti Tidak Cukup**
 
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
 | :--- | :--- | :--- |
-| 1 | Portofolio diubah/dihapus setelah melamar | Ringkasan pada penawaran lama tetap tersimpan; pengajuan baru memerlukan minimal satu portofolio lengkap. |
+| 1 | Customer Service menetapkan bahwa laporan tidak memiliki dasar/bukti yang valid. | Sistem mengubah status tiket menjadi "Ditolak". |
+| 2 | - | Sistem mencatat alasan penolakan dalam riwayat penanganan dan mengirimkan notifikasi penolakan kepada pelapor tanpa mengeksekusi refund/pencairan. |
 
+<br>
+
+**Skenario Alternatif 3: Pengguna Membatalkan Tiket Keluhan**
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | Pelapor membuka tiket sengketa berstatus "Menunggu Peninjauan" dan menekan "Batalkan Laporan". | Sistem menampilkan konfirmasi pembatalan tiket. |
+| 2 | Pelapor mengonfirmasi pembatalan. | Sistem mengubah status tiket menjadi "Dibatalkan", mencatat pembatalan dalam riwayat penanganan, dan melepas penahanan dana pekerjaan (jika ada). |
 
 ---
 
 # BAB 5: Pemodelan Kelas
 
 ## 5.1 Identifikasi Kelas
+Salin ulang seluruh kelas yang telah diidentifikasi dari BAB 4.1 dokumen *Class Diagram*.
 
 | ID Kelas | Nama Kelas | Deskripsi Kelas | ID Use Case |
-| --- | --- | --- | --- |
-| C01 | Pengguna | Entitas abstrak akun; identitas dan status verifikasi digunakan bersama oleh kedua peran publik. Akun CS disediakan internal. | UC01, UC02, UC03, UC05, UC12, UC13 |
-| C02 | TenagaKerja | Turunan Pengguna yang menyimpan keahlian, tujuan pencairan, rating, dan atribut portofolio berupa daftar judul, deskripsi, bidang pekerjaan, serta foto atau tautan bukti pengalaman. | UC01, UC02, UC04, UC05, UC06, UC08, UC10, UC11, UC13 |
-| C03 | PenyediaKerja | Turunan Pengguna yang memublikasikan lowongan dan membayar tagihan per pekerja. | UC01, UC02, UC03, UC06, UC07, UC09, UC11, UC13 |
-| C04 | CustomerService | Turunan Pengguna untuk petugas internal yang memeriksa KTP dan menangani sengketa. | UC02, UC12 |
-| C05 | LowonganPekerjaan | Kebutuhan tenaga kerja dalam tepat satu bidang, dengan kuota dan tarif awal per pekerja. | UC03, UC04, UC05, UC06, UC07, UC12 |
-| C06 | PengajuanPenawaran | Penawaran pekerja pada lowongan; menyimpan nominal, portofolio saat pengajuan, serta riwayat keputusan. | UC05, UC06, UC07 |
-| C07 | TransaksiPekerjaan | Kesepakatan pelaksanaan pekerjaan oleh satu pekerja yang penawarannya diterima, mencakup upah, jadwal, ruang lingkup, dan status pengerjaan. | UC05, UC06, UC07, UC08, UC09, UC10, UC11, UC12 |
-| C08 | BuktiPenyerahan | Satu versi penyerahan hasil milik satu penugasan; pengiriman ulang setelah revisi membuat versi baru. | UC08, UC09 |
-| C09 | TagihanPembayaran | Invoice per penugasan berisi upah yang disetujui dan biaya admin tambahan. | UC06, UC07, UC09, UC10, UC12 |
-| C10 | PencairanDana | Catatan penyaluran otomatis seluruh upah yang disepakati ke tujuan pembayaran pekerja setelah persetujuan hasil. | UC09, UC10, UC12 |
-| C11 | UlasanRating | Penilaian satu pemberi kepada satu penerima untuk satu penugasan yang selesai. | UC11 |
-| C12 | TiketSengketa | Keluhan akun atau sengketa pekerjaan; idTransaksi opsional untuk kendala akun. | UC12 |
-| C13 | RiwayatSengketa | Catatan kronologis tindakan, bukti tambahan, dan perubahan status selama penanganan tiket keluhan. | UC12 |
-| C14 | Notifikasi | Pesan kepada pengguna tentang verifikasi, penawaran, pekerjaan, pembayaran, atau sengketa. | UC02, UC05, UC06, UC07, UC08, UC09, UC10, UC12 |
-| C15 | PaymentGateway | Representasi integrasi layanan pembayaran eksternal. Bukan penyimpan dana milik platform; UI dan Controller dipertahankan mengikuti struktur asistensi. | UC07, UC09, UC10, UC12 |
-| C16 | PenggunaUI | Antarmuka untuk Pengguna; hanya menangani masukan dan penyajian informasi. | UC01, UC02, UC03, UC05, UC12, UC13 |
-| C17 | TenagaKerjaUI | Antarmuka profil pekerja, pengelolaan dan pemilihan portofolio, serta riwayat pekerjaan. | UC01, UC02, UC04, UC05, UC06, UC08, UC10, UC11, UC13 |
-| C18 | PenyediaKerjaUI | Antarmuka untuk PenyediaKerja; hanya menangani masukan dan penyajian informasi. | UC01, UC02, UC03, UC06, UC07, UC09, UC11, UC13 |
-| C19 | CustomerServiceUI | Antarmuka untuk CustomerService; hanya menangani masukan dan penyajian informasi. | UC02, UC12 |
-| C20 | LowonganPekerjaanUI | Antarmuka untuk LowonganPekerjaan; hanya menangani masukan dan penyajian informasi. | UC03, UC04, UC05, UC06, UC07, UC12 |
-| C21 | PengajuanPenawaranUI | Antarmuka untuk PengajuanPenawaran; hanya menangani masukan dan penyajian informasi. | UC05, UC06, UC07 |
-| C22 | TransaksiPekerjaanUI | Antarmuka untuk TransaksiPekerjaan; hanya menangani masukan dan penyajian informasi. | UC05, UC06, UC07, UC08, UC09, UC10, UC11, UC12 |
-| C23 | BuktiPenyerahanUI | Antarmuka untuk BuktiPenyerahan; hanya menangani masukan dan penyajian informasi. | UC08, UC09 |
-| C24 | TagihanPembayaranUI | Antarmuka untuk TagihanPembayaran; hanya menangani masukan dan penyajian informasi. | UC06, UC07, UC09, UC10, UC12 |
-| C25 | PencairanDanaUI | Antarmuka untuk PencairanDana; hanya menangani masukan dan penyajian informasi. | UC09, UC10, UC12 |
-| C26 | UlasanRatingUI | Antarmuka untuk UlasanRating; hanya menangani masukan dan penyajian informasi. | UC11 |
-| C27 | TiketSengketaUI | Antarmuka untuk TiketSengketa; hanya menangani masukan dan penyajian informasi. | UC12 |
-| C28 | RiwayatSengketaUI | Antarmuka untuk RiwayatSengketa; hanya menangani masukan dan penyajian informasi. | UC12 |
-| C29 | NotifikasiUI | Antarmuka untuk Notifikasi; hanya menangani masukan dan penyajian informasi. | UC02, UC05, UC06, UC07, UC08, UC09, UC10, UC12 |
-| C30 | PaymentGatewayUI | Antarmuka untuk PaymentGateway; hanya menangani masukan dan penyajian informasi. | UC07, UC09, UC10, UC12 |
-| C31 | PenggunaController | Pengendali alur Pengguna; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. | UC01, UC02, UC03, UC05, UC12, UC13 |
-| C32 | TenagaKerjaController | Pengendali profil dan atribut portofolio pekerja, termasuk validasi kepemilikan, kelengkapan, dan kelayakan melamar. | UC01, UC02, UC04, UC05, UC06, UC08, UC10, UC11, UC13 |
-| C33 | PenyediaKerjaController | Pengendali alur PenyediaKerja; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. | UC01, UC02, UC03, UC06, UC07, UC09, UC11, UC13 |
-| C34 | CustomerServiceController | Pengendali alur CustomerService; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. | UC02, UC12 |
-| C35 | LowonganPekerjaanController | Pengendali alur LowonganPekerjaan; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. | UC03, UC04, UC05, UC06, UC07, UC12 |
-| C36 | PengajuanPenawaranController | Pengendali alur PengajuanPenawaran; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. | UC05, UC06, UC07 |
-| C37 | TransaksiPekerjaanController | Pengendali alur TransaksiPekerjaan; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. | UC05, UC06, UC07, UC08, UC09, UC10, UC11, UC12 |
-| C38 | BuktiPenyerahanController | Pengendali alur BuktiPenyerahan; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. | UC08, UC09 |
-| C39 | TagihanPembayaranController | Pengendali alur TagihanPembayaran; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. | UC06, UC07, UC09, UC10, UC12 |
-| C40 | PencairanDanaController | Pengendali alur PencairanDana; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. | UC09, UC10, UC12 |
-| C41 | UlasanRatingController | Pengendali alur UlasanRating; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. | UC11 |
-| C42 | TiketSengketaController | Pengendali alur TiketSengketa; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. | UC12 |
-| C43 | RiwayatSengketaController | Pengendali alur RiwayatSengketa; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. | UC12 |
-| C44 | NotifikasiController | Pengendali alur Notifikasi; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. | UC02, UC05, UC06, UC07, UC08, UC09, UC10, UC12 |
-| C45 | PaymentGatewayController | Pengendali alur PaymentGateway; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. | UC07, UC09, UC10, UC12 |
+| :--- | :--- | :--- | :--- |
+| *C01* | *Pelanggan* | *Menyimpan data akun pelanggan yang membuat pesanan.* | *UC01, UC05* |
+| *C02* | *Pesanan* | *Menyimpan data pesanan beserta status pembayarannya.* | *UC01, UC03, UC05* |
+| *C03* | *Keranjang* | *Menyimpan sementara item yang dipilih sebelum checkout.* | *UC01, UC02* |
+| *...* | *...* | *...* | *...* |
 
 ## 5.2 Diagram Kelas per Use Case
+Salin ulang diagram kelas untuk setiap use case dari BAB 4.2 dokumen *Class Diagram*, lengkap dengan tabel atribut dan metode/operasinya.
 
 ### 5.2.1 Use Case UC01
 
-**Nama Use Case:** Melakukan Registrasi dan Login
-
-#### Identifikasi Kelas
-
-| ID Kelas | Nama Kelas | Deskripsi Kelas |
-| --- | --- | --- |
-| C01 | Pengguna | Entitas abstrak akun; identitas dan status verifikasi digunakan bersama oleh kedua peran publik. Akun CS disediakan internal. |
-| C02 | TenagaKerja | Turunan Pengguna yang menyimpan keahlian, tujuan pencairan, rating, dan atribut portofolio berupa daftar judul, deskripsi, bidang pekerjaan, serta foto atau tautan bukti pengalaman. |
-| C03 | PenyediaKerja | Turunan Pengguna yang memublikasikan lowongan dan membayar tagihan per pekerja. |
-| C16 | PenggunaUI | Antarmuka untuk Pengguna; hanya menangani masukan dan penyajian informasi. |
-| C17 | TenagaKerjaUI | Antarmuka profil pekerja, pengelolaan dan pemilihan portofolio, serta riwayat pekerjaan. |
-| C18 | PenyediaKerjaUI | Antarmuka untuk PenyediaKerja; hanya menangani masukan dan penyajian informasi. |
-| C31 | PenggunaController | Pengendali alur Pengguna; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-| C32 | TenagaKerjaController | Pengendali profil dan atribut portofolio pekerja, termasuk validasi kepemilikan, kelengkapan, dan kelayakan melamar. |
-| C33 | PenyediaKerjaController | Pengendali alur PenyediaKerja; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-
-#### Diagram Kelas
+**Nama Use Case:** *Memesan Produk*
 
 <p align="center">
-<img alt="Class Diagram UC01" src="./assets/diagram/Diagram uc/class-diagram-uc01.png" width="70%">
+<img alt="Contoh Class Diagram" src="./assets/diagram/contoh-class-diagram.webp" width="70%">
 </p>
 <p align="center">
-<i>Gambar 2. Diagram Kelas Use Case UC01</i>
+<i>Gambar 3. Contoh Diagram Kelas Use Case UC01</i>
 </p>
-<br>
 
 | ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
-| --- | --- | --- | --- |
-| C01 | Pengguna | -idPengguna-nama-email-passwordHash-tanggalLahir-nomorTelepon-peran-fotoKtpUrl-statusVerifikasi-alasanPenolakan-waktuPengajuanVerifikasi-waktuVerifikasi-idPemeriksa | +hitungUsia()<br>+perbaruiProfil(dataProfil)<br>+ajukanVerifikasi(fotoKtpUrl)<br>+perbaruiStatusVerifikasi(statusVerifikasi, alasanPenolakan, idPemeriksa)<br>+cekTerverifikasi() |
-| C02 | TenagaKerja | -portofolio-keahlian-ringkasanProfil-tujuanPencairan-ratingRataRata | +perbaruiPortofolio(dataPortofolio)<br>+hapusPortofolio(indeksPortofolio)<br>+cekKelengkapanPortofolio()<br>+perbaruiProfilPekerja(dataProfil)<br>+cekKelengkapanProfil()<br>+perbaruiTujuanPencairan(tujuanPencairan)<br>+perbaruiRating(ratingRataRata) |
-| C03 | PenyediaKerja | -deskripsiPenyedia-ratingRataRata | +perbaruiProfilPenyedia(dataProfil)<br>+perbaruiRating(ratingRataRata) |
-| C16 | PenggunaUI | — | +tampilkanFormRegistrasi()<br>+tampilkanFormLogin()<br>+tampilkanProfil()<br>+tampilkanFormVerifikasi() |
-| C17 | TenagaKerjaUI | — | +tampilkanFormProfilPekerja()<br>+tampilkanDaftarPortofolio()<br>+tampilkanFormPortofolio()<br>+tampilkanPilihanPortofolio()<br>+tampilkanRiwayatPekerjaan() |
-| C18 | PenyediaKerjaUI | — | +tampilkanFormProfilPenyedia()<br>+tampilkanDashboardPenyedia() |
-| C31 | PenggunaController | — | +prosesRegistrasi(dataRegistrasi)<br>+prosesLogin(email, password)<br>+simpanProfil(idPengguna, dataProfil)<br>+ajukanVerifikasi(idPengguna, fotoKtpUrl)<br>+validasiBerkas(berkas, jenisBerkas) |
-| C32 | TenagaKerjaController | — | +simpanProfilPekerja(idPengguna, dataProfil)<br>+simpanPortofolio(idTenagaKerja, dataPortofolio)<br>+hapusPortofolio(idTenagaKerja, indeksPortofolio)<br>+validasiPortofolio(idTenagaKerja, indeksPortofolio)<br>+ambilRingkasanPortofolio(idTenagaKerja, indeksPortofolio)<br>+validasiKelayakanMelamar(idTenagaKerja) |
-| C33 | PenyediaKerjaController | — | +simpanProfilPenyedia(idPengguna, dataProfil)<br>+validasiKelayakanPublikasi(idPenyediaKerja) |
-
-### 5.2.2 Use Case UC02
-
-**Nama Use Case:** Mengelola Verifikasi Identitas
-
-#### Identifikasi Kelas
-
-| ID Kelas | Nama Kelas | Deskripsi Kelas |
-| --- | --- | --- |
-| C01 | Pengguna | Entitas abstrak akun; identitas dan status verifikasi digunakan bersama oleh kedua peran publik. Akun CS disediakan internal. |
-| C02 | TenagaKerja | Turunan Pengguna yang menyimpan keahlian, tujuan pencairan, rating, dan atribut portofolio berupa daftar judul, deskripsi, bidang pekerjaan, serta foto atau tautan bukti pengalaman. |
-| C03 | PenyediaKerja | Turunan Pengguna yang memublikasikan lowongan dan membayar tagihan per pekerja. |
-| C04 | CustomerService | Turunan Pengguna untuk petugas internal yang memeriksa KTP dan menangani sengketa. |
-| C14 | Notifikasi | Pesan kepada pengguna tentang verifikasi, penawaran, pekerjaan, pembayaran, atau sengketa. |
-| C16 | PenggunaUI | Antarmuka untuk Pengguna; hanya menangani masukan dan penyajian informasi. |
-| C17 | TenagaKerjaUI | Antarmuka profil pekerja, pengelolaan dan pemilihan portofolio, serta riwayat pekerjaan. |
-| C18 | PenyediaKerjaUI | Antarmuka untuk PenyediaKerja; hanya menangani masukan dan penyajian informasi. |
-| C19 | CustomerServiceUI | Antarmuka untuk CustomerService; hanya menangani masukan dan penyajian informasi. |
-| C29 | NotifikasiUI | Antarmuka untuk Notifikasi; hanya menangani masukan dan penyajian informasi. |
-| C31 | PenggunaController | Pengendali alur Pengguna; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-| C32 | TenagaKerjaController | Pengendali profil dan atribut portofolio pekerja, termasuk validasi kepemilikan, kelengkapan, dan kelayakan melamar. |
-| C33 | PenyediaKerjaController | Pengendali alur PenyediaKerja; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-| C34 | CustomerServiceController | Pengendali alur CustomerService; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-| C44 | NotifikasiController | Pengendali alur Notifikasi; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-
-#### Diagram Kelas
-
-<p align="center">
-<img alt="Class Diagram UC01" src="./assets/diagram/Diagram uc/class-diagram-uc02.png" width="70%">
-</p>
-<p align="center">
-<i>Gambar 3. Diagram Kelas Use Case UC02</i>
-</p>
-<br>
-
-| ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
-| --- | --- | --- | --- |
-| C01 | Pengguna | -idPengguna-nama-email-passwordHash-tanggalLahir-nomorTelepon-peran-fotoKtpUrl-statusVerifikasi-alasanPenolakan-waktuPengajuanVerifikasi-waktuVerifikasi-idPemeriksa | +hitungUsia()<br>+perbaruiProfil(dataProfil)<br>+ajukanVerifikasi(fotoKtpUrl)<br>+perbaruiStatusVerifikasi(statusVerifikasi, alasanPenolakan, idPemeriksa)<br>+cekTerverifikasi() |
-| C02 | TenagaKerja | -portofolio-keahlian-ringkasanProfil-tujuanPencairan-ratingRataRata | +perbaruiPortofolio(dataPortofolio)<br>+hapusPortofolio(indeksPortofolio)<br>+cekKelengkapanPortofolio()<br>+perbaruiProfilPekerja(dataProfil)<br>+cekKelengkapanProfil()<br>+perbaruiTujuanPencairan(tujuanPencairan)<br>+perbaruiRating(ratingRataRata) |
-| C03 | PenyediaKerja | -deskripsiPenyedia-ratingRataRata | +perbaruiProfilPenyedia(dataProfil)<br>+perbaruiRating(ratingRataRata) |
-| C04 | CustomerService | -hakAkses | +cekHakAkses(aksi) |
-| C14 | Notifikasi | -idNotifikasi-idPenerima-pesan-sudahDibaca-waktuKirim | +tandaiDibaca() |
-| C16 | PenggunaUI | — | +tampilkanFormRegistrasi()<br>+tampilkanFormLogin()<br>+tampilkanProfil()<br>+tampilkanFormVerifikasi() |
-| C17 | TenagaKerjaUI | — | +tampilkanFormProfilPekerja()<br>+tampilkanDaftarPortofolio()<br>+tampilkanFormPortofolio()<br>+tampilkanPilihanPortofolio()<br>+tampilkanRiwayatPekerjaan() |
-| C18 | PenyediaKerjaUI | — | +tampilkanFormProfilPenyedia()<br>+tampilkanDashboardPenyedia() |
-| C19 | CustomerServiceUI | — | +tampilkanAntreanVerifikasi()<br>+tampilkanDashboardKeluhan() |
-| C29 | NotifikasiUI | — | +tampilkanNotifikasi() |
-| C31 | PenggunaController | — | +prosesRegistrasi(dataRegistrasi)<br>+prosesLogin(email, password)<br>+simpanProfil(idPengguna, dataProfil)<br>+ajukanVerifikasi(idPengguna, fotoKtpUrl)<br>+validasiBerkas(berkas, jenisBerkas) |
-| C32 | TenagaKerjaController | — | +simpanProfilPekerja(idPengguna, dataProfil)<br>+simpanPortofolio(idTenagaKerja, dataPortofolio)<br>+hapusPortofolio(idTenagaKerja, indeksPortofolio)<br>+validasiPortofolio(idTenagaKerja, indeksPortofolio)<br>+ambilRingkasanPortofolio(idTenagaKerja, indeksPortofolio)<br>+validasiKelayakanMelamar(idTenagaKerja) |
-| C33 | PenyediaKerjaController | — | +simpanProfilPenyedia(idPengguna, dataProfil)<br>+validasiKelayakanPublikasi(idPenyediaKerja) |
-| C34 | CustomerServiceController | — | +putuskanVerifikasi(idPengguna, keputusan, alasan)<br>+otorisasiPetugas(idPetugas, aksi) |
-| C44 | NotifikasiController | — | +kirimNotifikasi(idPenerima, pesan)<br>+tandaiDibaca(idNotifikasi) |
-
-### 5.2.3 Use Case UC03
-
-**Nama Use Case:** Mengelola Lowongan Pekerjaan
-
-#### Identifikasi Kelas
-
-| ID Kelas | Nama Kelas | Deskripsi Kelas |
-| --- | --- | --- |
-| C01 | Pengguna | Entitas abstrak akun; identitas dan status verifikasi digunakan bersama oleh kedua peran publik. Akun CS disediakan internal. |
-| C03 | PenyediaKerja | Turunan Pengguna yang memublikasikan lowongan dan membayar tagihan per pekerja. |
-| C05 | LowonganPekerjaan | Kebutuhan tenaga kerja dalam tepat satu bidang, dengan kuota dan tarif awal per pekerja. |
-| C16 | PenggunaUI | Antarmuka untuk Pengguna; hanya menangani masukan dan penyajian informasi. |
-| C18 | PenyediaKerjaUI | Antarmuka untuk PenyediaKerja; hanya menangani masukan dan penyajian informasi. |
-| C20 | LowonganPekerjaanUI | Antarmuka untuk LowonganPekerjaan; hanya menangani masukan dan penyajian informasi. |
-| C31 | PenggunaController | Pengendali alur Pengguna; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-| C33 | PenyediaKerjaController | Pengendali alur PenyediaKerja; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-| C35 | LowonganPekerjaanController | Pengendali alur LowonganPekerjaan; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-
-#### Diagram Kelas
-
-<p align="center">
-<img alt="Class Diagram UC03" src="./assets/diagram/Diagram uc/class-diagram-uc03.png" width="70%">
-</p>
-
-<p align="center"><i>Gambar 4. Diagram Kelas Use Case UC03</i></p>
-<br>
-
-| ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
-| --- | --- | --- | --- |
-| C01 | Pengguna | -idPengguna-nama-email-passwordHash-tanggalLahir-nomorTelepon-peran-fotoKtpUrl-statusVerifikasi-alasanPenolakan-waktuPengajuanVerifikasi-waktuVerifikasi-idPemeriksa | +hitungUsia()<br>+perbaruiProfil(dataProfil)<br>+ajukanVerifikasi(fotoKtpUrl)<br>+perbaruiStatusVerifikasi(statusVerifikasi, alasanPenolakan, idPemeriksa)<br>+cekTerverifikasi() |
-| C03 | PenyediaKerja | -deskripsiPenyedia-ratingRataRata | +perbaruiProfilPenyedia(dataProfil)<br>+perbaruiRating(ratingRataRata) |
-| C05 | LowonganPekerjaan | -idLowongan-idPenyediaKerja-judul-deskripsi-bidangPekerjaan-keterampilan-kuota-tarifAwal-modeKerja-lokasi-jenisJadwal-waktuMulai-waktuSelesai-tenggatHasil-batasPengajuan-statusLowongan | +cekTerbuka(waktuSekarang)<br>+hitungSisaKuota(jumlahPenugasan)<br>+perbaruiStatusLowongan(statusLowongan)<br>+perbaruiLowongan(dataLowongan) |
-| C16 | PenggunaUI | — | +tampilkanFormRegistrasi()<br>+tampilkanFormLogin()<br>+tampilkanProfil()<br>+tampilkanFormVerifikasi() |
-| C18 | PenyediaKerjaUI | — | +tampilkanFormProfilPenyedia()<br>+tampilkanDashboardPenyedia() |
-| C20 | LowonganPekerjaanUI | — | +tampilkanFormLowongan()<br>+tampilkanDaftarLowongan()<br>+tampilkanDetailLowongan() |
-| C31 | PenggunaController | — | +prosesRegistrasi(dataRegistrasi)<br>+prosesLogin(email, password)<br>+simpanProfil(idPengguna, dataProfil)<br>+ajukanVerifikasi(idPengguna, fotoKtpUrl)<br>+validasiBerkas(berkas, jenisBerkas) |
-| C33 | PenyediaKerjaController | — | +simpanProfilPenyedia(idPengguna, dataProfil)<br>+validasiKelayakanPublikasi(idPenyediaKerja) |
-| C35 | LowonganPekerjaanController | — | +buatLowongan(idPenyediaKerja, dataLowongan)<br>+ubahLowongan(idLowongan, dataLowongan)<br>+cariLowongan(filter)<br>+validasiDataLowongan(dataLowongan)<br>+perbaruiKetersediaan(idLowongan) |
-
-### 5.2.4 Use Case UC04
-
-**Nama Use Case:** Mencari Lowongan Pekerjaan
-
-#### Identifikasi Kelas
-
-| ID Kelas | Nama Kelas | Deskripsi Kelas |
-| --- | --- | --- |
-| C02 | TenagaKerja | Turunan Pengguna yang menyimpan keahlian, tujuan pencairan, rating, dan atribut portofolio berupa daftar judul, deskripsi, bidang pekerjaan, serta foto atau tautan bukti pengalaman. |
-| C05 | LowonganPekerjaan | Kebutuhan tenaga kerja dalam tepat satu bidang, dengan kuota dan tarif awal per pekerja. |
-| C17 | TenagaKerjaUI | Antarmuka profil pekerja, pengelolaan dan pemilihan portofolio, serta riwayat pekerjaan. |
-| C20 | LowonganPekerjaanUI | Antarmuka untuk LowonganPekerjaan; hanya menangani masukan dan penyajian informasi. |
-| C32 | TenagaKerjaController | Pengendali profil dan atribut portofolio pekerja, termasuk validasi kepemilikan, kelengkapan, dan kelayakan melamar. |
-| C35 | LowonganPekerjaanController | Pengendali alur LowonganPekerjaan; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-
-#### Diagram Kelas
-
-<p align="center">
-<img alt="Class Diagram UC04" src="./assets/diagram/Diagram uc/class-diagram-uc04.png" width="70%">
-</p>
-
-<p align="center"><i>Gambar 5. Diagram Kelas Use Case UC04</i></p>
-<br>
-
-| ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
-| --- | --- | --- | --- |
-| C02 | TenagaKerja | -portofolio-keahlian-ringkasanProfil-tujuanPencairan-ratingRataRata | +perbaruiPortofolio(dataPortofolio)<br>+hapusPortofolio(indeksPortofolio)<br>+cekKelengkapanPortofolio()<br>+perbaruiProfilPekerja(dataProfil)<br>+cekKelengkapanProfil()<br>+perbaruiTujuanPencairan(tujuanPencairan)<br>+perbaruiRating(ratingRataRata) |
-| C05 | LowonganPekerjaan | -idLowongan-idPenyediaKerja-judul-deskripsi-bidangPekerjaan-keterampilan-kuota-tarifAwal-modeKerja-lokasi-jenisJadwal-waktuMulai-waktuSelesai-tenggatHasil-batasPengajuan-statusLowongan | +cekTerbuka(waktuSekarang)<br>+hitungSisaKuota(jumlahPenugasan)<br>+perbaruiStatusLowongan(statusLowongan)<br>+perbaruiLowongan(dataLowongan) |
-| C17 | TenagaKerjaUI | — | +tampilkanFormProfilPekerja()<br>+tampilkanDaftarPortofolio()<br>+tampilkanFormPortofolio()<br>+tampilkanPilihanPortofolio()<br>+tampilkanRiwayatPekerjaan() |
-| C20 | LowonganPekerjaanUI | — | +tampilkanFormLowongan()<br>+tampilkanDaftarLowongan()<br>+tampilkanDetailLowongan() |
-| C32 | TenagaKerjaController | — | +simpanProfilPekerja(idPengguna, dataProfil)<br>+simpanPortofolio(idTenagaKerja, dataPortofolio)<br>+hapusPortofolio(idTenagaKerja, indeksPortofolio)<br>+validasiPortofolio(idTenagaKerja, indeksPortofolio)<br>+ambilRingkasanPortofolio(idTenagaKerja, indeksPortofolio)<br>+validasiKelayakanMelamar(idTenagaKerja) |
-| C35 | LowonganPekerjaanController | — | +buatLowongan(idPenyediaKerja, dataLowongan)<br>+ubahLowongan(idLowongan, dataLowongan)<br>+cariLowongan(filter)<br>+validasiDataLowongan(dataLowongan)<br>+perbaruiKetersediaan(idLowongan) |
-
-### 5.2.5 Use Case UC05
-
-**Nama Use Case:** Mengajukan dan Mengelola Penawaran Pekerjaan
-
-#### Identifikasi Kelas
-
-| ID Kelas | Nama Kelas | Deskripsi Kelas |
-| --- | --- | --- |
-| C01 | Pengguna | Entitas abstrak akun; identitas dan status verifikasi digunakan bersama oleh kedua peran publik. Akun CS disediakan internal. |
-| C02 | TenagaKerja | Turunan Pengguna yang menyimpan keahlian, tujuan pencairan, rating, dan atribut portofolio berupa daftar judul, deskripsi, bidang pekerjaan, serta foto atau tautan bukti pengalaman. |
-| C05 | LowonganPekerjaan | Kebutuhan tenaga kerja dalam tepat satu bidang, dengan kuota dan tarif awal per pekerja. |
-| C06 | PengajuanPenawaran | Penawaran pekerja pada lowongan; menyimpan nominal, portofolio saat pengajuan, serta riwayat keputusan. |
-| C07 | TransaksiPekerjaan | Kesepakatan pelaksanaan pekerjaan oleh satu pekerja yang penawarannya diterima, mencakup upah, jadwal, ruang lingkup, dan status pengerjaan. |
-| C14 | Notifikasi | Pesan kepada pengguna tentang verifikasi, penawaran, pekerjaan, pembayaran, atau sengketa. |
-| C16 | PenggunaUI | Antarmuka untuk Pengguna; hanya menangani masukan dan penyajian informasi. |
-| C17 | TenagaKerjaUI | Antarmuka profil pekerja, pengelolaan dan pemilihan portofolio, serta riwayat pekerjaan. |
-| C20 | LowonganPekerjaanUI | Antarmuka untuk LowonganPekerjaan; hanya menangani masukan dan penyajian informasi. |
-| C21 | PengajuanPenawaranUI | Antarmuka untuk PengajuanPenawaran; hanya menangani masukan dan penyajian informasi. |
-| C22 | TransaksiPekerjaanUI | Antarmuka untuk TransaksiPekerjaan; hanya menangani masukan dan penyajian informasi. |
-| C29 | NotifikasiUI | Antarmuka untuk Notifikasi; hanya menangani masukan dan penyajian informasi. |
-| C31 | PenggunaController | Pengendali alur Pengguna; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-| C32 | TenagaKerjaController | Pengendali profil dan atribut portofolio pekerja, termasuk validasi kepemilikan, kelengkapan, dan kelayakan melamar. |
-| C35 | LowonganPekerjaanController | Pengendali alur LowonganPekerjaan; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-| C36 | PengajuanPenawaranController | Pengendali alur PengajuanPenawaran; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-| C37 | TransaksiPekerjaanController | Pengendali alur TransaksiPekerjaan; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-| C44 | NotifikasiController | Pengendali alur Notifikasi; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-
-#### Diagram Kelas
-
-<p align="center">
-<img alt="Class Diagram UC05" src="./assets/diagram/Diagram uc/class-diagram-uc05.png" width="70%">
-</p>
-
-<p align="center"><i>Gambar 6. Diagram Kelas Use Case UC05</i></p>
-<br>
-
-| ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
-| --- | --- | --- | --- |
-| C01 | Pengguna | -idPengguna-nama-email-passwordHash-tanggalLahir-nomorTelepon-peran-fotoKtpUrl-statusVerifikasi-alasanPenolakan-waktuPengajuanVerifikasi-waktuVerifikasi-idPemeriksa | +hitungUsia()<br>+perbaruiProfil(dataProfil)<br>+ajukanVerifikasi(fotoKtpUrl)<br>+perbaruiStatusVerifikasi(statusVerifikasi, alasanPenolakan, idPemeriksa)<br>+cekTerverifikasi() |
-| C02 | TenagaKerja | -portofolio-keahlian-ringkasanProfil-tujuanPencairan-ratingRataRata | +perbaruiPortofolio(dataPortofolio)<br>+hapusPortofolio(indeksPortofolio)<br>+cekKelengkapanPortofolio()<br>+perbaruiProfilPekerja(dataProfil)<br>+cekKelengkapanProfil()<br>+perbaruiTujuanPencairan(tujuanPencairan)<br>+perbaruiRating(ratingRataRata) |
-| C05 | LowonganPekerjaan | -idLowongan-idPenyediaKerja-judul-deskripsi-bidangPekerjaan-keterampilan-kuota-tarifAwal-modeKerja-lokasi-jenisJadwal-waktuMulai-waktuSelesai-tenggatHasil-batasPengajuan-statusLowongan | +cekTerbuka(waktuSekarang)<br>+hitungSisaKuota(jumlahPenugasan)<br>+perbaruiStatusLowongan(statusLowongan)<br>+perbaruiLowongan(dataLowongan) |
-| C06 | PengajuanPenawaran | -idPenawaran-idLowongan-idTenagaKerja-nominalPenawaran-pesanPenawaran-pengalamanTerkait-ringkasanPortofolio-statusPenawaran-alasanPembatalan-waktuPengajuan-waktuPerubahan | +ubahPenawaran(dataPenawaran)<br>+tarikPenawaran()<br>+terimaPenawaran()<br>+tolakPenawaran()<br>+batalkanKarenaJadwal() |
-| C07 | TransaksiPekerjaan | -idTransaksi-idPenawaran-idLowongan-idTenagaKerja-idPenyediaKerja-upahDisepakati-deskripsiDisepakati-modeKerja-lokasi-jenisJadwal-waktuMulai-waktuSelesai-tenggatHasil-statusPekerjaan-danaDitahanSengketa-catatanRevisi | +mulaiPekerjaan()<br>+serahkanHasil()<br>+mintaRevisi(catatanRevisi)<br>+setujuiHasil()<br>+batalkanPekerjaan(alasan)<br>+aturPenahananDana(ditahan) |
-| C14 | Notifikasi | -idNotifikasi-idPenerima-pesan-sudahDibaca-waktuKirim | +tandaiDibaca() |
-| C16 | PenggunaUI | — | +tampilkanFormRegistrasi()<br>+tampilkanFormLogin()<br>+tampilkanProfil()<br>+tampilkanFormVerifikasi() |
-| C17 | TenagaKerjaUI | — | +tampilkanFormProfilPekerja()<br>+tampilkanDaftarPortofolio()<br>+tampilkanFormPortofolio()<br>+tampilkanPilihanPortofolio()<br>+tampilkanRiwayatPekerjaan() |
-| C20 | LowonganPekerjaanUI | — | +tampilkanFormLowongan()<br>+tampilkanDaftarLowongan()<br>+tampilkanDetailLowongan() |
-| C21 | PengajuanPenawaranUI | — | +tampilkanFormPenawaran()<br>+tampilkanDaftarPelamar()<br>+tampilkanRiwayatPenawaran() |
-| C22 | TransaksiPekerjaanUI | — | +tampilkanDetailTransaksi()<br>+tampilkanKonfirmasiPenyelesaian()<br>+tampilkanFormRevisi() |
-| C29 | NotifikasiUI | — | +tampilkanNotifikasi() |
-| C31 | PenggunaController | — | +prosesRegistrasi(dataRegistrasi)<br>+prosesLogin(email, password)<br>+simpanProfil(idPengguna, dataProfil)<br>+ajukanVerifikasi(idPengguna, fotoKtpUrl)<br>+validasiBerkas(berkas, jenisBerkas) |
-| C32 | TenagaKerjaController | — | +simpanProfilPekerja(idPengguna, dataProfil)<br>+simpanPortofolio(idTenagaKerja, dataPortofolio)<br>+hapusPortofolio(idTenagaKerja, indeksPortofolio)<br>+validasiPortofolio(idTenagaKerja, indeksPortofolio)<br>+ambilRingkasanPortofolio(idTenagaKerja, indeksPortofolio)<br>+validasiKelayakanMelamar(idTenagaKerja) |
-| C35 | LowonganPekerjaanController | — | +buatLowongan(idPenyediaKerja, dataLowongan)<br>+ubahLowongan(idLowongan, dataLowongan)<br>+cariLowongan(filter)<br>+validasiDataLowongan(dataLowongan)<br>+perbaruiKetersediaan(idLowongan) |
-| C36 | PengajuanPenawaranController | — | +ajukanPenawaran(idTenagaKerja, idLowongan, dataPenawaran)<br>+ubahPenawaran(idPenawaran, dataPenawaran)<br>+tarikPenawaran(idPenawaran)<br>+tolakPenawaran(idPenawaran)<br>+terimaPenawaran(idPenawaran)<br>+batalkanPenawaranKonflik(idTenagaKerja, idTransaksi) |
-| C37 | TransaksiPekerjaanController | — | +buatTransaksi(idPenawaran)<br>+cekKonflikJadwal(idTenagaKerja, jadwal)<br>+mulaiPekerjaan(idTransaksi)<br>+serahkanHasil(idTransaksi)<br>+mintaRevisi(idTransaksi, catatanRevisi)<br>+setujuiHasil(idTransaksi)<br>+batalkanSebelumPembayaran(idTransaksi, alasan)<br>+aturPenahananDana(idTransaksi, ditahan) |
-| C44 | NotifikasiController | — | +kirimNotifikasi(idPenerima, pesan)<br>+tandaiDibaca(idNotifikasi) |
-
-### 5.2.6 Use Case UC06
-
-**Nama Use Case:** Memilih Tenaga Kerja
-
-#### Identifikasi Kelas
-
-| ID Kelas | Nama Kelas | Deskripsi Kelas |
-| --- | --- | --- |
-| C02 | TenagaKerja | Turunan Pengguna yang menyimpan keahlian, tujuan pencairan, rating, dan atribut portofolio berupa daftar judul, deskripsi, bidang pekerjaan, serta foto atau tautan bukti pengalaman. |
-| C03 | PenyediaKerja | Turunan Pengguna yang memublikasikan lowongan dan membayar tagihan per pekerja. |
-| C05 | LowonganPekerjaan | Kebutuhan tenaga kerja dalam tepat satu bidang, dengan kuota dan tarif awal per pekerja. |
-| C06 | PengajuanPenawaran | Penawaran pekerja pada lowongan; menyimpan nominal, portofolio saat pengajuan, serta riwayat keputusan. |
-| C07 | TransaksiPekerjaan | Kesepakatan pelaksanaan pekerjaan oleh satu pekerja yang penawarannya diterima, mencakup upah, jadwal, ruang lingkup, dan status pengerjaan. |
-| C09 | TagihanPembayaran | Invoice per penugasan berisi upah yang disetujui dan biaya admin tambahan. |
-| C14 | Notifikasi | Pesan kepada pengguna tentang verifikasi, penawaran, pekerjaan, pembayaran, atau sengketa. |
-| C17 | TenagaKerjaUI | Antarmuka profil pekerja, pengelolaan dan pemilihan portofolio, serta riwayat pekerjaan. |
-| C18 | PenyediaKerjaUI | Antarmuka untuk PenyediaKerja; hanya menangani masukan dan penyajian informasi. |
-| C20 | LowonganPekerjaanUI | Antarmuka untuk LowonganPekerjaan; hanya menangani masukan dan penyajian informasi. |
-| C21 | PengajuanPenawaranUI | Antarmuka untuk PengajuanPenawaran; hanya menangani masukan dan penyajian informasi. |
-| C22 | TransaksiPekerjaanUI | Antarmuka untuk TransaksiPekerjaan; hanya menangani masukan dan penyajian informasi. |
-| C24 | TagihanPembayaranUI | Antarmuka untuk TagihanPembayaran; hanya menangani masukan dan penyajian informasi. |
-| C29 | NotifikasiUI | Antarmuka untuk Notifikasi; hanya menangani masukan dan penyajian informasi. |
-| C32 | TenagaKerjaController | Pengendali profil dan atribut portofolio pekerja, termasuk validasi kepemilikan, kelengkapan, dan kelayakan melamar. |
-| C33 | PenyediaKerjaController | Pengendali alur PenyediaKerja; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-| C35 | LowonganPekerjaanController | Pengendali alur LowonganPekerjaan; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-| C36 | PengajuanPenawaranController | Pengendali alur PengajuanPenawaran; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-| C37 | TransaksiPekerjaanController | Pengendali alur TransaksiPekerjaan; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-| C39 | TagihanPembayaranController | Pengendali alur TagihanPembayaran; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-| C44 | NotifikasiController | Pengendali alur Notifikasi; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-
-#### Diagram Kelas
-
-<p align="center">
-<img alt="Class Diagram UC06" src="./assets/diagram/Diagram uc/class-diagram-uc06.png" width="70%">
-</p>
-<p align="center">
-<i>Gambar 7. Diagram Kelas Use Case UC06</i>
-</p>
-<br>
-
-| ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
-| --- | --- | --- | --- |
-| C02 | TenagaKerja | -portofolio-keahlian-ringkasanProfil-tujuanPencairan-ratingRataRata | +perbaruiPortofolio(dataPortofolio)<br>+hapusPortofolio(indeksPortofolio)<br>+cekKelengkapanPortofolio()<br>+perbaruiProfilPekerja(dataProfil)<br>+cekKelengkapanProfil()<br>+perbaruiTujuanPencairan(tujuanPencairan)<br>+perbaruiRating(ratingRataRata) |
-| C03 | PenyediaKerja | -deskripsiPenyedia-ratingRataRata | +perbaruiProfilPenyedia(dataProfil)<br>+perbaruiRating(ratingRataRata) |
-| C05 | LowonganPekerjaan | -idLowongan-idPenyediaKerja-judul-deskripsi-bidangPekerjaan-keterampilan-kuota-tarifAwal-modeKerja-lokasi-jenisJadwal-waktuMulai-waktuSelesai-tenggatHasil-batasPengajuan-statusLowongan | +cekTerbuka(waktuSekarang)<br>+hitungSisaKuota(jumlahPenugasan)<br>+perbaruiStatusLowongan(statusLowongan)<br>+perbaruiLowongan(dataLowongan) |
-| C06 | PengajuanPenawaran | -idPenawaran-idLowongan-idTenagaKerja-nominalPenawaran-pesanPenawaran-pengalamanTerkait-ringkasanPortofolio-statusPenawaran-alasanPembatalan-waktuPengajuan-waktuPerubahan | +ubahPenawaran(dataPenawaran)<br>+tarikPenawaran()<br>+terimaPenawaran()<br>+tolakPenawaran()<br>+batalkanKarenaJadwal() |
-| C07 | TransaksiPekerjaan | -idTransaksi-idPenawaran-idLowongan-idTenagaKerja-idPenyediaKerja-upahDisepakati-deskripsiDisepakati-modeKerja-lokasi-jenisJadwal-waktuMulai-waktuSelesai-tenggatHasil-statusPekerjaan-danaDitahanSengketa-catatanRevisi | +mulaiPekerjaan()<br>+serahkanHasil()<br>+mintaRevisi(catatanRevisi)<br>+setujuiHasil()<br>+batalkanPekerjaan(alasan)<br>+aturPenahananDana(ditahan) |
-| C09 | TagihanPembayaran | -idTagihan-idTransaksi-upahDisepakati-biayaAdmin-totalBayar-statusPembayaran-referensiGateway-waktuKedaluwarsa | +hitungTotalBayar()<br>+perbaruiStatusPembayaran(statusPembayaran)<br>+cekKedaluwarsa(waktuSekarang) |
-| C14 | Notifikasi | -idNotifikasi-idPenerima-pesan-sudahDibaca-waktuKirim | +tandaiDibaca() |
-| C17 | TenagaKerjaUI | — | +tampilkanFormProfilPekerja()<br>+tampilkanDaftarPortofolio()<br>+tampilkanFormPortofolio()<br>+tampilkanPilihanPortofolio()<br>+tampilkanRiwayatPekerjaan() |
-| C18 | PenyediaKerjaUI | — | +tampilkanFormProfilPenyedia()<br>+tampilkanDashboardPenyedia() |
-| C20 | LowonganPekerjaanUI | — | +tampilkanFormLowongan()<br>+tampilkanDaftarLowongan()<br>+tampilkanDetailLowongan() |
-| C21 | PengajuanPenawaranUI | — | +tampilkanFormPenawaran()<br>+tampilkanDaftarPelamar()<br>+tampilkanRiwayatPenawaran() |
-| C22 | TransaksiPekerjaanUI | — | +tampilkanDetailTransaksi()<br>+tampilkanKonfirmasiPenyelesaian()<br>+tampilkanFormRevisi() |
-| C24 | TagihanPembayaranUI | — | +tampilkanTagihan()<br>+tampilkanStatusPembayaran() |
-| C29 | NotifikasiUI | — | +tampilkanNotifikasi() |
-| C32 | TenagaKerjaController | — | +simpanProfilPekerja(idPengguna, dataProfil)<br>+simpanPortofolio(idTenagaKerja, dataPortofolio)<br>+hapusPortofolio(idTenagaKerja, indeksPortofolio)<br>+validasiPortofolio(idTenagaKerja, indeksPortofolio)<br>+ambilRingkasanPortofolio(idTenagaKerja, indeksPortofolio)<br>+validasiKelayakanMelamar(idTenagaKerja) |
-| C33 | PenyediaKerjaController | — | +simpanProfilPenyedia(idPengguna, dataProfil)<br>+validasiKelayakanPublikasi(idPenyediaKerja) |
-| C35 | LowonganPekerjaanController | — | +buatLowongan(idPenyediaKerja, dataLowongan)<br>+ubahLowongan(idLowongan, dataLowongan)<br>+cariLowongan(filter)<br>+validasiDataLowongan(dataLowongan)<br>+perbaruiKetersediaan(idLowongan) |
-| C36 | PengajuanPenawaranController | — | +ajukanPenawaran(idTenagaKerja, idLowongan, dataPenawaran)<br>+ubahPenawaran(idPenawaran, dataPenawaran)<br>+tarikPenawaran(idPenawaran)<br>+tolakPenawaran(idPenawaran)<br>+terimaPenawaran(idPenawaran)<br>+batalkanPenawaranKonflik(idTenagaKerja, idTransaksi) |
-| C37 | TransaksiPekerjaanController | — | +buatTransaksi(idPenawaran)<br>+cekKonflikJadwal(idTenagaKerja, jadwal)<br>+mulaiPekerjaan(idTransaksi)<br>+serahkanHasil(idTransaksi)<br>+mintaRevisi(idTransaksi, catatanRevisi)<br>+setujuiHasil(idTransaksi)<br>+batalkanSebelumPembayaran(idTransaksi, alasan)<br>+aturPenahananDana(idTransaksi, ditahan) |
-| C39 | TagihanPembayaranController | — | +terbitkanTagihan(idTransaksi, biayaAdmin)<br>+prosesPembayaran(idTagihan, metodePembayaran)<br>+tanganiKedaluwarsa(idTagihan)<br>+prosesRefund(idTagihan) |
-| C44 | NotifikasiController | — | +kirimNotifikasi(idPenerima, pesan)<br>+tandaiDibaca(idNotifikasi) |
-
-### 5.2.7 Use Case UC07
-
-**Nama Use Case:** Melakukan Pembayaran Pekerjaan
-
-#### Identifikasi Kelas
-
-| ID Kelas | Nama Kelas | Deskripsi Kelas |
-| --- | --- | --- |
-| C03 | PenyediaKerja | Turunan Pengguna yang memublikasikan lowongan dan membayar tagihan per pekerja. |
-| C05 | LowonganPekerjaan | Kebutuhan tenaga kerja dalam tepat satu bidang, dengan kuota dan tarif awal per pekerja. |
-| C06 | PengajuanPenawaran | Penawaran pekerja pada lowongan; menyimpan nominal, portofolio saat pengajuan, serta riwayat keputusan. |
-| C07 | TransaksiPekerjaan | Kesepakatan pelaksanaan pekerjaan oleh satu pekerja yang penawarannya diterima, mencakup upah, jadwal, ruang lingkup, dan status pengerjaan. |
-| C09 | TagihanPembayaran | Invoice per penugasan berisi upah yang disetujui dan biaya admin tambahan. |
-| C14 | Notifikasi | Pesan kepada pengguna tentang verifikasi, penawaran, pekerjaan, pembayaran, atau sengketa. |
-| C15 | PaymentGateway | Representasi integrasi layanan pembayaran eksternal. Bukan penyimpan dana milik platform; UI dan Controller dipertahankan mengikuti struktur asistensi. |
-| C18 | PenyediaKerjaUI | Antarmuka untuk PenyediaKerja; hanya menangani masukan dan penyajian informasi. |
-| C20 | LowonganPekerjaanUI | Antarmuka untuk LowonganPekerjaan; hanya menangani masukan dan penyajian informasi. |
-| C21 | PengajuanPenawaranUI | Antarmuka untuk PengajuanPenawaran; hanya menangani masukan dan penyajian informasi. |
-| C22 | TransaksiPekerjaanUI | Antarmuka untuk TransaksiPekerjaan; hanya menangani masukan dan penyajian informasi. |
-| C24 | TagihanPembayaranUI | Antarmuka untuk TagihanPembayaran; hanya menangani masukan dan penyajian informasi. |
-| C29 | NotifikasiUI | Antarmuka untuk Notifikasi; hanya menangani masukan dan penyajian informasi. |
-| C30 | PaymentGatewayUI | Antarmuka untuk PaymentGateway; hanya menangani masukan dan penyajian informasi. |
-| C33 | PenyediaKerjaController | Pengendali alur PenyediaKerja; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-| C35 | LowonganPekerjaanController | Pengendali alur LowonganPekerjaan; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-| C36 | PengajuanPenawaranController | Pengendali alur PengajuanPenawaran; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-| C37 | TransaksiPekerjaanController | Pengendali alur TransaksiPekerjaan; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-| C39 | TagihanPembayaranController | Pengendali alur TagihanPembayaran; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-| C44 | NotifikasiController | Pengendali alur Notifikasi; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-| C45 | PaymentGatewayController | Pengendali alur PaymentGateway; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-
-#### Diagram Kelas
-
-<p align="center">
-<img alt="Class Diagram UC07" src="./assets/diagram/Diagram uc/class-diagram-uc07.png" width="70%">
-</p>
-<p align="center">
-<i>Gambar 8. Diagram Kelas Use Case UC07</i>
-</p>
-<br>
-
-| ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
-| --- | --- | --- | --- |
-| C03 | PenyediaKerja | -deskripsiPenyedia-ratingRataRata | +perbaruiProfilPenyedia(dataProfil)<br>+perbaruiRating(ratingRataRata) |
-| C05 | LowonganPekerjaan | -idLowongan-idPenyediaKerja-judul-deskripsi-bidangPekerjaan-keterampilan-kuota-tarifAwal-modeKerja-lokasi-jenisJadwal-waktuMulai-waktuSelesai-tenggatHasil-batasPengajuan-statusLowongan | +cekTerbuka(waktuSekarang)<br>+hitungSisaKuota(jumlahPenugasan)<br>+perbaruiStatusLowongan(statusLowongan)<br>+perbaruiLowongan(dataLowongan) |
-| C06 | PengajuanPenawaran | -idPenawaran-idLowongan-idTenagaKerja-nominalPenawaran-pesanPenawaran-pengalamanTerkait-ringkasanPortofolio-statusPenawaran-alasanPembatalan-waktuPengajuan-waktuPerubahan | +ubahPenawaran(dataPenawaran)<br>+tarikPenawaran()<br>+terimaPenawaran()<br>+tolakPenawaran()<br>+batalkanKarenaJadwal() |
-| C07 | TransaksiPekerjaan | -idTransaksi-idPenawaran-idLowongan-idTenagaKerja-idPenyediaKerja-upahDisepakati-deskripsiDisepakati-modeKerja-lokasi-jenisJadwal-waktuMulai-waktuSelesai-tenggatHasil-statusPekerjaan-danaDitahanSengketa-catatanRevisi | +mulaiPekerjaan()<br>+serahkanHasil()<br>+mintaRevisi(catatanRevisi)<br>+setujuiHasil()<br>+batalkanPekerjaan(alasan)<br>+aturPenahananDana(ditahan) |
-| C09 | TagihanPembayaran | -idTagihan-idTransaksi-upahDisepakati-biayaAdmin-totalBayar-statusPembayaran-referensiGateway-waktuKedaluwarsa | +hitungTotalBayar()<br>+perbaruiStatusPembayaran(statusPembayaran)<br>+cekKedaluwarsa(waktuSekarang) |
-| C14 | Notifikasi | -idNotifikasi-idPenerima-pesan-sudahDibaca-waktuKirim | +tandaiDibaca() |
-| C15 | PaymentGateway | -namaPenyedia-lingkungan | +buatInstruksiPembayaran(idTagihan, totalBayar, kunciIdempotensi)<br>+kirimPencairan(idPencairan, nominalPencairan, tujuanPencairan, kunciIdempotensi)<br>+kirimRefund(idTagihan, nominalRefund, kunciIdempotensi)<br>+ambilStatusTransaksi(referensiGateway) |
-| C18 | PenyediaKerjaUI | — | +tampilkanFormProfilPenyedia()<br>+tampilkanDashboardPenyedia() |
-| C20 | LowonganPekerjaanUI | — | +tampilkanFormLowongan()<br>+tampilkanDaftarLowongan()<br>+tampilkanDetailLowongan() |
-| C21 | PengajuanPenawaranUI | — | +tampilkanFormPenawaran()<br>+tampilkanDaftarPelamar()<br>+tampilkanRiwayatPenawaran() |
-| C22 | TransaksiPekerjaanUI | — | +tampilkanDetailTransaksi()<br>+tampilkanKonfirmasiPenyelesaian()<br>+tampilkanFormRevisi() |
-| C24 | TagihanPembayaranUI | — | +tampilkanTagihan()<br>+tampilkanStatusPembayaran() |
-| C29 | NotifikasiUI | — | +tampilkanNotifikasi() |
-| C30 | PaymentGatewayUI | — | +tampilkanPilihanPembayaran()<br>+tampilkanInstruksiPembayaran() |
-| C33 | PenyediaKerjaController | — | +simpanProfilPenyedia(idPengguna, dataProfil)<br>+validasiKelayakanPublikasi(idPenyediaKerja) |
-| C35 | LowonganPekerjaanController | — | +buatLowongan(idPenyediaKerja, dataLowongan)<br>+ubahLowongan(idLowongan, dataLowongan)<br>+cariLowongan(filter)<br>+validasiDataLowongan(dataLowongan)<br>+perbaruiKetersediaan(idLowongan) |
-| C36 | PengajuanPenawaranController | — | +ajukanPenawaran(idTenagaKerja, idLowongan, dataPenawaran)<br>+ubahPenawaran(idPenawaran, dataPenawaran)<br>+tarikPenawaran(idPenawaran)<br>+tolakPenawaran(idPenawaran)<br>+terimaPenawaran(idPenawaran)<br>+batalkanPenawaranKonflik(idTenagaKerja, idTransaksi) |
-| C37 | TransaksiPekerjaanController | — | +buatTransaksi(idPenawaran)<br>+cekKonflikJadwal(idTenagaKerja, jadwal)<br>+mulaiPekerjaan(idTransaksi)<br>+serahkanHasil(idTransaksi)<br>+mintaRevisi(idTransaksi, catatanRevisi)<br>+setujuiHasil(idTransaksi)<br>+batalkanSebelumPembayaran(idTransaksi, alasan)<br>+aturPenahananDana(idTransaksi, ditahan) |
-| C39 | TagihanPembayaranController | — | +terbitkanTagihan(idTransaksi, biayaAdmin)<br>+prosesPembayaran(idTagihan, metodePembayaran)<br>+tanganiKedaluwarsa(idTagihan)<br>+prosesRefund(idTagihan) |
-| C44 | NotifikasiController | — | +kirimNotifikasi(idPenerima, pesan)<br>+tandaiDibaca(idNotifikasi) |
-| C45 | PaymentGatewayController | — | +buatPembayaran(idTagihan, metodePembayaran)<br>+kirimPencairan(idPencairan)<br>+kirimRefund(idTagihan, nominalRefund)<br>+verifikasiCallback(payload)<br>+prosesCallback(payload)<br>+rekonsiliasiTransaksi(referensiGateway) |
-
-### 5.2.8 Use Case UC08
-
-**Nama Use Case:** Menyerahkan Hasil Pekerjaan
-
-#### Identifikasi Kelas
-
-| ID Kelas | Nama Kelas | Deskripsi Kelas |
-| --- | --- | --- |
-| C02 | TenagaKerja | Turunan Pengguna yang menyimpan keahlian, tujuan pencairan, rating, dan atribut portofolio berupa daftar judul, deskripsi, bidang pekerjaan, serta foto atau tautan bukti pengalaman. |
-| C07 | TransaksiPekerjaan | Kesepakatan pelaksanaan pekerjaan oleh satu pekerja yang penawarannya diterima, mencakup upah, jadwal, ruang lingkup, dan status pengerjaan. |
-| C08 | BuktiPenyerahan | Satu versi penyerahan hasil milik satu penugasan; pengiriman ulang setelah revisi membuat versi baru. |
-| C14 | Notifikasi | Pesan kepada pengguna tentang verifikasi, penawaran, pekerjaan, pembayaran, atau sengketa. |
-| C17 | TenagaKerjaUI | Antarmuka profil pekerja, pengelolaan dan pemilihan portofolio, serta riwayat pekerjaan. |
-| C22 | TransaksiPekerjaanUI | Antarmuka untuk TransaksiPekerjaan; hanya menangani masukan dan penyajian informasi. |
-| C23 | BuktiPenyerahanUI | Antarmuka untuk BuktiPenyerahan; hanya menangani masukan dan penyajian informasi. |
-| C29 | NotifikasiUI | Antarmuka untuk Notifikasi; hanya menangani masukan dan penyajian informasi. |
-| C32 | TenagaKerjaController | Pengendali profil dan atribut portofolio pekerja, termasuk validasi kepemilikan, kelengkapan, dan kelayakan melamar. |
-| C37 | TransaksiPekerjaanController | Pengendali alur TransaksiPekerjaan; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-| C38 | BuktiPenyerahanController | Pengendali alur BuktiPenyerahan; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-| C44 | NotifikasiController | Pengendali alur Notifikasi; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-
-#### Diagram Kelas
-
-<p align="center">
-<img alt="Class Diagram UC08" src="./assets/diagram/Diagram uc/class-diagram-uc08.png" width="70%">
-</p>
-<p align="center">
-<i>Gambar 9. Diagram Kelas Use Case UC08</i>
-</p>
-<br>
-
-| ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
-| --- | --- | --- | --- |
-| C02 | TenagaKerja | -portofolio-keahlian-ringkasanProfil-tujuanPencairan-ratingRataRata | +perbaruiPortofolio(dataPortofolio)<br>+hapusPortofolio(indeksPortofolio)<br>+cekKelengkapanPortofolio()<br>+perbaruiProfilPekerja(dataProfil)<br>+cekKelengkapanProfil()<br>+perbaruiTujuanPencairan(tujuanPencairan)<br>+perbaruiRating(ratingRataRata) |
-| C07 | TransaksiPekerjaan | -idTransaksi-idPenawaran-idLowongan-idTenagaKerja-idPenyediaKerja-upahDisepakati-deskripsiDisepakati-modeKerja-lokasi-jenisJadwal-waktuMulai-waktuSelesai-tenggatHasil-statusPekerjaan-danaDitahanSengketa-catatanRevisi | +mulaiPekerjaan()<br>+serahkanHasil()<br>+mintaRevisi(catatanRevisi)<br>+setujuiHasil()<br>+batalkanPekerjaan(alasan)<br>+aturPenahananDana(ditahan) |
-| C08 | BuktiPenyerahan | -idPenyerahan-idTransaksi-deskripsiHasil-lampiranUrl-nomorVersi-waktuPengiriman | +catatPenyerahan(dataHasil) |
-| C14 | Notifikasi | -idNotifikasi-idPenerima-pesan-sudahDibaca-waktuKirim | +tandaiDibaca() |
-| C17 | TenagaKerjaUI | — | +tampilkanFormProfilPekerja()<br>+tampilkanDaftarPortofolio()<br>+tampilkanFormPortofolio()<br>+tampilkanPilihanPortofolio()<br>+tampilkanRiwayatPekerjaan() |
-| C22 | TransaksiPekerjaanUI | — | +tampilkanDetailTransaksi()<br>+tampilkanKonfirmasiPenyelesaian()<br>+tampilkanFormRevisi() |
-| C23 | BuktiPenyerahanUI | — | +tampilkanFormPenyerahan()<br>+tampilkanBuktiPenyerahan() |
-| C29 | NotifikasiUI | — | +tampilkanNotifikasi() |
-| C32 | TenagaKerjaController | — | +simpanProfilPekerja(idPengguna, dataProfil)<br>+simpanPortofolio(idTenagaKerja, dataPortofolio)<br>+hapusPortofolio(idTenagaKerja, indeksPortofolio)<br>+validasiPortofolio(idTenagaKerja, indeksPortofolio)<br>+ambilRingkasanPortofolio(idTenagaKerja, indeksPortofolio)<br>+validasiKelayakanMelamar(idTenagaKerja) |
-| C37 | TransaksiPekerjaanController | — | +buatTransaksi(idPenawaran)<br>+cekKonflikJadwal(idTenagaKerja, jadwal)<br>+mulaiPekerjaan(idTransaksi)<br>+serahkanHasil(idTransaksi)<br>+mintaRevisi(idTransaksi, catatanRevisi)<br>+setujuiHasil(idTransaksi)<br>+batalkanSebelumPembayaran(idTransaksi, alasan)<br>+aturPenahananDana(idTransaksi, ditahan) |
-| C38 | BuktiPenyerahanController | — | +simpanPenyerahan(idTransaksi, dataHasil)<br>+ambilBuktiPenyerahan(idTransaksi) |
-| C44 | NotifikasiController | — | +kirimNotifikasi(idPenerima, pesan)<br>+tandaiDibaca(idNotifikasi) |
-
-### 5.2.9 Use Case UC09
-
-**Nama Use Case:** Memverifikasi Penyelesaian Pekerjaan
-
-#### Identifikasi Kelas
-
-| ID Kelas | Nama Kelas | Deskripsi Kelas |
-| --- | --- | --- |
-| C03 | PenyediaKerja | Turunan Pengguna yang memublikasikan lowongan dan membayar tagihan per pekerja. |
-| C07 | TransaksiPekerjaan | Kesepakatan pelaksanaan pekerjaan oleh satu pekerja yang penawarannya diterima, mencakup upah, jadwal, ruang lingkup, dan status pengerjaan. |
-| C08 | BuktiPenyerahan | Satu versi penyerahan hasil milik satu penugasan; pengiriman ulang setelah revisi membuat versi baru. |
-| C09 | TagihanPembayaran | Invoice per penugasan berisi upah yang disetujui dan biaya admin tambahan. |
-| C10 | PencairanDana | Catatan penyaluran otomatis seluruh upah yang disepakati ke tujuan pembayaran pekerja setelah persetujuan hasil. |
-| C14 | Notifikasi | Pesan kepada pengguna tentang verifikasi, penawaran, pekerjaan, pembayaran, atau sengketa. |
-| C15 | PaymentGateway | Representasi integrasi layanan pembayaran eksternal. Bukan penyimpan dana milik platform; UI dan Controller dipertahankan mengikuti struktur asistensi. |
-| C18 | PenyediaKerjaUI | Antarmuka untuk PenyediaKerja; hanya menangani masukan dan penyajian informasi. |
-| C22 | TransaksiPekerjaanUI | Antarmuka untuk TransaksiPekerjaan; hanya menangani masukan dan penyajian informasi. |
-| C23 | BuktiPenyerahanUI | Antarmuka untuk BuktiPenyerahan; hanya menangani masukan dan penyajian informasi. |
-| C24 | TagihanPembayaranUI | Antarmuka untuk TagihanPembayaran; hanya menangani masukan dan penyajian informasi. |
-| C25 | PencairanDanaUI | Antarmuka untuk PencairanDana; hanya menangani masukan dan penyajian informasi. |
-| C29 | NotifikasiUI | Antarmuka untuk Notifikasi; hanya menangani masukan dan penyajian informasi. |
-| C30 | PaymentGatewayUI | Antarmuka untuk PaymentGateway; hanya menangani masukan dan penyajian informasi. |
-| C33 | PenyediaKerjaController | Pengendali alur PenyediaKerja; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-| C37 | TransaksiPekerjaanController | Pengendali alur TransaksiPekerjaan; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-| C38 | BuktiPenyerahanController | Pengendali alur BuktiPenyerahan; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-| C39 | TagihanPembayaranController | Pengendali alur TagihanPembayaran; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-| C40 | PencairanDanaController | Pengendali alur PencairanDana; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-| C44 | NotifikasiController | Pengendali alur Notifikasi; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-| C45 | PaymentGatewayController | Pengendali alur PaymentGateway; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-
-#### Diagram Kelas
-
-<p align="center">
-<img alt="Class Diagram UC09" src="./assets/diagram/Diagram uc/class-diagram-uc-09.png" width="70%">
-</p>
-<p align="center">
-<i>Gambar 10. Diagram Kelas Use Case UC09</i>
-</p>
-<br>
-
-| ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
-| --- | --- | --- | --- |
-| C03 | PenyediaKerja | -deskripsiPenyedia-ratingRataRata | +perbaruiProfilPenyedia(dataProfil)<br>+perbaruiRating(ratingRataRata) |
-| C07 | TransaksiPekerjaan | -idTransaksi-idPenawaran-idLowongan-idTenagaKerja-idPenyediaKerja-upahDisepakati-deskripsiDisepakati-modeKerja-lokasi-jenisJadwal-waktuMulai-waktuSelesai-tenggatHasil-statusPekerjaan-danaDitahanSengketa-catatanRevisi | +mulaiPekerjaan()<br>+serahkanHasil()<br>+mintaRevisi(catatanRevisi)<br>+setujuiHasil()<br>+batalkanPekerjaan(alasan)<br>+aturPenahananDana(ditahan) |
-| C08 | BuktiPenyerahan | -idPenyerahan-idTransaksi-deskripsiHasil-lampiranUrl-nomorVersi-waktuPengiriman | +catatPenyerahan(dataHasil) |
-| C09 | TagihanPembayaran | -idTagihan-idTransaksi-upahDisepakati-biayaAdmin-totalBayar-statusPembayaran-referensiGateway-waktuKedaluwarsa | +hitungTotalBayar()<br>+perbaruiStatusPembayaran(statusPembayaran)<br>+cekKedaluwarsa(waktuSekarang) |
-| C10 | PencairanDana | -idPencairan-idTransaksi-nominalPencairan-tujuanPencairan-statusPencairan-referensiGateway-kunciIdempotensi-waktuPermintaan-waktuSelesai | +perbaruiStatusPencairan(statusPencairan) |
-| C14 | Notifikasi | -idNotifikasi-idPenerima-pesan-sudahDibaca-waktuKirim | +tandaiDibaca() |
-| C15 | PaymentGateway | -namaPenyedia-lingkungan | +buatInstruksiPembayaran(idTagihan, totalBayar, kunciIdempotensi)<br>+kirimPencairan(idPencairan, nominalPencairan, tujuanPencairan, kunciIdempotensi)<br>+kirimRefund(idTagihan, nominalRefund, kunciIdempotensi)<br>+ambilStatusTransaksi(referensiGateway) |
-| C18 | PenyediaKerjaUI | — | +tampilkanFormProfilPenyedia()<br>+tampilkanDashboardPenyedia() |
-| C22 | TransaksiPekerjaanUI | — | +tampilkanDetailTransaksi()<br>+tampilkanKonfirmasiPenyelesaian()<br>+tampilkanFormRevisi() |
-| C23 | BuktiPenyerahanUI | — | +tampilkanFormPenyerahan()<br>+tampilkanBuktiPenyerahan() |
-| C24 | TagihanPembayaranUI | — | +tampilkanTagihan()<br>+tampilkanStatusPembayaran() |
-| C25 | PencairanDanaUI | — | +tampilkanRiwayatPencairan()<br>+tampilkanStatusPencairan() |
-| C29 | NotifikasiUI | — | +tampilkanNotifikasi() |
-| C30 | PaymentGatewayUI | — | +tampilkanPilihanPembayaran()<br>+tampilkanInstruksiPembayaran() |
-| C33 | PenyediaKerjaController | — | +simpanProfilPenyedia(idPengguna, dataProfil)<br>+validasiKelayakanPublikasi(idPenyediaKerja) |
-| C37 | TransaksiPekerjaanController | — | +buatTransaksi(idPenawaran)<br>+cekKonflikJadwal(idTenagaKerja, jadwal)<br>+mulaiPekerjaan(idTransaksi)<br>+serahkanHasil(idTransaksi)<br>+mintaRevisi(idTransaksi, catatanRevisi)<br>+setujuiHasil(idTransaksi)<br>+batalkanSebelumPembayaran(idTransaksi, alasan)<br>+aturPenahananDana(idTransaksi, ditahan) |
-| C38 | BuktiPenyerahanController | — | +simpanPenyerahan(idTransaksi, dataHasil)<br>+ambilBuktiPenyerahan(idTransaksi) |
-| C39 | TagihanPembayaranController | — | +terbitkanTagihan(idTransaksi, biayaAdmin)<br>+prosesPembayaran(idTagihan, metodePembayaran)<br>+tanganiKedaluwarsa(idTagihan)<br>+prosesRefund(idTagihan) |
-| C40 | PencairanDanaController | — | +prosesPencairanOtomatis(idTransaksi)<br>+prosesUlangPencairan(idPencairan)<br>+ambilRiwayatPencairan(idTenagaKerja) |
-| C44 | NotifikasiController | — | +kirimNotifikasi(idPenerima, pesan)<br>+tandaiDibaca(idNotifikasi) |
-| C45 | PaymentGatewayController | — | +buatPembayaran(idTagihan, metodePembayaran)<br>+kirimPencairan(idPencairan)<br>+kirimRefund(idTagihan, nominalRefund)<br>+verifikasiCallback(payload)<br>+prosesCallback(payload)<br>+rekonsiliasiTransaksi(referensiGateway) |
-
-### 5.2.10 Use Case UC10
-
-**Nama Use Case:** Memantau Pencairan Upah Otomatis
-
-#### Identifikasi Kelas
-
-| ID Kelas | Nama Kelas | Deskripsi Kelas |
-| --- | --- | --- |
-| C02 | TenagaKerja | Turunan Pengguna yang menyimpan keahlian, tujuan pencairan, rating, dan atribut portofolio berupa daftar judul, deskripsi, bidang pekerjaan, serta foto atau tautan bukti pengalaman. |
-| C07 | TransaksiPekerjaan | Kesepakatan pelaksanaan pekerjaan oleh satu pekerja yang penawarannya diterima, mencakup upah, jadwal, ruang lingkup, dan status pengerjaan. |
-| C09 | TagihanPembayaran | Invoice per penugasan berisi upah yang disetujui dan biaya admin tambahan. |
-| C10 | PencairanDana | Catatan penyaluran otomatis seluruh upah yang disepakati ke tujuan pembayaran pekerja setelah persetujuan hasil. |
-| C14 | Notifikasi | Pesan kepada pengguna tentang verifikasi, penawaran, pekerjaan, pembayaran, atau sengketa. |
-| C15 | PaymentGateway | Representasi integrasi layanan pembayaran eksternal. Bukan penyimpan dana milik platform; UI dan Controller dipertahankan mengikuti struktur asistensi. |
-| C17 | TenagaKerjaUI | Antarmuka profil pekerja, pengelolaan dan pemilihan portofolio, serta riwayat pekerjaan. |
-| C22 | TransaksiPekerjaanUI | Antarmuka untuk TransaksiPekerjaan; hanya menangani masukan dan penyajian informasi. |
-| C24 | TagihanPembayaranUI | Antarmuka untuk TagihanPembayaran; hanya menangani masukan dan penyajian informasi. |
-| C25 | PencairanDanaUI | Antarmuka untuk PencairanDana; hanya menangani masukan dan penyajian informasi. |
-| C29 | NotifikasiUI | Antarmuka untuk Notifikasi; hanya menangani masukan dan penyajian informasi. |
-| C30 | PaymentGatewayUI | Antarmuka untuk PaymentGateway; hanya menangani masukan dan penyajian informasi. |
-| C32 | TenagaKerjaController | Pengendali profil dan atribut portofolio pekerja, termasuk validasi kepemilikan, kelengkapan, dan kelayakan melamar. |
-| C37 | TransaksiPekerjaanController | Pengendali alur TransaksiPekerjaan; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-| C39 | TagihanPembayaranController | Pengendali alur TagihanPembayaran; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-| C40 | PencairanDanaController | Pengendali alur PencairanDana; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-| C44 | NotifikasiController | Pengendali alur Notifikasi; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-| C45 | PaymentGatewayController | Pengendali alur PaymentGateway; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-
-#### Diagram Kelas
-
-<p align="center">
-<img alt="Class Diagram UC10" src="./assets/diagram/Diagram uc/class-diagram-uc-10.png" width="70%">
-</p>
-<p align="center">
-<i>Gambar 11. Diagram Kelas Use Case UC10</i>
-</p>
-<br>
-
-| ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
-| --- | --- | --- | --- |
-| C02 | TenagaKerja | -portofolio-keahlian-ringkasanProfil-tujuanPencairan-ratingRataRata | +perbaruiPortofolio(dataPortofolio)<br>+hapusPortofolio(indeksPortofolio)<br>+cekKelengkapanPortofolio()<br>+perbaruiProfilPekerja(dataProfil)<br>+cekKelengkapanProfil()<br>+perbaruiTujuanPencairan(tujuanPencairan)<br>+perbaruiRating(ratingRataRata) |
-| C07 | TransaksiPekerjaan | -idTransaksi-idPenawaran-idLowongan-idTenagaKerja-idPenyediaKerja-upahDisepakati-deskripsiDisepakati-modeKerja-lokasi-jenisJadwal-waktuMulai-waktuSelesai-tenggatHasil-statusPekerjaan-danaDitahanSengketa-catatanRevisi | +mulaiPekerjaan()<br>+serahkanHasil()<br>+mintaRevisi(catatanRevisi)<br>+setujuiHasil()<br>+batalkanPekerjaan(alasan)<br>+aturPenahananDana(ditahan) |
-| C09 | TagihanPembayaran | -idTagihan-idTransaksi-upahDisepakati-biayaAdmin-totalBayar-statusPembayaran-referensiGateway-waktuKedaluwarsa | +hitungTotalBayar()<br>+perbaruiStatusPembayaran(statusPembayaran)<br>+cekKedaluwarsa(waktuSekarang) |
-| C10 | PencairanDana | -idPencairan-idTransaksi-nominalPencairan-tujuanPencairan-statusPencairan-referensiGateway-kunciIdempotensi-waktuPermintaan-waktuSelesai | +perbaruiStatusPencairan(statusPencairan) |
-| C14 | Notifikasi | -idNotifikasi-idPenerima-pesan-sudahDibaca-waktuKirim | +tandaiDibaca() |
-| C15 | PaymentGateway | -namaPenyedia-lingkungan | +buatInstruksiPembayaran(idTagihan, totalBayar, kunciIdempotensi)<br>+kirimPencairan(idPencairan, nominalPencairan, tujuanPencairan, kunciIdempotensi)<br>+kirimRefund(idTagihan, nominalRefund, kunciIdempotensi)<br>+ambilStatusTransaksi(referensiGateway) |
-| C17 | TenagaKerjaUI | — | +tampilkanFormProfilPekerja()<br>+tampilkanDaftarPortofolio()<br>+tampilkanFormPortofolio()<br>+tampilkanPilihanPortofolio()<br>+tampilkanRiwayatPekerjaan() |
-| C22 | TransaksiPekerjaanUI | — | +tampilkanDetailTransaksi()<br>+tampilkanKonfirmasiPenyelesaian()<br>+tampilkanFormRevisi() |
-| C24 | TagihanPembayaranUI | — | +tampilkanTagihan()<br>+tampilkanStatusPembayaran() |
-| C25 | PencairanDanaUI | — | +tampilkanRiwayatPencairan()<br>+tampilkanStatusPencairan() |
-| C29 | NotifikasiUI | — | +tampilkanNotifikasi() |
-| C30 | PaymentGatewayUI | — | +tampilkanPilihanPembayaran()<br>+tampilkanInstruksiPembayaran() |
-| C32 | TenagaKerjaController | — | +simpanProfilPekerja(idPengguna, dataProfil)<br>+simpanPortofolio(idTenagaKerja, dataPortofolio)<br>+hapusPortofolio(idTenagaKerja, indeksPortofolio)<br>+validasiPortofolio(idTenagaKerja, indeksPortofolio)<br>+ambilRingkasanPortofolio(idTenagaKerja, indeksPortofolio)<br>+validasiKelayakanMelamar(idTenagaKerja) |
-| C37 | TransaksiPekerjaanController | — | +buatTransaksi(idPenawaran)<br>+cekKonflikJadwal(idTenagaKerja, jadwal)<br>+mulaiPekerjaan(idTransaksi)<br>+serahkanHasil(idTransaksi)<br>+mintaRevisi(idTransaksi, catatanRevisi)<br>+setujuiHasil(idTransaksi)<br>+batalkanSebelumPembayaran(idTransaksi, alasan)<br>+aturPenahananDana(idTransaksi, ditahan) |
-| C39 | TagihanPembayaranController | — | +terbitkanTagihan(idTransaksi, biayaAdmin)<br>+prosesPembayaran(idTagihan, metodePembayaran)<br>+tanganiKedaluwarsa(idTagihan)<br>+prosesRefund(idTagihan) |
-| C40 | PencairanDanaController | — | +prosesPencairanOtomatis(idTransaksi)<br>+prosesUlangPencairan(idPencairan)<br>+ambilRiwayatPencairan(idTenagaKerja) |
-| C44 | NotifikasiController | — | +kirimNotifikasi(idPenerima, pesan)<br>+tandaiDibaca(idNotifikasi) |
-| C45 | PaymentGatewayController | — | +buatPembayaran(idTagihan, metodePembayaran)<br>+kirimPencairan(idPencairan)<br>+kirimRefund(idTagihan, nominalRefund)<br>+verifikasiCallback(payload)<br>+prosesCallback(payload)<br>+rekonsiliasiTransaksi(referensiGateway) |
-
-### 5.2.11 Use Case UC11
-
-**Nama Use Case:** Memberikan Penilaian Kerja
-
-#### Identifikasi Kelas
-
-| ID Kelas | Nama Kelas | Deskripsi Kelas |
-| --- | --- | --- |
-| C02 | TenagaKerja | Turunan Pengguna yang menyimpan keahlian, tujuan pencairan, rating, dan atribut portofolio berupa daftar judul, deskripsi, bidang pekerjaan, serta foto atau tautan bukti pengalaman. |
-| C03 | PenyediaKerja | Turunan Pengguna yang memublikasikan lowongan dan membayar tagihan per pekerja. |
-| C07 | TransaksiPekerjaan | Kesepakatan pelaksanaan pekerjaan oleh satu pekerja yang penawarannya diterima, mencakup upah, jadwal, ruang lingkup, dan status pengerjaan. |
-| C11 | UlasanRating | Penilaian satu pemberi kepada satu penerima untuk satu penugasan yang selesai. |
-| C17 | TenagaKerjaUI | Antarmuka profil pekerja, pengelolaan dan pemilihan portofolio, serta riwayat pekerjaan. |
-| C18 | PenyediaKerjaUI | Antarmuka untuk PenyediaKerja; hanya menangani masukan dan penyajian informasi. |
-| C22 | TransaksiPekerjaanUI | Antarmuka untuk TransaksiPekerjaan; hanya menangani masukan dan penyajian informasi. |
-| C26 | UlasanRatingUI | Antarmuka untuk UlasanRating; hanya menangani masukan dan penyajian informasi. |
-| C32 | TenagaKerjaController | Pengendali profil dan atribut portofolio pekerja, termasuk validasi kepemilikan, kelengkapan, dan kelayakan melamar. |
-| C33 | PenyediaKerjaController | Pengendali alur PenyediaKerja; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-| C37 | TransaksiPekerjaanController | Pengendali alur TransaksiPekerjaan; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-| C41 | UlasanRatingController | Pengendali alur UlasanRating; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-
-#### Diagram Kelas
-
-<p align="center">
-<img alt="Class Diagram UC11" src="./assets/diagram/Diagram uc/class-diagram-uc-11.png" width="70%">
-</p>
-<p align="center">
-<i>Gambar 12. Diagram Kelas Use Case UC11</i>
-</p>
-<br>
-
-| ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
-| --- | --- | --- | --- |
-| C02 | TenagaKerja | -portofolio-keahlian-ringkasanProfil-tujuanPencairan-ratingRataRata | +perbaruiPortofolio(dataPortofolio)<br>+hapusPortofolio(indeksPortofolio)<br>+cekKelengkapanPortofolio()<br>+perbaruiProfilPekerja(dataProfil)<br>+cekKelengkapanProfil()<br>+perbaruiTujuanPencairan(tujuanPencairan)<br>+perbaruiRating(ratingRataRata) |
-| C03 | PenyediaKerja | -deskripsiPenyedia-ratingRataRata | +perbaruiProfilPenyedia(dataProfil)<br>+perbaruiRating(ratingRataRata) |
-| C07 | TransaksiPekerjaan | -idTransaksi-idPenawaran-idLowongan-idTenagaKerja-idPenyediaKerja-upahDisepakati-deskripsiDisepakati-modeKerja-lokasi-jenisJadwal-waktuMulai-waktuSelesai-tenggatHasil-statusPekerjaan-danaDitahanSengketa-catatanRevisi | +mulaiPekerjaan()<br>+serahkanHasil()<br>+mintaRevisi(catatanRevisi)<br>+setujuiHasil()<br>+batalkanPekerjaan(alasan)<br>+aturPenahananDana(ditahan) |
-| C11 | UlasanRating | -idUlasan-idTransaksi-idPemberi-idPenerima-nilaiRating-isiUlasan-waktuUlasan | +validasiNilaiRating() |
-| C17 | TenagaKerjaUI | — | +tampilkanFormProfilPekerja()<br>+tampilkanDaftarPortofolio()<br>+tampilkanFormPortofolio()<br>+tampilkanPilihanPortofolio()<br>+tampilkanRiwayatPekerjaan() |
-| C18 | PenyediaKerjaUI | — | +tampilkanFormProfilPenyedia()<br>+tampilkanDashboardPenyedia() |
-| C22 | TransaksiPekerjaanUI | — | +tampilkanDetailTransaksi()<br>+tampilkanKonfirmasiPenyelesaian()<br>+tampilkanFormRevisi() |
-| C26 | UlasanRatingUI | — | +tampilkanFormUlasan()<br>+tampilkanDaftarUlasan() |
-| C32 | TenagaKerjaController | — | +simpanProfilPekerja(idPengguna, dataProfil)<br>+simpanPortofolio(idTenagaKerja, dataPortofolio)<br>+hapusPortofolio(idTenagaKerja, indeksPortofolio)<br>+validasiPortofolio(idTenagaKerja, indeksPortofolio)<br>+ambilRingkasanPortofolio(idTenagaKerja, indeksPortofolio)<br>+validasiKelayakanMelamar(idTenagaKerja) |
-| C33 | PenyediaKerjaController | — | +simpanProfilPenyedia(idPengguna, dataProfil)<br>+validasiKelayakanPublikasi(idPenyediaKerja) |
-| C37 | TransaksiPekerjaanController | — | +buatTransaksi(idPenawaran)<br>+cekKonflikJadwal(idTenagaKerja, jadwal)<br>+mulaiPekerjaan(idTransaksi)<br>+serahkanHasil(idTransaksi)<br>+mintaRevisi(idTransaksi, catatanRevisi)<br>+setujuiHasil(idTransaksi)<br>+batalkanSebelumPembayaran(idTransaksi, alasan)<br>+aturPenahananDana(idTransaksi, ditahan) |
-| C41 | UlasanRatingController | — | +simpanUlasan(idTransaksi, idPemberi, dataUlasan)<br>+cekUlasanGanda(idTransaksi, idPemberi, idPenerima)<br>+hitungRatingRataRata(idPengguna) |
-
-### 5.2.12 Use Case UC12
-
-**Nama Use Case:** Menangani Keluhan dan Sengketa
-
-#### Identifikasi Kelas
-
-| ID Kelas | Nama Kelas | Deskripsi Kelas |
-| --- | --- | --- |
-| C01 | Pengguna | Entitas abstrak akun; identitas dan status verifikasi digunakan bersama oleh kedua peran publik. Akun CS disediakan internal. |
-| C04 | CustomerService | Turunan Pengguna untuk petugas internal yang memeriksa KTP dan menangani sengketa. |
-| C05 | LowonganPekerjaan | Kebutuhan tenaga kerja dalam tepat satu bidang, dengan kuota dan tarif awal per pekerja. |
-| C07 | TransaksiPekerjaan | Kesepakatan pelaksanaan pekerjaan oleh satu pekerja yang penawarannya diterima, mencakup upah, jadwal, ruang lingkup, dan status pengerjaan. |
-| C09 | TagihanPembayaran | Invoice per penugasan berisi upah yang disetujui dan biaya admin tambahan. |
-| C10 | PencairanDana | Catatan penyaluran otomatis seluruh upah yang disepakati ke tujuan pembayaran pekerja setelah persetujuan hasil. |
-| C12 | TiketSengketa | Keluhan akun atau sengketa pekerjaan; idTransaksi opsional untuk kendala akun. |
-| C13 | RiwayatSengketa | Catatan kronologis tindakan, bukti tambahan, dan perubahan status selama penanganan tiket keluhan. |
-| C14 | Notifikasi | Pesan kepada pengguna tentang verifikasi, penawaran, pekerjaan, pembayaran, atau sengketa. |
-| C15 | PaymentGateway | Representasi integrasi layanan pembayaran eksternal. Bukan penyimpan dana milik platform; UI dan Controller dipertahankan mengikuti struktur asistensi. |
-| C16 | PenggunaUI | Antarmuka untuk Pengguna; hanya menangani masukan dan penyajian informasi. |
-| C19 | CustomerServiceUI | Antarmuka untuk CustomerService; hanya menangani masukan dan penyajian informasi. |
-| C20 | LowonganPekerjaanUI | Antarmuka untuk LowonganPekerjaan; hanya menangani masukan dan penyajian informasi. |
-| C22 | TransaksiPekerjaanUI | Antarmuka untuk TransaksiPekerjaan; hanya menangani masukan dan penyajian informasi. |
-| C24 | TagihanPembayaranUI | Antarmuka untuk TagihanPembayaran; hanya menangani masukan dan penyajian informasi. |
-| C25 | PencairanDanaUI | Antarmuka untuk PencairanDana; hanya menangani masukan dan penyajian informasi. |
-| C27 | TiketSengketaUI | Antarmuka untuk TiketSengketa; hanya menangani masukan dan penyajian informasi. |
-| C28 | RiwayatSengketaUI | Antarmuka untuk RiwayatSengketa; hanya menangani masukan dan penyajian informasi. |
-| C29 | NotifikasiUI | Antarmuka untuk Notifikasi; hanya menangani masukan dan penyajian informasi. |
-| C30 | PaymentGatewayUI | Antarmuka untuk PaymentGateway; hanya menangani masukan dan penyajian informasi. |
-| C31 | PenggunaController | Pengendali alur Pengguna; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-| C34 | CustomerServiceController | Pengendali alur CustomerService; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-| C35 | LowonganPekerjaanController | Pengendali alur LowonganPekerjaan; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-| C37 | TransaksiPekerjaanController | Pengendali alur TransaksiPekerjaan; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-| C39 | TagihanPembayaranController | Pengendali alur TagihanPembayaran; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-| C40 | PencairanDanaController | Pengendali alur PencairanDana; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-| C42 | TiketSengketaController | Pengendali alur TiketSengketa; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-| C43 | RiwayatSengketaController | Pengendali alur RiwayatSengketa; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-| C44 | NotifikasiController | Pengendali alur Notifikasi; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-| C45 | PaymentGatewayController | Pengendali alur PaymentGateway; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-
-#### Diagram Kelas
-
-<p align="center">
-<img alt="Class Diagram UC12" src="./assets/diagram/Diagram uc/class-diagram-uc-12.png" width="70%">
-</p>
-<p align="center">
-<i>Gambar 13. Diagram Kelas Use Case UC12</i>
-</p>
-<br>
-
-| ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
-| --- | --- | --- | --- |
-| C01 | Pengguna | -idPengguna-nama-email-passwordHash-tanggalLahir-nomorTelepon-peran-fotoKtpUrl-statusVerifikasi-alasanPenolakan-waktuPengajuanVerifikasi-waktuVerifikasi-idPemeriksa | +hitungUsia()<br>+perbaruiProfil(dataProfil)<br>+ajukanVerifikasi(fotoKtpUrl)<br>+perbaruiStatusVerifikasi(statusVerifikasi, alasanPenolakan, idPemeriksa)<br>+cekTerverifikasi() |
-| C04 | CustomerService | -hakAkses | +cekHakAkses(aksi) |
-| C05 | LowonganPekerjaan | -idLowongan-idPenyediaKerja-judul-deskripsi-bidangPekerjaan-keterampilan-kuota-tarifAwal-modeKerja-lokasi-jenisJadwal-waktuMulai-waktuSelesai-tenggatHasil-batasPengajuan-statusLowongan | +cekTerbuka(waktuSekarang)<br>+hitungSisaKuota(jumlahPenugasan)<br>+perbaruiStatusLowongan(statusLowongan)<br>+perbaruiLowongan(dataLowongan) |
-| C07 | TransaksiPekerjaan | -idTransaksi-idPenawaran-idLowongan-idTenagaKerja-idPenyediaKerja-upahDisepakati-deskripsiDisepakati-modeKerja-lokasi-jenisJadwal-waktuMulai-waktuSelesai-tenggatHasil-statusPekerjaan-danaDitahanSengketa-catatanRevisi | +mulaiPekerjaan()<br>+serahkanHasil()<br>+mintaRevisi(catatanRevisi)<br>+setujuiHasil()<br>+batalkanPekerjaan(alasan)<br>+aturPenahananDana(ditahan) |
-| C09 | TagihanPembayaran | -idTagihan-idTransaksi-upahDisepakati-biayaAdmin-totalBayar-statusPembayaran-referensiGateway-waktuKedaluwarsa | +hitungTotalBayar()<br>+perbaruiStatusPembayaran(statusPembayaran)<br>+cekKedaluwarsa(waktuSekarang) |
-| C10 | PencairanDana | -idPencairan-idTransaksi-nominalPencairan-tujuanPencairan-statusPencairan-referensiGateway-kunciIdempotensi-waktuPermintaan-waktuSelesai | +perbaruiStatusPencairan(statusPencairan) |
-| C12 | TiketSengketa | -idTiket-idTransaksi-idPelapor-idPetugas-kategoriMasalah-deskripsiKeluhan-buktiUrl-statusTiket-keputusan-alasanKeputusan-waktuPembuatan | +perbaruiStatusTiket(statusTiket)<br>+catatKeputusan(keputusan, alasanKeputusan) |
-| C13 | RiwayatSengketa | -idRiwayat-idTiket-idPelaku-aktivitas-buktiTambahanUrl-waktuAktivitas | +catatAktivitas(aktivitas, buktiTambahanUrl) |
-| C14 | Notifikasi | -idNotifikasi-idPenerima-pesan-sudahDibaca-waktuKirim | +tandaiDibaca() |
-| C15 | PaymentGateway | -namaPenyedia-lingkungan | +buatInstruksiPembayaran(idTagihan, totalBayar, kunciIdempotensi)<br>+kirimPencairan(idPencairan, nominalPencairan, tujuanPencairan, kunciIdempotensi)<br>+kirimRefund(idTagihan, nominalRefund, kunciIdempotensi)<br>+ambilStatusTransaksi(referensiGateway) |
-| C16 | PenggunaUI | — | +tampilkanFormRegistrasi()<br>+tampilkanFormLogin()<br>+tampilkanProfil()<br>+tampilkanFormVerifikasi() |
-| C19 | CustomerServiceUI | — | +tampilkanAntreanVerifikasi()<br>+tampilkanDashboardKeluhan() |
-| C20 | LowonganPekerjaanUI | — | +tampilkanFormLowongan()<br>+tampilkanDaftarLowongan()<br>+tampilkanDetailLowongan() |
-| C22 | TransaksiPekerjaanUI | — | +tampilkanDetailTransaksi()<br>+tampilkanKonfirmasiPenyelesaian()<br>+tampilkanFormRevisi() |
-| C24 | TagihanPembayaranUI | — | +tampilkanTagihan()<br>+tampilkanStatusPembayaran() |
-| C25 | PencairanDanaUI | — | +tampilkanRiwayatPencairan()<br>+tampilkanStatusPencairan() |
-| C27 | TiketSengketaUI | — | +tampilkanFormKeluhan()<br>+tampilkanDetailTiket() |
-| C28 | RiwayatSengketaUI | — | +tampilkanRiwayatSengketa() |
-| C29 | NotifikasiUI | — | +tampilkanNotifikasi() |
-| C30 | PaymentGatewayUI | — | +tampilkanPilihanPembayaran()<br>+tampilkanInstruksiPembayaran() |
-| C31 | PenggunaController | — | +prosesRegistrasi(dataRegistrasi)<br>+prosesLogin(email, password)<br>+simpanProfil(idPengguna, dataProfil)<br>+ajukanVerifikasi(idPengguna, fotoKtpUrl)<br>+validasiBerkas(berkas, jenisBerkas) |
-| C34 | CustomerServiceController | — | +putuskanVerifikasi(idPengguna, keputusan, alasan)<br>+otorisasiPetugas(idPetugas, aksi) |
-| C35 | LowonganPekerjaanController | — | +buatLowongan(idPenyediaKerja, dataLowongan)<br>+ubahLowongan(idLowongan, dataLowongan)<br>+cariLowongan(filter)<br>+validasiDataLowongan(dataLowongan)<br>+perbaruiKetersediaan(idLowongan) |
-| C37 | TransaksiPekerjaanController | — | +buatTransaksi(idPenawaran)<br>+cekKonflikJadwal(idTenagaKerja, jadwal)<br>+mulaiPekerjaan(idTransaksi)<br>+serahkanHasil(idTransaksi)<br>+mintaRevisi(idTransaksi, catatanRevisi)<br>+setujuiHasil(idTransaksi)<br>+batalkanSebelumPembayaran(idTransaksi, alasan)<br>+aturPenahananDana(idTransaksi, ditahan) |
-| C39 | TagihanPembayaranController | — | +terbitkanTagihan(idTransaksi, biayaAdmin)<br>+prosesPembayaran(idTagihan, metodePembayaran)<br>+tanganiKedaluwarsa(idTagihan)<br>+prosesRefund(idTagihan) |
-| C40 | PencairanDanaController | — | +prosesPencairanOtomatis(idTransaksi)<br>+prosesUlangPencairan(idPencairan)<br>+ambilRiwayatPencairan(idTenagaKerja) |
-| C42 | TiketSengketaController | — | +buatTiket(idPelapor, dataKeluhan)<br>+mintaBuktiTambahan(idTiket)<br>+putuskanSengketa(idTiket, keputusan, alasan)<br>+batalkanTiket(idTiket)<br>+eksekusiKeputusan(idTiket) |
-| C43 | RiwayatSengketaController | — | +catatRiwayat(idTiket, idPelaku, aktivitas, buktiTambahanUrl) |
-| C44 | NotifikasiController | — | +kirimNotifikasi(idPenerima, pesan)<br>+tandaiDibaca(idNotifikasi) |
-| C45 | PaymentGatewayController | — | +buatPembayaran(idTagihan, metodePembayaran)<br>+kirimPencairan(idPencairan)<br>+kirimRefund(idTagihan, nominalRefund)<br>+verifikasiCallback(payload)<br>+prosesCallback(payload)<br>+rekonsiliasiTransaksi(referensiGateway) |
-
-### 5.2.13 Use Case UC13
-
-**Nama Use Case:** Mengelola Profil dan Portofolio
-
-#### Identifikasi Kelas
-
-| ID Kelas | Nama Kelas | Deskripsi Kelas |
-| --- | --- | --- |
-| C01 | Pengguna | Entitas abstrak akun; identitas dan status verifikasi digunakan bersama oleh kedua peran publik. Akun CS disediakan internal. |
-| C02 | TenagaKerja | Turunan Pengguna yang menyimpan keahlian, tujuan pencairan, rating, dan atribut portofolio berupa daftar judul, deskripsi, bidang pekerjaan, serta foto atau tautan bukti pengalaman. |
-| C03 | PenyediaKerja | Turunan Pengguna yang memublikasikan lowongan dan membayar tagihan per pekerja. |
-| C16 | PenggunaUI | Antarmuka untuk Pengguna; hanya menangani masukan dan penyajian informasi. |
-| C17 | TenagaKerjaUI | Antarmuka profil pekerja, pengelolaan dan pemilihan portofolio, serta riwayat pekerjaan. |
-| C18 | PenyediaKerjaUI | Antarmuka untuk PenyediaKerja; hanya menangani masukan dan penyajian informasi. |
-| C31 | PenggunaController | Pengendali alur Pengguna; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-| C32 | TenagaKerjaController | Pengendali profil dan atribut portofolio pekerja, termasuk validasi kepemilikan, kelengkapan, dan kelayakan melamar. |
-| C33 | PenyediaKerjaController | Pengendali alur PenyediaKerja; memeriksa otorisasi dan mengoordinasikan entitas/integrasi terkait. |
-
-#### Diagram Kelas
-
-<!-- Diagram UC13 belum tersedia. -->
-
-| ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
-| --- | --- | --- | --- |
-| C01 | Pengguna | -idPengguna-nama-email-passwordHash-tanggalLahir-nomorTelepon-peran-fotoKtpUrl-statusVerifikasi-alasanPenolakan-waktuPengajuanVerifikasi-waktuVerifikasi-idPemeriksa | +hitungUsia()<br>+perbaruiProfil(dataProfil)<br>+ajukanVerifikasi(fotoKtpUrl)<br>+perbaruiStatusVerifikasi(statusVerifikasi, alasanPenolakan, idPemeriksa)<br>+cekTerverifikasi() |
-| C02 | TenagaKerja | -portofolio-keahlian-ringkasanProfil-tujuanPencairan-ratingRataRata | +perbaruiPortofolio(dataPortofolio)<br>+hapusPortofolio(indeksPortofolio)<br>+cekKelengkapanPortofolio()<br>+perbaruiProfilPekerja(dataProfil)<br>+cekKelengkapanProfil()<br>+perbaruiTujuanPencairan(tujuanPencairan)<br>+perbaruiRating(ratingRataRata) |
-| C03 | PenyediaKerja | -deskripsiPenyedia-ratingRataRata | +perbaruiProfilPenyedia(dataProfil)<br>+perbaruiRating(ratingRataRata) |
-| C16 | PenggunaUI | — | +tampilkanFormRegistrasi()<br>+tampilkanFormLogin()<br>+tampilkanProfil()<br>+tampilkanFormVerifikasi() |
-| C17 | TenagaKerjaUI | — | +tampilkanFormProfilPekerja()<br>+tampilkanDaftarPortofolio()<br>+tampilkanFormPortofolio()<br>+tampilkanPilihanPortofolio()<br>+tampilkanRiwayatPekerjaan() |
-| C18 | PenyediaKerjaUI | — | +tampilkanFormProfilPenyedia()<br>+tampilkanDashboardPenyedia() |
-| C31 | PenggunaController | — | +prosesRegistrasi(dataRegistrasi)<br>+prosesLogin(email, password)<br>+simpanProfil(idPengguna, dataProfil)<br>+ajukanVerifikasi(idPengguna, fotoKtpUrl)<br>+validasiBerkas(berkas, jenisBerkas) |
-| C32 | TenagaKerjaController | — | +simpanProfilPekerja(idPengguna, dataProfil)<br>+simpanPortofolio(idTenagaKerja, dataPortofolio)<br>+hapusPortofolio(idTenagaKerja, indeksPortofolio)<br>+validasiPortofolio(idTenagaKerja, indeksPortofolio)<br>+ambilRingkasanPortofolio(idTenagaKerja, indeksPortofolio)<br>+validasiKelayakanMelamar(idTenagaKerja) |
-| C33 | PenyediaKerjaController | — | +simpanProfilPenyedia(idPengguna, dataProfil)<br>+validasiKelayakanPublikasi(idPenyediaKerja) |
+| :--- | :--- | :--- | :--- |
+| *C02* | *Pesanan* | *idPesanan, total, status* | *buatPesanan(), hitungTotal()* |
+| *C03* | *Keranjang* | *daftarItem* | *tambahItem(), checkout()* |
+| *...* | *...* | *...* | *...* |
+
+> Lanjutkan pola **5.2.x** untuk setiap use case pada 4.2.
 
 ## 5.3 Diagram Kelas Keseluruhan
+Gabungkan seluruh kelas dan hubungan antarkelas dari BAB 4.3 dokumen *Class Diagram* menjadi satu diagram kelas keseluruhan. Pastikan tidak ada kelas yang terduplikasi atau tertinggal.
 
 <p align="center">
-<img alt="Class Diagram Keseluruhan" src="./assets/diagram/Diagram uc/contoh-class-diagram.webp" width="70%">
+<img alt="Contoh Class Diagram Keseluruhan" src="./assets/diagram/contoh-class-diagram.webp" width="70%">
 </p>
 <p align="center">
-<i>Gambar X. Diagram Kelas Keseluruhan</i>
+<i>Gambar 4. Contoh Diagram Kelas Keseluruhan</i>
 </p>
-<br>
 
 | ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
-| --- | --- | --- | --- |
-| C01 | Pengguna | -idPengguna-nama-email-passwordHash-tanggalLahir-nomorTelepon-peran-fotoKtpUrl-statusVerifikasi-alasanPenolakan-waktuPengajuanVerifikasi-waktuVerifikasi-idPemeriksa | +hitungUsia()<br>+perbaruiProfil(dataProfil)<br>+ajukanVerifikasi(fotoKtpUrl)<br>+perbaruiStatusVerifikasi(statusVerifikasi, alasanPenolakan, idPemeriksa)<br>+cekTerverifikasi() |
-| C02 | TenagaKerja | -portofolio-keahlian-ringkasanProfil-tujuanPencairan-ratingRataRata | +perbaruiPortofolio(dataPortofolio)<br>+hapusPortofolio(indeksPortofolio)<br>+cekKelengkapanPortofolio()<br>+perbaruiProfilPekerja(dataProfil)<br>+cekKelengkapanProfil()<br>+perbaruiTujuanPencairan(tujuanPencairan)<br>+perbaruiRating(ratingRataRata) |
-| C03 | PenyediaKerja | -deskripsiPenyedia-ratingRataRata | +perbaruiProfilPenyedia(dataProfil)<br>+perbaruiRating(ratingRataRata) |
-| C04 | CustomerService | -hakAkses | +cekHakAkses(aksi) |
-| C05 | LowonganPekerjaan | -idLowongan-idPenyediaKerja-judul-deskripsi-bidangPekerjaan-keterampilan-kuota-tarifAwal-modeKerja-lokasi-jenisJadwal-waktuMulai-waktuSelesai-tenggatHasil-batasPengajuan-statusLowongan | +cekTerbuka(waktuSekarang)<br>+hitungSisaKuota(jumlahPenugasan)<br>+perbaruiStatusLowongan(statusLowongan)<br>+perbaruiLowongan(dataLowongan) |
-| C06 | PengajuanPenawaran | -idPenawaran-idLowongan-idTenagaKerja-nominalPenawaran-pesanPenawaran-pengalamanTerkait-ringkasanPortofolio-statusPenawaran-alasanPembatalan-waktuPengajuan-waktuPerubahan | +ubahPenawaran(dataPenawaran)<br>+tarikPenawaran()<br>+terimaPenawaran()<br>+tolakPenawaran()<br>+batalkanKarenaJadwal() |
-| C07 | TransaksiPekerjaan | -idTransaksi-idPenawaran-idLowongan-idTenagaKerja-idPenyediaKerja-upahDisepakati-deskripsiDisepakati-modeKerja-lokasi-jenisJadwal-waktuMulai-waktuSelesai-tenggatHasil-statusPekerjaan-danaDitahanSengketa-catatanRevisi | +mulaiPekerjaan()<br>+serahkanHasil()<br>+mintaRevisi(catatanRevisi)<br>+setujuiHasil()<br>+batalkanPekerjaan(alasan)<br>+aturPenahananDana(ditahan) |
-| C08 | BuktiPenyerahan | -idPenyerahan-idTransaksi-deskripsiHasil-lampiranUrl-nomorVersi-waktuPengiriman | +catatPenyerahan(dataHasil) |
-| C09 | TagihanPembayaran | -idTagihan-idTransaksi-upahDisepakati-biayaAdmin-totalBayar-statusPembayaran-referensiGateway-waktuKedaluwarsa | +hitungTotalBayar()<br>+perbaruiStatusPembayaran(statusPembayaran)<br>+cekKedaluwarsa(waktuSekarang) |
-| C10 | PencairanDana | -idPencairan-idTransaksi-nominalPencairan-tujuanPencairan-statusPencairan-referensiGateway-kunciIdempotensi-waktuPermintaan-waktuSelesai | +perbaruiStatusPencairan(statusPencairan) |
-| C11 | UlasanRating | -idUlasan-idTransaksi-idPemberi-idPenerima-nilaiRating-isiUlasan-waktuUlasan | +validasiNilaiRating() |
-| C12 | TiketSengketa | -idTiket-idTransaksi-idPelapor-idPetugas-kategoriMasalah-deskripsiKeluhan-buktiUrl-statusTiket-keputusan-alasanKeputusan-waktuPembuatan | +perbaruiStatusTiket(statusTiket)<br>+catatKeputusan(keputusan, alasanKeputusan) |
-| C13 | RiwayatSengketa | -idRiwayat-idTiket-idPelaku-aktivitas-buktiTambahanUrl-waktuAktivitas | +catatAktivitas(aktivitas, buktiTambahanUrl) |
-| C14 | Notifikasi | -idNotifikasi-idPenerima-pesan-sudahDibaca-waktuKirim | +tandaiDibaca() |
-| C15 | PaymentGateway | -namaPenyedia-lingkungan | +buatInstruksiPembayaran(idTagihan, totalBayar, kunciIdempotensi)<br>+kirimPencairan(idPencairan, nominalPencairan, tujuanPencairan, kunciIdempotensi)<br>+kirimRefund(idTagihan, nominalRefund, kunciIdempotensi)<br>+ambilStatusTransaksi(referensiGateway) |
-| C16 | PenggunaUI | — | +tampilkanFormRegistrasi()<br>+tampilkanFormLogin()<br>+tampilkanProfil()<br>+tampilkanFormVerifikasi() |
-| C17 | TenagaKerjaUI | — | +tampilkanFormProfilPekerja()<br>+tampilkanDaftarPortofolio()<br>+tampilkanFormPortofolio()<br>+tampilkanPilihanPortofolio()<br>+tampilkanRiwayatPekerjaan() |
-| C18 | PenyediaKerjaUI | — | +tampilkanFormProfilPenyedia()<br>+tampilkanDashboardPenyedia() |
-| C19 | CustomerServiceUI | — | +tampilkanAntreanVerifikasi()<br>+tampilkanDashboardKeluhan() |
-| C20 | LowonganPekerjaanUI | — | +tampilkanFormLowongan()<br>+tampilkanDaftarLowongan()<br>+tampilkanDetailLowongan() |
-| C21 | PengajuanPenawaranUI | — | +tampilkanFormPenawaran()<br>+tampilkanDaftarPelamar()<br>+tampilkanRiwayatPenawaran() |
-| C22 | TransaksiPekerjaanUI | — | +tampilkanDetailTransaksi()<br>+tampilkanKonfirmasiPenyelesaian()<br>+tampilkanFormRevisi() |
-| C23 | BuktiPenyerahanUI | — | +tampilkanFormPenyerahan()<br>+tampilkanBuktiPenyerahan() |
-| C24 | TagihanPembayaranUI | — | +tampilkanTagihan()<br>+tampilkanStatusPembayaran() |
-| C25 | PencairanDanaUI | — | +tampilkanRiwayatPencairan()<br>+tampilkanStatusPencairan() |
-| C26 | UlasanRatingUI | — | +tampilkanFormUlasan()<br>+tampilkanDaftarUlasan() |
-| C27 | TiketSengketaUI | — | +tampilkanFormKeluhan()<br>+tampilkanDetailTiket() |
-| C28 | RiwayatSengketaUI | — | +tampilkanRiwayatSengketa() |
-| C29 | NotifikasiUI | — | +tampilkanNotifikasi() |
-| C30 | PaymentGatewayUI | — | +tampilkanPilihanPembayaran()<br>+tampilkanInstruksiPembayaran() |
-| C31 | PenggunaController | — | +prosesRegistrasi(dataRegistrasi)<br>+prosesLogin(email, password)<br>+simpanProfil(idPengguna, dataProfil)<br>+ajukanVerifikasi(idPengguna, fotoKtpUrl)<br>+validasiBerkas(berkas, jenisBerkas) |
-| C32 | TenagaKerjaController | — | +simpanProfilPekerja(idPengguna, dataProfil)<br>+simpanPortofolio(idTenagaKerja, dataPortofolio)<br>+hapusPortofolio(idTenagaKerja, indeksPortofolio)<br>+validasiPortofolio(idTenagaKerja, indeksPortofolio)<br>+ambilRingkasanPortofolio(idTenagaKerja, indeksPortofolio)<br>+validasiKelayakanMelamar(idTenagaKerja) |
-| C33 | PenyediaKerjaController | — | +simpanProfilPenyedia(idPengguna, dataProfil)<br>+validasiKelayakanPublikasi(idPenyediaKerja) |
-| C34 | CustomerServiceController | — | +putuskanVerifikasi(idPengguna, keputusan, alasan)<br>+otorisasiPetugas(idPetugas, aksi) |
-| C35 | LowonganPekerjaanController | — | +buatLowongan(idPenyediaKerja, dataLowongan)<br>+ubahLowongan(idLowongan, dataLowongan)<br>+cariLowongan(filter)<br>+validasiDataLowongan(dataLowongan)<br>+perbaruiKetersediaan(idLowongan) |
-| C36 | PengajuanPenawaranController | — | +ajukanPenawaran(idTenagaKerja, idLowongan, dataPenawaran)<br>+ubahPenawaran(idPenawaran, dataPenawaran)<br>+tarikPenawaran(idPenawaran)<br>+tolakPenawaran(idPenawaran)<br>+terimaPenawaran(idPenawaran)<br>+batalkanPenawaranKonflik(idTenagaKerja, idTransaksi) |
-| C37 | TransaksiPekerjaanController | — | +buatTransaksi(idPenawaran)<br>+cekKonflikJadwal(idTenagaKerja, jadwal)<br>+mulaiPekerjaan(idTransaksi)<br>+serahkanHasil(idTransaksi)<br>+mintaRevisi(idTransaksi, catatanRevisi)<br>+setujuiHasil(idTransaksi)<br>+batalkanSebelumPembayaran(idTransaksi, alasan)<br>+aturPenahananDana(idTransaksi, ditahan) |
-| C38 | BuktiPenyerahanController | — | +simpanPenyerahan(idTransaksi, dataHasil)<br>+ambilBuktiPenyerahan(idTransaksi) |
-| C39 | TagihanPembayaranController | — | +terbitkanTagihan(idTransaksi, biayaAdmin)<br>+prosesPembayaran(idTagihan, metodePembayaran)<br>+tanganiKedaluwarsa(idTagihan)<br>+prosesRefund(idTagihan) |
-| C40 | PencairanDanaController | — | +prosesPencairanOtomatis(idTransaksi)<br>+prosesUlangPencairan(idPencairan)<br>+ambilRiwayatPencairan(idTenagaKerja) |
-| C41 | UlasanRatingController | — | +simpanUlasan(idTransaksi, idPemberi, dataUlasan)<br>+cekUlasanGanda(idTransaksi, idPemberi, idPenerima)<br>+hitungRatingRataRata(idPengguna) |
-| C42 | TiketSengketaController | — | +buatTiket(idPelapor, dataKeluhan)<br>+mintaBuktiTambahan(idTiket)<br>+putuskanSengketa(idTiket, keputusan, alasan)<br>+batalkanTiket(idTiket)<br>+eksekusiKeputusan(idTiket) |
-| C43 | RiwayatSengketaController | — | +catatRiwayat(idTiket, idPelaku, aktivitas, buktiTambahanUrl) |
-| C44 | NotifikasiController | — | +kirimNotifikasi(idPenerima, pesan)<br>+tandaiDibaca(idNotifikasi) |
-| C45 | PaymentGatewayController | — | +buatPembayaran(idTagihan, metodePembayaran)<br>+kirimPencairan(idPencairan)<br>+kirimRefund(idTagihan, nominalRefund)<br>+verifikasiCallback(payload)<br>+prosesCallback(payload)<br>+rekonsiliasiTransaksi(referensiGateway) |
+| :--- | :--- | :--- | :--- |
+| *C01* | *Pelanggan* | *idPelanggan, nama, email* | *lihatRiwayatPesanan()* |
+| *C02* | *Pesanan* | *idPesanan, total, status* | *hitungTotal(), perbaruiStatus()* |
+| *...* | *...* | *...* | *...* |
 
 ---
 
 # BAB 6: Traceability
+Salin ulang tabel Traceability dari BAB 5 dokumen *Class Diagram*, cocokkan setiap Kebutuhan Fungsional, Use Case, dan Kelas yang saling terkait.
 
 | ID Kelas | ID Use Case | ID KF |
 | :--- | :--- | :--- |
-| C01 | UC01, UC02, UC03, UC05, UC12, UC13 | KF01, KF02, KF03, KF04, KF05, KF06, KF07, KF08, KF10, KF11, KF24, KF25, KF26, KF27, KF28, KF29, KF30, KF31, KF34, KF35, KF36 |
-| C02 | UC01, UC02, UC04, UC05, UC06, UC08, UC10, UC11, UC13 | KF01, KF02, KF03, KF04, KF05, KF06, KF09, KF10, KF11, KF12, KF13, KF16, KF19, KF20, KF21, KF22, KF23, KF28, KF29, KF30, KF31, KF32, KF35, KF36 |
-| C03 | UC01, UC02, UC03, UC06, UC07, UC09, UC11, UC13 | KF01, KF02, KF03, KF04, KF05, KF06, KF07, KF08, KF12, KF13, KF14, KF15, KF17, KF18, KF21, KF22, KF23, KF27, KF31, KF32, KF33, KF34, KF35, KF36 |
-| C04 | UC02, UC12 | KF04, KF05, KF06, KF24, KF25, KF26, KF34 |
-| C05 | UC03, UC04, UC05, UC06, UC07, UC12 | KF07, KF08, KF09, KF10, KF11, KF12, KF13, KF14, KF15, KF24, KF25, KF26, KF27, KF28, KF29, KF30, KF31, KF32, KF33, KF34 |
-| C06 | UC05, UC06, UC07 | KF10, KF11, KF12, KF13, KF14, KF15, KF28, KF29, KF30, KF31, KF32, KF33 |
-| C07 | UC05, UC06, UC07, UC08, UC09, UC10, UC11, UC12 | KF10, KF11, KF12, KF13, KF14, KF15, KF16, KF17, KF18, KF19, KF20, KF21, KF22, KF23, KF24, KF25, KF26, KF28, KF29, KF30, KF31, KF32, KF33, KF34 |
-| C08 | UC08, UC09 | KF16, KF17, KF18, KF34 |
-| C09 | UC06, UC07, UC09, UC10, UC12 | KF12, KF13, KF14, KF15, KF17, KF18, KF19, KF20, KF24, KF25, KF26, KF31, KF32, KF33, KF34 |
-| C10 | UC09, UC10, UC12 | KF17, KF18, KF19, KF20, KF24, KF25, KF26, KF34 |
-| C11 | UC11 | KF21, KF22, KF23 |
-| C12 | UC12 | KF24, KF25, KF26, KF34 |
-| C13 | UC12 | KF24, KF25, KF26, KF34 |
-| C14 | UC02, UC05, UC06, UC07, UC08, UC09, UC10, UC12 | KF04, KF05, KF06, KF10, KF11, KF12, KF13, KF14, KF15, KF16, KF17, KF18, KF19, KF20, KF24, KF25, KF26, KF28, KF29, KF30, KF31, KF32, KF33, KF34 |
-| C15 | UC07, UC09, UC10, UC12 | KF14, KF15, KF17, KF18, KF19, KF20, KF24, KF25, KF26, KF32, KF33, KF34 |
-| C16 | UC01, UC02, UC03, UC05, UC12, UC13 | KF01, KF02, KF03, KF04, KF05, KF06, KF07, KF08, KF10, KF11, KF24, KF25, KF26, KF27, KF28, KF29, KF30, KF31, KF34, KF35, KF36 |
-| C17 | UC01, UC02, UC04, UC05, UC06, UC08, UC10, UC11, UC13 | KF01, KF02, KF03, KF04, KF05, KF06, KF09, KF10, KF11, KF12, KF13, KF16, KF19, KF20, KF21, KF22, KF23, KF28, KF29, KF30, KF31, KF32, KF35, KF36 |
-| C18 | UC01, UC02, UC03, UC06, UC07, UC09, UC11, UC13 | KF01, KF02, KF03, KF04, KF05, KF06, KF07, KF08, KF12, KF13, KF14, KF15, KF17, KF18, KF21, KF22, KF23, KF27, KF31, KF32, KF33, KF34, KF35, KF36 |
-| C19 | UC02, UC12 | KF04, KF05, KF06, KF24, KF25, KF26, KF34 |
-| C20 | UC03, UC04, UC05, UC06, UC07, UC12 | KF07, KF08, KF09, KF10, KF11, KF12, KF13, KF14, KF15, KF24, KF25, KF26, KF27, KF28, KF29, KF30, KF31, KF32, KF33, KF34 |
-| C21 | UC05, UC06, UC07 | KF10, KF11, KF12, KF13, KF14, KF15, KF28, KF29, KF30, KF31, KF32, KF33 |
-| C22 | UC05, UC06, UC07, UC08, UC09, UC10, UC11, UC12 | KF10, KF11, KF12, KF13, KF14, KF15, KF16, KF17, KF18, KF19, KF20, KF21, KF22, KF23, KF24, KF25, KF26, KF28, KF29, KF30, KF31, KF32, KF33, KF34 |
-| C23 | UC08, UC09 | KF16, KF17, KF18, KF34 |
-| C24 | UC06, UC07, UC09, UC10, UC12 | KF12, KF13, KF14, KF15, KF17, KF18, KF19, KF20, KF24, KF25, KF26, KF31, KF32, KF33, KF34 |
-| C25 | UC09, UC10, UC12 | KF17, KF18, KF19, KF20, KF24, KF25, KF26, KF34 |
-| C26 | UC11 | KF21, KF22, KF23 |
-| C27 | UC12 | KF24, KF25, KF26, KF34 |
-| C28 | UC12 | KF24, KF25, KF26, KF34 |
-| C29 | UC02, UC05, UC06, UC07, UC08, UC09, UC10, UC12 | KF04, KF05, KF06, KF10, KF11, KF12, KF13, KF14, KF15, KF16, KF17, KF18, KF19, KF20, KF24, KF25, KF26, KF28, KF29, KF30, KF31, KF32, KF33, KF34 |
-| C30 | UC07, UC09, UC10, UC12 | KF14, KF15, KF17, KF18, KF19, KF20, KF24, KF25, KF26, KF32, KF33, KF34 |
-| C31 | UC01, UC02, UC03, UC05, UC12, UC13 | KF01, KF02, KF03, KF04, KF05, KF06, KF07, KF08, KF10, KF11, KF24, KF25, KF26, KF27, KF28, KF29, KF30, KF31, KF34, KF35, KF36 |
-| C32 | UC01, UC02, UC04, UC05, UC06, UC08, UC10, UC11, UC13 | KF01, KF02, KF03, KF04, KF05, KF06, KF09, KF10, KF11, KF12, KF13, KF16, KF19, KF20, KF21, KF22, KF23, KF28, KF29, KF30, KF31, KF32, KF35, KF36 |
-| C33 | UC01, UC02, UC03, UC06, UC07, UC09, UC11, UC13 | KF01, KF02, KF03, KF04, KF05, KF06, KF07, KF08, KF12, KF13, KF14, KF15, KF17, KF18, KF21, KF22, KF23, KF27, KF31, KF32, KF33, KF34, KF35, KF36 |
-| C34 | UC02, UC12 | KF04, KF05, KF06, KF24, KF25, KF26, KF34 |
-| C35 | UC03, UC04, UC05, UC06, UC07, UC12 | KF07, KF08, KF09, KF10, KF11, KF12, KF13, KF14, KF15, KF24, KF25, KF26, KF27, KF28, KF29, KF30, KF31, KF32, KF33, KF34 |
-| C36 | UC05, UC06, UC07 | KF10, KF11, KF12, KF13, KF14, KF15, KF28, KF29, KF30, KF31, KF32, KF33 |
-| C37 | UC05, UC06, UC07, UC08, UC09, UC10, UC11, UC12 | KF10, KF11, KF12, KF13, KF14, KF15, KF16, KF17, KF18, KF19, KF20, KF21, KF22, KF23, KF24, KF25, KF26, KF28, KF29, KF30, KF31, KF32, KF33, KF34 |
-| C38 | UC08, UC09 | KF16, KF17, KF18, KF34 |
-| C39 | UC06, UC07, UC09, UC10, UC12 | KF12, KF13, KF14, KF15, KF17, KF18, KF19, KF20, KF24, KF25, KF26, KF31, KF32, KF33, KF34 |
-| C40 | UC09, UC10, UC12 | KF17, KF18, KF19, KF20, KF24, KF25, KF26, KF34 |
-| C41 | UC11 | KF21, KF22, KF23 |
-| C42 | UC12 | KF24, KF25, KF26, KF34 |
-| C43 | UC12 | KF24, KF25, KF26, KF34 |
-| C44 | UC02, UC05, UC06, UC07, UC08, UC09, UC10, UC12 | KF04, KF05, KF06, KF10, KF11, KF12, KF13, KF14, KF15, KF16, KF17, KF18, KF19, KF20, KF24, KF25, KF26, KF28, KF29, KF30, KF31, KF32, KF33, KF34 |
-| C45 | UC07, UC09, UC10, UC12 | KF14, KF15, KF17, KF18, KF19, KF20, KF24, KF25, KF26, KF32, KF33, KF34 |
+| *C01* | *UC01, UC05* | *KF01, KF06* |
+| *C02* | *UC01, UC03, UC05* | *KF01, KF02, KF05, KF06* |
+| *C03* | *UC01, UC02* | *KF01, KF02* |
+| *...* | *...* | *...* |
 
 ---
 
