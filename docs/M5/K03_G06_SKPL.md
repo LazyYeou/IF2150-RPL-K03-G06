@@ -508,6 +508,7 @@ Salin ulang skenario **setiap** use case (skenario normal dan alternatif) dari B
 | 2 | - | Sistem menggagalkan pengunggahan berkas, menampilkan pesan peringatan "Ukuran berkas melebihi batas maksimal 10 MB", dan meminta Tenaga Kerja memilih berkas lain. |
 | 3 | Tenaga Kerja memilih berkas baru yang sesuai dengan batasan ukuran. | Sistem memvalidasi berkas baru dan kembali ke langkah 2 skenario normal. |
 
+
 <br>
 
 **Skenario Alternatif 2: Tenaga Kerja Belum Mengunggah Berkas Wajib**
@@ -672,54 +673,623 @@ Salin ulang skenario **setiap** use case (skenario normal dan alternatif) dari B
 ---
 
 # BAB 5: Pemodelan Kelas
+Bagian ini berisi identifikasi kelas dan pemodelan struktur kelas yang diperlukan untuk merealisasikan use case pada BAB 3. Gunakan skenario use case (3.4) sebagai dasar untuk menentukan kelas, atribut, metode, dan hubungan antarkelas.
 
 ## 5.1 Identifikasi Kelas
-Salin ulang seluruh kelas yang telah diidentifikasi dari BAB 4.1 dokumen *Class Diagram*.
+Identifikasi seluruh kelas yang diperlukan berdasarkan use case dan skenarionya. Satu kelas boleh terkait dengan lebih dari satu use case.
 
 | ID Kelas | Nama Kelas | Deskripsi Kelas | ID Use Case |
 | :--- | :--- | :--- | :--- |
-| *C01* | *Pelanggan* | *Menyimpan data akun pelanggan yang membuat pesanan.* | *UC01, UC05* |
-| *C02* | *Pesanan* | *Menyimpan data pesanan beserta status pembayarannya.* | *UC01, UC03, UC05* |
-| *C03* | *Keranjang* | *Menyimpan sementara item yang dipilih sebelum checkout.* | *UC01, UC02* |
-| *...* | *...* | *...* | *...* |
+| C01 | Pengguna | Kelas abstrak entitas yang menyimpan data dasar akun seperti nama, email, *password* terenkripsi, tanggal lahir, dan token autentikasi. | UC01 |
+| C02 | TenagaKerja | Kelas entitas turunan `Pengguna` yang menyimpan data spesifik pekerja, saldo, portofolio, dan atribut status verifikasi profil. | UC01, UC02, UC04, UC05, UC08, UC10, UC11 |
+| C03 | PenyediaKerja | Kelas entitas turunan `Pengguna` yang menyimpan data spesifik pencari jasa untuk membuat lowongan dan melakukan pembayaran. | UC01, UC03, UC06, UC07, UC09, UC11 |
+| C04 | CustomerService | Kelas entitas turunan `Pengguna` yang menyimpan hak akses operasional untuk menyetujui verifikasi dan memutus sengketa. | UC02, UC12 |
+| C05 | LowonganPekerjaan | Kelas entitas yang menyimpan spesifikasi pekerjaan meliputi judul, deskripsi, batas kuota, nominal upah, dan status (*Open/Closed*). | UC03, UC04, UC05, UC06 |
+| C06 | PengajuanPenawaran | Kelas entitas yang menyimpan data lamaran dari Tenaga Kerja, berisi pesan penawaran, *timestamp*, dan status lamaran. | UC05, UC06 |
+| C07 | TransaksiPekerjaan | Kelas entitas yang menyimpan ID transaksi unik dan melacak siklus hidup pengerjaan (*Assigned*, *In Progress*, *Submitted*, *Completed*). | UC06, UC07, UC08, UC09, UC11, UC12 |
+| C08 | BuktiPenyerahan | Kelas entitas yang menyimpan data penyerahan hasil kerja, mencakup deskripsi, lampiran file bukti, dan *timestamp* pengiriman. | UC08, UC09 |
+| C09 | TagihanPembayaran | Kelas entitas yang menyimpan rincian *invoice*, nominal (upah + *commission fee*), batas waktu, dan status pembayaran. | UC07 |
+| C10 | PencairanDana | Kelas entitas yang menyimpan data permintaan penarikan saldo, mencakup nominal, rekening/e-wallet tujuan, dan status transfer. | UC10 |
+| C11 | UlasanRating | Kelas entitas yang menyimpan data penilaian pasca-pekerjaan (skala 1-5) dan ulasan teks untuk mencegah *double review*. | UC11 |
+| C12 | TiketSengketa | Kelas entitas yang menyimpan data keluhan, kategori masalah, bukti awal, dan status penyelesaian sengketa. | UC12 |
+| C13 | RiwayatSengketa | Kelas entitas yang menyimpan rekam jejak kronologis penanganan sengketa dan eksekusi keputusan oleh Customer Service. | UC12 |
+| C14 | Notifikasi | Kelas entitas yang menyimpan pesan pemberitahuan ke *dashboard* pengguna terkait aktivitas akun maupun transaksi. | UC02, UC05, UC07, UC08, UC09, UC12 |
+| C15 | PaymentGateway | Kelas entitas yang menyimpan log data transaksi eksternal dan riwayat komunikasi dengan saluran pembayaran pihak ketiga. | UC07, UC10 |
+| C16 | PenggunaUI | Kelas antarmuka bagi pengguna umum untuk menampilkan formulir registrasi dan *login*. | UC01 |
+| C17 | TenagaKerjaUI | Kelas antarmuka yang menampilkan profil pekerja, *dashboard* saldo, serta formulir pengunggahan KTP untuk verifikasi. | UC01, UC02, UC04, UC10 |
+| C18 | PenyediaKerjaUI | Kelas antarmuka yang menampilkan profil pencari jasa dan *dashboard* aktivitas penyediaan kerja. | UC01, UC03 |
+| C19 | CustomerServiceUI | Kelas antarmuka khusus *dashboard* internal CS untuk melihat antrean verifikasi dan daftar sengketa. | UC02, UC12 |
+| C20 | LowonganPekerjaanUI | Kelas antarmuka yang menyediakan formulir pembuatan lowongan dan katalog pencarian pekerjaan. | UC03, UC04, UC06 |
+| C21 | PengajuanPenawaranUI | Kelas antarmuka yang menampilkan formulir pengisian pesan penawaran bagi Tenaga Kerja. | UC05, UC06 |
+| C22 | TransaksiPekerjaanUI | Kelas antarmuka untuk memantau status pekerjaan, melihat detail rincian, dan tombol aksi transisi pekerjaan. | UC07, UC08, UC09 |
+| C23 | BuktiPenyerahanUI | Kelas antarmuka yang menampilkan formulir unggah bukti kerja dan layar tinjauan hasil kerja. | UC08, UC09 |
+| C24 | TagihanPembayaranUI | Kelas antarmuka yang merender tampilan *invoice* rincian biaya yang harus dibayar. | UC07 |
+| C25 | PencairanDanaUI | Kelas antarmuka yang menampilkan formulir *withdrawal* penarikan saldo pendapatan. | UC10 |
+| C26 | UlasanRatingUI | Kelas antarmuka yang merender formulir pemberian bintang dan komentar ulasan. | UC11 |
+| C27 | TiketSengketaUI | Kelas antarmuka yang menyediakan form pengajuan komplain dan detail rincian tiket sengketa. | UC12 |
+| C28 | RiwayatSengketaUI | Kelas antarmuka yang menampilkan *timeline* atau log diskusi dan pembaruan kasus sengketa. | UC12 |
+| C29 | NotifikasiUI | Kelas antarmuka berupa *pop-up*, bel, atau menu *dropdown* pesan masuk bagi pengguna. | UC02, UC05, UC07, UC08, UC09, UC12 |
+| C30 | PaymentGatewayUI | Kelas antarmuka yang menampilkan halaman *redirect* atau simulasi jendela pembayaran pihak ketiga. | UC07, UC10 |
+| C31 | PenggunaController | Kelas pengendali untuk alur registrasi, enkripsi *password*, validasi umur, dan proses *login*. | UC01 |
+| C32 | TenagaKerjaController | Kelas pengendali untuk mengatur profil, verifikasi, navigasi pencarian, penyerahan hasil kerja, dan pencairan dana oleh Tenaga Kerja. | UC01, UC02, UC04, UC08, UC10 |
+| C33 | PenyediaKerjaController | Kelas pengendali untuk mengatur logika pembentukan profil, *dashboard* penyedia kerja, dan navigasi verifikasi hasil kerja. | UC01, UC03, UC09 |
+| C34 | CustomerServiceController| Kelas pengendali untuk memproses keputusan validasi profil pekerja maupun otorisasi hak CS. | UC02, UC12 |
+| C35 | LowonganPekerjaanController| Kelas pengendali untuk memvalidasi isian *create* lowongan, pemfilteran pencarian, dan kalkulasi sisa kuota. | UC03, UC04, UC06 |
+| C36 | PengajuanPenawaranController| Kelas pengendali untuk memvalidasi persyaratan melamar dan merekam data pelamar ke *database*. | UC05, UC06 |
+| C37 | TransaksiPekerjaanController| Kelas pengendali untuk memvalidasi status transisi pengerjaan dan menyelesaikan pekerjaan. | UC07, UC08, UC09 |
+| C38 | BuktiPenyerahanController| Kelas pengendali untuk memvalidasi format dan ukuran fail lampiran pekerjaan sebelum disimpan. | UC08, UC09 |
+| C39 | TagihanPembayaranController| Kelas pengendali untuk kalkulasi total bayar, potong *fee* komisi, dan membuat ID tagihan. | UC07 |
+| C40 | PencairanDanaController | Kelas pengendali untuk memvalidasi kecukupan saldo dan mengirim instruksi penarikan dana ke API. | UC10 |
+| C41 | UlasanRatingController | Kelas pengendali untuk mencegah ulasan ganda dan merekapitulasi rata-rata rating. | UC11 |
+| C42 | TiketSengketaController| Kelas pengendali untuk memvalidasi pembuatan tiket keluhan dan merekam status sengketa. | UC12 |
+| C43 | RiwayatSengketaController| Kelas pengendali untuk merekam dan mengeksekusi log kronologis keputusan akhir (*refund*/pencairan). | UC12 |
+| C44 | NotifikasiController | Kelas pengendali untuk memicu pengiriman pesan otomatis secara *real-time* ke penerima yang tepat. | UC02, UC05, UC07, UC08, UC09, UC12 |
+| C45 | PaymentGatewayController | Kelas pengendali yang mengatur komunikasi, meneruskan instruksi, dan memproses *callback* status dari layanan eksternal. | UC07, UC10 |
+
+Pastikan setiap kelas memiliki tanggung jawab yang jelas dan memang diperlukan untuk merealisasikan fungsi yang dimodelkan. Hindari kelas yang tidak memiliki keterkaitan dengan KF atau use case manapun.
 
 ## 5.2 Diagram Kelas per Use Case
-Salin ulang diagram kelas untuk setiap use case dari BAB 4.2 dokumen *Class Diagram*, lengkap dengan tabel atribut dan metode/operasinya.
+Buat diagram kelas untuk setiap use case pada 3.2.
 
 ### 5.2.1 Use Case UC01
 
-**Nama Use Case:** *Memesan Produk*
+**Nama Use Case:** *Melakukan Registrasi*
+
+#### Identifikasi Kelas
+
+| ID Kelas | Nama Kelas | Deskripsi Kelas |
+| :--- | :--- | :--- |
+| C01 | Pengguna | Kelas abstrak entitas yang menyimpan data dasar akun seperti nama, email, *password* terenkripsi, tanggal lahir, dan token autentikasi. |
+| C02 | TenagaKerja | Kelas entitas turunan `Pengguna` yang menyimpan data spesifik pekerja, saldo, portofolio, dan atribut status verifikasi profil. |
+| C03 | PenyediaKerja | Kelas entitas turunan `Pengguna` yang menyimpan data spesifik pencari jasa untuk membuat lowongan dan melakukan pembayaran. |
+| C16 | PenggunaUI | Kelas antarmuka bagi pengguna umum untuk menampilkan formulir registrasi dan *login*. |
+| C17 | TenagaKerjaUI | Kelas antarmuka yang menampilkan profil pekerja, *dashboard* saldo, serta formulir pengunggahan KTP untuk verifikasi. |
+| C18 | PenyediaKerjaUI | Kelas antarmuka yang menampilkan profil pencari jasa dan *dashboard* aktivitas penyediaan kerja. |
+| C31 | PenggunaController | Kelas pengendali untuk alur registrasi, enkripsi *password*, validasi umur, dan proses *login*. |
+| C32 | TenagaKerjaController | Kelas pengendali untuk mengatur pembaruan profil pekerja dan logika pengajuan verifikasi identitas. |
+| C33 | PenyediaKerjaController | Kelas pengendali untuk mengatur logika pembentukan profil dan *dashboard* penyedia kerja. |
+
+#### Diagram Kelas
 
 <p align="center">
-<img alt="Contoh Class Diagram" src="./assets/diagram/contoh-class-diagram.webp" width="70%">
+<img alt="Class Diagram UC01" src="./assets/diagram/class-diagram-uc01.png" width="70%">
 </p>
 <p align="center">
-<i>Gambar 3. Contoh Diagram Kelas Use Case UC01</i>
+<i>Gambar 2. Diagram Kelas Use Case UC01</i>
 </p>
+<br>
 
 | ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
 | :--- | :--- | :--- | :--- |
-| *C02* | *Pesanan* | *idPesanan, total, status* | *buatPesanan(), hitungTotal()* |
-| *C03* | *Keranjang* | *daftarItem* | *tambahItem(), checkout()* |
-| *...* | *...* | *...* | *...* |
+| C01 | Pengguna | #idPengguna<br>#nama<br>#email<br>#password<br>#tanggalLahir<br>#tokenAuth | +getUsia()<br>+setToken()<br>+getNama()<br>+getEmail() |
+| C02 | TenagaKerja | -statusVerifikasi<br>-saldoPendapatan<br>-ratingAkumulatif | +buatProfilPekerja()<br>+getStatusVerifikasi()<br>+getSaldo() |
+| C03 | PenyediaKerja | -idPenyedia | +buatProfilPenyedia()<br>+getIdPenyedia() |
+| C16 | PenggunaUI | | +tampilkanFormRegistrasi()<br>+tampilkanFormLogin()<br>+submitDataRegistrasi()<br>+submitDataLogin() |
+| C17 | TenagaKerjaUI | | +tampilkanFormProfil() |
+| C18 | PenyediaKerjaUI | | +tampilkanFormProfil() |
+| C31 | PenggunaController | | +prosesRegistrasi()<br>-validasiBatasUsia()<br>-enkripsiPassword()<br>+prosesAutentikasi() |
+| C32 | TenagaKerjaController | | +simpanProfilTenagaKerja() |
+| C33 | PenyediaKerjaController | | +simpanProfilPenyediaKerja() |
 
-> Lanjutkan pola **5.2.x** untuk setiap use case pada 4.2.
+### 5.2.2 Use Case UC02
+
+**Nama Use Case:** *Mengolola Verivikasi Identitas*
+
+#### Identifikasi Kelas
+
+| ID Kelas | Nama Kelas | Deskripsi Kelas |
+| :--- | :--- | :--- |
+| C02 | TenagaKerja | Kelas entitas turunan `Pengguna` yang menyimpan data spesifik pekerja, saldo, portofolio, dan atribut status verifikasi profil. |
+| C04 | CustomerService | Kelas entitas turunan `Pengguna` yang menyimpan hak akses operasional untuk menyetujui verifikasi dan memutus sengketa. |
+| C14 | Notifikasi | Kelas entitas yang menyimpan pesan pemberitahuan ke *dashboard* pengguna terkait aktivitas akun maupun transaksi. |
+| C17 | TenagaKerjaUI | Kelas antarmuka yang menampilkan profil pekerja, *dashboard* saldo, serta formulir pengunggahan KTP untuk verifikasi. |
+| C19 | CustomerServiceUI | Kelas antarmuka khusus *dashboard* internal CS untuk melihat antrean verifikasi dan daftar sengketa. |
+| C29 | NotifikasiUI | Kelas antarmuka berupa *pop-up*, bel, atau menu *dropdown* pesan masuk bagi pengguna. |
+| C32 | TenagaKerjaController | Kelas pengendali untuk mengatur pembaruan profil pekerja dan logika pengajuan verifikasi identitas. |
+| C34 | CustomerServiceController | Kelas pengendali untuk memproses keputusan validasi profil pekerja maupun otorisasi hak CS. |
+| C44 | NotifikasiController | Kelas pengendali untuk memicu pengiriman pesan otomatis secara *real-time* ke penerima yang tepat. |
+
+#### Diagram Kelas
+
+<p align="center">
+<img alt="Class Diagram UC01" src="./assets/diagram/class-diagram-uc02.png" width="70%">
+</p>
+<p align="center">
+<i>Gambar 3. Diagram Kelas Use Case UC02</i>
+</p>
+<br>
+
+| ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
+| :--- | :--- | :--- | :--- |
+| C02 | TenagaKerja | -dokumenIdentitas<br>-statusVerifikasi | +updateStatusVerifikasi()<br>+setDokumenIdentitas() |
+| C04 | CustomerService | -idAdmin<br>-hakAkses | +setujuiVerifikasi()<br>+tolakVerifikasi() |
+| C14 | Notifikasi | -idNotifikasi<br>-idPenerima<br>-pesan<br>-statusBaca<br>-timestamp | +simpanPesanNotifikasi()<br>+tandaiSudahDibaca() |
+| C17 | TenagaKerjaUI | | +tampilkanFormUnggahDokumen()<br>+submitDokumenIdentitas() |
+| C19 | CustomerServiceUI | | +tampilkanDaftarAntreanVerifikasi()<br>+tekanTombolSetuju()<br>+tekanTombolTolak() |
+| C29 | NotifikasiUI | | +renderPesanNotifikasi() |
+| C32 | TenagaKerjaController | | +ajukanProsesVerifikasi()<br>-validasiFormatDokumen()<br>-validasiUkuranDokumen() |
+| C34 | CustomerServiceController | | +tinjauDokumenPekerja()<br>+eksekusiPersetujuan()<br>+eksekusiPenolakan() |
+| C44 | NotifikasiController | | +buatNotifikasiVerifikasi() |
+
+
+---
+
+### 5.2.3 Use Case UC03
+
+**Nama Use Case:** *Mengelola Lowongan Pekerjaan*
+
+#### Identifikasi Kelas
+
+| ID Kelas | Nama Kelas | Deskripsi Kelas |
+| :--- | :--- | :--- |
+| C03 | PenyediaKerja | Turunan dari kelas `Pengguna`. Menyimpan data spesifik pencari jasa yang memiliki kemampuan untuk membuat lowongan dan melakukan pembayaran. |
+| C05 | LowonganPekerjaan | Menyimpan rincian spesifikasi pekerjaan yang dibuat Penyedia Kerja, meliputi judul, deskripsi, lokasi (jika diperlukan), batas kuota, nominal upah, dan status ketersediaan (*Open*, *Closed/Full*). |
+| C18 | PenyediaKerjaUI | Kelas antarmuka yang menampilkan profil pencari jasa dan *dashboard* aktivitas penyediaan kerja. |
+| C20 | LowonganPekerjaanUI | Kelas antarmuka yang menyediakan formulir pembuatan lowongan dan katalog pencarian pekerjaan. |
+| C33 | PenyediaKerjaController | Kelas pengendali untuk mengatur logika pembentukan profil dan *dashboard* penyedia kerja. |
+| C35 | LowonganPekerjaanController | Kelas pengendali untuk memvalidasi isian *create* lowongan, pemfilteran pencarian, dan kalkulasi sisa kuota. |
+
+#### Diagram Kelas
+
+<p align="center">
+<img alt="Class Diagram UC03" src="./assets/diagram/class-diagram-uc03.png" width="70%">
+</p>
+
+<p align="center"><i>Gambar 4. Diagram Kelas Use Case UC03</i></p>
+<br>
+
+| ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
+| :--- | :--- | :--- | :--- |
+| C03 | PenyediaKerja | #idPengguna<br>#nama<br>#email | +buatLowonganBaru(judul, deskripsi, kuota, lokasi, upah)<br>+batalkanLowongan() |
+| C05 | LowonganPekerjaan | -idLowongan<br>-judul<br>-deskripsi<br>-kuota<br>-lokasi<br>-upah<br>-status | -validasiIsianFormulir()<br>+simpanLowongan()<br>-setStatusDefault() |
+| C18 | PenyediaKerjaUI | | +tampilkanDashboard() |
+| C20 | LowonganPekerjaanUI | | +tampilkanFormLowongan()<br>+submitDataLowongan() |
+| C33 | PenyediaKerjaController | | +arahkanKeFormLowongan() |
+| C35 | LowonganPekerjaanController | | +prosesBuatLowongan() |
+
+---
+
+### 5.2.4 Use Case UC04
+
+**Nama Use Case:** *Mencari Lowongan Pekerjaan*
+
+#### Identifikasi Kelas
+
+| ID Kelas | Nama Kelas | Deskripsi Kelas |
+| :--- | :--- | :--- |
+| C02 | TenagaKerja | Turunan dari kelas `Pengguna`. Menyimpan data spesifik pekerja seperti status verifikasi, saldo pendapatan, dan portofolio pekerjaan. |
+| C05 | LowonganPekerjaan | Menyimpan rincian spesifikasi pekerjaan yang dibuat Penyedia Kerja, meliputi judul, deskripsi, lokasi (jika diperlukan), batas kuota, nominal upah, dan status ketersediaan (*Open*, *Closed/Full*). |
+| C17 | TenagaKerjaUI | Kelas antarmuka yang menampilkan profil pekerja, *dashboard* saldo, serta formulir pengunggahan KTP untuk verifikasi. |
+| C20 | LowonganPekerjaanUI | Kelas antarmuka yang menyediakan formulir pembuatan lowongan dan katalog pencarian pekerjaan. |
+| C32 | TenagaKerjaController | Kelas pengendali untuk mengatur pembaruan profil pekerja dan logika pengajuan verifikasi identitas. |
+| C35 | LowonganPekerjaanController | Kelas pengendali untuk memvalidasi isian *create* lowongan, pemfilteran pencarian, dan kalkulasi sisa kuota. |
+
+#### Diagram Kelas
+
+<p align="center">
+<img alt="Class Diagram UC04" src="./assets/diagram/class-diagram-uc04.png" width="70%">
+</p>
+
+<p align="center"><i>Gambar 5. Diagram Kelas Use Case UC04</i></p>
+<br>
+
+| ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
+| :--- | :--- | :--- | :--- |
+| C02 | TenagaKerja | #idPengguna<br>#nama | +cariLowongan(kataKunci)<br>+filterLowongan(kategori) |
+| C05 | LowonganPekerjaan | -idLowongan<br>-judul<br>-kategori<br>-lokasi<br>-upah<br>-status | +tampilkanDaftarLowongan(filter)<br>+cekStatusOpen() |
+| C17 | TenagaKerjaUI | | +tampilkanHalamanPencarian() |
+| C20 | LowonganPekerjaanUI | | +tampilkanKatalogLowongan()<br>+submitPencarian(kataKunci)<br>+pilihFilter(kategori) |
+| C32 | TenagaKerjaController | | +arahkanKePencarian() |
+| C35 | LowonganPekerjaanController | | +prosesCariLowongan(kataKunci)<br>+prosesFilterLowongan(kategori) |
+
+---
+
+### 5.2.5 Use Case UC05
+
+**Nama Use Case:** *Mengajukan Penawaran Pekerjaan*
+
+#### Identifikasi Kelas
+
+| ID Kelas | Nama Kelas | Deskripsi Kelas |
+| :--- | :--- | :--- |
+| C02 | TenagaKerja | Turunan dari kelas `Pengguna`. Menyimpan data spesifik pekerja seperti status verifikasi, saldo pendapatan, dan portofolio pekerjaan. |
+| C05 | LowonganPekerjaan | Menyimpan rincian spesifikasi pekerjaan yang dibuat Penyedia Kerja, meliputi judul, deskripsi, lokasi (jika diperlukan), batas kuota, nominal upah, dan status ketersediaan (*Open*, *Closed/Full*). |
+| C06 | PengajuanPenawaran | Menyimpan data lamaran dari Tenaga Kerja untuk suatu lowongan. Berisi pesan penawaran, *timestamp*, dan status lamaran (*Pending*, *Accepted*, *Rejected*). |
+| C14 | Notifikasi | Menyimpan dan mengelola pengiriman pesan pemberitahuan ke *dashboard* pengguna (misalnya notifikasi penerimaan pelamar, pembayaran berhasil, revisi, atau penerimaan upah). |
+| C21 | PengajuanPenawaranUI | Kelas antarmuka yang menampilkan formulir pengisian pesan penawaran bagi Tenaga Kerja. |
+| C29 | NotifikasiUI | Kelas antarmuka berupa *pop-up*, bel, atau menu *dropdown* pesan masuk bagi pengguna. |
+| C36 | PengajuanPenawaranController | Kelas pengendali untuk memvalidasi persyaratan melamar dan merekam data pelamar ke *database*. |
+| C44 | NotifikasiController | Kelas pengendali untuk memicu pengiriman pesan otomatis secara *real-time* ke penerima yang tepat. |
+
+#### Diagram Kelas
+
+<p align="center">
+<img alt="Class Diagram UC05" src="./assets/diagram/class-diagram-uc05.png" width="70%">
+</p>
+
+<p align="center"><i>Gambar 6. Diagram Kelas Use Case UC05</i></p>
+<br>
+
+| ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
+| :--- | :--- | :--- | :--- |
+| C02 | TenagaKerja | #idPengguna<br>-statusVerifikasi | +ajukanPenawaran(idLowongan, pesan)<br>+batalkanPengajuan() |
+| C05 | LowonganPekerjaan | -idLowongan<br>-judul<br>-status | +tampilkanTombolAjukan() |
+| C06 | PengajuanPenawaran | -idPenawaran<br>-idLowongan<br>-idTenagaKerja<br>-pesanPenawaran<br>-timestamp<br>-status | +simpanPengajuan()<br>-validasiStatusAkun() |
+| C14 | Notifikasi | -idNotifikasi<br>-idPenerima<br>-pesan<br>-statusBaca | +kirimNotifikasiPengajuanBaru() |
+| C21 | PengajuanPenawaranUI | | +tampilkanFormPenawaran()<br>+submitPenawaran(idLowongan, pesan) |
+| C29 | NotifikasiUI | | +tampilkanPesanNotifikasi() |
+| C36 | PengajuanPenawaranController | | +prosesPengajuan(idLowongan, pesan)<br>-validasiPersyaratan() |
+| C44 | NotifikasiController | | +prosesKirimNotifikasi() |
+
+---
+
+### 5.2.6 Use Case UC06
+
+**Nama Use Case:** *Memilih Tenaga Kerja*
+
+#### Identifikasi Kelas
+| ID Kelas | Nama Kelas | Deskripsi Kelas |
+| :--- | :--- | :--- |
+| C03 | PenyediaKerja | Entitas pengguna pencari jasa yang menyetujui kandidat pelamar. |
+| C05 | LowonganPekerjaan | Entitas yang mengelola data lowongan, batas kuota, dan status lowongan. |
+| C06 | PengajuanPenawaran | Entitas yang menyimpan data penawaran pelamar beserta status persetujuan. |
+| C07 | TransaksiPekerjaan | Entitas yang mencatat transaksi pekerjaan unik saat kandidat disetujui. |
+| C14 | Notifikasi | Entitas pengiriman pesan pemberitahuan ke *dashboard* penerima. |
+| C18 | PenyediaKerjaUI | Kelas antarmuka yang menampilkan profil pencari jasa dan daftar aktivitasnya. |
+| C20 | LowonganPekerjaanUI | Antarmuka untuk meninjau daftar pelamar dan memilih kandidat. |
+| C21 | PengajuanPenawaranUI | Antarmuka yang menampilkan rincian dan status penawaran pelamar. |
+| C22 | TransaksiPekerjaanUI | Kelas antarmuka untuk memantau status pekerjaan baru. |
+| C29 | NotifikasiUI | Antarmuka untuk menampilkan notifikasi masuk kepada pengguna. |
+| C33 | PenyediaKerjaController | Pengendali logika pembentukan profil dan navigasi penyedia kerja. |
+| C35 | LowonganPekerjaanController | Pengendali logika pemilihan pelamar dan kalkulasi sisa kuota lowongan. |
+| C36 | PengajuanPenawaranController | Pengendali logika pembaruan status pengajuan penawaran. |
+| C37 | TransaksiPekerjaanController | Pengendali untuk memvalidasi pembuatan status pengerjaan transaksi baru. |
+| C44 | NotifikasiController | Pengendali pemicu pengiriman notifikasi penerimaan ke pekerja. |
+
+#### Diagram Kelas
+<p align="center">
+<img alt="Class Diagram UC06" src="./assets/diagram/class-diagram-uc06.png" width="70%">
+</p>
+<p align="center">
+<i>Gambar 7. Diagram Kelas Use Case UC06</i>
+</p>
+<br>
+
+| ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
+| :--- | :--- | :--- | :--- |
+| C03 | PenyediaKerja | -idPenyedia<br>#idPengguna<br>#nama<br>#email | +lihatDaftarPelamar()<br>+pilihPelamar(idPenawaran) |
+| C05 | LowonganPekerjaan | -idLowongan<br>-judul<br>-deskripsi<br>-kuota<br>-jumlahDiterima<br>-status | +cekKuotaSisa()<br>#updateStatusLowongan(statusBaru)<br>-kurangiKuota()<br>+tambahJumlahDiterima() |
+| C06 | PengajuanPenawaran | -idPenawaran<br>-idLowongan<br>-idTenagaKerja<br>-pesanPenawaran<br>-timestamp<br>-status | +setStatusPersetujuan(status)<br>+getStatus() |
+| C07 | TransaksiPekerjaan | -idTransaksi<br>-idLowongan<br>-idTenagaKerja<br>-idPenyediaKerja<br>-statusPekerjaan | +buatTransaksiBaru()<br>#updateStatusPekerjaan(status) |
+| C14 | Notifikasi | -idNotifikasi<br>-idPenerima<br>-pesan<br>-statusBaca<br>-timestamp | +simpanPesanNotifikasi()<br>+kirimNotifikasiPenerimaan() |
+| C18 | PenyediaKerjaUI | | +tampilkanDaftarPelamar() |
+| C20 | LowonganPekerjaanUI | | +tampilkanDaftarPelamar()<br>+pilihPelamar(idPenawaran)<br>+tampilkanKonfirmasiPersetujuan() |
+| C21 | PengajuanPenawaranUI | | +tampilkanDetailPenawaran()<br>+renderStatusPenawaran() |
+| C22 | TransaksiPekerjaanUI | | +tampilkanNotifikasiTransaksi() |
+| C29 | NotifikasiUI | | +renderPesanNotifikasi()<br>+tampilkanNotifikasiPenerimaan() |
+| C33 | PenyediaKerjaController | | +arahkanKeDaftarPelamar() |
+| C35 | LowonganPekerjaanController | | +prosesPilihPelamar(idPenawaran)<br>-validasiKuota(idLowongan)<br>+updateKuotaDanStatus(idLowongan) |
+| C36 | PengajuanPenawaranController | | +ubahStatusPenawaran(idPenawaran, status) |
+| C37 | TransaksiPekerjaanController | | +prosesBuatTransaksi() |
+| C44 | NotifikasiController | | +kirimNotifikasiPenerimaan(idPenerima)<br>-buatNotifikasiPersetujuan() |
+
+---
+
+### 5.2.7 Use Case UC07
+
+**Nama Use Case:** *Melakukan Pembayaran Pekerjaan*
+
+#### Identifikasi Kelas
+
+| ID Kelas | Nama Kelas | Deskripsi Kelas |
+| :--- | :--- | :--- |
+| C03 | PenyediaKerja | Entitas pengguna pencari jasa yang menginisiasi pembayaran. |
+| C07 | TransaksiPekerjaan | Entitas status pekerjaan yang diperbarui setelah pembayaran berhasil. |
+| C09 | TagihanPembayaran | Entitas rincian *invoice*, nominal, batas waktu, dan status bayar. |
+| C14 | Notifikasi | Entitas pengiriman pesan notifikasi otomatis. |
+| C15 | PaymentGateway | Entitas pencatat log komunikasi eksternal. |
+| C18 | PenyediaKerjaUI | Kelas antarmuka *dashboard* penyedia kerja. |
+| C22 | TransaksiPekerjaanUI | Antarmuka untuk memantau transisi status pekerjaan. |
+| C24 | TagihanPembayaranUI | Antarmuka yang merender rincian biaya yang harus dibayar. |
+| C29 | NotifikasiUI | Antarmuka berupa *pop-up* pesan masuk bagi pengguna. |
+| C30 | PaymentGatewayUI | Antarmuka simulasi atau *redirect* jendela pembayaran pihak ketiga. |
+| C33 | PenyediaKerjaController | Pengendali logika penyedia kerja. |
+| C37 | TransaksiPekerjaanController | Pengendali validasi status pengerjaan (*In Progress*). |
+| C39 | TagihanPembayaranController | Pengendali untuk kalkulasi total bayar dan pembuatan ID tagihan. |
+| C44 | NotifikasiController | Pengendali pemicu pengiriman notifikasi siap kerja. |
+| C45 | PaymentGatewayController | Pengendali yang mengatur meneruskan instruksi ke layanan eksternal. |
+
+#### Diagram Kelas
+<p align="center">
+<img alt="Class Diagram UC07" src="./assets/diagram/class-diagram-uc07.png" width="70%">
+</p>
+<p align="center">
+<i>Gambar 8. Diagram Kelas Use Case UC07</i>
+</p>
+<br>
+
+| ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
+| :--- | :--- | :--- | :--- |
+| C03 | PenyediaKerja | -idPenyedia<br>#idPengguna<br>#nama<br>#email | +bayarTagihan(idTagihan, metode) |
+| C07 | TransaksiPekerjaan | -idTransaksi<br>-idLowongan<br>-idTenagaKerja<br>-idPenyediaKerja<br>-statusPekerjaan | +updateStatusPekerjaan(status)<br>+getStatusPekerjaan() |
+| C09 | TagihanPembayaran | -idTagihan<br>-idTransaksi<br>-nominalUpah<br>-commissionFee<br>-totalBayar<br>-expiryTimestamp<br>-statusBayar | +hitungTotalTagihan()<br>+buatInvoice()<br>#updateStatusPembayaran() |
+| C14 | Notifikasi | -idNotifikasi<br>-idPenerima<br>-pesan<br>-statusBaca<br>-timestamp | +simpanPesanNotifikasi()<br>+kirimNotifikasiSiapKerja() |
+| C15 | PaymentGateway | -idGateway<br>-namaProvider<br>-statusKoneksi | +prosesPembayaran()<br>+dapatkanCallbackStatus() |
+| C18 | PenyediaKerjaUI | | +tampilkanHalamanPembayaran() |
+| C22 | TransaksiPekerjaanUI | | +tampilkanStatusPembayaran() |
+| C24 | TagihanPembayaranUI | | +tampilkanInvoice()<br>+bayarTagihan(idTagihan, metode) |
+| C29 | NotifikasiUI | | +renderPesanNotifikasi() |
+| C30 | PaymentGatewayUI | | +tampilkanHalamanGateway() |
+| C33 | PenyediaKerjaController | | +arahkanKePembayaran() |
+| C37 | TransaksiPekerjaanController | | +prosesUpdateStatusInprogress() |
+| C39 | TagihanPembayaranController | | +prosesTagihan(idTransaksi)<br>+buatInvoice() |
+| C44 | NotifikasiController | | +kirimNotifikasiSiapKerja(idPenerima) |
+| C45 | PaymentGatewayController | | +prosesTransferPembayaran()<br>+terimaCallbackGateway() |
+
+---
+
+### 5.2.8 Use Case UC08
+
+**Nama Use Case:** *Menyerahkan Hasil Pekerjaan*
+
+#### Identifikasi Kelas
+
+| ID Kelas | Nama Kelas | Deskripsi Kelas |
+| :--- | :--- | :--- |
+| C02 | TenagaKerja | Entitas pekerja yang menyerahkan hasil pekerjaan. |
+| C07 | TransaksiPekerjaan | Entitas status pekerjaan yang diperbarui dari *In Progress* menjadi *Submitted*. |
+| C08 | BuktiPenyerahan | Entitas berkas lampiran, catatan pengerjaan, dan *timestamp* pengiriman. |
+| C14 | Notifikasi | Entitas pengiriman pesan pemberitahuan ke *dashboard* penerima. |
+| C17 | TenagaKerjaUI | Antarmuka *dashboard* dan menu pekerjaan aktif Tenaga Kerja. |
+| C22 | TransaksiPekerjaanUI | Antarmuka rincian status transaksi pekerjaan dan tombol serahkan pekerjaan. |
+| C23 | BuktiPenyerahanUI | Antarmuka formulir pengunggahan berkas bukti pengerjaan. |
+| C29 | NotifikasiUI | Antarmuka untuk menampilkan pesan notifikasi masuk. |
+| C32 | TenagaKerjaController | Pengendali navigasi alur kerja Tenaga Kerja. |
+| C37 | TransaksiPekerjaanController | Pengendali transisi status pengerjaan transaksi. |
+| C38 | BuktiPenyerahanController | Pengendali validasi format, ukuran berkas, dan penyimpanan bukti penyerahan. |
+| C44 | NotifikasiController | Pengendali pemicu pengiriman notifikasi peninjauan hasil kerja. |
+
+#### Diagram Kelas
+<p align="center">
+<img alt="Class Diagram UC08" src="./assets/diagram/class-diagram-uc08.png" width="70%">
+</p>
+<p align="center">
+<i>Gambar 9. Diagram Kelas Use Case UC08</i>
+</p>
+<br>
+
+| ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
+| :--- | :--- | :--- | :--- |
+| C02 | TenagaKerja | -idTenagaKerja<br>#idPengguna<br>#nama<br>#email<br>-statusVerifikasi | +serahkanPekerjaan(idTransaksi, deskripsi, berkas)<br>+getStatusVerifikasi() |
+| C07 | TransaksiPekerjaan | -idTransaksi<br>-idLowongan<br>-idTenagaKerja<br>-idPenyediaKerja<br>-statusPekerjaan | +updateStatusPekerjaan(status)<br>+getStatusPekerjaan() |
+| C08 | BuktiPenyerahan | -idPenyerahan<br>-idTransaksi<br>-deskripsiPengerjaan<br>-fileUrl<br>-ukuranFile<br>-timestampPengiriman | +simpanBukti()<br>#validasiBukti()<br>+getDetailBukti() |
+| C14 | Notifikasi | -idNotifikasi<br>-idPenerima<br>-pesan<br>-statusBaca<br>-timestamp | +simpanPesanNotifikasi()<br>+kirimNotifikasiPeninjauan() |
+| C17 | TenagaKerjaUI | | +tampilkanDashboardPekerja()<br>+tampilkanPekerjaanAktif() |
+| C22 | TransaksiPekerjaanUI | | +tampilkanDetailPekerjaan()<br>+tekanTombolSerahkanPekerjaan() |
+| C23 | BuktiPenyerahanUI | | +tampilkanFormPenyerahan()<br>+submitHasilPekerjaan(idTransaksi, deskripsi, berkas)<br>+tampilkanKonfirmasiPenyerahan() |
+| C29 | NotifikasiUI | | +renderPesanNotifikasi()<br>+tampilkanNotifikasiPeninjauan() |
+| C32 | TenagaKerjaController | | +arahkanKeFormPenyerahan(idTransaksi) |
+| C37 | TransaksiPekerjaanController | | +prosesTransisiPenyerahan(idTransaksi)<br>-validasiStatusInProgress(idTransaksi) |
+| C38 | BuktiPenyerahanController | | +prosesSerahkanPekerjaan(idTransaksi, deskripsi, berkas)<br>-validasiUkuranFile(berkas)<br>-validasiFormatFile(berkas)<br>+simpanPenyerahan(idTransaksi, deskripsi, fileUrl) |
+| C44 | NotifikasiController | | +kirimNotifikasiPeninjauan(idPenerima)<br>-buatNotifikasiPenyerahan() |
+
+### 5.2.9 Use Case UC09
+
+**Nama Use Case:** *Memverifikasi Penyelesaian Pekerjaan*
+
+#### Identifikasi Kelas
+
+| ID Kelas | Nama Kelas | Deskripsi Kelas |
+| :--- | :--- | :--- |
+| C03 | PenyediaKerja | Kelas entitas turunan `Pengguna` yang menyimpan data spesifik pencari jasa untuk membuat lowongan dan melakukan pembayaran. |
+| C07 | TransaksiPekerjaan | Kelas entitas yang menyimpan ID transaksi unik dan melacak siklus hidup pengerjaan (*Assigned*, *In Progress*, *Submitted*, *Completed*). |
+| C08 | BuktiPenyerahan | Kelas entitas yang menyimpan data penyerahan hasil kerja, mencakup deskripsi, lampiran file bukti, dan *timestamp* pengiriman. |
+| C14 | Notifikasi | Kelas entitas yang menyimpan pesan pemberitahuan ke *dashboard* pengguna terkait aktivitas akun maupun transaksi. |
+| C18 | PenyediaKerjaUI | Kelas antarmuka yang menampilkan profil pencari jasa dan *dashboard* aktivitas penyediaan kerja. |
+| C22 | TransaksiPekerjaanUI | Kelas antarmuka untuk memantau status pekerjaan, melihat detail rincian, dan tombol aksi transisi pekerjaan. |
+| C23 | BuktiPenyerahanUI | Kelas antarmuka yang menampilkan formulir unggah bukti kerja dan layar tinjauan hasil kerja. |
+| C29 | NotifikasiUI | Kelas antarmuka berupa *pop-up*, bel, atau menu *dropdown* pesan masuk bagi pengguna. |
+| C33 | PenyediaKerjaController | Kelas pengendali untuk mengatur logika pembentukan profil dan *dashboard* penyedia kerja. |
+| C37 | TransaksiPekerjaanController| Kelas pengendali untuk memvalidasi status transisi pengerjaan dan menyelesaikan pekerjaan. |
+| C38 | BuktiPenyerahanController| Kelas pengendali untuk memvalidasi format dan ukuran fail lampiran pekerjaan sebelum disimpan. |
+| C44 | NotifikasiController | Kelas pengendali untuk memicu pengiriman pesan otomatis secara *real-time* ke penerima yang tepat. |
+
+#### Diagram Kelas
+
+<p align="center">
+<img alt="Class Diagram UC09" src="./assets/diagram/class-diagram-uc-09.png" width="70%">
+</p>
+<p align="center">
+<i>Gambar 10. Diagram Kelas Use Case UC09</i>
+</p>
+<br>
+
+| ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
+| :--- | :--- | :--- | :--- |
+| C03 | PenyediaKerja | #idPenyediaKerja<br>#ratingAkumulatif | +setujuiHasilPekerjaan() |
+| C07 | TransaksiPekerjaan | -idTransaksi<br>-statusPengerjaan<br>-nominalUpah | +verifikasiSelesai()<br>+getDetailTransaksi() |
+| C08 | BuktiPenyerahan | -idPenyerahan<br>-idTransaksi<br>-fileUrl<br>-waktuPengiriman | +simpanBukti()<br>+getDetailBukti() |
+| C14 | Notifikasi | -idNotifikasi<br>-pesan<br>-statusBaca | +kirimNotifikasi(pesan) |
+| C18 | PenyediaKerjaUI | | +tampilkanHalamanVerifikasi() |
+| C22 | TransaksiPekerjaanUI | | +tampilkanDetailBukti()<br>+konfirmasiPenyelesaian() |
+| C23 | BuktiPenyerahanUI | | +tampilkanFileBukti() |
+| C29 | NotifikasiUI | | +tampilkanPesanNotifikasi() |
+| C33 | PenyediaKerjaController | | +arahkanKeTransaksi() |
+| C37 | TransaksiPekerjaanController | | +prosesVerifikasiSelesai(id)<br>-validasiStatus()<br>+picuPembayaran() |
+| C38 | BuktiPenyerahanController | | +ambilDataBukti(id) |
+| C44 | NotifikasiController | | +prosesKirimNotifikasi(pesan) |
+
+### 5.2.10 Use Case UC10
+
+**Nama Use Case:** *Melakukan Pencairan Dana*
+
+#### Identifikasi Kelas
+
+| ID Kelas | Nama Kelas | Deskripsi Kelas |
+| :--- | :--- | :--- |
+| C02 | TenagaKerja |  Kelas entitas turunan `Pengguna` yang menyimpan data spesifik pekerja, saldo, portofolio, dan atribut status verifikasi profil. |
+| C10 | PencairanDana | Kelas entitas yang menyimpan data permintaan penarikan saldo, mencakup nominal, rekening/e-wallet tujuan, dan status transfer. |
+| C14 | Notifikasi | Kelas entitas yang menyimpan pesan pemberitahuan ke *dashboard* pengguna terkait aktivitas akun maupun transaksi. |
+| C15 | PaymentGateway | Kelas entitas yang menyimpan log data transaksi eksternal dan riwayat komunikasi dengan saluran pembayaran pihak ketiga. |
+| C17 | TenagaKerjaUI | Kelas antarmuka yang menampilkan profil pekerja, *dashboard* saldo, serta formulir pengunggahan KTP untuk verifikasi. |
+| C25 | PencairanDanaUI | Kelas antarmuka yang menampilkan formulir *withdrawal* penarikan saldo pendapatan. |
+| C29 | NotifikasiUI | Kelas antarmuka berupa *pop-up*, bel, atau menu *dropdown* pesan masuk bagi pengguna. |
+| C30 | PaymentGatewayUI | Kelas antarmuka yang menampilkan halaman *redirect* atau simulasi jendela pembayaran pihak ketiga. |
+| C32 | TenagaKerjaController | Kelas pengendali untuk mengatur pembaruan profil pekerja dan logika pengajuan verifikasi identitas. |
+| C40 | PencairanDanaController | Kelas pengendali untuk memvalidasi kecukupan saldo dan mengirim instruksi penarikan dana ke API. |
+| C44 | NotifikasiController | Kelas pengendali untuk memicu pengiriman pesan otomatis secara *real-time* ke penerima yang tepat. |
+| C45 | PaymentGatewayController | Kelas pengendali yang mengatur komunikasi, meneruskan instruksi, dan memproses *callback* status dari layanan eksternal. |
+
+
+#### Diagram Kelas
+
+<p align="center">
+<img alt="Class Diagram UC10" src="./assets/diagram/class-diagram-uc-10.png" width="70%">
+</p>
+<p align="center">
+<i>Gambar 11. Diagram Kelas Use Case UC10</i>
+</p>
+<br>
+
+| ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
+| :--- | :--- | :--- | :--- |
+| C02 | TenagaKerja | #idTenagaKerja<br>#saldoPendapatan | +tarikSaldo() |
+| C10 | PencairanDana | -idPencairan<br>-nominal<br>-tujuan<br>-statusTransfer | +simpanDataPencairan() |
+| C14 | Notifikasi | -idNotifikasi<br>-pesan<br>-statusBaca | +kirimNotifikasi(pesan) |
+| C15 | PaymentGateway | -idTransaksiGateway<br>-status | +prosesTransfer() |
+| C17 | TenagaKerjaUI |  | +tampilkanHalamanPencairan() |
+| C25 | PencairanDanaUI |  | +tampilkanStatusPencairan() |
+| C29 | NotifikasiUI |  | +tampilkanPesanNotifikasi() |
+| C30 | PaymentGatewayUI |  | +tampilkanStatusGateway() |
+| C32 | TenagaKerjaController |  | +ajukanPencairan() |
+| C40 | PencairanDanaController |  | +prosesPencairan(nominal) |
+| C44 | NotifikasiController |  | +prosesKirimNotifikasi(pesan) |
+| C45 | PaymentGatewayController |  | +kirimInstruksiPencairan() |
+
+### 5.2.11 Use Case UC11
+
+**Nama Use Case:** *Memberikan Penilaian Kerja*
+
+#### Identifikasi Kelas
+
+| ID Kelas | Nama Kelas | Deskripsi Kelas |
+| :--- | :--- | :--- |
+| C01 | Pengguna | Kelas abstrak entitas yang menyimpan data dasar akun seperti nama, email, *password* terenkripsi, tanggal lahir, dan token autentikasi. |
+| C07 | TransaksiPekerjaan | Kelas entitas yang menyimpan ID transaksi unik dan melacak siklus hidup pengerjaan (*Assigned*, *In Progress*, *Submitted*, *Completed*). |
+| C11 | UlasanRating | Kelas entitas yang menyimpan data penilaian pasca-pekerjaan (skala 1-5) dan ulasan teks untuk mencegah *double review*. |
+| C16 | PenggunaUI | Kelas antarmuka bagi pengguna umum untuk menampilkan formulir registrasi dan *login*. |
+| C22 | TransaksiPekerjaanUI | Kelas antarmuka untuk memantau status pekerjaan, melihat detail rincian, dan tombol aksi transisi pekerjaan. |
+| C26 | UlasanRatingUI | Kelas antarmuka yang merender formulir pemberian bintang dan komentar ulasan. |
+| C31 | PenggunaController | Kelas pengendali untuk alur registrasi, enkripsi *password*, validasi umur, dan proses *login*. |
+| C37 | TransaksiPekerjaanController| Kelas pengendali untuk memvalidasi status transisi pengerjaan dan menyelesaikan pekerjaan. |
+| C41 | UlasanRatingController | Kelas pengendali untuk mencegah ulasan ganda dan merekapitulasi rata-rata rating. |
+
+
+#### Diagram Kelas
+
+<p align="center">
+<img alt="Class Diagram UC11" src="./assets/diagram/class-diagram-uc-11.png" width="70%">
+</p>
+<p align="center">
+<i>Gambar 12. Diagram Kelas Use Case UC11</i>
+</p>
+<br>
+
+| ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
+| :--- | :--- | :--- | :--- |
+| C01 | Pengguna | -idPengguna<br>-nama<br>-akumulasiRating | +berikanUlasan(idTransaksi, nilai, deskripsi) |
+| C07 | TransaksiPekerjaan | -idTransaksi<br>-statusPengerjaan | +cekStatusSelesai()<br>+validasiUlasanGanda() |
+| C11 | UlasanRating | -idUlasan<br>-idTransaksi<br>-idPemberi<br>-idPenerima<br>-nilai<br>-deskripsiUlasan | +simpanUlasan() |
+| C16 | PenggunaUI | | +tampilkanMenuUlasan() |
+| C22 | TransaksiPekerjaanUI | | +tampilkanDetailTransaksi() |
+| C26 | UlasanRatingUI | | +tampilkanFormRating() |
+| C31 | PenggunaController | | +prosesPemberianUlasan() |
+| C37 | TransaksiPekerjaanController | | +validasiBisaDinilai() |
+| C41 | UlasanRatingController | | +prosesSimpanRating() |
+
+### 5.2.12 Use Case UC12
+
+**Nama Use Case:** *Menangani Keluhan*
+
+#### Identifikasi Kelas
+
+| ID Kelas | Nama Kelas | Deskripsi Kelas |
+| :--- | :--- | :--- |
+| C04 | CustomerService | Kelas entitas turunan `Pengguna` yang menyimpan hak akses operasional untuk menyetujui verifikasi dan memutus sengketa. |
+| C07 | TransaksiPekerjaan | Kelas entitas yang menyimpan ID transaksi unik dan melacak siklus hidup pengerjaan (*Assigned*, *In Progress*, *Submitted*, *Completed*). |
+| C12 | TiketSengketa | Kelas entitas yang menyimpan data keluhan, kategori masalah, bukti awal, dan status penyelesaian sengketa. |
+| C13 | RiwayatSengketa | Kelas entitas yang menyimpan rekam jejak kronologis penanganan sengketa dan eksekusi keputusan oleh Customer Service. |
+| C14 | Notifikasi | Kelas entitas yang menyimpan pesan pemberitahuan ke *dashboard* pengguna terkait aktivitas akun maupun transaksi. |
+| C19 | CustomerServiceUI | Kelas antarmuka khusus *dashboard* internal CS untuk melihat antrean verifikasi dan daftar sengketa. |
+| C22 | TransaksiPekerjaanUI | Kelas antarmuka untuk memantau status pekerjaan, melihat detail rincian, dan tombol aksi transisi pekerjaan. |
+| C27 | TiketSengketaUI | Kelas antarmuka yang menyediakan form pengajuan komplain dan detail rincian tiket sengketa. |
+| C28 | RiwayatSengketaUI | Kelas antarmuka yang menampilkan *timeline* atau log diskusi dan pembaruan kasus sengketa. |
+| C29 | NotifikasiUI | Kelas antarmuka berupa *pop-up*, bel, atau menu *dropdown* pesan masuk bagi pengguna. |
+| C34 | CustomerServiceController| Kelas pengendali untuk memproses keputusan validasi profil pekerja maupun otorisasi hak CS. |
+| C37 | TransaksiPekerjaanController| Kelas pengendali untuk memvalidasi status transisi pengerjaan dan menyelesaikan pekerjaan. |
+| C42 | TiketSengketaController| Kelas pengendali untuk memvalidasi pembuatan tiket keluhan dan merekam status sengketa. |
+| C43 | RiwayatSengketaController| Kelas pengendali untuk merekam dan mengeksekusi log kronologis keputusan akhir (*refund*/pencairan). |
+| C44 | NotifikasiController | Kelas pengendali untuk memicu pengiriman pesan otomatis secara *real-time* ke penerima yang tepat. |
+
+#### Diagram Kelas
+
+<p align="center">
+<img alt="Class Diagram UC12" src="./assets/diagram/class-diagram-uc-12.png" width="70%">
+</p>
+<p align="center">
+<i>Gambar 13. Diagram Kelas Use Case UC12</i>
+</p>
+<br>
+
+| ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
+| :--- | :--- | :--- | :--- |
+| C04 | CustomerService | -idPengguna<br>-nama<br>-peran | +tinjauTiket(idTiket)<br>+putuskanSengketa(idTiket, keputusan) |
+| C07 | TransaksiPekerjaan | -idTransaksi<br>-statusPengerjaan | +getDetailTransaksi() |
+| C12 | TiketSengketa | -idTiket<br>-idTransaksi<br>-idPelapor<br>-kategoriMasalah<br>-deskripsiKomplain<br>-statusTiket | +buatTiket()<br>+updateStatus(statusBaru) |
+| C13 | RiwayatSengketa | -idRiwayat<br>-idTiket<br>-logAktivitas<br>-timestamp | +catatRiwayat(aktivitas) |
+| C14 | Notifikasi | -idNotifikasi<br>-idPengguna<br>-pesan<br>-statusBaca | +kirimNotifikasi(pesan) |
+| C19 | CustomerServiceUI | | +tampilkanHalamanSengketa() |
+| C22 | TransaksiPekerjaanUI | | +tampilkanDetailTransaksi() |
+| C27 | TiketSengketaUI | | +tampilkanFormTiket() |
+| C28 | RiwayatSengketaUI | | +tampilkanRiwayat() |
+| C29 | NotifikasiUI | | +tampilkanPesanNotifikasi() |
+| C34 | CustomerServiceController | | +prosesTiketSengketa() |
+| C37 | TransaksiPekerjaanController | | +ambilDataTransaksi() |
+| C42 | TiketSengketaController | | +prosesBuatTiket() |
+| C43 | RiwayatSengketaController | | +prosesCatatRiwayat() |
+| C44 | NotifikasiController | | +prosesKirimNotifikasi() |
 
 ## 5.3 Diagram Kelas Keseluruhan
-Gabungkan seluruh kelas dan hubungan antarkelas dari BAB 4.3 dokumen *Class Diagram* menjadi satu diagram kelas keseluruhan. Pastikan tidak ada kelas yang terduplikasi atau tertinggal.
+
+Gabungkan seluruh kelas dan hubungan antarkelas dari diagram kelas setiap use case menjadi satu diagram kelas keseluruhan. Pastikan tidak ada kelas yang terduplikasi.
 
 <p align="center">
-<img alt="Contoh Class Diagram Keseluruhan" src="./assets/diagram/contoh-class-diagram.webp" width="70%">
+<img alt="Class Diagram Keseluruhan" src="./assets/diagram/contoh-class-diagram.webp" width="70%">
 </p>
 <p align="center">
-<i>Gambar 4. Contoh Diagram Kelas Keseluruhan</i>
+<i>Gambar X. Diagram Kelas Keseluruhan</i>
 </p>
+<br>
 
 | ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
 | :--- | :--- | :--- | :--- |
-| *C01* | *Pelanggan* | *idPelanggan, nama, email* | *lihatRiwayatPesanan()* |
-| *C02* | *Pesanan* | *idPesanan, total, status* | *hitungTotal(), perbaruiStatus()* |
-| *...* | *...* | *...* | *...* |
+| C01 | Pengguna | id_pengguna, nama, email, password, tanggal_lahir, token_auth, 	idPengguna, akumulasiRating | registrasi(), validasiUsia(), login(), generateToken(), berikanUlasan(idTransaksi, nilai, deskripsi) |
+| C02 | TenagaKerja | idPengguna, nama, status_verifikasi, saldo_pendapatan, rating_akumulatif, email, idTenagaKerja, saldoPendapatan, rekeningTujuan | cariLowongan(kataKunci), filterLowongan(kategori), buatProfil(), ajukanVerifikasi(), perbaruiStatusVerifikasi(), ajukanPenawaran(idLowongan, pesan), batalkanPengajuan(), serahkanPekerjaan(idTransaksi, deskripsi, berkas), terimaUpah(nominal), ajukanPencairan(nominal) |
+| C03 | PenyediaKerja | idPengguna, nama, email, idPenyedia | buatLowonganBaru(judul, deskripsi, kuota, lokasi, upah), batalkanLowongan(), buatProfil(), lihatDaftarPelamar(), pilihPelamar(idPenawaran), bayarTagihan(idTagihan, metode), setujuiHasilPekerjaan() |
+| C04 | CustomerService | idPengguna, nama, peran | tinjauVerifikasi(), setujuiVerifikasi(), tolakVerifikasi(), tinjauTiket(idTiket), putuskanSengketa(idTiket, keputusan) |
+| C05 | VerifikasiIdentitas | id_verifikasi, file_dokumen, waktu_pengajuan, status_persetujuan, alasan_penolakan | validasiFormatDokumen(), validasiUkuranDokumen(), simpanPengajuan() |
+| C06 | LowonganPekerjaan | idLowongan, judul, deskripsi, kuota, lokasi, upah, status, kategori, jumlahDiterima | validasiIsianFormulir(), simpanLowongan(), setStatusDefault(), tampilkanDaftarLowongan(filter), cekStatusOpen(), tampilkanTombolAjukan(), cekKuotaSisa(), updateStatusLowongan(), kurangiKuota() |
+| C07 | PengajuanPenawaran | idPenawaran, idLowongan, idTenagaKerja, pesanPenawaran, timestamp, status, pesan | simpanPengajuan(), validasiStatusAkun(), setStatusPersetujuan(status) |
+| C08 | TransaksiPekerjaan | idTransaksi, idLowongan, idTenagaKerja, idPenyediaKerja, statusPekerjaan, nominalUpah, statusPengerjaan | buatTransaksiBaru(), updateStatusPekerjaan(status), verifikasiSelesai(), picuPembayaranUpah(), cekStatusSelesai(), validasiUlasanGanda(), getDetailTransaksi() |
+| C09 | BuktiPenyerahan | idPenyerahan, idTransaksi, deskripsiPengerjaan, fileUrl, ukuranFile, timestampPengiriman | validasiUkuranFile(), simpanBukti() |
+| C10 | TagihanPembayaran | idTagihan, idTransaksi, nominalUpah, commissionFee, totalBayar, expiryTimestamp, statusBayar | hitungTotalTagihan(), buatInvoice(), updateStatusPembayaran() |
+| C11 | PencairanDana | idPencairan, idTenagaKerja, nominal, statusPencairan, waktuPengajuan | buatTransaksiPencairan(), updateStatusPencairan(status) |
+| C12 | PaymentGateway | idGateway, namaProvider, statusKoneksi | prosesPembayaran(), dapatkanCallbackStatus(), prosesTransferDana(rekening, nominal) |
+| C13 | UlasanRating | idUlasan, idTransaksi, nilai, deskripsiUlasan | simpanUlasan() |
+| C14 | TiketSengketa | idTiket, idTransaksi, idPelapor, kategoriMasalah, deskripsiKomplain, statusTiket | buatTiket(), updateStatus(statusBaru) |
+| C15 | RiwayatSengketa | idRiwayat, idTiket, logAktivitas, timestamp | catatRiwayat(aktivitas) |
+| C16 | Notifikasi | id_notifikasi, pesan_notifikasi, waktu_kirim,idPenerima, pesan, status_baca, idNotifikasi, idPenerima, statusBaca, waktu, idPengguna | kirimNotifikasi(), kirimNotifikasiPengajuanBaru(), kirimNotifikasiPenerimaan(), kirimNotifikasiSiapKerja(), kirimNotifikasiPeninjauan(), kirimNotifPenerimaanUpah(idTenagaKerja), kirimNotifPencairan(status), kirimNotifikasi(pesan) |
+| ... | ... | ... | ... |
 
 ---
 
