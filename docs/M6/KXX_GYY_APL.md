@@ -60,40 +60,39 @@ Dari segi pengembangan, MVC menerapkan pemisahan tanggung jawab yang tegas antar
 
 # BAB 2: Identifikasi Komponen / Modul / Subsistem
 
-Komponen Kerja-In dikelompokkan berdasarkan pola MVC menjadi Model, View, dan Controller, dilengkapi komponen autentikasi, integrasi pembayaran, serta penyimpanan data dan berkas. Setiap komponen menyimpan kelas-kelas terkait pada dokumen SKPL dan mendukung alur use case yang telah ditetapkan.
+Komponen Kerja-In dikelompokkan berdasarkan pola MVC menjadi Model, View, dan Controller. Kelas yang memiliki fungsi berkaitan ditempatkan dalam satu komponen dengan nama kelas utama yang mewakilinya. Komponen autentikasi, basis data, dan penyimpanan berkas mendukung pengoperasian aplikasi.
 
 Tabel 2.1. Identifikasi Komponen/Modul/Subsistem
 
 | Nama Komponen/Modul/Subsistem | Jenis | Penjelasan |
 | :--- | :--- | :--- |
-| AkunModel | Model | Mewadahi kelas Pengguna, TenagaKerja, PenyediaKerja, dan CustomerService untuk mengelola data akun, peran, profil, portofolio, saldo, dan status verifikasi. Data pengajuan identitas yang tercantum sebagai VerifikasiIdentitas pada diagram kelas keseluruhan juga dikelompokkan dalam komponen ini (UC01 dan UC02). |
-| LowonganModel | Model | Mewadahi kelas LowonganPekerjaan untuk mengelola deskripsi, kategori, lokasi, kuota, upah, dan status lowongan, termasuk aturan ketersediaan lowongan dan sisa kuota (UC03, UC04, dan UC06). |
-| PenawaranModel | Model | Mewadahi kelas PengajuanPenawaran untuk mengelola data pelamar, pesan penawaran, waktu pengajuan, dan status persetujuan penawaran pada suatu lowongan (UC05 dan UC06). |
-| PekerjaanModel | Model | Mewadahi kelas TransaksiPekerjaan dan BuktiPenyerahan untuk mengelola kesepakatan pekerjaan, tenaga kerja terpilih, status pengerjaan, bukti hasil, dan permintaan revisi (UC06, UC07, UC08, dan UC09). |
-| PembayaranModel | Model | Mewadahi kelas TagihanPembayaran dan PencairanDana untuk mengelola tagihan upah beserta commission fee, batas pembayaran, permintaan penarikan saldo, tujuan transfer, dan status transaksi dana (UC07 dan UC10). |
-| PenilaianModel | Model | Mewadahi kelas UlasanRating untuk mengelola rating dan ulasan setelah pekerjaan selesai, aturan satu ulasan per pihak untuk setiap pekerjaan, serta perhitungan reputasi pengguna (UC11). |
-| KeluhanModel | Model | Mewadahi kelas TiketSengketa dan RiwayatSengketa untuk mengelola keluhan, bukti pendukung, status tiket, keputusan Customer Service, dan riwayat penanganan secara kronologis (UC12). |
-| NotifikasiModel | Model | Mewadahi kelas Notifikasi untuk mengelola pesan, penerima, waktu pengiriman, dan status baca pemberitahuan mengenai verifikasi, penawaran, pekerjaan, pembayaran, pencairan, dan keluhan. |
-| AkunController | Controller | Mewadahi kelas PenggunaController, TenagaKerjaController, PenyediaKerjaController, dan CustomerServiceController. Memproses registrasi, validasi usia, login, pembaruan profil, pengajuan identitas, persetujuan atau penolakan verifikasi, serta pemeriksaan hak akses sesuai peran; menggunakan AkunModel dan layanan Autentikasi (UC01 dan UC02). |
-| LowonganController | Controller | Mewadahi kelas LowonganPekerjaanController. Memproses pembuatan lowongan, validasi isian, pencarian dan pemfilteran lowongan Open, serta pembaruan ketersediaan kuota melalui LowonganModel (UC03, UC04, dan UC06). |
-| PenawaranController | Controller | Mewadahi kelas PengajuanPenawaranController. Memproses pengajuan penawaran dan pemilihan pelamar, memeriksa status verifikasi serta kuota, dan menjalankan operasi model terkait untuk mencatat penawaran serta transaksi pekerjaan bagi kandidat yang diterima (UC05 dan UC06). |
-| PekerjaanController | Controller | Mewadahi kelas TransaksiPekerjaanController dan BuktiPenyerahanController. Memproses perubahan status pengerjaan, unggahan bukti, pemeriksaan hasil, permintaan revisi, dan konfirmasi penyelesaian; memvalidasi kepemilikan pekerjaan, format, serta ukuran lampiran (UC07, UC08, dan UC09). |
-| PembayaranController | Controller | Mewadahi kelas TagihanPembayaranController dan PencairanDanaController. Menghitung tagihan upah beserta biaya platform, memproses pembayaran serta penarikan saldo, memvalidasi rekening dan nominal, lalu menggunakan PaymentGatewayAdapter untuk mengirim instruksi dan mencatat hasil transaksi pada PembayaranModel (UC07 dan UC10; tindak lanjut dana UC09 dan UC12). |
-| PenilaianController | Controller | Mewadahi kelas UlasanRatingController. Memeriksa status pekerjaan Completed, memvalidasi rating 1-5, mencegah ulasan ganda, dan memperbarui rata-rata rating pengguna melalui model terkait (UC11). |
-| KeluhanController | Controller | Mewadahi kelas TiketSengketaController dan RiwayatSengketaController. Memproses laporan dan bukti tambahan, memeriksa kewenangan Customer Service, mencatat keputusan serta riwayat, dan menerapkan tindak lanjut refund atau pencairan sesuai bukti dan status pekerjaan (UC12). |
-| NotifikasiController | Controller | Mewadahi kelas NotifikasiController. Memproses pembuatan pemberitahuan kepada penerima yang sesuai, menampilkan daftar pesan dari NotifikasiModel, dan memperbarui status baca ketika pengguna membuka notifikasi. |
-| AkunView | View | Mewadahi kelas PenggunaUI, TenagaKerjaUI, PenyediaKerjaUI, dan CustomerServiceUI. Menampilkan formulir registrasi/login, profil, saldo, pengajuan dokumen identitas, antrean verifikasi, serta dashboard sesuai peran. Meneruskan tindakan pengelolaan akun dan verifikasi ke AkunController (UC01 dan UC02). |
-| LowonganView | View | Mewadahi kelas LowonganPekerjaanUI. Menampilkan formulir lowongan, daftar pencarian, filter, detail pekerjaan, dan ketersediaan kuota; meneruskan tindakan terkait ke LowonganController (UC03 dan UC04). |
-| PenawaranView | View | Mewadahi kelas PengajuanPenawaranUI. Menampilkan formulir pengajuan penawaran, daftar pelamar beserta profil dan reputasi, serta konfirmasi pemilihan kandidat; meneruskan tindakan terkait ke PenawaranController (UC05 dan UC06). |
-| PekerjaanView | View | Mewadahi kelas TransaksiPekerjaanUI dan BuktiPenyerahanUI. Menampilkan rincian transaksi, status pekerjaan, formulir unggah bukti, hasil yang diserahkan, serta pilihan persetujuan atau revisi; meneruskan tindakan terkait ke PekerjaanController (UC08 dan UC09). |
-| PembayaranView | View | Mewadahi kelas TagihanPembayaranUI, PencairanDanaUI, dan PaymentGatewayUI. Menampilkan invoice, rincian upah dan biaya platform, pilihan metode, instruksi pembayaran, formulir penarikan saldo, serta status transfer; meneruskan tindakan terkait ke PembayaranController (UC07 dan UC10). |
-| PenilaianView | View | Mewadahi kelas UlasanRatingUI. Menampilkan formulir rating dan ulasan serta hasil penilaian pada profil; meneruskan pengiriman penilaian ke PenilaianController (UC11). |
-| KeluhanView | View | Mewadahi kelas TiketSengketaUI dan RiwayatSengketaUI. Menampilkan formulir laporan, rincian dan bukti tiket, permintaan bukti tambahan, keputusan, serta riwayat penanganan; meneruskan tindakan pengguna atau Customer Service ke KeluhanController (UC12). |
-| NotifikasiView | View | Mewadahi kelas NotifikasiUI. Menampilkan daftar atau pop-up pemberitahuan dan status baca, serta meneruskan tindakan membuka pesan ke NotifikasiController. |
-| PaymentGatewayAdapter | Integrasi Eksternal | Mewadahi kelas PaymentGateway dan PaymentGatewayController sebagai penghubung layanan pembayaran dummy atau layanan setara. Mengirim instruksi pembayaran, pencairan, dan refund; memverifikasi callback serta meneruskan status transaksi kepada pemroses transaksi terkait. Layanan Payment Gateway di luar aplikasi merupakan sistem eksternal. |
-| Autentikasi | Pendukung | Menghubungkan aplikasi dengan Supabase Auth sesuai lingkungan operasi SKPL untuk memverifikasi kredensial dan mengelola sesi/token pengguna. AkunController menggunakannya pada registrasi/login, sementara permintaan yang dilindungi memerlukan pemeriksaan sesi dan hak akses. |
-| Database | Penyimpanan Data | Menggunakan PostgreSQL pada Supabase sesuai SKPL untuk menyimpan data akun, lowongan, penawaran, pekerjaan, tagihan, pencairan, ulasan, keluhan, dan notifikasi. Mendukung pencatatan riwayat serta perubahan data transaksi yang konsisten. |
-| PenyimpananBerkas | Penyimpanan Data | Menggunakan Supabase Storage sesuai SKPL untuk menyimpan dokumen identitas, lampiran hasil pekerjaan, dan bukti keluhan. Referensi berkas dicatat pada model terkait dan akses berkas dibatasi sesuai hak pengguna. |
+| Pengguna | Model | Mengelola identitas akun, profil sesuai peran, portofolio, saldo, dan status verifikasi pengguna. Mencakup kelas Pengguna, TenagaKerja, PenyediaKerja dan CustomerService. |
+| LowonganPekerjaan | Model | Model yang menyimpan spesifikasi pekerjaan meliputi judul, deskripsi, batas kuota, nominal upah, dan status (*Open/Closed*). |
+| PengajuanPenawaran | Model | Model yang menyimpan data lamaran dari Tenaga Kerja, berisi pesan penawaran, *timestamp*, dan status lamaran. |
+| TransaksiPekerjaan | Model | Mengelola kesepakatan, status pengerjaan, deskripsi hasil, lampiran bukti, dan waktu penyerahan. Mencakup kelas TransaksiPekerjaan dan BuktiPenyerahan. |
+| TagihanPembayaran | Model | Mengelola tagihan, upah dan biaya layanan, permintaan penarikan pendapatan, tujuan transfer, serta catatan dan status transaksi pembayaran. Mencakup kelas TagihanPembayaran, PencairanDana dan PaymentGateway. |
+| UlasanRating | Model | Model yang menyimpan data penilaian pasca-pekerjaan (skala 1-5) dan ulasan teks untuk mencegah *double review*. |
+| TiketSengketa | Model | Mengelola laporan keluhan, bukti, status tiket, keputusan, dan riwayat penanganan. Mencakup kelas TiketSengketa dan RiwayatSengketa. |
+| Notifikasi | Model | Model yang menyimpan pesan pemberitahuan ke *dashboard* pengguna terkait aktivitas akun maupun transaksi. |
+| PenggunaUI | View | Menampilkan formulir registrasi/login, profil, dashboard pengguna, dan pengajuan serta pemeriksaan identitas. Mencakup kelas PenggunaUI, TenagaKerjaUI, PenyediaKerjaUI dan CustomerServiceUI. |
+| LowonganPekerjaanUI | View | Antarmuka yang menyediakan formulir pembuatan lowongan dan katalog pencarian pekerjaan. Meneruskan aksi pengguna yang terkait ke LowonganPekerjaanController. |
+| PengajuanPenawaranUI | View | Antarmuka yang menampilkan formulir pengisian pesan penawaran bagi Tenaga Kerja. Meneruskan aksi pengguna yang terkait ke PengajuanPenawaranController. |
+| TransaksiPekerjaanUI | View | Menampilkan rincian dan status pekerjaan, formulir unggah hasil, serta pilihan persetujuan atau revisi. Mencakup kelas TransaksiPekerjaanUI dan BuktiPenyerahanUI. |
+| TagihanPembayaranUI | View | Menampilkan invoice, metode dan instruksi pembayaran, formulir penarikan pendapatan, serta status transaksi dana. Mencakup kelas TagihanPembayaranUI, PencairanDanaUI dan PaymentGatewayUI. |
+| UlasanRatingUI | View | Antarmuka yang merender formulir pemberian bintang dan komentar ulasan. Meneruskan aksi pengguna yang terkait ke UlasanRatingController. |
+| TiketSengketaUI | View | Menampilkan formulir dan rincian keluhan, bukti tambahan, keputusan, serta urutan aktivitas penanganan. Mencakup kelas TiketSengketaUI dan RiwayatSengketaUI. |
+| NotifikasiUI | View | Antarmuka berupa *pop-up*, bel, atau menu *dropdown* pesan masuk bagi pengguna. Meneruskan aksi pengguna yang terkait ke NotifikasiController. |
+| PenggunaController | Controller | Memproses registrasi/login, pembaruan profil, pemeriksaan hak akses, dan keputusan verifikasi identitas. Mencakup kelas PenggunaController, TenagaKerjaController, PenyediaKerjaController dan CustomerServiceController. |
+| LowonganPekerjaanController | Controller | Pengendali untuk memvalidasi isian *create* lowongan, pemfilteran pencarian, dan kalkulasi sisa kuota. |
+| PengajuanPenawaranController | Controller | Pengendali untuk memvalidasi persyaratan melamar dan merekam data pelamar ke *database*. |
+| TransaksiPekerjaanController | Controller | Memproses perubahan status pekerjaan, validasi dan penyimpanan bukti, serta konfirmasi penyelesaian atau permintaan revisi. Mencakup kelas TransaksiPekerjaanController dan BuktiPenyerahanController. |
+| TagihanPembayaranController | Controller | Menghitung tagihan, memvalidasi saldo serta tujuan transfer, mengirim instruksi pembayaran, pencairan atau refund, dan memproses konfirmasi layanan pembayaran eksternal. Mencakup kelas TagihanPembayaranController, PencairanDanaController dan PaymentGatewayController. |
+| UlasanRatingController | Controller | Pengendali untuk mencegah ulasan ganda dan merekapitulasi rata-rata rating. |
+| TiketSengketaController | Controller | Memvalidasi laporan serta kewenangan petugas, mencatat keputusan dan riwayat, serta memproses tindak lanjut penyelesaian sengketa. Mencakup kelas TiketSengketaController dan RiwayatSengketaController. |
+| NotifikasiController | Controller | Pengendali untuk memicu pengiriman pesan otomatis secara *real-time* ke penerima yang tepat. |
+| Autentikasi | Pendukung | Memverifikasi kredensial dan mengelola sesi pengguna agar akses aplikasi sesuai dengan identitas serta hak pengguna. |
+| Database | Penyimpanan Data | Menyimpan data aplikasi secara persisten, termasuk akun, lowongan, penawaran, pekerjaan, pembayaran, penilaian, keluhan, dan riwayat aktivitas. |
+| PenyimpananBerkas | Penyimpanan Data | Menyimpan dokumen identitas, lampiran hasil pekerjaan, dan bukti keluhan serta menyediakan akses berkas sesuai hak pengguna. |
 
 ---
 
