@@ -33,7 +33,7 @@ Dipersiapkan oleh:
 # BAB 1: Style/Pattern Arsitektur Acuan
 
 <p align="center">
-<img alt="Contoh Arsitektur MVC" src="./assets/diagram/contoh-arsitektur-mvc.webp" width="70%">
+<img alt="Contoh Arsitektur MVC" src="./assets/diagram/MVC.png" width="70%">
 </p>
 <p align="center">
 <i>Gambar 1.  Arsitektur MVC</i>
