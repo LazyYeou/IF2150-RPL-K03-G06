@@ -65,7 +65,7 @@ Silakan catat penggunaan AI yang berdampak signifikan pada pengerjaan tugas (mis
 ### Milestone 6
 | Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
 | :--- | :--- | :--- | :--- |
-| *Gemini* | *Menanyakan kelebihan dan kekurangan masing-masing * | *Tolong analisis apakah terdapat perbedaan pada KF/KNF/UC/C/dan lain-lain pada milestone yang berbeda (copy paste beberapa bagian pada milestone)* | *AI memberikan beberapa bagian yang berbeda, lalu kita menvalidasi dan mengubah beberapa hal pada md* |
+| *Gemini* | *Menanyakan kelebihan dan kekurangan masing-masing Architecture dan View* | *Tolong berikan kembali penjelasan mengenai kelebihan dan kekurangan dari setiap architecture yang ada disini dalam bentuk tabel (attach list architecture yang diajarkan)* | *AI memberikan beberapa kelebihan dan kekurangan dari setiap architecture/view yang ada. Hal ini membantu kelompok dalam menentukan architecture/view yang ingin digunakan* |
 | | | | | |
 
 ---
