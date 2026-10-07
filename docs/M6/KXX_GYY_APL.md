@@ -64,7 +64,7 @@ Tabel 1.1. Lingkungan Operasi Perangkat Lunak
 
 # BAB 2: Identifikasi Komponen / Modul / Subsistem
 
-Komponen Kerja-In dikelompokkan berdasarkan pola MVC menjadi Model, View, dan Controller, dilengkapi komponen autentikasi, integrasi pembayaran, serta penyimpanan data dan berkas. Setiap komponen mewadahi kelas-kelas terkait pada dokumen SKPL dan mendukung alur use case yang telah ditetapkan.
+Komponen Kerja-In dikelompokkan berdasarkan pola MVC menjadi Model, View, dan Controller, dilengkapi komponen autentikasi, integrasi pembayaran, serta penyimpanan data dan berkas. Setiap komponen menyimpan kelas-kelas terkait pada dokumen SKPL dan mendukung alur use case yang telah ditetapkan.
 
 Tabel 2.1. Identifikasi Komponen/Modul/Subsistem
 
