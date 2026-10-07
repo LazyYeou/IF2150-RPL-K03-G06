@@ -122,6 +122,7 @@ Diagram 4.3 | 2 | Done | - |
 | :--- | :--- | :--- | :--- | :--- | :--- | 
 | 07-10-2026 | Sebastio Nugroho | Mengerjakan diagram arsitektur pada Bab 1 | 1.5 | Done | - |
 | 07-10-2026 | Karmel Tua Haloho | Menganalisis Bab 1 dan membantu pembuatan diagram MVC | 2 | Done | - |
+| 07-10-2026 | Davin Farel Santoso | Mengerjakan bab 2 | 1 | Done | - |
 ---
 
 
