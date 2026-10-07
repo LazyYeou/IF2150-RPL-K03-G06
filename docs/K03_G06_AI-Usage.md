@@ -62,6 +62,12 @@ Silakan catat penggunaan AI yang berdampak signifikan pada pengerjaan tugas (mis
 | *Gemini* | *Menanyakan bagian mana saja yang belum sesuai/terintegrasi antar M1 M2 M3 M4* | *Tolong analisis apakah terdapat perbedaan pada KF/KNF/UC/C/dan lain-lain pada milestone yang berbeda (copy paste beberapa bagian pada milestone)* | *AI memberikan beberapa bagian yang berbeda, lalu kita menvalidasi dan mengubah beberapa hal pada md* |
 | | | | | |
 
+### Milestone 6
+| Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
+| :--- | :--- | :--- | :--- |
+| *Gemini* | *Menanyakan kelebihan dan kekurangan masing-masing * | *Tolong analisis apakah terdapat perbedaan pada KF/KNF/UC/C/dan lain-lain pada milestone yang berbeda (copy paste beberapa bagian pada milestone)* | *AI memberikan beberapa bagian yang berbeda, lalu kita menvalidasi dan mengubah beberapa hal pada md* |
+| | | | | |
+
 ---
 ### Pernyataan Integritas dan Persetujuan
 
