@@ -209,6 +209,77 @@ Pada diagram, pastikan:
 - Kelas yang sama dengan kelas di use case lain memakai nama, atribut, dan metode yang konsisten.
 
 ## 3.2 Use Case XX
+## 3.3 Use Case XX
+## 3.4 Use Case XX
+## 3.5 Use Case XX
+## 3.6 Use Case XX
+## 3.7 Use Case XX
+## 3.8 Use Case XX
+## 3.9 Use Case Memverifikasi Penyelesaian Pekerjaan
+
+**ID Use Case:** UC09  
+**Nama Use Case:** Memverifikasi Penyelesaian Pekerjaan
+
+### 3.1.1 Identifikasi Kelas
+
+Tabel 3.9. Identifikasi Kelas Use Case UC09
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | PenyediaKerja | PenyediaKerja |
+| 2 | TransaksiPekerjaan | TransaksiPekerjaan |
+| 3 | BuktiPenyerahan | BuktiPenyerahan |
+| 4 | Notifikasi | Notifikasi |
+| 5 | PenyediaKerjaUI | PenyediaKerjaUI |
+| 6 | TransaksiPekerjaanUI | TransaksiPekerjaanUI |
+| 7 | BuktiPenyerahanUI | BuktiPenyerahanUI |
+| 8 | NotifikasiUI | NotifikasiUI |
+| 9 | PenyediaKerjaController | PenyediaKerjaController |
+| 10 | TransaksiPekerjaanController | TransaksiPekerjaanController |
+| 11 | BuktiPenyerahanController | BuktiPenyerahanController |
+| 12 | NotifikasiController | NotifikasiController |
+
+### 3.1.2 Sequence Diagram 
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence diagram sn uc09.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar X. Sequence Diagram UC09</i>
+</p>
+
+- **Skenario Alternatif 1 : Hasil Pekerjaan Belum Sesuai (Penyedia Kerja Meminta Revisi)**
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence diagram sa1 uc09.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar X. Sequence Diagram UC09 - Hasil Pekerjaan Belum Sesuai (Penyedia Kerja Meminta Revisi)</i>
+</p>
+
+- **Skenario Alternatif 2 : Terjadi Ketidaksepakatan / Perselisihan Hasil Kerja**
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence diagram sa2 uc09.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar X. Sequence Diagram UC09 - Terjadi Ketidaksepakatan / Perselisihan Hasil Kerja</i>
+</p>
+
+### 3.1.3 Diagram Kelas
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/class diagram uc 09.png" width="35%">
+</p>
+<p align="center">
+<i>Gambar X. Diagram Kelas Memverifikasi Penyelesaian Pekerjaan</i>
+</p>
+
+## 3.10 Use Case XX
+## 3.11 Use Case XX
+## 3.12 Use Case XX
 
 Silahkan lanjutkan untuk  *use case* berikutnya dengan content yang sama dengan 3.1
 
