@@ -68,6 +68,12 @@ Silakan catat penggunaan AI yang berdampak signifikan pada pengerjaan tugas (mis
 | *Gemini* | *Menanyakan kelebihan dan kekurangan masing-masing Architecture dan View* | *Tolong berikan kembali penjelasan mengenai kelebihan dan kekurangan dari setiap architecture yang ada disini dalam bentuk tabel (attach list architecture yang diajarkan)* | *AI memberikan beberapa kelebihan dan kekurangan dari setiap architecture/view yang ada. Hal ini membantu kelompok dalam menentukan architecture/view yang ingin digunakan* |
 | | | | | |
 
+### Milestone 7
+| Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
+| :--- | :--- | :--- | :--- |
+| *Gemini* | *Brainstorming logo Perangkat Lunak Kerja-In* | *Tolong berikan masukan mengenai poin-poin utama, color pallete, dan ide utama dari logo Kerja-In* | *AI memberikan beberapa alternatif solusi, lalu kita mempertimbangkan color pallete dan design yang cocok* |
+| | | | | |
+
 ---
 ### Pernyataan Integritas dan Persetujuan
 
