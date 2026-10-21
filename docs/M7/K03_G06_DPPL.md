@@ -8,7 +8,10 @@ DESKRIPSI PERANCANGAN PERANGKAT LUNAK (DPPL)
 <br>
 
 ## Kerja-In
-### *[Logo Perangkat Lunak]*
+<p align="center">
+<img alt="Logo Kerja-In" src="./assets/logo.jpeg" width="100%">
+</p>
+<p align="center">
 
 ### Untuk: Agatha Tatianingseto
 
