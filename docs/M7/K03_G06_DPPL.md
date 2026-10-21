@@ -165,7 +165,7 @@ Dari segi pengembangan, MVC menerapkan pemisahan tanggung jawab yang tegas antar
 ## 2.3 Identifikasi Komponen / Modul / Subsistem
 Komponen Kerja-In dikelompokkan berdasarkan pola MVC menjadi Model, View, dan Controller. Kelas yang memiliki fungsi berkaitan ditempatkan dalam satu komponen dengan nama kelas utama yang mewakilinya. Komponen autentikasi, basis data, dan penyimpanan berkas mendukung pengoperasian aplikasi.
 
-Tabel 2.2. Identifikasi Komponen/Modul/Subsistem
+Tabel 2.3. Identifikasi Komponen/Modul/Subsistem
 
 | Nama Komponen/Modul/Subsistem | Jenis | Penjelasan |
 | :--- | :--- | :--- |

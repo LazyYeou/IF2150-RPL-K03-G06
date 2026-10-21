@@ -4,8 +4,8 @@
 
 | Informasi | Keterangan |
 | --- | --- |
-| **Hari** | Selasa |
-| **Tanggal** | 06-10-2026 |
+| **Hari** | Jumat |
+| **Tanggal** | 0-10-2026 |
 | **Kelas** | K-03 |
 | **Nomor Kelompok** | 6 |
 | **Nama Kelompok** | Shifu  |
@@ -38,7 +38,7 @@ Catatan |
 
 <!-- ![](./assets/foto-asistensi.jpg) -->
 <p align="center">
-  <img src="./assets/Asistensi Akbar.jpeg" width="100%">
+  <img src="./assets/Asistensi akbar.jpeg" width="100%">
 </p>
 
 <p align="center">
