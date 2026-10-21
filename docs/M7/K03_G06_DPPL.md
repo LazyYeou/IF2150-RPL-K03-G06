@@ -666,17 +666,6 @@ Tabel 3.8. Identifikasi Kelas Use Case UC08
 <i>Gambar 3.8.4. Diagram Kelas Menyerahkan Hasil Pekerjaan</i>
 </p>
 
-<<<<<<< HEAD
-## 3.2 Use Case XX
-## 3.3 Use Case XX
-## 3.4 Use Case XX
-## 3.5 Use Case XX
-## 3.6 Use Case XX
-## 3.7 Use Case XX
-## 3.8 Use Case XX
-
-=======
->>>>>>> bb85fcee29947b22082705a0524749c12da7e234
 ## 3.9 Use Case Memverifikasi Penyelesaian Pekerjaan
 
 **ID Use Case:** UC09  
@@ -701,20 +690,12 @@ Tabel 3.9. Identifikasi Kelas Use Case UC09
 | 11 | BuktiPenyerahanController | BuktiPenyerahanController |
 | 12 | NotifikasiController | NotifikasiController |
 
-<<<<<<< HEAD
-### 3.9.2 Sequence Diagram 
-=======
 ### 3.9.2 Sequence Diagram
->>>>>>> bb85fcee29947b22082705a0524749c12da7e234
 
 - **Skenario Normal**
 
 <p align="center">
-<<<<<<< HEAD
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence diagram sn uc09 (1).png" width="50%">
-=======
 <img alt="Sequence Diagram UC09 - Skenario Normal" src="./assets/diagram/sequence diagram sn uc09.png" width="50%">
->>>>>>> bb85fcee29947b22082705a0524749c12da7e234
 </p>
 <p align="center">
 <i>Gambar 3.9.1. Sequence Diagram UC09 - Skenario Normal</i>
@@ -723,11 +704,7 @@ Tabel 3.9. Identifikasi Kelas Use Case UC09
 - **Skenario Alternatif 1 : Hasil Pekerjaan Belum Sesuai (Penyedia Kerja Meminta Revisi)**
 
 <p align="center">
-<<<<<<< HEAD
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence diagram sa1 uc09 (1).png" width="50%">
-=======
 <img alt="Sequence Diagram UC09 - Permintaan Revisi" src="./assets/diagram/sequence diagram sa1 uc09.png" width="50%">
->>>>>>> bb85fcee29947b22082705a0524749c12da7e234
 </p>
 <p align="center">
 <i>Gambar 3.9.2. Sequence Diagram UC09 - Hasil Pekerjaan Belum Sesuai (Penyedia Kerja Meminta Revisi)</i>
@@ -736,11 +713,7 @@ Tabel 3.9. Identifikasi Kelas Use Case UC09
 - **Skenario Alternatif 2 : Terjadi Ketidaksepakatan / Perselisihan Hasil Kerja**
 
 <p align="center">
-<<<<<<< HEAD
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence diagram sa2 uc09 (1).png" width="50%">
-=======
 <img alt="Sequence Diagram UC09 - Perselisihan Hasil Kerja" src="./assets/diagram/sequence diagram sa2 uc09.png" width="50%">
->>>>>>> bb85fcee29947b22082705a0524749c12da7e234
 </p>
 <p align="center">
 <i>Gambar 3.9.3. Sequence Diagram UC09 - Terjadi Ketidaksepakatan / Perselisihan Hasil Kerja</i>
@@ -749,11 +722,7 @@ Tabel 3.9. Identifikasi Kelas Use Case UC09
 ### 3.9.3 Diagram Kelas
 
 <p align="center">
-<<<<<<< HEAD
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/class diagram uc09.png" width="35%">
-=======
 <img alt="Diagram Kelas UC09" src="./assets/diagram/class diagram uc 09.png" width="35%">
->>>>>>> bb85fcee29947b22082705a0524749c12da7e234
 </p>
 <p align="center">
 <i>Gambar 3.9.4. Diagram Kelas Memverifikasi Penyelesaian Pekerjaan</i>
