@@ -666,6 +666,17 @@ Tabel 3.8. Identifikasi Kelas Use Case UC08
 <i>Gambar 3.8.4. Diagram Kelas Menyerahkan Hasil Pekerjaan</i>
 </p>
 
+<<<<<<< HEAD
+## 3.2 Use Case XX
+## 3.3 Use Case XX
+## 3.4 Use Case XX
+## 3.5 Use Case XX
+## 3.6 Use Case XX
+## 3.7 Use Case XX
+## 3.8 Use Case XX
+
+=======
+>>>>>>> bb85fcee29947b22082705a0524749c12da7e234
 ## 3.9 Use Case Memverifikasi Penyelesaian Pekerjaan
 
 **ID Use Case:** UC09  
@@ -690,12 +701,20 @@ Tabel 3.9. Identifikasi Kelas Use Case UC09
 | 11 | BuktiPenyerahanController | BuktiPenyerahanController |
 | 12 | NotifikasiController | NotifikasiController |
 
+<<<<<<< HEAD
+### 3.9.2 Sequence Diagram 
+=======
 ### 3.9.2 Sequence Diagram
+>>>>>>> bb85fcee29947b22082705a0524749c12da7e234
 
 - **Skenario Normal**
 
 <p align="center">
+<<<<<<< HEAD
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence diagram sn uc09 (1).png" width="50%">
+=======
 <img alt="Sequence Diagram UC09 - Skenario Normal" src="./assets/diagram/sequence diagram sn uc09.png" width="50%">
+>>>>>>> bb85fcee29947b22082705a0524749c12da7e234
 </p>
 <p align="center">
 <i>Gambar 3.9.1. Sequence Diagram UC09 - Skenario Normal</i>
@@ -704,7 +723,11 @@ Tabel 3.9. Identifikasi Kelas Use Case UC09
 - **Skenario Alternatif 1 : Hasil Pekerjaan Belum Sesuai (Penyedia Kerja Meminta Revisi)**
 
 <p align="center">
+<<<<<<< HEAD
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence diagram sa1 uc09 (1).png" width="50%">
+=======
 <img alt="Sequence Diagram UC09 - Permintaan Revisi" src="./assets/diagram/sequence diagram sa1 uc09.png" width="50%">
+>>>>>>> bb85fcee29947b22082705a0524749c12da7e234
 </p>
 <p align="center">
 <i>Gambar 3.9.2. Sequence Diagram UC09 - Hasil Pekerjaan Belum Sesuai (Penyedia Kerja Meminta Revisi)</i>
@@ -713,7 +736,11 @@ Tabel 3.9. Identifikasi Kelas Use Case UC09
 - **Skenario Alternatif 2 : Terjadi Ketidaksepakatan / Perselisihan Hasil Kerja**
 
 <p align="center">
+<<<<<<< HEAD
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence diagram sa2 uc09 (1).png" width="50%">
+=======
 <img alt="Sequence Diagram UC09 - Perselisihan Hasil Kerja" src="./assets/diagram/sequence diagram sa2 uc09.png" width="50%">
+>>>>>>> bb85fcee29947b22082705a0524749c12da7e234
 </p>
 <p align="center">
 <i>Gambar 3.9.3. Sequence Diagram UC09 - Terjadi Ketidaksepakatan / Perselisihan Hasil Kerja</i>
@@ -722,17 +749,184 @@ Tabel 3.9. Identifikasi Kelas Use Case UC09
 ### 3.9.3 Diagram Kelas
 
 <p align="center">
+<<<<<<< HEAD
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/class diagram uc09.png" width="35%">
+=======
 <img alt="Diagram Kelas UC09" src="./assets/diagram/class diagram uc 09.png" width="35%">
+>>>>>>> bb85fcee29947b22082705a0524749c12da7e234
 </p>
 <p align="center">
 <i>Gambar 3.9.4. Diagram Kelas Memverifikasi Penyelesaian Pekerjaan</i>
 </p>
 
-## 3.10 Use Case XX
-## 3.11 Use Case XX
-## 3.12 Use Case XX
+## 3.10 Use Case Melakukan Pencairan Dana
 
-Silahkan lanjutkan untuk  *use case* berikutnya dengan content yang sama dengan 3.1
+**ID Use Case:** UC10
+**Nama Use Case:** Melakukan Pencairan Dana
+
+### 3.10.1 Identifikasi Kelas
+
+Tabel 3.10. Identifikasi Kelas Use Case UC10
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | TenagaKerja | TenagaKerja |
+| 2 | PencairanDana | PencairanDana |
+| 3 | PaymentGateway | PaymentGateway |
+| 4 | Notifikasi | Notifikasi |
+| 5 | TenagaKerjaUI | TenagaKerjaUI |
+| 6 | PencairanDanaUI | PencairanDanaUI |
+| 7 | PaymentGatewayUI | PaymentGatewayUI |
+| 8 | NotifikasiUI | NotifikasiUI |
+| 9 | TenagaKerjaController | TenagaKerjaController |
+| 10 | PencairanDanaController | PencairanDanaController |
+| 11 | PaymentGatewayController | PaymentGatewayController |
+| 12 | NotifikasiController | NotifikasiController |
+
+### 3.10.2 Sequence Diagram 
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence diagram sn uc10.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar X. Sequence Diagram UC10</i>
+</p>
+
+- **Skenario Alternatif 1 : Data Rekening/E-wallet Tidak Valid**
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence diagram sa1 uc10.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar X. Sequence Diagram UC10 - Data Rekening/E-wallet Tidak Valid</i>
+</p>
+
+- **Skenario Alternatif 2 : Nominal Penarikan Melebihi Saldo**
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence diagram  sa2 uc10.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar X. Sequence Diagram UC10 - Nominal Penarikan Melebihi Saldo</i>
+</p>
+
+### 3.1.3 Diagram Kelas
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/class diagram uc10.png" width="35%">
+</p>
+<p align="center">
+<i>Gambar X. Diagram Kelas Melakukan Pencairan Dana</i>
+</p>
+
+## 3.11 Use Case Memberikan Penilaian Kerja
+
+**ID Use Case:** UC11
+**Nama Use Case:** Memberikan Penilaian Kerja
+
+### 3.11.1 Identifikasi Kelas
+
+Tabel 3.11. Identifikasi Kelas Use Case UC11
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | Pengguna | Pengguna |
+| 2 | TransaksiPekerjaan | TransaksiPekerjaan |
+| 3 | UlasanRating | UlasanRating |
+| 4 | PenggunaUI | PenggunaUI |
+| 5 | TransaksiPekerjaanUI | TransaksiPekerjaanUI |
+| 6 | UlasanRatingUI | UlasanRatingUI |
+| 7 | PenggunaController | PenggunaController |
+| 8 | TransaksiPekerjaanController | TransaksiPekerjaanController |
+| 9 | UlasanRatingController | UlasanRatingController |
+
+### 3.11.2 Sequence Diagram 
+
+- **Skenario Normal dan Skenario Alternatif 1**
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence diagram sn_sa1 uc11.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar X. Sequence Diagram UC11</i>
+</p>
+
+- **Skenario Alternatif 2 : Rating Tidak Diisi**
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence diagram sa2 uc11.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar X. Sequence Diagram UC11 - Rating Tidak Diisi</i>
+</p>
+
+### 3.11.3 Diagram Kelas 
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/class diagram uc11.png" width="35%">
+</p>
+<p align="center">
+<i>Gambar X. Diagram Kelas Memverifikasi Penyelesaian Pekerjaan</i>
+</p>
+
+## 3.12 Use Case 12
+
+Tabel 3.11. Identifikasi Kelas Use Case UC11
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | TenagaKerja | TenagaKerja |
+| 2 | PencairanDana | PencairanDana |
+| 3 | PaymentGateway | PaymentGateway |
+| 4 | Notifikasi | Notifikasi |
+| 5 | TenagaKerjaUI | TenagaKerjaUI |
+| 6 | PencairanDanaUI | PencairanDanaUI |
+| 7 | PaymentGatewayUI | PaymentGatewayUI |
+| 8 | NotifikasiUI | NotifikasiUI |
+| 9 | TenagaKerjaController | TenagaKerjaController |
+| 10 | PencairanDanaController | PencairanDanaController |
+| 11 | PaymentGatewayController | PaymentGatewayController |
+| 12 | NotifikasiController | NotifikasiController |
+
+### 3.12.2 Sequence Diagram 
+
+- **Skenario Normal dan Skenario Alternatif 1**
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence diagram sn uc12.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar X. Sequence Diagram UC12</i>
+</p>
+
+- **Skenario Alternatif 1 dan 2 : Permintaan Bukti Tambahan & Ditolak**
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence diagram sa1_sa2 uc12.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar X. Sequence Diagram UC12 - Permintaan Bukti Tambahan & Ditolak</i>
+</p>
+
+- **Skenario Alternatif 3 : Pengguna Membatalkan Tiket Keluhan**
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence diagram sa3 uc12.png" width="50%">
+</p>
+<p align="center">
+<i>Gambar X. Sequence Diagram UC12 - Pengguna Membatalkan Tiket Keluhan</i>
+</p>
+
+### 3.12.3 Diagram Kelas 
+
+<p align="center">
+<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/class diagram uc12.png" width="35%">
+</p>
+<p align="center">
+<i>Gambar X. Diagram Kelas Menangani Keluhan</i>
+</p>
 
 <br>
 
