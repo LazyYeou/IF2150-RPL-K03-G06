@@ -131,6 +131,7 @@ Diagram 4.3 | 2 | Done | - |
 | :--- | :--- | :--- | :--- | :--- | :--- | 
 | 21-10-2026 | Sebastio Nugroho | Mengerjakan Bab 3 UC06-UC08 | 3 | Done | - |
 | 21-10-2026 | Aditya Rasyid | Mengerjakan Bab 3 UC03-UC05 | 4 | Done | Agak bingung mengenai cara membuat scenario diagramnya |
+| 21-10-2026 | Muhammad Ridwan Nasir Firdaus | Mengerjakan Bab 4 Class Diagram | 1 | Done | - |
 
 
 ---
