@@ -30,8 +30,7 @@
     - [Milestone 3](#milestone-3)
     - [Milestone 4](#milestone-4)
     - [Milestone 5](#milestone-5)
-    - [Milestone 6](#milestone-6)
-  - [| 07-10-2026 | Sebastio Nugroho | Mengerjakan diagram arsitektur pada Bab 1 | 1.5 | Done | - |](#-07-10-2026--sebastio-nugroho--mengerjakan-diagram-arsitektur-pada-bab-1--15--done----)
+    - [Milestone 7](#milestone-7)
 
 
 ---
@@ -116,14 +115,12 @@ Diagram 4.3 | 2 | Done | - |
 | 30-09-2026 | Davin Farel Santoso | Menyusun Bab 1.1 - 1.4 Pendahuluan, Tujuan, Lingkup, dan Definisi pada pada SKPL| 2 | Done | - |
 | 30-09-2026 | Muhammad Ridwan Nasir Firdaus | Menyusun Bab 2.5 Lingkungan Spesifikasi Perangkat Lunak| 2 | Done | - |
 
-### Milestone 6
-**Periode:** 30 September 2026 - 7 Oktober 2026
+### Milestone 7
+**Periode:** 7 Oktober 2026 - 21 Oktober 2026
 | Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
 | :--- | :--- | :--- | :--- | :--- | :--- | 
-| 07-10-2026 | Sebastio Nugroho | Mengerjakan diagram arsitektur pada Bab 1 | 1.5 | Done | - |
-| 07-10-2026 | Karmel Tua Haloho | Menganalisis Bab 1 dan membantu pembuatan diagram MVC | 2 | Done | - |
-| 07-10-2026 | Davin Farel Santoso | Mengerjakan bab 2 | 1 | Done | - |
-| 07-10-2026 | Aditya Rasyid | Menyusun Bab 3 Model Arsitektur. Membuat Logical View (class diagram) di Mermaid | 2 | Done | - |
+| 21-10-2026 | Sebastio Nugroho | Mengerjakan Bab 3 UC06-UC08 | 3 | Done | - |
+
 
 ---
 
