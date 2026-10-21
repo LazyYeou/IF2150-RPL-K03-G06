@@ -130,6 +130,7 @@ Diagram 4.3 | 2 | Done | - |
 | Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
 | :--- | :--- | :--- | :--- | :--- | :--- | 
 | 21-10-2026 | Sebastio Nugroho | Mengerjakan Bab 3 UC06-UC08 | 3 | Done | - |
+| 21-10-2026 | Aditya Rasyid | Mengerjakan Bab 3 UC03-UC05 | 4 | Done | Agak bingung mengenai cara membuat scenario diagramnya |
 
 
 ---
