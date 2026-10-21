@@ -1,7 +1,7 @@
 <h1>
 IF2150 REKAYASA PERANGKAT LUNAK
 <br>
-TUGAS 5
+TUGAS 7
 <br>
 DESKRIPSI PERANCANGAN PERANGKAT LUNAK (DPPL)
 </h1>
@@ -19,12 +19,12 @@ Dipersiapkan oleh:
 | Informasi | Keterangan |
 | --- | --- |
 | Kelas | 03 |
-| Kelompok | Shifu  |
+| Kelompok | Shifu |
 
 | NIM | Nama |
 | --- | --- |
 | 13525033 | Davin Farel Santoso |
-| 13525039 | Aditya Rasyid|
+| 13525039 | Aditya Rasyid |
 | 13525096 | Muhammad Ridwan Nasir Firdaus |
 | 13525102 | Karmel Tua Haloho |
 | 13525123 | Sebastio Nugroho |
@@ -165,7 +165,7 @@ Dari segi pengembangan, MVC menerapkan pemisahan tanggung jawab yang tegas antar
 ## 2.3 Identifikasi Komponen / Modul / Subsistem
 Komponen Kerja-In dikelompokkan berdasarkan pola MVC menjadi Model, View, dan Controller. Kelas yang memiliki fungsi berkaitan ditempatkan dalam satu komponen dengan nama kelas utama yang mewakilinya. Komponen autentikasi, basis data, dan penyimpanan berkas mendukung pengoperasian aplikasi.
 
-Tabel 2.1. Identifikasi Komponen/Modul/Subsistem
+Tabel 2.2. Identifikasi Komponen/Modul/Subsistem
 
 | Nama Komponen/Modul/Subsistem | Jenis | Penjelasan |
 | :--- | :--- | :--- |
@@ -271,16 +271,279 @@ Pada diagram, pastikan:
 - Semua operasi yang dipanggil pada sequence diagram 3.1.2 (skenario normal dan alternatif) ada pada kelas yang bersangkutan.
 - Kelas yang sama dengan kelas di use case lain memakai nama, atribut, dan metode yang konsisten.
 
-## 3.2 Use Case XX
-## 3.3 Use Case XX
-## 3.4 Use Case XX
-## 3.5 Use Case XX
+## 3.2 Use Case Mengelola Verifikasi Identitas
+
+**ID Use Case:** UC02
+**Nama Use Case:** Mengelola Verifikasi Identitas
+
+### 3.2.1 Identifikasi Kelas
+
+Tabel 3.2. Identifikasi Kelas Use Case UC02
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | TenagaKerja | TenagaKerja |
+| 2 | CustomerService | CustomerService |
+| 3 | VerifikasiIdentitas | VerifikasiIdentitas |
+| 4 | Notifikasi | Notifikasi |
+| 5 | TenagaKerjaUI | TenagaKerjaUI |
+| 6 | CustomerServiceUI | CustomerServiceUI |
+| 7 | NotifikasiUI | NotifikasiUI |
+| 8 | TenagaKerjaController | TenagaKerjaController |
+| 9 | CustomerServiceController | CustomerServiceController |
+| 10 | NotifikasiController | NotifikasiController |
+
+### 3.2.2 Sequence Diagram
+
+Belum tersedia aset sequence diagram UC02 pada folder M7; diagram berikut merinci alur berdasarkan skenario UC02 M3 dan kelas pada Bab 4.
+
+- **Skenario Normal**
+
+```mermaid
+sequenceDiagram
+    actor TK as Tenaga Kerja
+    actor CS as Customer Service
+    participant TUI as TenagaKerjaUI
+    participant TCtrl as TenagaKerjaController
+    participant V as VerifikasiIdentitas
+    participant CUI as CustomerServiceUI
+    participant CCtrl as CustomerServiceController
+    participant C as CustomerService
+    participant NCtrl as NotifikasiController
+    participant N as Notifikasi
+    participant NUI as NotifikasiUI
+    TK->>TUI: Pilih menu verifikasi
+    TUI-->>TK: Tampilkan form unggah identitas
+    TK->>TUI: Unggah dan kirim dokumen
+    TUI->>TCtrl: ajukanVerifikasi(dokumen)
+    TCtrl->>V: validasiFormatDokumen(), validasiUkuranDokumen()
+    TCtrl->>V: simpanPengajuan()
+    V-->>TCtrl: Status Menunggu Persetujuan
+    CS->>CUI: Tinjau antrean dan setujui dokumen
+    CUI->>CCtrl: setujuiVerifikasi(idTenagaKerja)
+    CCtrl->>C: setujuiVerifikasi()
+    C->>V: Perbarui status persetujuan
+    V-->>C: Status Terverifikasi
+    CCtrl->>NCtrl: Kirim notifikasi verifikasi berhasil
+    NCtrl->>N: kirimNotifikasi(pesan)
+    N-->>NUI: Notifikasi tersimpan
+    NUI-->>TK: Tampilkan status Terverifikasi
+```
+
+- **Skenario Alternatif 1: Format atau Ukuran Dokumen Tidak Valid**
+
+```mermaid
+sequenceDiagram
+    actor TK as Tenaga Kerja
+    participant TUI as TenagaKerjaUI
+    participant TCtrl as TenagaKerjaController
+    participant V as VerifikasiIdentitas
+    TK->>TUI: Kirim dokumen format tidak didukung atau berukuran > 5 MB
+    TUI->>TCtrl: ajukanVerifikasi(dokumen)
+    TCtrl->>V: validasiFormatDokumen(), validasiUkuranDokumen()
+    V-->>TCtrl: Validasi gagal
+    TCtrl-->>TUI: Tolak unggahan dan kirim pesan kesalahan
+    TUI-->>TK: Tampilkan kesalahan format/ukuran dokumen
+```
+
+- **Skenario Alternatif 2: Dokumen Ditolak Customer Service**
+
+```mermaid
+sequenceDiagram
+    actor TK as Tenaga Kerja
+    actor CS as Customer Service
+    participant CUI as CustomerServiceUI
+    participant CCtrl as CustomerServiceController
+    participant C as CustomerService
+    participant V as VerifikasiIdentitas
+    participant NCtrl as NotifikasiController
+    participant N as Notifikasi
+    participant NUI as NotifikasiUI
+    CS->>CUI: Tolak dokumen dan masukkan alasan
+    CUI->>CCtrl: tolakVerifikasi(idTenagaKerja, alasan)
+    CCtrl->>C: tolakVerifikasi()
+    C->>V: Simpan status Ditolak dan alasan
+    CCtrl->>NCtrl: Kirim notifikasi revisi
+    NCtrl->>N: kirimNotifikasi(pesan)
+    N-->>NUI: Notifikasi penolakan
+    NUI-->>TK: Tampilkan alasan dan instruksi revisi
+```
+
+- **Skenario Alternatif 3: Mengakses Fitur Utama Sebelum Terverifikasi**
+
+```mermaid
+sequenceDiagram
+    actor TK as Tenaga Kerja
+    participant TUI as TenagaKerjaUI
+    participant TCtrl as TenagaKerjaController
+    participant V as VerifikasiIdentitas
+    TK->>TUI: Buka fitur utama
+    TUI->>TCtrl: Periksa status verifikasi
+    TCtrl->>V: Baca status persetujuan
+    V-->>TCtrl: Belum terverifikasi
+    TCtrl-->>TUI: Tolak akses dan arahkan ke halaman verifikasi
+    TUI-->>TK: Tampilkan peringatan verifikasi
+```
+
+### 3.2.3 Diagram Kelas
+
+Diagram kelas UC02 merujuk pada diagram M4. Kelas VerifikasiIdentitas (C46) pada Bab 4 DPPL menangani berkas, status, serta validasi dokumen yang sebelumnya berada pada alur kelas TenagaKerja.
+
+<p align="center">
+<img alt="Diagram Kelas UC02" src="../M4/assets/diagram/class-diagram-uc02.png" width="70%">
+</p>
+<p align="center"><i>Gambar 3.2.1. Diagram Kelas Mengelola Verifikasi Identitas</i></p>
+
+## 3.3 Use Case Mengelola Lowongan Pekerjaan
+
+**ID Use Case:** UC03
+
+**Nama Use Case:** Mengelola Lowongan Pekerjaan
+
+### 3.3.1 Identifikasi Kelas
+
+Tabel 3.3. Identifikasi Kelas Use Case UC03
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | PenyediaKerja | PenyediaKerja |
+| 2 | LowonganPekerjaan | LowonganPekerjaan |
+| 3 | PenyediaKerjaUI | PenyediaKerjaUI |
+| 4 | LowonganPekerjaanUI | LowonganPekerjaanUI |
+| 5 | PenyediaKerjaController | PenyediaKerjaController |
+| 6 | LowonganPekerjaanController | LowonganPekerjaanController |
+
+### 3.3.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Sequence Diagram UC03 Skenario Normal" src="./assets/diagram/sequence diagram sn uc03.png" width="70%">
+</p>
+<p align="center"><i>Gambar 3.3.1. Sequence Diagram UC03 - Skenario Normal</i></p>
+
+- **Skenario Alternatif 1: Isian Formulir Kosong atau Tidak Valid**
+
+<p align="center">
+<img alt="Sequence Diagram UC03 Alternatif 1" src="./assets/diagram/sequence diagram sa1 uc03.png" width="70%">
+</p>
+<p align="center"><i>Gambar 3.3.2. Sequence Diagram UC03 - Isian Formulir Tidak Valid</i></p>
+
+- **Skenario Alternatif 2: Membatalkan Pembuatan Lowongan**
+
+<p align="center">
+<img alt="Sequence Diagram UC03 Alternatif 2" src="./assets/diagram/sequence diagram sa2 uc03.png" width="70%">
+</p>
+<p align="center"><i>Gambar 3.3.3. Sequence Diagram UC03 - Membatalkan Pembuatan Lowongan</i></p>
+
+### 3.3.3 Diagram Kelas
+
+<p align="center">
+<img alt="Diagram Kelas UC03" src="../M4/assets/diagram/class-diagram-uc03.png" width="70%">
+</p>
+<p align="center"><i>Gambar 3.3.4. Diagram Kelas Mengelola Lowongan Pekerjaan</i></p>
+
+## 3.4 Use Case Mencari Lowongan Pekerjaan
+
+**ID Use Case:** UC04
+
+**Nama Use Case:** Mencari Lowongan Pekerjaan
+
+### 3.4.1 Identifikasi Kelas
+
+Tabel 3.4. Identifikasi Kelas Use Case UC04
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | TenagaKerja | TenagaKerja |
+| 2 | LowonganPekerjaan | LowonganPekerjaan |
+| 3 | TenagaKerjaUI | TenagaKerjaUI |
+| 4 | LowonganPekerjaanUI | LowonganPekerjaanUI |
+| 5 | TenagaKerjaController | TenagaKerjaController |
+| 6 | LowonganPekerjaanController | LowonganPekerjaanController |
+
+### 3.4.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Sequence Diagram UC04 Skenario Normal" src="./assets/diagram/sequence diagram sn uc04.png" width="70%">
+</p>
+<p align="center"><i>Gambar 3.4.1. Sequence Diagram UC04 - Skenario Normal</i></p>
+
+- **Skenario Alternatif 1: Pencarian Tidak Ditemukan**
+
+<p align="center">
+<img alt="Sequence Diagram UC04 Alternatif 1" src="./assets/diagram/sequence diagram sa1 uc04.png" width="70%">
+</p>
+<p align="center"><i>Gambar 3.4.2. Sequence Diagram UC04 - Pencarian Tidak Ditemukan</i></p>
+
+### 3.4.3 Diagram Kelas
+
+<p align="center">
+<img alt="Diagram Kelas UC04" src="../M4/assets/diagram/class-diagram-uc04.png" width="70%">
+</p>
+<p align="center"><i>Gambar 3.4.3. Diagram Kelas Mencari Lowongan Pekerjaan</i></p>
+
+## 3.5 Use Case Mengajukan Penawaran Pekerjaan
+
+**ID Use Case:** UC05
+
+**Nama Use Case:** Mengajukan Penawaran Pekerjaan
+
+### 3.5.1 Identifikasi Kelas
+
+Tabel 3.5. Identifikasi Kelas Use Case UC05
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | TenagaKerja | TenagaKerja |
+| 2 | LowonganPekerjaan | LowonganPekerjaan |
+| 3 | PengajuanPenawaran | PengajuanPenawaran |
+| 4 | Notifikasi | Notifikasi |
+| 5 | PengajuanPenawaranUI | PengajuanPenawaranUI |
+| 6 | NotifikasiUI | NotifikasiUI |
+| 7 | PengajuanPenawaranController | PengajuanPenawaranController |
+| 8 | NotifikasiController | NotifikasiController |
+
+### 3.5.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Sequence Diagram UC05 Skenario Normal" src="./assets/diagram/sequence diagram sn uc05.png">
+</p>
+<p align="center"><i>Gambar 3.5.1. Sequence Diagram UC05 - Skenario Normal</i></p>
+
+- **Skenario Alternatif 1: Akun Belum Terverifikasi**
+
+<p align="center">
+<img alt="Sequence Diagram UC05 Alternatif 1" src="./assets/diagram/sequence diagram sa1 uc05.png">
+</p>
+<p align="center"><i>Gambar 3.5.2. Sequence Diagram UC05 - Akun Belum Terverifikasi</i></p>
+
+- **Skenario Alternatif 2: Pembatalan Pengajuan**
+
+<p align="center">
+<img alt="Sequence Diagram UC05 Alternatif 2" src="./assets/diagram/sequence diagram sa2 uc05.png">
+</p>
+<p align="center"><i>Gambar 3.5.3. Sequence Diagram UC05 - Pembatalan Pengajuan</i></p>
+
+### 3.5.3 Diagram Kelas
+
+<p align="center">
+<img alt="Diagram Kelas UC05" src="../M4/assets/diagram/class-diagram-uc05.png" width="70%">
+</p>
+<p align="center"><i>Gambar 3.5.4. Diagram Kelas Mengajukan Penawaran Pekerjaan</i></p>
 ## 3.6 Use Case Memilih Tenaga Kerja
+
 **ID Use Case:** UC06   
 **Nama Use Case:** Memilih Tenaga Kerja
 
 ### 3.6.1 Identifikasi Kelas
+
 Tabel 3.6. Identifikasi Kelas Use Case UC06
+
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 |:--- | :--- | :--- |
 | 1 | PenyediaKerja | PenyediaKerja |
@@ -309,7 +572,7 @@ Tabel 3.6. Identifikasi Kelas Use Case UC06
 <i>Gambar 3.6.1. Sequence Diagram UC06 - Skenario Normal</i>
 </p>
 
-- **Skenario Alternatif 1 : Kuota Lowongan Sudah Penuh Saat Konfirmasi**
+- **Skenario Alternatif 1: Kuota Lowongan Sudah Penuh Saat Konfirmasi**
 <p align="center">
 <img alt="Sequence Diagram SA1 UC06" src="./assets/diagram/sequence diagram sa1 uc06.png" width="55%">
 </p>
@@ -317,7 +580,7 @@ Tabel 3.6. Identifikasi Kelas Use Case UC06
 <i>Gambar 3.6.2. Sequence Diagram UC06 - Kuota Lowongan Sudah Penuh Saat Konfirmasi</i>
 </p>
 
-- **Skenario Alternatif 2 : Penyedia Kerja Membatalkan Pemilihan Pelamar**
+- **Skenario Alternatif 2: Penyedia Kerja Membatalkan Pemilihan Pelamar**
 <p align="center">
 <img alt="Sequence Diagram SA2 UC06" src="./assets/diagram/sequence diagram sa2 uc06.png" width="55%">
 </p>
@@ -335,11 +598,14 @@ Tabel 3.6. Identifikasi Kelas Use Case UC06
 
 
 ## 3.7 Use Case Melakukan Pembayaran Pekerjaan
+
 **ID Use Case:** UC07   
 **Nama Use Case:** Melakukan Pembayaran Pekerjaan
 
 ### 3.7.1 Identifikasi Kelas
+
 Tabel 3.7. Identifikasi Kelas Use Case UC07
+
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 |:--- | :--- | :--- |
 | 1 | PenyediaKerja | PenyediaKerja |
@@ -368,7 +634,7 @@ Tabel 3.7. Identifikasi Kelas Use Case UC07
 <i>Gambar 3.7.1. Sequence Diagram UC07 - Skenario Normal</i>
 </p>
 
-- **Skenario Alternatif 1 : Pembayaran Gagal atau Dibatalkan oleh Payment Gateway**
+- **Skenario Alternatif 1: Pembayaran Gagal atau Dibatalkan oleh Payment Gateway**
 <p align="center">
 <img alt="Sequence Diagram SA1 UC07" src="./assets/diagram/sequence diagram sa1 uc07.png" width="55%">
 </p>
@@ -394,11 +660,14 @@ Tabel 3.7. Identifikasi Kelas Use Case UC07
 
 
 ## 3.8 Use Case Menyerahkan Hasil Pekerjaan
+
 **ID Use Case:** UC08   
 **Nama Use Case:** Menyerahkan Hasil Pekerjaan
 
 ### 3.8.1 Identifikasi Kelas
+
 Tabel 3.8. Identifikasi Kelas Use Case UC08
+
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 |:--- | :--- | :--- |
 | 1 | TenagaKerja | TenagaKerja |
@@ -424,7 +693,7 @@ Tabel 3.8. Identifikasi Kelas Use Case UC08
 <i>Gambar 3.8.1. Sequence Diagram UC08 - Skenario Normal</i>
 </p>
 
-- **Skenario Alternatif 1 : Ukuran Berkas Melebihi Batas Maksimal**
+- **Skenario Alternatif 1: Ukuran Berkas Melebihi Batas Maksimal**
 <p align="center">
 <img alt="Sequence Diagram SA1 UC08" src="./assets/diagram/sequence diagram sa1 uc08.png" width="55%">
 </p>
@@ -432,7 +701,7 @@ Tabel 3.8. Identifikasi Kelas Use Case UC08
 <i>Gambar 3.8.2. Sequence Diagram UC08 - Ukuran Berkas Melebihi Batas Maksimal</i>
 </p>
 
-- **Skenario Alternatif 2 : Tenaga Kerja Belum Mengunggah Berkas Wajib**
+- **Skenario Alternatif 2: Tenaga Kerja Belum Mengunggah Berkas Wajib**
 <p align="center">
 <img alt="Sequence Diagram SA2 UC08" src="./assets/diagram/sequence diagram sa2 uc08.png" width="55%">
 </p>
@@ -453,7 +722,7 @@ Tabel 3.8. Identifikasi Kelas Use Case UC08
 **ID Use Case:** UC09  
 **Nama Use Case:** Memverifikasi Penyelesaian Pekerjaan
 
-### 3.1.1 Identifikasi Kelas
+### 3.9.1 Identifikasi Kelas
 
 Tabel 3.9. Identifikasi Kelas Use Case UC09
 
@@ -472,42 +741,42 @@ Tabel 3.9. Identifikasi Kelas Use Case UC09
 | 11 | BuktiPenyerahanController | BuktiPenyerahanController |
 | 12 | NotifikasiController | NotifikasiController |
 
-### 3.1.2 Sequence Diagram 
+### 3.9.2 Sequence Diagram
 
 - **Skenario Normal**
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence diagram sn uc09.png" width="50%">
+<img alt="Sequence Diagram UC09 - Skenario Normal" src="./assets/diagram/sequence diagram sn uc09.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram UC09</i>
+<i>Gambar 3.9.1. Sequence Diagram UC09 - Skenario Normal</i>
 </p>
 
 - **Skenario Alternatif 1 : Hasil Pekerjaan Belum Sesuai (Penyedia Kerja Meminta Revisi)**
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence diagram sa1 uc09.png" width="50%">
+<img alt="Sequence Diagram UC09 - Permintaan Revisi" src="./assets/diagram/sequence diagram sa1 uc09.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram UC09 - Hasil Pekerjaan Belum Sesuai (Penyedia Kerja Meminta Revisi)</i>
+<i>Gambar 3.9.2. Sequence Diagram UC09 - Hasil Pekerjaan Belum Sesuai (Penyedia Kerja Meminta Revisi)</i>
 </p>
 
 - **Skenario Alternatif 2 : Terjadi Ketidaksepakatan / Perselisihan Hasil Kerja**
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/sequence diagram sa2 uc09.png" width="50%">
+<img alt="Sequence Diagram UC09 - Perselisihan Hasil Kerja" src="./assets/diagram/sequence diagram sa2 uc09.png" width="50%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram UC09 - Terjadi Ketidaksepakatan / Perselisihan Hasil Kerja</i>
+<i>Gambar 3.9.3. Sequence Diagram UC09 - Terjadi Ketidaksepakatan / Perselisihan Hasil Kerja</i>
 </p>
 
-### 3.1.3 Diagram Kelas
+### 3.9.3 Diagram Kelas
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/class diagram uc 09.png" width="35%">
+<img alt="Diagram Kelas UC09" src="./assets/diagram/class diagram uc 09.png" width="35%">
 </p>
 <p align="center">
-<i>Gambar X. Diagram Kelas Memverifikasi Penyelesaian Pekerjaan</i>
+<i>Gambar 3.9.4. Diagram Kelas Memverifikasi Penyelesaian Pekerjaan</i>
 </p>
 
 ## 3.10 Use Case XX
@@ -559,9 +828,9 @@ Tabel 4.1. Daftar Kelas Perancangan Keseluruhan
 
 # BAB 5: Matriks Kerunutan
 
-Petakan kelas perancangan dengan use case yang terkait. Gunakan **BAB 6 Traceability pada dokumen SKPL** sebagai acuan keterkaitan kelas analisis dan use case, lalu sesuaikan dengan realisasi use case dan kelas perancangan pada BAB 3–BAB 5 DPPL.
+Petakan kelas perancangan ke use case yang terkait. Gunakan **Bab 6 Traceability** pada dokumen SKPL sebagai acuan keterkaitan kelas analisis dan use case, lalu sesuaikan dengan realisasi use case dan kelas perancangan pada Bab 3 dan Bab 4 DPPL.
 
-Tabel 7.1. Matriks Kerunutan Kelas terhadap Use Case
+Tabel 5.1. Matriks Kerunutan Kelas terhadap Use Case
 
 | Kelas | Use Case Terkait |
 | :--- | :--- |
