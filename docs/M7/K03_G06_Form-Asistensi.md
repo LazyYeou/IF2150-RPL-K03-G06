@@ -5,19 +5,19 @@
 | Informasi | Keterangan |
 | --- | --- |
 | **Hari** | Jumat |
-| **Tanggal** | 0-10-2026 |
+| **Tanggal** | 09-10-2026 |
 | **Kelas** | K-03 |
 | **Nomor Kelompok** | 6 |
 | **Nama Kelompok** | Shifu  |
 | **Nama Perangkat Lunak** | Kerja-In |
-| **Dokumen** | K03_G06_CD.md |
+| **Dokumen** | K03_G06_DPPL.md |
 
 ### Anggota Kelompok
 
 | NIM | Nama |
 | --- | --- |
 | 13525033 | Davin Farel Santoso |
-| 13525039 | Aditya Rasyid|
+| 13525039 | Aditya Rasyid |
 | 13525096 | Muhammad Ridwan Nasir Firdaus |
 | 13525102 | Karmel Tua Haloho |
 | 13525123 | Sebastio Nugroho |
@@ -38,7 +38,7 @@ Catatan |
 
 <!-- ![](./assets/foto-asistensi.jpg) -->
 <p align="center">
-  <img src="./assets/Asistensi akbar.jpeg" width="100%">
+  <img src="./assets/Foto Asistensi Milestone 7.png" width="100%">
 </p>
 
 <p align="center">
