@@ -4,29 +4,29 @@
 
 | Informasi | Keterangan |
 | --- | --- |
-| **Hari** | *\[Hari\]* |
-| **Tanggal** | *\[DD/MM/YYYY\]* |
-| **Kelas** | *\[Kelas\]* |
-| **Nomor Kelompok** | *\[Nomor Kelompok\]*  |
-| **Nama Kelompok** | *\[Nama Kelompok\]*  |
-| **Nama Perangkat Lunak** | *\[Nama P/L\]*  |
-| **Dokumen** | *\[Nama Dokumen yang diasistensikan\]*  |
+| **Hari** | Selasa |
+| **Tanggal** | 06-10-2026 |
+| **Kelas** | K-03 |
+| **Nomor Kelompok** | 6 |
+| **Nama Kelompok** | Shifu  |
+| **Nama Perangkat Lunak** | Kerja-In |
+| **Dokumen** | K03_G06_CD.md |
 
 ### Anggota Kelompok
 
 | NIM | Nama |
 | --- | --- |
-| *\[NIM 1\]* | *\[Nama Anggota 1\]* |
-| *\[NIM 2\]* | *\[Nama Anggota 2\]* |
-| *\[NIM 3\]* | *\[Nama Anggota 3\]* |
-| *\[NIM 4\]* | *\[Nama Anggota 4\]* |
-| *\[NIM 5\]* | *\[Nama Anggota 5\]* |
+| 13525033 | Davin Farel Santoso |
+| 13525039 | Aditya Rasyid|
+| 13525096 | Muhammad Ridwan Nasir Firdaus |
+| 13525102 | Karmel Tua Haloho |
+| 13525123 | Sebastio Nugroho |
 
 ### Catatan
 
-| Catatan |
+Catatan |
 | --- |
-| 1. *\[Berikan catatan hasil asistensi\]*  |
+| 1. Mengerjakan Milestone 7 sesuai dengan penjelasan pada PPT Asistensi Akbar  |
 | 2. ... |
 | 3. ... |
 | 4. ... |
@@ -38,7 +38,7 @@
 
 <!-- ![](./assets/foto-asistensi.jpg) -->
 <p align="center">
-  <img src="./assets/foto-asistensi.jpg" width="100%">
+  <img src="./assets/Asistensi Akbar.jpeg" width="100%">
 </p>
 
 <p align="center">
