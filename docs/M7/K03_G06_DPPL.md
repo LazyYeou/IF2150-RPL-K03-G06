@@ -272,9 +272,179 @@ Pada diagram, pastikan:
 ## 3.3 Use Case XX
 ## 3.4 Use Case XX
 ## 3.5 Use Case XX
-## 3.6 Use Case XX
-## 3.7 Use Case XX
-## 3.8 Use Case XX
+## 3.6 Use Case Memilih Tenaga Kerja
+**ID Use Case:** UC06   
+**Nama Use Case:** Memilih Tenaga Kerja
+
+### 3.6.1 Identifikasi Kelas
+Tabel 3.6. Identifikasi Kelas Use Case UC06
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | PenyediaKerja | PenyediaKerja |
+| 2 | LowonganPekerjaan | LowonganPekerjaan |
+| 3 | PengajuanPenawaran | PengajuanPenawaran |
+| 4 | TransaksiPekerjaan | TransaksiPekerjaan |
+| 5 | Notifikasi | Notifikasi |
+| 6 | PenyediaKerjaUI | PenyediaKerjaUI |
+| 7 | LowonganPekerjaanUI | LowonganPekerjaanUI |
+| 8 | PengajuanPenawaranUI | PengajuanPenawaranUI |
+| 9 | TransaksiPekerjaanUI | TransaksiPekerjaanUI |
+| 10 | NotifikasiUI | NotifikasiUI |
+| 11 | PenyediaKerjaController | PenyediaKerjaController |
+| 12 | LowonganPekerjaanController | LowonganPekerjaanController |
+| 13 | PengajuanPenawaranController | PengajuanPenawaranController |
+| 14 | TransaksiPekerjaanController | TransaksiPekerjaanController |
+| 15 | NotifikasiController | NotifikasiController |
+
+### 3.6.2 Sequence Diagram
+
+- **Skenario Normal**
+<p align="center">
+<img alt="Sequence Diagram SN UC06" src="./assets/diagram/sequence diagram sn uc06.png" width="55%">
+</p>
+<p align="center">
+<i>Gambar 3.6.1. Sequence Diagram UC06 - Skenario Normal</i>
+</p>
+
+- **Skenario Alternatif 1 : Kuota Lowongan Sudah Penuh Saat Konfirmasi**
+<p align="center">
+<img alt="Sequence Diagram SA1 UC06" src="./assets/diagram/sequence diagram sa1 uc06.png" width="55%">
+</p>
+<p align="center">
+<i>Gambar 3.6.2. Sequence Diagram UC06 - Kuota Lowongan Sudah Penuh Saat Konfirmasi</i>
+</p>
+
+- **Skenario Alternatif 2 : Penyedia Kerja Membatalkan Pemilihan Pelamar**
+<p align="center">
+<img alt="Sequence Diagram SA2 UC06" src="./assets/diagram/sequence diagram sa2 uc06.png" width="55%">
+</p>
+<p align="center">
+<i>Gambar 3.6.3. Sequence Diagram UC06 - Penyedia Kerja Membatalkan Pemilihan Pelamar</i>
+</p>
+
+### 3.6.3 Diagram Kelas
+<p align="center">
+<img alt="Diagram Kelas UC06" src="./assets/diagram/class diagram uc 06.png" width="40%">
+</p>
+<p align="center">
+<i>Gambar 3.6.4. Diagram Kelas Memilih Tenaga Kerja</i>
+</p>
+
+
+## 3.7 Use Case Melakukan Pembayaran Pekerjaan
+**ID Use Case:** UC07   
+**Nama Use Case:** Melakukan Pembayaran Pekerjaan
+
+### 3.7.1 Identifikasi Kelas
+Tabel 3.7. Identifikasi Kelas Use Case UC07
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | PenyediaKerja | PenyediaKerja |
+| 2 | TransaksiPekerjaan | TransaksiPekerjaan |
+| 3 | TagihanPembayaran | TagihanPembayaran |
+| 4 | Notifikasi | Notifikasi |
+| 5 | PaymentGateway | PaymentGateway |
+| 6 | PenyediaKerjaUI | PenyediaKerjaUI |
+| 7 | TransaksiPekerjaanUI | TransaksiPekerjaanUI |
+| 8 | TagihanPembayaranUI | TagihanPembayaranUI |
+| 9 | NotifikasiUI | NotifikasiUI |
+| 10 | PaymentGatewayUI | PaymentGatewayUI |
+| 11 | PenyediaKerjaController | PenyediaKerjaController |
+| 12 | TransaksiPekerjaanController | TransaksiPekerjaanController |
+| 13 | TagihanPembayaranController | TagihanPembayaranController |
+| 14 | NotifikasiController | NotifikasiController |
+| 15 | PaymentGatewayController | PaymentGatewayController |
+
+### 3.7.2 Sequence Diagram
+
+- **Skenario Normal**
+<p align="center">
+<img alt="Sequence Diagram SN UC07" src="./assets/diagram/sequence diagram sn uc07.png" width="55%">
+</p>
+<p align="center">
+<i>Gambar 3.7.1. Sequence Diagram UC07 - Skenario Normal</i>
+</p>
+
+- **Skenario Alternatif 1 : Pembayaran Gagal atau Dibatalkan oleh Payment Gateway**
+<p align="center">
+<img alt="Sequence Diagram SA1 UC07" src="./assets/diagram/sequence diagram sa1 uc07.png" width="55%">
+</p>
+<p align="center">
+<i>Gambar 3.7.2. Sequence Diagram UC07 - Pembayaran Gagal atau Dibatalkan oleh Payment Gateway</i>
+</p>
+
+- **Skenario Alternatif 2 : Waktu Pembayaran Habis (Timeout / Expired)**
+<p align="center">
+<img alt="Sequence Diagram SA2 UC07" src="./assets/diagram/sequence diagram sa2 uc07.png" width="55%">
+</p>
+<p align="center">
+<i>Gambar 3.7.3. Sequence Diagram UC07 - Waktu Pembayaran Habis (Timeout / Expired)</i>
+</p>
+
+### 3.7.3 Diagram Kelas
+<p align="center">
+<img alt="Diagram Kelas UC07" src="./assets/diagram/class diagram uc 07.png" width="40%">
+</p>
+<p align="center">
+<i>Gambar 3.7.4. Diagram Kelas Melakukan Pembayaran Pekerjaan</i>
+</p>
+
+
+## 3.8 Use Case Menyerahkan Hasil Pekerjaan
+**ID Use Case:** UC08   
+**Nama Use Case:** Menyerahkan Hasil Pekerjaan
+
+### 3.8.1 Identifikasi Kelas
+Tabel 3.8. Identifikasi Kelas Use Case UC08
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | TenagaKerja | TenagaKerja |
+| 2 | TransaksiPekerjaan | TransaksiPekerjaan |
+| 3 | BuktiPenyerahan | BuktiPenyerahan |
+| 4 | Notifikasi | Notifikasi |
+| 5 | TenagaKerjaUI | TenagaKerjaUI |
+| 6 | TransaksiPekerjaanUI | TransaksiPekerjaanUI |
+| 7 | BuktiPenyerahanUI | BuktiPenyerahanUI |
+| 8 | NotifikasiUI | NotifikasiUI |
+| 9 | TenagaKerjaController | TenagaKerjaController |
+| 10 | TransaksiPekerjaanController | TransaksiPekerjaanController |
+| 11 | BuktiPenyerahanController | BuktiPenyerahanController |
+| 12 | NotifikasiController | NotifikasiController |
+
+### 3.8.2 Sequence Diagram
+
+- **Skenario Normal**
+<p align="center">
+<img alt="Sequence Diagram SN UC08" src="./assets/diagram/sequence diagram sn uc08.png" width="55%">
+</p>
+<p align="center">
+<i>Gambar 3.8.1. Sequence Diagram UC08 - Skenario Normal</i>
+</p>
+
+- **Skenario Alternatif 1 : Ukuran Berkas Melebihi Batas Maksimal**
+<p align="center">
+<img alt="Sequence Diagram SA1 UC08" src="./assets/diagram/sequence diagram sa1 uc08.png" width="55%">
+</p>
+<p align="center">
+<i>Gambar 3.8.2. Sequence Diagram UC08 - Ukuran Berkas Melebihi Batas Maksimal</i>
+</p>
+
+- **Skenario Alternatif 2 : Tenaga Kerja Belum Mengunggah Berkas Wajib**
+<p align="center">
+<img alt="Sequence Diagram SA2 UC08" src="./assets/diagram/sequence diagram sa2 uc08.png" width="55%">
+</p>
+<p align="center">
+<i>Gambar 3.8.3. Sequence Diagram UC08 - Tenaga Kerja Belum Mengunggah Berkas Wajib</i>
+</p>
+
+### 3.8.3 Diagram Kelas
+<p align="center">
+<img alt="Diagram Kelas UC08" src="./assets/diagram/class diagram uc 08.png" width="40%">
+</p>
+<p align="center">
+<i>Gambar 3.8.4. Diagram Kelas Menyerahkan Hasil Pekerjaan</i>
+</p>
+
 ## 3.9 Use Case Memverifikasi Penyelesaian Pekerjaan
 
 **ID Use Case:** UC09  
