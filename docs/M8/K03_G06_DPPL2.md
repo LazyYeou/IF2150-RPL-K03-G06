@@ -9,7 +9,7 @@ DESKRIPSI PERANCANGAN PERANGKAT LUNAK (DPPL)
 
 ## Kerja-In
 <p align="center">
-<img alt="Logo Kerja-In" src="./assets/logo.jpeg" width="100%">
+<img alt="Logo Kerja-In" src="../M7/assets/logo.jpeg" width="100%">
 </p>
 <p align="center">
 
