@@ -108,7 +108,10 @@ Tabel 1.4. Aturan Penomoran
 | Kelas | CXX | Menandai 45 kelas perancangan, dari C01 untuk Pengguna hingga C45 untuk PaymentGatewayController. ID yang sama digunakan pada identifikasi kelas, diagram, perancangan rinci, dan matriks kerunutan. |
 | Algoritma | Algo-NNN | Menandai algoritma operasi kelas, misalnya Algo-001. Nomor diurutkan lintas kelas dan setiap algoritma memiliki ID unik; penomoran tidak dimulai ulang pada kelas berikutnya. |
 | Query | Q-NNN | Menandai query yang dirujuk dalam pseudocode dan tabel query setiap algoritma, misalnya Q-001. Nomor diurutkan lintas kelas dan harus sesuai dengan referensinya pada pseudocode. |
-| Antarmuka/Layar | I-XX | Menandai rancangan antarmuka, misalnya I-01. ID yang sama digunakan pada spesifikasi layar dan daftar rancangan antarmuka keseluruhan di Bab 6. |
+| Antarmuka/Layar | I-XX | Menandai 29 rancangan antarmuka pada Bab 6, dari I-01 hingga I-29. XX merupakan nomor layar dua digit. ID yang sama digunakan pada judul rancangan, gambar, spesifikasi layar, tautan layar tujuan, dan daftar antarmuka keseluruhan. |
+| Objek Antarmuka | I-XX-OYY | Menandai objek pada suatu layar. XX mengikuti nomor layar dan YY merupakan nomor urut objek dua digit yang dimulai dari 01 pada setiap layar. Contoh: I-01-O01 untuk objek pertama pada layar I-01 dan I-02-O01 untuk objek pertama pada layar I-02. |
+| Gambar Antarmuka | Gambar 6.N | Menandai gambar rancangan layar sesuai nomor subbab pada Bab 6, misalnya Gambar 6.1 untuk layar I-01 dan Gambar 6.29 untuk layar I-29. |
+| Tabel Antarmuka | Tabel 6.N | Menandai tabel spesifikasi objek sesuai nomor subbab pada Bab 6, misalnya Tabel 6.1 untuk layar I-01. Tabel 6.30 memuat daftar rancangan antarmuka keseluruhan. |
 
 ## 1.5 Referensi
 Dokumen dan sumber yang digunakan sebagai acuan penyusunan DPPL Kerja-In adalah sebagai berikut:
