@@ -1050,7 +1050,7 @@ function getUsia() -> Integer
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.1.1. Query Operasi getUsia
+Tabel 5.1.3. Query Operasi getUsia
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
@@ -1072,7 +1072,7 @@ function setToken(tokenAuth: string) -> void
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.1.2. Query Operasi setToken
+Tabel 5.1.4. Query Operasi setToken
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
@@ -1091,7 +1091,7 @@ function getNama() -> string
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.1.3. Query Operasi getNama
+Tabel 5.1.5. Query Operasi getNama
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
@@ -1110,7 +1110,7 @@ function getEmail() -> string
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.1.4. Query Operasi getEmail
+Tabel 5.1.6. Query Operasi getEmail
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
@@ -1133,7 +1133,7 @@ function perbaruiAkumulasiRating() -> void
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.1.5. Query Operasi perbaruiAkumulasiRating
+Tabel 5.1.7. Query Operasi perbaruiAkumulasiRating
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
@@ -1205,7 +1205,7 @@ function buatProfil(dataProfil: Record<string, unknown>, idPenggunaAuth: string)
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.2.1. Query Operasi buatProfil
+Tabel 5.2.3. Query Operasi buatProfil
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
@@ -1225,7 +1225,7 @@ function getStatusVerifikasi() -> string
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.2.2. Query Operasi getStatusVerifikasi
+Tabel 5.2.4. Query Operasi getStatusVerifikasi
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
@@ -1248,7 +1248,7 @@ function setStatusVerifikasi(status: string) -> void
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.2.3. Query Operasi setStatusVerifikasi
+Tabel 5.2.5. Query Operasi setStatusVerifikasi
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
@@ -1279,7 +1279,7 @@ function setDokumenIdentitas(dokumen: File) -> void
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.2.4. Query Operasi setDokumenIdentitas
+Tabel 5.2.6. Query Operasi setDokumenIdentitas
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
@@ -1301,7 +1301,7 @@ function getDokumenIdentitas() -> File
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.2.5. Query Operasi getDokumenIdentitas
+Tabel 5.2.7. Query Operasi getDokumenIdentitas
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
@@ -1320,7 +1320,7 @@ function getSaldoPendapatan() -> Decimal
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.2.6. Query Operasi getSaldoPendapatan
+Tabel 5.2.8. Query Operasi getSaldoPendapatan
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
@@ -1346,7 +1346,7 @@ function tambahSaldoPendapatan(nominal: Decimal) -> void
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.2.7. Query Operasi tambahSaldoPendapatan
+Tabel 5.2.9. Query Operasi tambahSaldoPendapatan
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
@@ -1365,22 +1365,22 @@ function kurangiSaldoPendapatan(nominal: Decimal) -> void
         throw Error("Nominal tidak valid")
     { Controller menjamin upah/pencairan yang sama hanya diproses satu kali. }
     transaction
-        data <- wajibAda(queryOne("Q-009", this.idTenagaKerja))
+        data <- wajibAda(queryOne("Q-007", this.idTenagaKerja))
         if data.saldoPendapatan < nominal then
             throw Error("Saldo tidak cukup")
         saldoBaru <- data.saldoPendapatan - nominal
-        wajibAda(queryOne("Q-010", this.idTenagaKerja, saldoBaru))
+        wajibAda(queryOne("Q-008", this.idTenagaKerja, saldoBaru))
     this.saldoPendapatan <- saldoBaru
 ```
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.2.8. Query Operasi kurangiSaldoPendapatan
+Tabel 5.2.10. Query Operasi kurangiSaldoPendapatan
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-009 | `SELECT "saldoPendapatan" FROM tenaga_kerja WHERE "idTenagaKerja" = $1 FOR UPDATE;` | tambahSaldoPendapatan()/kurangiSaldoPendapatan(): mengunci saldo; $1 = idTenagaKerja. |
-| Q-010 | `UPDATE tenaga_kerja SET "saldoPendapatan" = $2 WHERE "idTenagaKerja" = $1 RETURNING "saldoPendapatan";` | tambahSaldoPendapatan()/kurangiSaldoPendapatan(): $1 = idTenagaKerja, $2 = saldo baru dalam transaksi yang sama. |
+| Q-007 | `SELECT "saldoPendapatan" FROM tenaga_kerja WHERE "idTenagaKerja" = $1 FOR UPDATE;` | tambahSaldoPendapatan()/kurangiSaldoPendapatan(): mengunci saldo; $1 = idTenagaKerja. |
+| Q-008 | `UPDATE tenaga_kerja SET "saldoPendapatan" = $2 WHERE "idTenagaKerja" = $1 RETURNING "saldoPendapatan";` | tambahSaldoPendapatan()/kurangiSaldoPendapatan(): $1 = idTenagaKerja, $2 = saldo baru dalam transaksi yang sama. |
 
 ## 5.3 Kelas PenyediaKerja
 
@@ -1414,8 +1414,8 @@ function buatProfil(dataProfil: Record<string, unknown>, idPenggunaAuth: string)
         throw Error("Data profil atau ID pengguna dari Supabase Auth belum lengkap")
     idProfilBaru <- uuid()
     transaction
-        wajibAda(execute("Q-011", idPenggunaAuth, dataProfil.nama, normalizeEmail(dataProfil.email), "PenyediaKerja", dataProfil.tanggalLahir))
-        wajibAda(execute("Q-012", idProfilBaru, idPenggunaAuth))
+        wajibAda(execute("Q-003", idPenggunaAuth, dataProfil.nama, normalizeEmail(dataProfil.email), "PenyediaKerja", dataProfil.tanggalLahir))
+        wajibAda(execute("Q-009", idProfilBaru, idPenggunaAuth))
     this.idPengguna <- idPenggunaAuth
     this.idPenyediaKerja <- idProfilBaru
     this.nama <- dataProfil.nama
@@ -1428,12 +1428,12 @@ function buatProfil(dataProfil: Record<string, unknown>, idPenggunaAuth: string)
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.3.1. Query Operasi buatProfil
+Tabel 5.3.3. Query Operasi buatProfil
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-011 | `INSERT INTO pengguna ("idPengguna", nama, email, peran, "tanggalLahir", "akumulasiRating") VALUES ($1, $2, $3, $4, $5, 0) RETURNING "idPengguna";` | buatProfil(): $1-$5 = ID pengguna dari Supabase Auth, nama, email, peran, tanggalLahir. Kredensial dan sesi dikelola Supabase Auth. |
-| Q-012 | `INSERT INTO penyedia_kerja ("idPenyediaKerja", "idPengguna") VALUES ($1, $2);` | buatProfil(): $1 = idPenyediaKerja, $2 = idPengguna; satu transaksi dengan penyimpanan pengguna. |
+| Q-003 | `INSERT INTO pengguna ("idPengguna", nama, email, peran, "tanggalLahir", "akumulasiRating") VALUES ($1, $2, $3, $4, $5, 0) RETURNING "idPengguna";` | buatProfil(): $1-$5 = ID pengguna dari Supabase Auth, nama, email, peran, tanggalLahir. Kredensial dan sesi dikelola Supabase Auth. |
+| Q-009 | `INSERT INTO penyedia_kerja ("idPenyediaKerja", "idPengguna") VALUES ($1, $2);` | buatProfil(): $1 = idPenyediaKerja, $2 = idPengguna; satu transaksi dengan penyimpanan pengguna. |
 
 ## 5.4 Kelas CustomerService
 
@@ -1469,7 +1469,7 @@ Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Al
 ```text
 function tinjauVerifikasi(idTenagaKerja: string) -> Record<string, unknown>
     requirePermission(this.hakAkses, "tinjauVerifikasi")
-    data <- wajibAda(queryOne("Q-013", idTenagaKerja))
+    data <- wajibAda(queryOne("Q-010", idTenagaKerja))
     if isBlank(data.dokumenIdentitas) then
         throw Error("Pengajuan verifikasi tidak ditemukan")
     { Controller/UI memuat dokumen privat dari path data.dokumenIdentitas. }
@@ -1478,11 +1478,11 @@ function tinjauVerifikasi(idTenagaKerja: string) -> Record<string, unknown>
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.4.1. Query Operasi tinjauVerifikasi
+Tabel 5.4.3. Query Operasi tinjauVerifikasi
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-013 | `SELECT "idTenagaKerja", "dokumenIdentitas", "statusVerifikasi", "waktuPengajuanVerifikasi", "alasanPenolakanVerifikasi" FROM tenaga_kerja WHERE "idTenagaKerja" = $1;` | tinjauVerifikasi(): $1 = idTenagaKerja; Controller/UI memuat berkas melalui storage privat. |
+| Q-010 | `SELECT "idTenagaKerja", "dokumenIdentitas", "statusVerifikasi", "waktuPengajuanVerifikasi", "alasanPenolakanVerifikasi" FROM tenaga_kerja WHERE "idTenagaKerja" = $1;` | tinjauVerifikasi(): $1 = idTenagaKerja; Controller/UI memuat berkas melalui storage privat. |
 
 ### 5.4.2 Algoritma/Query
 
@@ -1494,21 +1494,21 @@ Tabel 5.4.1. Query Operasi tinjauVerifikasi
 function setujuiVerifikasi(idTenagaKerja: string) -> void
     requirePermission(this.hakAkses, "setujuiVerifikasi")
     transaction
-        data <- wajibAda(queryOne("Q-014", idTenagaKerja))
+        data <- wajibAda(queryOne("Q-011", idTenagaKerja))
         if data.statusVerifikasi != "Menunggu Verifikasi" or isBlank(data.dokumenIdentitas) then
             throw Error("Pengajuan tidak dapat diproses")
-        wajibAda(queryOne("Q-015", idTenagaKerja, "Terverifikasi", ""))
+        wajibAda(queryOne("Q-012", idTenagaKerja, "Terverifikasi", ""))
     { Controller mengirim notifikasi setelah transaksi berhasil. }
 ```
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.4.2. Query Operasi setujuiVerifikasi
+Tabel 5.4.4. Query Operasi setujuiVerifikasi
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-014 | `SELECT "dokumenIdentitas", "statusVerifikasi" FROM tenaga_kerja WHERE "idTenagaKerja" = $1 FOR UPDATE;` | setujuiVerifikasi()/tolakVerifikasi(): mengunci pengajuan; $1 = idTenagaKerja. |
-| Q-015 | `UPDATE tenaga_kerja SET "statusVerifikasi" = $2, "alasanPenolakanVerifikasi" = $3 WHERE "idTenagaKerja" = $1 RETURNING "statusVerifikasi";` | setujuiVerifikasi()/tolakVerifikasi(): $1 = idTenagaKerja, $2 = status hasil pemeriksaan, $3 = alasan atau string kosong. |
+| Q-011 | `SELECT "dokumenIdentitas", "statusVerifikasi" FROM tenaga_kerja WHERE "idTenagaKerja" = $1 FOR UPDATE;` | setujuiVerifikasi()/tolakVerifikasi(): mengunci pengajuan; $1 = idTenagaKerja. |
+| Q-012 | `UPDATE tenaga_kerja SET "statusVerifikasi" = $2, "alasanPenolakanVerifikasi" = $3 WHERE "idTenagaKerja" = $1 RETURNING "statusVerifikasi";` | setujuiVerifikasi()/tolakVerifikasi(): $1 = idTenagaKerja, $2 = status hasil pemeriksaan, $3 = alasan atau string kosong. |
 
 ### 5.4.3 Algoritma/Query
 
@@ -1522,21 +1522,21 @@ function tolakVerifikasi(idTenagaKerja: string, alasan: string) -> void
     if isBlank(alasan) then
         throw Error("Alasan penolakan wajib diisi")
     transaction
-        data <- wajibAda(queryOne("Q-016", idTenagaKerja))
+        data <- wajibAda(queryOne("Q-011", idTenagaKerja))
         if data.statusVerifikasi != "Menunggu Verifikasi" or isBlank(data.dokumenIdentitas) then
             throw Error("Pengajuan tidak dapat diproses")
-        wajibAda(queryOne("Q-017", idTenagaKerja, "Ditolak", trim(alasan)))
+        wajibAda(queryOne("Q-012", idTenagaKerja, "Ditolak", trim(alasan)))
     { Controller mengirim notifikasi setelah transaksi berhasil. }
 ```
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.4.3. Query Operasi tolakVerifikasi
+Tabel 5.4.5. Query Operasi tolakVerifikasi
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-016 | `SELECT "dokumenIdentitas", "statusVerifikasi" FROM tenaga_kerja WHERE "idTenagaKerja" = $1 FOR UPDATE;` | setujuiVerifikasi()/tolakVerifikasi(): mengunci pengajuan; $1 = idTenagaKerja. |
-| Q-017 | `UPDATE tenaga_kerja SET "statusVerifikasi" = $2, "alasanPenolakanVerifikasi" = $3 WHERE "idTenagaKerja" = $1 RETURNING "statusVerifikasi";` | setujuiVerifikasi()/tolakVerifikasi(): $1 = idTenagaKerja, $2 = status hasil pemeriksaan, $3 = alasan atau string kosong. |
+| Q-011 | `SELECT "dokumenIdentitas", "statusVerifikasi" FROM tenaga_kerja WHERE "idTenagaKerja" = $1 FOR UPDATE;` | setujuiVerifikasi()/tolakVerifikasi(): mengunci pengajuan; $1 = idTenagaKerja. |
+| Q-012 | `UPDATE tenaga_kerja SET "statusVerifikasi" = $2, "alasanPenolakanVerifikasi" = $3 WHERE "idTenagaKerja" = $1 RETURNING "statusVerifikasi";` | setujuiVerifikasi()/tolakVerifikasi(): $1 = idTenagaKerja, $2 = status hasil pemeriksaan, $3 = alasan atau string kosong. |
 
 ### 5.4.4 Algoritma/Query
 
@@ -1547,23 +1547,23 @@ Tabel 5.4.3. Query Operasi tolakVerifikasi
 ```text
 function tinjauTiket(idTiket: string) -> Record<string, unknown>
     requirePermission(this.hakAkses, "tinjauTiket")
-    tiket <- wajibAda(queryOne("Q-018", idTiket))
-    transaksi <- wajibAda(queryOne("Q-019", tiket.idTransaksi))
-    bukti <- queryAll("Q-020", tiket.idTransaksi)
-    riwayat <- queryAll("Q-021", idTiket)
+    tiket <- wajibAda(queryOne("Q-013", idTiket))
+    transaksi <- wajibAda(queryOne("Q-014", tiket.idTransaksi))
+    bukti <- queryAll("Q-015", tiket.idTransaksi)
+    riwayat <- queryAll("Q-016", idTiket)
     -> { tiket: tiket, transaksi: transaksi, bukti: bukti, riwayat: riwayat }
 ```
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.4.4. Query Operasi tinjauTiket
+Tabel 5.4.6. Query Operasi tinjauTiket
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-018 | `SELECT * FROM tiket_sengketa WHERE "idTiket" = $1;` | tinjauTiket(): $1 = idTiket. |
-| Q-019 | `SELECT * FROM transaksi_pekerjaan WHERE "idTransaksi" = $1;` | tinjauTiket(): $1 = idTransaksi pada tiket. |
-| Q-020 | `SELECT * FROM bukti_penyerahan WHERE "idTransaksi" = $1 ORDER BY "timestampPengiriman" DESC;` | tinjauTiket(): mengambil bukti pekerjaan; $1 = idTransaksi; bukti laporan juga ada pada urlBukti tiket. |
-| Q-021 | `SELECT * FROM riwayat_sengketa WHERE "idTiket" = $1 ORDER BY timestamp ASC, "idRiwayat" ASC;` | tinjauTiket(): $1 = idTiket. |
+| Q-013 | `SELECT * FROM tiket_sengketa WHERE "idTiket" = $1;` | tinjauTiket(): $1 = idTiket. |
+| Q-014 | `SELECT * FROM transaksi_pekerjaan WHERE "idTransaksi" = $1;` | tinjauTiket(): $1 = idTransaksi pada tiket. |
+| Q-015 | `SELECT * FROM bukti_penyerahan WHERE "idTransaksi" = $1 ORDER BY "timestampPengiriman" DESC;` | tinjauTiket(): mengambil bukti pekerjaan; $1 = idTransaksi; bukti laporan juga ada pada urlBukti tiket. |
+| Q-016 | `SELECT * FROM riwayat_sengketa WHERE "idTiket" = $1 ORDER BY timestamp ASC, "idRiwayat" ASC;` | tinjauTiket(): $1 = idTiket. |
 
 ### 5.4.5 Algoritma/Query
 
@@ -1578,24 +1578,24 @@ function putuskanSengketa(idTiket: string, keputusan: string) -> void
         throw Error("Keputusan tidak valid")
     { Controller telah memastikan bukti cukup dan keputusan sesuai hasil pemeriksaan. }
     transaction
-        tiket <- wajibAda(queryOne("Q-022", idTiket))
+        tiket <- wajibAda(queryOne("Q-017", idTiket))
         if tiket.statusTiket in ["Ditutup", "Ditolak", "Dibatalkan"] or not isBlank(tiket.keputusan) then
             throw Error("Tiket sudah final atau keputusan telah dicatat")
-        wajibAda(queryOne("Q-023", idTiket, keputusan))
+        wajibAda(queryOne("Q-018", idTiket, keputusan))
         aktivitas <- "Keputusan: " + keputusan + "; petugas: " + this.idAdmin
-        execute("Q-024", uuid(), idTiket, aktivitas, now())
+        execute("Q-019", uuid(), idTiket, aktivitas, now())
     { Controller menindaklanjuti refund/pencairan, penutupan tiket, dan notifikasi. }
 ```
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.4.5. Query Operasi putuskanSengketa
+Tabel 5.4.7. Query Operasi putuskanSengketa
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-022 | `SELECT * FROM tiket_sengketa WHERE "idTiket" = $1 FOR UPDATE;` | putuskanSengketa(): mengunci tiket; $1 = idTiket. |
-| Q-023 | `UPDATE tiket_sengketa SET keputusan = $2 WHERE "idTiket" = $1 RETURNING keputusan;` | putuskanSengketa(): $1 = idTiket, $2 = keputusan; dipakai setelah pemeriksaan status dan keputusan lama. |
-| Q-024 | `INSERT INTO riwayat_sengketa ("idRiwayat", "idTiket", "logAktivitas", timestamp) VALUES ($1, $2, $3, $4);` | putuskanSengketa(): $1?$4 = id riwayat baru, idTiket, teks keputusan beserta idAdmin, waktu pencatatan. |
+| Q-017 | `SELECT * FROM tiket_sengketa WHERE "idTiket" = $1 FOR UPDATE;` | putuskanSengketa(): mengunci tiket; $1 = idTiket. |
+| Q-018 | `UPDATE tiket_sengketa SET keputusan = $2 WHERE "idTiket" = $1 RETURNING keputusan;` | putuskanSengketa(): $1 = idTiket, $2 = keputusan; dipakai setelah pemeriksaan status dan keputusan lama. |
+| Q-019 | `INSERT INTO riwayat_sengketa ("idRiwayat", "idTiket", "logAktivitas", timestamp) VALUES ($1, $2, $3, $4);` | putuskanSengketa(): $1?$4 = id riwayat baru, idTiket, teks keputusan beserta idAdmin, waktu pencatatan. |
 
 ## 5.5 Kelas LowonganPekerjaan
 
@@ -1653,7 +1653,7 @@ function validasiDataLowongan() -> boolean
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.5.1. Query Operasi validasiDataLowongan
+Tabel 5.5.3. Query Operasi validasiDataLowongan
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
@@ -1673,17 +1673,17 @@ function simpanLowongan() -> void
         throw Error("Data lowongan tidak valid")
     this.idLowongan <- uuid()
     setStatusAwal()
-    execute("Q-025", this.idLowongan, this.idPenyediaKerja, this.judul,
+    execute("Q-020", this.idLowongan, this.idPenyediaKerja, this.judul,
             this.deskripsi, this.kuota, this.lokasi, this.upah, this.statusLowongan, this.kategori)
 ```
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.5.2. Query Operasi simpanLowongan
+Tabel 5.5.4. Query Operasi simpanLowongan
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-025 | `INSERT INTO lowongan_pekerjaan ("idLowongan", "idPenyediaKerja", judul, deskripsi, kuota, lokasi, upah, "statusLowongan", kategori, "jumlahDiterima") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 0);` | simpanLowongan(): $1?$9 = idLowongan, idPenyediaKerja, judul, deskripsi, kuota, lokasi, upah, status awal, kategori. |
+| Q-020 | `INSERT INTO lowongan_pekerjaan ("idLowongan", "idPenyediaKerja", judul, deskripsi, kuota, lokasi, upah, "statusLowongan", kategori, "jumlahDiterima") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 0);` | simpanLowongan(): $1?$9 = idLowongan, idPenyediaKerja, judul, deskripsi, kuota, lokasi, upah, status awal, kategori. |
 
 ### 5.5.3 Algoritma/Query
 
@@ -1699,7 +1699,7 @@ function setStatusAwal() -> void
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.5.3. Query Operasi setStatusAwal
+Tabel 5.5.5. Query Operasi setStatusAwal
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
@@ -1723,16 +1723,16 @@ function getDaftarLowongan(kriteria: Record<string, unknown>) -> Array<LowonganP
         pola <- "%" + escapeLike(kataKunci) + "%"
     if isBlank(kategori) then
         kategori <- null
-    -> mapToObjects(LowonganPekerjaan, queryAll("Q-026", pola, kategori))
+    -> mapToObjects(LowonganPekerjaan, queryAll("Q-021", pola, kategori))
 ```
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.5.4. Query Operasi getDaftarLowongan
+Tabel 5.5.6. Query Operasi getDaftarLowongan
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-026 | `SELECT * FROM lowongan_pekerjaan WHERE "statusLowongan" = 'Open' AND "jumlahDiterima" < kuota AND ($1::text IS NULL OR judul ILIKE $1 OR deskripsi ILIKE $1) AND ($2::text IS NULL OR kategori = $2);` | getDaftarLowongan(): $1 = pola kata kunci atau NULL, $2 = kategori atau NULL; wildcard input di-escape sebelum ditambah % untuk pencarian substring. |
+| Q-021 | `SELECT * FROM lowongan_pekerjaan WHERE "statusLowongan" = 'Open' AND "jumlahDiterima" < kuota AND ($1::text IS NULL OR judul ILIKE $1 OR deskripsi ILIKE $1) AND ($2::text IS NULL OR kategori = $2);` | getDaftarLowongan(): $1 = pola kata kunci atau NULL, $2 = kategori atau NULL; wildcard input di-escape sebelum ditambah % untuk pencarian substring. |
 
 ### 5.5.5 Algoritma/Query
 
@@ -1747,7 +1747,7 @@ function cekStatusTerbuka() -> boolean
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.5.5. Query Operasi cekStatusTerbuka
+Tabel 5.5.7. Query Operasi cekStatusTerbuka
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
@@ -1768,7 +1768,7 @@ function getSisaKuota() -> Integer
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.5.6. Query Operasi getSisaKuota
+Tabel 5.5.8. Query Operasi getSisaKuota
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
@@ -1787,7 +1787,7 @@ function cekKuotaTersedia() -> boolean
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.5.7. Query Operasi cekKuotaTersedia
+Tabel 5.5.9. Query Operasi cekKuotaTersedia
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
@@ -1805,14 +1805,14 @@ function kurangiKuota(jumlah: Integer) -> void
         throw Error("Jumlah tenaga kerja tidak valid")
     { Wajib bergabung dengan transaksi pemilihan pelamar pada Controller. }
     transaction
-        data <- wajibAda(queryOne("Q-027", this.idLowongan))
+        data <- wajibAda(queryOne("Q-022", this.idLowongan))
         if data.statusLowongan != "Open" or jumlah > data.kuota - data.jumlahDiterima then
             throw Error("Lowongan ditutup atau kuota tidak cukup")
         jumlahBaru <- data.jumlahDiterima + jumlah
         statusBaru <- data.statusLowongan
         if jumlahBaru = data.kuota then
             statusBaru <- "Closed/Full"
-        wajibAda(queryOne("Q-028", this.idLowongan, jumlahBaru, statusBaru))
+        wajibAda(queryOne("Q-023", this.idLowongan, jumlahBaru, statusBaru))
     this.jumlahDiterima <- jumlahBaru
     this.statusLowongan <- statusBaru
     { Kapasitas total kuota tetap; yang bertambah adalah jumlahDiterima. }
@@ -1820,12 +1820,12 @@ function kurangiKuota(jumlah: Integer) -> void
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.5.8. Query Operasi kurangiKuota
+Tabel 5.5.10. Query Operasi kurangiKuota
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-027 | `SELECT kuota, "jumlahDiterima", "statusLowongan" FROM lowongan_pekerjaan WHERE "idLowongan" = $1 FOR UPDATE;` | kurangiKuota()/setStatusLowongan(): $1 = idLowongan; kunci bertahan sampai transaksi selesai. |
-| Q-028 | `UPDATE lowongan_pekerjaan SET "jumlahDiterima" = $2, "statusLowongan" = $3 WHERE "idLowongan" = $1 RETURNING "jumlahDiterima", "statusLowongan";` | kurangiKuota(): $1 = idLowongan, $2 = jumlahDiterima baru, $3 = status baru. |
+| Q-022 | `SELECT kuota, "jumlahDiterima", "statusLowongan" FROM lowongan_pekerjaan WHERE "idLowongan" = $1 FOR UPDATE;` | kurangiKuota()/setStatusLowongan(): $1 = idLowongan; kunci bertahan sampai transaksi selesai. |
+| Q-023 | `UPDATE lowongan_pekerjaan SET "jumlahDiterima" = $2, "statusLowongan" = $3 WHERE "idLowongan" = $1 RETURNING "jumlahDiterima", "statusLowongan";` | kurangiKuota(): $1 = idLowongan, $2 = jumlahDiterima baru, $3 = status baru. |
 
 ### 5.5.9 Algoritma/Query
 
@@ -1838,21 +1838,21 @@ function setStatusLowongan(status: string) -> void
     if status not in ["Open", "Closed/Full"] then
         throw Error("Status lowongan tidak valid")
     transaction
-        data <- wajibAda(queryOne("Q-029", this.idLowongan))
+        data <- wajibAda(queryOne("Q-022", this.idLowongan))
         if status = "Open" and data.jumlahDiterima >= data.kuota then
             throw Error("Kuota sudah penuh")
-        wajibAda(queryOne("Q-030", this.idLowongan, status))
+        wajibAda(queryOne("Q-024", this.idLowongan, status))
     this.statusLowongan <- status
 ```
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.5.9. Query Operasi setStatusLowongan
+Tabel 5.5.11. Query Operasi setStatusLowongan
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-029 | `SELECT kuota, "jumlahDiterima", "statusLowongan" FROM lowongan_pekerjaan WHERE "idLowongan" = $1 FOR UPDATE;` | kurangiKuota()/setStatusLowongan(): $1 = idLowongan; kunci bertahan sampai transaksi selesai. |
-| Q-030 | `UPDATE lowongan_pekerjaan SET "statusLowongan" = $2 WHERE "idLowongan" = $1 RETURNING "statusLowongan";` | setStatusLowongan(): $1 = idLowongan, $2 = status. |
+| Q-022 | `SELECT kuota, "jumlahDiterima", "statusLowongan" FROM lowongan_pekerjaan WHERE "idLowongan" = $1 FOR UPDATE;` | kurangiKuota()/setStatusLowongan(): $1 = idLowongan; kunci bertahan sampai transaksi selesai. |
+| Q-024 | `UPDATE lowongan_pekerjaan SET "statusLowongan" = $2 WHERE "idLowongan" = $1 RETURNING "statusLowongan";` | setStatusLowongan(): $1 = idLowongan, $2 = status. |
 
 ## 5.6 Kelas PengajuanPenawaran
 
@@ -1893,7 +1893,7 @@ function simpanPengajuan() -> void
         throw Error("Data pengajuan belum lengkap")
     idBaru <- uuid()
     waktuBaru <- now()
-    execute("Q-031", idBaru, this.idLowongan, this.idTenagaKerja,
+    execute("Q-025", idBaru, this.idLowongan, this.idTenagaKerja,
             this.pesanPenawaran, waktuBaru, "Menunggu Pemilihan")
     this.idPenawaran <- idBaru
     this.timestamp <- waktuBaru
@@ -1902,11 +1902,11 @@ function simpanPengajuan() -> void
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.6.1. Query Operasi simpanPengajuan
+Tabel 5.6.3. Query Operasi simpanPengajuan
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-031 | `INSERT INTO pengajuan_penawaran ("idPenawaran", "idLowongan", "idTenagaKerja", "pesanPenawaran", timestamp, "statusPenawaran") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "idPenawaran";` | simpanPengajuan(): $1-$6 = idPenawaran, idLowongan, idTenagaKerja, pesanPenawaran, waktu pengajuan, status awal. |
+| Q-025 | `INSERT INTO pengajuan_penawaran ("idPenawaran", "idLowongan", "idTenagaKerja", "pesanPenawaran", timestamp, "statusPenawaran") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "idPenawaran";` | simpanPengajuan(): $1-$6 = idPenawaran, idLowongan, idTenagaKerja, pesanPenawaran, waktu pengajuan, status awal. |
 
 ### 5.6.2 Algoritma/Query
 
@@ -1920,22 +1920,22 @@ function setStatusPersetujuan(status: string) -> void
         throw Error("Status penawaran tidak valid")
     { Penerimaan bergabung dengan transaksi pengurangan kuota dan pembuatan pekerjaan. }
     transaction
-        data <- wajibAda(queryOne("Q-032", this.idPenawaran))
+        data <- wajibAda(queryOne("Q-026", this.idPenawaran))
         if data.statusPenawaran != status then
             if not transisiDiizinkan("penawaran", data.statusPenawaran, status) then
                 throw Error("Perubahan status tidak diizinkan")
-            wajibAda(queryOne("Q-033", this.idPenawaran, status))
+            wajibAda(queryOne("Q-027", this.idPenawaran, status))
     this.statusPenawaran <- status
 ```
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.6.2. Query Operasi setStatusPersetujuan
+Tabel 5.6.4. Query Operasi setStatusPersetujuan
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-032 | `SELECT "statusPenawaran" FROM pengajuan_penawaran WHERE "idPenawaran" = $1 FOR UPDATE;` | setStatusPersetujuan(): $1 = idPenawaran. |
-| Q-033 | `UPDATE pengajuan_penawaran SET "statusPenawaran" = $2 WHERE "idPenawaran" = $1 RETURNING "statusPenawaran";` | setStatusPersetujuan(): $1 = idPenawaran, $2 = status. |
+| Q-026 | `SELECT "statusPenawaran" FROM pengajuan_penawaran WHERE "idPenawaran" = $1 FOR UPDATE;` | setStatusPersetujuan(): $1 = idPenawaran. |
+| Q-027 | `UPDATE pengajuan_penawaran SET "statusPenawaran" = $2 WHERE "idPenawaran" = $1 RETURNING "statusPenawaran";` | setStatusPersetujuan(): $1 = idPenawaran, $2 = status. |
 
 ### 5.6.3 Algoritma/Query
 
@@ -1945,16 +1945,16 @@ Tabel 5.6.2. Query Operasi setStatusPersetujuan
 
 ```text
 function getDetailPenawaran() -> PengajuanPenawaran
-    -> mapToObject(PengajuanPenawaran, wajibAda(queryOne("Q-034", this.idPenawaran)))
+    -> mapToObject(PengajuanPenawaran, wajibAda(queryOne("Q-028", this.idPenawaran)))
 ```
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.6.3. Query Operasi getDetailPenawaran
+Tabel 5.6.5. Query Operasi getDetailPenawaran
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-034 | `SELECT * FROM pengajuan_penawaran WHERE "idPenawaran" = $1;` | getDetailPenawaran(): $1 = idPenawaran. |
+| Q-028 | `SELECT * FROM pengajuan_penawaran WHERE "idPenawaran" = $1;` | getDetailPenawaran(): $1 = idPenawaran. |
 
 ## 5.7 Kelas TransaksiPekerjaan
 
@@ -2001,7 +2001,7 @@ function createTransaksi() -> void
         throw Error("Nominal upah tidak valid")
     { Wajib berada dalam transaksi pemilihan pelamar bersama pengurangan kuota. }
     idBaru <- uuid()
-    execute("Q-035", idBaru, this.idLowongan, this.idTenagaKerja,
+    execute("Q-029", idBaru, this.idLowongan, this.idTenagaKerja,
             this.idPenyediaKerja, "Menunggu Pembayaran", this.nominalUpah)
     this.idTransaksi <- idBaru
     this.statusPekerjaan <- "Menunggu Pembayaran"
@@ -2009,11 +2009,11 @@ function createTransaksi() -> void
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.7.1. Query Operasi createTransaksi
+Tabel 5.7.3. Query Operasi createTransaksi
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-035 | `INSERT INTO transaksi_pekerjaan ("idTransaksi", "idLowongan", "idTenagaKerja", "idPenyediaKerja", "statusPekerjaan", "nominalUpah") VALUES ($1, $2, $3, $4, $5, $6);` | createTransaksi(): $1?$6 = idTransaksi, idLowongan, idTenagaKerja, idPenyediaKerja, status awal, nominalUpah. |
+| Q-029 | `INSERT INTO transaksi_pekerjaan ("idTransaksi", "idLowongan", "idTenagaKerja", "idPenyediaKerja", "statusPekerjaan", "nominalUpah") VALUES ($1, $2, $3, $4, $5, $6);` | createTransaksi(): $1?$6 = idTransaksi, idLowongan, idTenagaKerja, idPenyediaKerja, status awal, nominalUpah. |
 
 ### 5.7.2 Algoritma/Query
 
@@ -2027,22 +2027,22 @@ function setStatusPekerjaan(status: string) -> void
     if status not in STATUS_PEKERJAAN then
         throw Error("Status pekerjaan tidak valid")
     transaction
-        data <- wajibAda(queryOne("Q-036", this.idTransaksi))
+        data <- wajibAda(queryOne("Q-030", this.idTransaksi))
         if data.statusPekerjaan != status then
             if not transisiDiizinkan("pekerjaan", data.statusPekerjaan, status) then
                 throw Error("Perubahan status tidak diizinkan")
-            wajibAda(queryOne("Q-037", this.idTransaksi, status))
+            wajibAda(queryOne("Q-031", this.idTransaksi, status))
     this.statusPekerjaan <- status
 ```
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.7.2. Query Operasi setStatusPekerjaan
+Tabel 5.7.4. Query Operasi setStatusPekerjaan
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-036 | `SELECT "statusPekerjaan" FROM transaksi_pekerjaan WHERE "idTransaksi" = $1 FOR UPDATE;` | setStatusPekerjaan(): $1 = idTransaksi. |
-| Q-037 | `UPDATE transaksi_pekerjaan SET "statusPekerjaan" = $2 WHERE "idTransaksi" = $1 RETURNING "statusPekerjaan";` | setStatusPekerjaan()/tandaiSelesai(): $1 = idTransaksi, $2 = status yang prasyaratnya sudah diperiksa Controller. |
+| Q-030 | `SELECT "statusPekerjaan" FROM transaksi_pekerjaan WHERE "idTransaksi" = $1 FOR UPDATE;` | setStatusPekerjaan(): $1 = idTransaksi. |
+| Q-031 | `UPDATE transaksi_pekerjaan SET "statusPekerjaan" = $2 WHERE "idTransaksi" = $1 RETURNING "statusPekerjaan";` | setStatusPekerjaan()/tandaiSelesai(): $1 = idTransaksi, $2 = status yang prasyaratnya sudah diperiksa Controller. |
 
 ### 5.7.3 Algoritma/Query
 
@@ -2059,7 +2059,7 @@ function tandaiSelesai() -> void
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.7.3. Query Operasi tandaiSelesai
+Tabel 5.7.5. Query Operasi tandaiSelesai
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
@@ -2078,7 +2078,7 @@ function cekStatusSelesai() -> boolean
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.7.4. Query Operasi cekStatusSelesai
+Tabel 5.7.6. Query Operasi cekStatusSelesai
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
@@ -2094,18 +2094,18 @@ Tabel 5.7.4. Query Operasi cekStatusSelesai
 function isUlasanGanda(idPenilai: string) -> boolean
     if idPenilai != this.idTenagaKerja and idPenilai != this.idPenyediaKerja then
         throw Error("Penilai tidak terkait dengan transaksi")
-    hasil <- queryOne("Q-038", this.idTransaksi, idPenilai)
+    hasil <- queryOne("Q-032", this.idTransaksi, idPenilai)
     -> hasil.ada
     { Penyimpanan ulasan juga memakai UNIQUE(idTransaksi, idPenilai). }
 ```
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.7.5. Query Operasi isUlasanGanda
+Tabel 5.7.7. Query Operasi isUlasanGanda
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-038 | `SELECT EXISTS (SELECT 1 FROM ulasan_rating WHERE "idTransaksi" = $1 AND "idPenilai" = $2) AS ada;` | isUlasanGanda(): $1 = idTransaksi, $2 = idPenilai. |
+| Q-032 | `SELECT EXISTS (SELECT 1 FROM ulasan_rating WHERE "idTransaksi" = $1 AND "idPenilai" = $2) AS ada;` | isUlasanGanda(): $1 = idTransaksi, $2 = idPenilai. |
 
 ### 5.7.6 Algoritma/Query
 
@@ -2115,16 +2115,16 @@ Tabel 5.7.5. Query Operasi isUlasanGanda
 
 ```text
 function getDetailTransaksi() -> TransaksiPekerjaan
-    -> mapToObject(TransaksiPekerjaan, wajibAda(queryOne("Q-039", this.idTransaksi)))
+    -> mapToObject(TransaksiPekerjaan, wajibAda(queryOne("Q-014", this.idTransaksi)))
 ```
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.7.6. Query Operasi getDetailTransaksi
+Tabel 5.7.8. Query Operasi getDetailTransaksi
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-039 | `SELECT * FROM transaksi_pekerjaan WHERE "idTransaksi" = $1;` | getDetailTransaksi(): $1 = idTransaksi. |
+| Q-014 | `SELECT * FROM transaksi_pekerjaan WHERE "idTransaksi" = $1;` | getDetailTransaksi(): $1 = idTransaksi. |
 
 ### 5.7.7 Algoritma/Query
 
@@ -2139,7 +2139,7 @@ function validasiStatus(statusDiharapkan: string) -> boolean
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.7.7. Query Operasi validasiStatus
+Tabel 5.7.9. Query Operasi validasiStatus
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
@@ -2188,7 +2188,7 @@ function simpanBukti() -> void
     idBaru <- uuid()
     waktuBaru <- now()
     { Wajib berada dalam transaksi penyerahan bersama status pekerjaan Submitted. }
-    execute("Q-040", idBaru, this.idTransaksi, this.deskripsiPengerjaan,
+    execute("Q-033", idBaru, this.idTransaksi, this.deskripsiPengerjaan,
             this.fileUrl, this.ukuranFile, waktuBaru)
     this.idPenyerahan <- idBaru
     this.timestampPengiriman <- waktuBaru
@@ -2197,11 +2197,11 @@ function simpanBukti() -> void
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.8.1. Query Operasi simpanBukti
+Tabel 5.8.3. Query Operasi simpanBukti
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-040 | `INSERT INTO bukti_penyerahan ("idPenyerahan", "idTransaksi", "deskripsiPengerjaan", "fileUrl", "ukuranFile", "timestampPengiriman") VALUES ($1, $2, $3, $4, $5, $6);` | simpanBukti(): $1?$6 = idPenyerahan, idTransaksi, deskripsiPengerjaan, fileUrl, ukuranFile, timestampPengiriman. |
+| Q-033 | `INSERT INTO bukti_penyerahan ("idPenyerahan", "idTransaksi", "deskripsiPengerjaan", "fileUrl", "ukuranFile", "timestampPengiriman") VALUES ($1, $2, $3, $4, $5, $6);` | simpanBukti(): $1?$6 = idPenyerahan, idTransaksi, deskripsiPengerjaan, fileUrl, ukuranFile, timestampPengiriman. |
 
 ### 5.8.2 Algoritma/Query
 
@@ -2211,16 +2211,16 @@ Tabel 5.8.1. Query Operasi simpanBukti
 
 ```text
 function getDetailBukti() -> BuktiPenyerahan
-    -> mapToObject(BuktiPenyerahan, wajibAda(queryOne("Q-041", this.idPenyerahan)))
+    -> mapToObject(BuktiPenyerahan, wajibAda(queryOne("Q-034", this.idPenyerahan)))
 ```
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.8.2. Query Operasi getDetailBukti
+Tabel 5.8.4. Query Operasi getDetailBukti
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-041 | `SELECT * FROM bukti_penyerahan WHERE "idPenyerahan" = $1;` | getDetailBukti(): $1 = idPenyerahan; Controller memeriksa hak akses. |
+| Q-034 | `SELECT * FROM bukti_penyerahan WHERE "idPenyerahan" = $1;` | getDetailBukti(): $1 = idPenyerahan; Controller memeriksa hak akses. |
 
 ## 5.9 Kelas TagihanPembayaran
 
@@ -2270,7 +2270,7 @@ function hitungTotalTagihan() -> Decimal
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.9.1. Query Operasi hitungTotalTagihan
+Tabel 5.9.3. Query Operasi hitungTotalTagihan
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
@@ -2289,12 +2289,12 @@ function buatTagihan() -> void
     totalBaru <- hitungTotalTagihan()
     idBaru <- uuid()
     transaction
-        pekerjaan <- wajibAda(queryOne("Q-042", this.idTransaksi))
+        pekerjaan <- wajibAda(queryOne("Q-030", this.idTransaksi))
         if pekerjaan.statusPekerjaan != "Menunggu Pembayaran" then
             throw Error("Pekerjaan tidak dapat ditagihkan")
-        if queryOne("Q-043", this.idTransaksi).ada then
+        if queryOne("Q-035", this.idTransaksi).ada then
             throw Error("Tagihan aktif atau lunas sudah ada")
-        execute("Q-044", idBaru, this.idTransaksi, this.nominalUpah,
+        execute("Q-036", idBaru, this.idTransaksi, this.nominalUpah,
                 this.commissionFee, totalBaru, this.expiryTimestamp, "Menunggu Pembayaran")
     this.idTagihan <- idBaru
     this.totalBayar <- totalBaru
@@ -2303,13 +2303,13 @@ function buatTagihan() -> void
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.9.2. Query Operasi buatTagihan
+Tabel 5.9.4. Query Operasi buatTagihan
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-042 | `SELECT "statusPekerjaan" FROM transaksi_pekerjaan WHERE "idTransaksi" = $1 FOR UPDATE;` | buatTagihan(): $1 = idTransaksi; semua pembuatan tagihan untuk pekerjaan yang sama wajib mengambil kunci ini. |
-| Q-043 | `SELECT EXISTS (SELECT 1 FROM tagihan_pembayaran WHERE "idTransaksi" = $1 AND "statusPembayaran" IN ('Menunggu Pembayaran', 'Diproses', 'Berhasil')) AS ada;` | buatTagihan(): $1 = idTransaksi; mencegah tagihan aktif atau lunas dibuat ulang. |
-| Q-044 | `INSERT INTO tagihan_pembayaran ("idTagihan", "idTransaksi", "nominalUpah", "commissionFee", "totalBayar", "expiryTimestamp", "statusPembayaran") VALUES ($1, $2, $3, $4, $5, $6, $7);` | buatTagihan(): $1?$7 = idTagihan, idTransaksi, nominalUpah, commissionFee, totalBayar, expiryTimestamp, status awal. |
+| Q-030 | `SELECT "statusPekerjaan" FROM transaksi_pekerjaan WHERE "idTransaksi" = $1 FOR UPDATE;` | buatTagihan(): $1 = idTransaksi; semua pembuatan tagihan untuk pekerjaan yang sama wajib mengambil kunci ini. |
+| Q-035 | `SELECT EXISTS (SELECT 1 FROM tagihan_pembayaran WHERE "idTransaksi" = $1 AND "statusPembayaran" IN ('Menunggu Pembayaran', 'Diproses', 'Berhasil')) AS ada;` | buatTagihan(): $1 = idTransaksi; mencegah tagihan aktif atau lunas dibuat ulang. |
+| Q-036 | `INSERT INTO tagihan_pembayaran ("idTagihan", "idTransaksi", "nominalUpah", "commissionFee", "totalBayar", "expiryTimestamp", "statusPembayaran") VALUES ($1, $2, $3, $4, $5, $6, $7);` | buatTagihan(): $1?$7 = idTagihan, idTransaksi, nominalUpah, commissionFee, totalBayar, expiryTimestamp, status awal. |
 
 ### 5.9.3 Algoritma/Query
 
@@ -2323,23 +2323,23 @@ function setStatusPembayaran(status: string) -> void
     if status not in STATUS_PEMBAYARAN then
         throw Error("Status pembayaran tidak valid")
     transaction
-        data <- wajibAda(queryOne("Q-045", this.idTagihan))
+        data <- wajibAda(queryOne("Q-037", this.idTagihan))
         if data.statusPembayaran != status then
             if not transisiDiizinkan("pembayaran", data.statusPembayaran, status) then
                 throw Error("Perubahan status pembayaran tidak diizinkan")
-            wajibAda(queryOne("Q-046", this.idTagihan, status))
+            wajibAda(queryOne("Q-038", this.idTagihan, status))
     this.statusPembayaran <- status
     { Controller menyelaraskan status pekerjaan dalam transaksi yang sama bila diperlukan. }
 ```
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.9.3. Query Operasi setStatusPembayaran
+Tabel 5.9.5. Query Operasi setStatusPembayaran
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-045 | `SELECT "statusPembayaran" FROM tagihan_pembayaran WHERE "idTagihan" = $1 FOR UPDATE;` | setStatusPembayaran(): $1 = idTagihan. |
-| Q-046 | `UPDATE tagihan_pembayaran SET "statusPembayaran" = $2 WHERE "idTagihan" = $1 RETURNING "statusPembayaran";` | setStatusPembayaran(): $1 = idTagihan, $2 = status hasil validasi. |
+| Q-037 | `SELECT "statusPembayaran" FROM tagihan_pembayaran WHERE "idTagihan" = $1 FOR UPDATE;` | setStatusPembayaran(): $1 = idTagihan. |
+| Q-038 | `UPDATE tagihan_pembayaran SET "statusPembayaran" = $2 WHERE "idTagihan" = $1 RETURNING "statusPembayaran";` | setStatusPembayaran(): $1 = idTagihan, $2 = status hasil validasi. |
 
 ## 5.10 Kelas PencairanDana
 
@@ -2368,7 +2368,7 @@ Tabel 5.10.2. Atribut Kelas PencairanDana
 
 **Nama Kelas:** PencairanDana  
 **Nama Operasi:** createPencairanDana(idTenagaKerja: string, nominal: number, rekeningTujuan: string): void
-**ID Algoritma:** Algo-010-01
+**ID Algoritma:** Algo-044
 
 ```text
 procedure createPencairanDana(idTenagaKerja: string, nominal: number, rekeningTujuan: string)
@@ -2379,7 +2379,7 @@ procedure createPencairanDana(idTenagaKerja: string, nominal: number, rekeningTu
     this.statusPencairan <- "Menunggu Proses"
     this.waktuPengajuan <- getCurrentTimestamp()
 
-    execute Q-010-01 with (this.idPencairan, this.idTenagaKerja, this.nominal, this.rekeningTujuan, this.statusPencairan, this.waktuPengajuan)
+    execute Q-039 with (this.idPencairan, this.idTenagaKerja, this.nominal, this.rekeningTujuan, this.statusPencairan, this.waktuPengajuan)
 end procedure
 ```
 
@@ -2387,18 +2387,18 @@ Tabel 5.10.3. Query Operasi createPencairanDana(idTenagaKerja: string, nominal: 
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-010-01 | INSERT INTO pencairanDana (idPencairan, idTenagaKerja, nominal, rekeningTujuan, statusPencairan, waktuPengajuan) VALUES (:idPencairan, :idTenagaKerja, :nominal, :rekeningTujuan, :statusPencairan, :waktuPengajuan); | Menyimpan permohonan pencairan dana baru tenaga kerja ke basis data. |
+| Q-039 | INSERT INTO pencairanDana (idPencairan, idTenagaKerja, nominal, rekeningTujuan, statusPencairan, waktuPengajuan) VALUES (:idPencairan, :idTenagaKerja, :nominal, :rekeningTujuan, :statusPencairan, :waktuPengajuan); | Menyimpan permohonan pencairan dana baru tenaga kerja ke basis data. |
 
 ### 5.10.2 Algoritma/Query
 
 **Nama Kelas:** PencairanDana  
 **Nama Operasi:** setStatusPencairan(status: string): void
-**ID Algoritma:** Algo-010-02
+**ID Algoritma:** Algo-045
 
 ```text
 procedure setStatusPencairan(status: string)
     this.statusPencairan <- status
-    execute Q-010-02 with (status, this.idPencairan)
+    execute Q-040 with (status, this.idPencairan)
 end procedure
 ```
 
@@ -2406,7 +2406,7 @@ Tabel 5.10.4. Query Operasi setStatusPencairan(status: string): void
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-010-02 | UPDATE pencairanDana SET statusPencairan = :status WHERE idPencairan = :idPencairan; | Memperbarui status pemrosesan pencairan dana. |
+| Q-040 | UPDATE pencairanDana SET statusPencairan = :status WHERE idPencairan = :idPencairan; | Memperbarui status pemrosesan pencairan dana. |
 
 
 ## 5.11 Kelas UlasanRating
@@ -2435,7 +2435,7 @@ Tabel 5.11.2. Atribut Kelas UlasanRating
 
 **Nama Kelas:** UlasanRating  
 **Nama Operasi:** simpanUlasan(): void  
-**ID Algoritma:** Algo-011-01
+**ID Algoritma:** Algo-046
 
 ```text
 procedure simpanUlasan()
@@ -2445,13 +2445,13 @@ procedure simpanUlasan()
     end if
 
     // Cek pencegahan double review pada transaksi yang sama
-    riwayatUlasan <- execute Q-011a with (this.idTransaksi, this.idPenilai)
+    riwayatUlasan <- execute Q-041 with (this.idTransaksi, this.idPenilai)
     if riwayatUlasan.totalUlasan > 0 then
         throw Error("Pengguna telah memberikan ulasan pada transaksi ini.")
     end if
 
     this.idUlasan <- generateUUID()
-    execute Q-011-02 with (this.idUlasan, this.idTransaksi, this.idPenilai, this.idPenerima, this.nilai, this.deskripsiUlasan)
+    execute Q-042 with (this.idUlasan, this.idTransaksi, this.idPenilai, this.idPenerima, this.nilai, this.deskripsiUlasan)
 end procedure
 ```
 
@@ -2461,8 +2461,8 @@ Tabel 5.11.3. Query Operasi simpanUlasan(): void
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-011-01 | SELECT COUNT(*) AS totalUlasan FROM ulasanRating WHERE idTransaksi = :idTransaksi AND idPenilai = :idPenilai; | Memeriksa apakah penilai telah memberikan ulasan pada transaksi yang sama untuk mencegah ulasan ganda. |
-| Q-011-02 | INSERT INTO ulasanRating (idUlasan, idTransaksi, idPenilai, idPenerima, nilai, deskripsiUlasan) VALUES (:idUlasan, :idTransaksi, :idPenilai, :idPenerima, :nilai, :deskripsiUlasan); | Menyimpan data penilaian dan ulasan baru ke basis data. |
+| Q-041 | SELECT COUNT(*) AS totalUlasan FROM ulasanRating WHERE idTransaksi = :idTransaksi AND idPenilai = :idPenilai; | Memeriksa apakah penilai telah memberikan ulasan pada transaksi yang sama untuk mencegah ulasan ganda. |
+| Q-042 | INSERT INTO ulasanRating (idUlasan, idTransaksi, idPenilai, idPenerima, nilai, deskripsiUlasan) VALUES (:idUlasan, :idTransaksi, :idPenilai, :idPenerima, :nilai, :deskripsiUlasan); | Menyimpan data penilaian dan ulasan baru ke basis data. |
 
 
 ## 5.12 Kelas TiketSengketa
@@ -2494,7 +2494,7 @@ Tabel 5.12.2. Atribut Kelas TiketSengketa
 
 **Nama Kelas:** TiketSengketa  
 **Nama Operasi:** buatTiket(): void
-**ID Algoritma:** Algo-012-01
+**ID Algoritma:** Algo-047
 
 ```text
 procedure buatTiket()
@@ -2502,7 +2502,7 @@ procedure buatTiket()
     this.statusTiket <- "Diajukan"
     this.keputusan <- ""
 
-    execute Q-012-01 with (this.idTiket, this.idTransaksi, this.idPelapor, this.kategoriMasalah, this.deskripsiKomplain, this.urlBukti, this.statusTiket, this.keputusan)
+    execute Q-043 with (this.idTiket, this.idTransaksi, this.idPelapor, this.kategoriMasalah, this.deskripsiKomplain, this.urlBukti, this.statusTiket, this.keputusan)
 end procedure
 ```
 
@@ -2510,18 +2510,18 @@ Tabel 5.12.3. Query Operasi buatTiket(): void
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-012-01 | INSERT INTO tiketSengketa (idTiket, idTransaksi, idPelapor, kategoriMasalah, deskripsiKomplain, urlBukti, statusTiket, keputusan) VALUES (:idTiket, :idTransaksi, :idPelapor, :kategoriMasalah, :deskripsiKomplain, :urlBukti, :statusTiket, :keputusan); | Menyimpan berkas tiket sengketa baru ke basis data. |
+| Q-043 | INSERT INTO tiketSengketa (idTiket, idTransaksi, idPelapor, kategoriMasalah, deskripsiKomplain, urlBukti, statusTiket, keputusan) VALUES (:idTiket, :idTransaksi, :idPelapor, :kategoriMasalah, :deskripsiKomplain, :urlBukti, :statusTiket, :keputusan); | Menyimpan berkas tiket sengketa baru ke basis data. |
 
 ### 5.12.2 Algoritma/Query
 
 **Nama Kelas:** TiketSengketa  
 **Nama Operasi:** setStatusTiket(status: string): void
-**ID Algoritma:** Algo-012-02
+**ID Algoritma:** Algo-048
 
 ```text
 procedure setStatusTiket(status: string)
     this.statusTiket <- status
-    execute Q-012-02 with (status, this.idTiket)
+    execute Q-044 with (status, this.idTiket)
 end procedure
 ```
 
@@ -2529,7 +2529,7 @@ Tabel 5.12.4. Query Operasi setStatusTiket(status: string): void
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-012-02 | UPDATE tiketSengketa SET statusTiket = :status WHERE idTiket = :idTiket; | Memperbarui status penanganan tiket sengketa. |
+| Q-044 | UPDATE tiketSengketa SET statusTiket = :status WHERE idTiket = :idTiket; | Memperbarui status penanganan tiket sengketa. |
 
 
 ## 5.13 Kelas RiwayatSengketa
@@ -2556,7 +2556,7 @@ Tabel 5.13.2. Atribut Kelas RiwayatSengketa
 
 **Nama Kelas:** RiwayatSengketa  
 **Nama Operasi:** catatRiwayat(aktivitas: string): void  
-**ID Algoritma:** Algo-013-01
+**ID Algoritma:** Algo-049
 
 ```text
 procedure catatRiwayat(aktivitas: string)
@@ -2564,7 +2564,7 @@ procedure catatRiwayat(aktivitas: string)
     this.logAktivitas <- aktivitas
     this.timestamp <- getCurrentTimestamp()
 
-    execute Q-013-01 with (this.idRiwayat, this.idTiket, this.logAktivitas, this.timestamp)
+    execute Q-045 with (this.idRiwayat, this.idTiket, this.logAktivitas, this.timestamp)
 end procedure
 ```
 
@@ -2572,7 +2572,7 @@ Tabel 5.13.3. Query Operasi catatRiwayat(aktivitas: string): void
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-013-01 | INSERT INTO riwayatSengketa (idRiwayat, idTiket, logAktivitas, timestamp) VALUES (:idRiwayat, :idTiket, :logAktivitas, :timestamp); | Mencatat riwayat log aktivitas penyelesaian tiket sengketa ke basis data. |
+| Q-045 | INSERT INTO riwayatSengketa (idRiwayat, idTiket, logAktivitas, timestamp) VALUES (:idRiwayat, :idTiket, :logAktivitas, :timestamp); | Mencatat riwayat log aktivitas penyelesaian tiket sengketa ke basis data. |
 
 
 ## 5.14 Kelas Notifikasi
@@ -2601,7 +2601,7 @@ Tabel 5.14.2. Atribut Kelas Notifikasi
 
 **Nama Kelas:** Notifikasi  
 **Nama Operasi:** simpanNotifikasi(): void  
-**ID Algoritma:** Algo-014-01
+**ID Algoritma:** Algo-050
 
 ```text
 procedure simpanNotifikasi()
@@ -2609,7 +2609,7 @@ procedure simpanNotifikasi()
     this.statusBaca <- false
     this.waktuKirim <- getCurrentTimestamp()
 
-    execute Q-014-01 with (this.idNotifikasi, this.idPenerima, this.pesanNotifikasi, this.statusBaca, this.waktuKirim)
+    execute Q-046 with (this.idNotifikasi, this.idPenerima, this.pesanNotifikasi, this.statusBaca, this.waktuKirim)
 end procedure
 ```
 
@@ -2617,17 +2617,17 @@ Tabel 5.14.3. Query Operasi [Nama Operasi]
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-014-01 | `INSERT INTO notifikasi ("idNotifikasi", "idPenerima", "pesanNotifikasi", "statusBaca", "waktuKirim") VALUES ($1, $2, $3, $4, $5) RETURNING "idNotifikasi";` | Menyimpan pesan pemberitahuan baru; $1-$5 = idNotifikasi, idPenerima, pesanNotifikasi, statusBaca, waktuKirim. |
+| Q-046 | `INSERT INTO notifikasi ("idNotifikasi", "idPenerima", "pesanNotifikasi", "statusBaca", "waktuKirim") VALUES ($1, $2, $3, $4, $5) RETURNING "idNotifikasi";` | Menyimpan pesan pemberitahuan baru; $1-$5 = idNotifikasi, idPenerima, pesanNotifikasi, statusBaca, waktuKirim. |
 
 ### 5.14.2 Algoritma/Query
 
 **Nama Kelas:** Notifikasi  
 **Nama Operasi:** `tandaiSudahDibaca(idPenerima: string): boolean`
-**ID Algoritma:** Algo-014-02
+**ID Algoritma:** Algo-051
 
 ```text
 function tandaiSudahDibaca(idPenerima: string) → boolean
-    hasil <- queryOne(Q-014-02, this.idNotifikasi, idPenerima) != null
+    hasil <- queryOne(Q-047, this.idNotifikasi, idPenerima) != null
     if hasil then
         this.statusBaca <- true
     -> hasil
@@ -2637,7 +2637,7 @@ Tabel 5.14.4. Query Operasi tandaiSudahDibaca
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-014-02 | `UPDATE notifikasi SET "statusBaca" = TRUE WHERE "idNotifikasi" = $1 AND "idPenerima" = $2 RETURNING "idNotifikasi";` | Memperbarui status hanya jika notifikasi dimiliki penerima; $1 = idNotifikasi, $2 = idPenerima sesi. |
+| Q-047 | `UPDATE notifikasi SET "statusBaca" = TRUE WHERE "idNotifikasi" = $1 AND "idPenerima" = $2 RETURNING "idNotifikasi";` | Memperbarui status hanya jika notifikasi dimiliki penerima; $1 = idNotifikasi, $2 = idPenerima sesi. |
 
 
 ## 5.15 Kelas PaymentGateway
@@ -2665,7 +2665,7 @@ Tabel 5.15.2. Atribut Kelas PaymentGateway
 
 **Nama Kelas:** PaymentGateway  
 **Nama Operasi:** prosesPembayaran(idTagihan: string, nominal: number): boolean
-**ID Algoritma:** Algo-015-01
+**ID Algoritma:** Algo-052
 
 ```text
 function prosesPembayaran(idTagihan: string, nominal: number): boolean
@@ -2673,7 +2673,7 @@ function prosesPembayaran(idTagihan: string, nominal: number): boolean
     responseGateway <- callPaymentGatewayApi("POST", "/charge", payloadPembayaran)
 
     if responseGateway.statusCode == 200 and responseGateway.statusTransaksi == "settlement" then
-        execute Q-015a with (idTagihan)
+        execute Q-048 with (idTagihan)
         return true
     else if responseGateway.statusCode == 201 and responseGateway.statusTransaksi == "pending" then
         return true
@@ -2687,13 +2687,13 @@ Tabel 5.15.3. Query Operasi prosesPembayaran(idTagihan: string, nominal: number)
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-015-01 | UPDATE tagihanPembayaran SET statusBayar = 'Lunas' WHERE idTagihan = :idTagihan; | Memperbarui status bayar tagihan menjadi Lunas setelah verifikasi gateway berhasil. |
+| Q-048 | UPDATE tagihanPembayaran SET statusBayar = 'Lunas' WHERE idTagihan = :idTagihan; | Memperbarui status bayar tagihan menjadi Lunas setelah verifikasi gateway berhasil. |
 
 ### 5.15.2 Algoritma/Query
 
 **Nama Kelas:** PaymentGateway  
 **Nama Operasi:** transferDana(rekeningTujuan: string, nominal: number): boolean
-**ID Algoritma:** Algo-015-02
+**ID Algoritma:** Algo-053
 
 ```text
 function transferDana(rekeningTujuan: string, nominal: number): boolean
@@ -2712,7 +2712,7 @@ Tabel 5.15.4. Query Operasi transferDana(rekeningTujuan: string, nominal: number
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-015-02 | Tidak ada query langsung ke basis data lokal (interaksi dilakukan via REST API payment gateway pihak ketiga). | Pengiriman instruksi pencairan dana upah ke rekening/e-wallet tujuan. |
+| - | Tidak ada query langsung ke basis data lokal (interaksi dilakukan via REST API payment gateway pihak ketiga). | Pengiriman instruksi pencairan dana upah ke rekening/e-wallet tujuan. |
 
 
 ## 5.16 Kelas PenggunaUI
@@ -2741,7 +2741,7 @@ Tabel 5.16.2. Atribut Kelas PenggunaUI
 
 **Nama Kelas:** PenggunaUI  
 **Nama Operasi:** kirimDataRegistrasi(dataProfil: Record<string, unknown>, peran: string, persetujuanPrivasi: boolean): void
-**ID Algoritma:** Algo-016-01
+**ID Algoritma:** Algo-054
 
 ```text
 procedure kirimDataRegistrasi(dataProfil: Record<string, unknown>, peran: string, persetujuanPrivasi: boolean)
@@ -2764,13 +2764,13 @@ Tabel 5.16.3. Query Operasi kirimDataRegistrasi(dataProfil: Record<string, unkno
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-016-01 | Tidak ada query langsung (operasi berada pada layer View antarmuka pengguna). | Pemrosesan basis data didelegasikan ke PenggunaController dan Model Pengguna. |
+| - | Tidak ada query langsung (operasi berada pada layer View antarmuka pengguna). | Pemrosesan basis data didelegasikan ke PenggunaController dan Model Pengguna. |
 
 ### 5.16.2 Algoritma/Query
 
 **Nama Kelas:** PenggunaUI  
 **Nama Operasi:** kirimDataLogin(email: string, kataSandi: string): void
-**ID Algoritma:** Algo-016-02
+**ID Algoritma:** Algo-055
 
 ```text
 procedure kirimDataLogin(email: string, kataSandi: string)
@@ -2792,7 +2792,7 @@ Tabel 5.16.4. Query Operasi kirimDataLogin(email: string, kataSandi: string): vo
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-016-02 | Tidak ada query langsung (operasi berada pada layer View antarmuka pengguna). | Validasi autentikasi didelegasikan ke PenggunaController dan Supabase Auth. |
+| - | Tidak ada query langsung (operasi berada pada layer View antarmuka pengguna). | Validasi autentikasi didelegasikan ke PenggunaController dan Supabase Auth. |
 
 
 ## 5.17 Kelas TenagaKerjaUI
@@ -2822,7 +2822,7 @@ Tabel 5.17.2. Atribut Kelas TenagaKerjaUI
 
 **Nama Kelas:** TenagaKerjaUI  
 **Nama Operasi:** kirimDokumenIdentitas(dokumen: File, persetujuan: boolean): void
-**ID Algoritma:** Algo-017-01
+**ID Algoritma:** Algo-056
 
 ```text
 procedure kirimDokumenIdentitas(dokumen: File, persetujuan: boolean)
@@ -2855,13 +2855,13 @@ Tabel 5.17.3. Query Operasi kirimDokumenIdentitas(dokumen: File, persetujuan: bo
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-017-01 | Tidak ada query langsung (operasi berada pada layer View antarmuka pengguna). | Pengunggahan berkas dan status verifikasi didelegasikan ke TenagaKerjaController. |
+| - | Tidak ada query langsung (operasi berada pada layer View antarmuka pengguna). | Pengunggahan berkas dan status verifikasi didelegasikan ke TenagaKerjaController. |
 
 ### 5.17.2 Algoritma/Query
 
 **Nama Kelas:** TenagaKerjaUI  
 **Nama Operasi:** pilihPencairanDana(): void
-**ID Algoritma:** Algo-017-02
+**ID Algoritma:** Algo-057
 
 ```text
 procedure pilihPencairanDana()
@@ -2874,7 +2874,7 @@ Tabel 5.17.4. Query Operasi pilihPencairanDana(): void
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-017-02 | Tidak ada query langsung (operasi berada pada layer View antarmuka pengguna). | Nilai saldo pendapatan diambil melalui TenagaKerjaController. |
+| - | Tidak ada query langsung (operasi berada pada layer View antarmuka pengguna). | Nilai saldo pendapatan diambil melalui TenagaKerjaController. |
 
 
 ## 5.18 Kelas PenyediaKerjaUI
@@ -2901,7 +2901,7 @@ Tabel 5.18.2. Atribut Kelas PenyediaKerjaUI
 
 **Nama Kelas:** PenyediaKerjaUI  
 **Nama Operasi:** pilihPembuatanLowongan(): void
-**ID Algoritma:** Algo-018-01
+**ID Algoritma:** Algo-058
 
 ```text
 procedure pilihPembuatanLowongan()
@@ -2919,13 +2919,13 @@ Tabel 5.18.3. Query Operasi pilihPembuatanLowongan(): void
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-018-01 | Tidak ada query langsung (operasi berada pada layer View antarmuka pengguna). | Pemeriksaan status akun dilakukan melalui PenyediaKerjaController. |
+| - | Tidak ada query langsung (operasi berada pada layer View antarmuka pengguna). | Pemeriksaan status akun dilakukan melalui PenyediaKerjaController. |
 
 ### 5.18.2 Algoritma/Query
 
 **Nama Kelas:** PenyediaKerjaUI  
 **Nama Operasi:** tampilkanDaftarPelamar(pelamar: Array<PengajuanPenawaran>): void
-**ID Algoritma:** Algo-018-02
+**ID Algoritma:** Algo-059
 
 ```text
 procedure tampilkanDaftarPelamar(pelamar: Array<PengajuanPenawaran>)
@@ -2948,7 +2948,7 @@ Tabel 5.18.4. Query Operasi tampilkanDaftarPelamar(pelamar: Array<PengajuanPenaw
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-018-02 | Tidak ada query langsung (operasi berada pada layer View antarmuka pengguna). | Data daftar penawaran diambil dari Model PengajuanPenawaran melalui Controller. |
+| - | Tidak ada query langsung (operasi berada pada layer View antarmuka pengguna). | Data daftar penawaran diambil dari Model PengajuanPenawaran melalui Controller. |
 
 
 ## 5.19 Kelas CustomerServiceUI
@@ -2975,7 +2975,7 @@ Tabel 5.19.2. Atribut Kelas CustomerServiceUI
 
 **Nama Kelas:** CustomerServiceUI  
 **Nama Operasi:** tampilkanDaftarAntreanVerifikasi(pengajuan: Array<TenagaKerja>): void  
-**ID Algoritma:** Algo-019-01
+**ID Algoritma:** Algo-060
 
 ```text
 procedure tampilkanDaftarAntreanVerifikasi(pengajuan: Array<TenagaKerja>)
@@ -3000,7 +3000,7 @@ Tabel 5.19.3. Query Operasi tampilkanDaftarAntreanVerifikasi
 
 **Nama Kelas:** CustomerServiceUI  
 **Nama Operasi:** pilihPersetujuanVerifikasi(idTenagaKerja: string): void  
-**ID Algoritma:** Algo-019-02
+**ID Algoritma:** Algo-061
 
 ```text
 procedure pilihPersetujuanVerifikasi(idTenagaKerja: string)
@@ -3051,7 +3051,7 @@ Tabel 5.20.2. Atribut Kelas LowonganPekerjaanUI
 
 **Nama Kelas:** LowonganPekerjaanUI  
 **Nama Operasi:** tampilkanFormLowongan(): void  
-**ID Algoritma:** Algo-019-01
+**ID Algoritma:** Algo-062
 
 ```text
 procedure tampilkanFormLowongan
@@ -3076,7 +3076,7 @@ Tabel 5.20.3. Query Operasi tampilkanFormLowongan
 
 **Nama Kelas:** LowonganPekerjaanUI  
 **Nama Operasi:** kirimDataLowongan(dataLowongan: Record<string, unknown>): void  
-**ID Algoritma:** Algo-019-02
+**ID Algoritma:** Algo-063
 
 ```text
 procedure kirimDataLowongan(dataLowongan: Record<string, unknown>)
@@ -3129,7 +3129,7 @@ Tabel 5.21.2. Atribut Kelas PengajuanPenawaranUI
 
 **Nama Kelas:** PengajuanPenawaranUI  
 **Nama Operasi:** tampilkanTombolAjukan(diizinkan: boolean): void  
-**ID Algoritma:** Algo-019-01
+**ID Algoritma:** Algo-064
 
 ```text
 procedure tampilkanTombolAjukan(diizinkan: boolean)
@@ -3154,7 +3154,7 @@ Tabel 5.21.3. Query Operasi tampilkanTombolAjukan
 
 **Nama Kelas:** PengajuanPenawaranUI  
 **Nama Operasi:** kirimPenawaran(idLowongan: string, pesan: string): void  
-**ID Algoritma:** Algo-019-02
+**ID Algoritma:** Algo-065
 
 ```text
 procedure kirimPenawaran(idLowongan: string, pesan: string)
@@ -3213,7 +3213,7 @@ Tabel 5.22.2. Atribut Kelas TransaksiPekerjaanUI
 
 **Nama Kelas:** TransaksiPekerjaanUI  
 **Nama Operasi:** tampilkanDetailTransaksi(transaksi: TransaksiPekerjaan): void  
-**ID Algoritma:** Algo-019-01
+**ID Algoritma:** Algo-066
 
 ```text
 procedure tampilkanDetailTransaksi(transaksi: TransaksiPekerjaan)
@@ -3238,7 +3238,7 @@ Tabel 5.22.3. Query Operasi tampilkanDetailTransaksi
 
 **Nama Kelas:** TransaksiPekerjaanUI  
 **Nama Operasi:** konfirmasiPersetujuan(idTransaksi: string): void  
-**ID Algoritma:** Algo-019-02
+**ID Algoritma:** Algo-067
 
 ```text
 procedure konfirmasiPersetujuan(idTransaksi: string)
@@ -3287,7 +3287,7 @@ Tabel 5.23.2. Atribut Kelas BuktiPenyerahanUI
 
 **Nama Kelas:** BuktiPenyerahanUI  
 **Nama Operasi:** tampilkanFormUnggah(): void  
-**ID Algoritma:** Algo-019-01
+**ID Algoritma:** Algo-068
 
 ```text
 procedure tampilkanFormUnggah
@@ -3312,7 +3312,7 @@ Tabel 5.23.3. Query Operasi tampilkanFormUnggah
 
 **Nama Kelas:** BuktiPenyerahanUI  
 **Nama Operasi:** kirimBukti(idTransaksi: string, deskripsi: string, berkas: File): void  
-**ID Algoritma:** Algo-019-02
+**ID Algoritma:** Algo-069
 
 ```text
 procedure kirimBukti(idTransaksi: string, deskripsi: string, berkas: File)
@@ -3361,7 +3361,7 @@ Tabel 5.24.2. Atribut Kelas TagihanPembayaranUI
 
 **Nama Kelas:** TagihanPembayaranUI  
 **Nama Operasi:** tampilkanInstruksiPembayaran(tagihan: TagihanPembayaran): void  
-**ID Algoritma:** Algo-019-01
+**ID Algoritma:** Algo-070
 
 ```text
 procedure tampilkanInstruksiPembayaran(tagihan: TagihanPembayaran)
@@ -3386,7 +3386,7 @@ Tabel 5.24.3. Query Operasi tampilkanInstruksiPembayaran
 
 **Nama Kelas:** TagihanPembayaranUI  
 **Nama Operasi:** kirimPembayaran(idTagihan: string, metode: string): void  
-**ID Algoritma:** Algo-019-02
+**ID Algoritma:** Algo-071
 
 ```text
 procedure kirimPembayaran(idTagihan: string, metode: string)
@@ -3436,7 +3436,7 @@ Tabel 5.25.2. Atribut Kelas PencairanDanaUI
 
 **Nama Kelas:** PencairanDanaUI  
 **Nama Operasi:** tampilkanFormPencairan(): void  
-**ID Algoritma:** Algo-019-01
+**ID Algoritma:** Algo-072
 
 ```text
 procedure tampilkanFormPencairan
@@ -3461,7 +3461,7 @@ Tabel 5.25.3. Query Operasi tampilkanFormPencairan
 
 **Nama Kelas:** PencairanDanaUI  
 **Nama Operasi:** kirimPencairan(nominal: Decimal, rekeningTujuan: string): void  
-**ID Algoritma:** Algo-019-02
+**ID Algoritma:** Algo-073
 
 ```text
 procedure kirimPencairan(nominal: Decimal, rekeningTujuan: string)
@@ -3510,7 +3510,7 @@ Tabel 5.26.2. Atribut Kelas UlasanRatingUI
 
 **Nama Kelas:** UlasanRatingUI  
 **Nama Operasi:** tampilkanFormUlasan(idTransaksi: string): void  
-**ID Algoritma:** Algo-019-01
+**ID Algoritma:** Algo-074
 
 ```text
 procedure tampilkanFormUlasan(idTransaksi: string)
@@ -3535,7 +3535,7 @@ Tabel 5.26.3. Query Operasi tampilkanFormUlasan
 
 **Nama Kelas:** UlasanRatingUI  
 **Nama Operasi:** kirimUlasan(idTransaksi: string, nilai: Integer, deskripsi: string): void  
-**ID Algoritma:** Algo-019-02
+**ID Algoritma:** Algo-075
 
 ```text
 procedure kirimUlasan(idTransaksi: string, nilai: Integer, deskripsi: string)
@@ -3590,7 +3590,7 @@ Tabel 5.27.2. Atribut Kelas TiketSengketaUI
 
 **Nama Kelas:** TiketSengketaUI  
 **Nama Operasi:** kirimLaporan(idTransaksi: string, kategori: string, deskripsi: string, bukti: File): void  
-**ID Algoritma:** Algo-019-01
+**ID Algoritma:** Algo-076
 
 ```text
 procedure kirimLaporan(idTransaksi: string, kategori: string, deskripsi: string, bukti: File)
@@ -3618,7 +3618,7 @@ Tabel 5.27.3. Query Operasi kirimLaporan
 
 **Nama Kelas:** TiketSengketaUI  
 **Nama Operasi:** tampilkanTiketDasbor(tiket: Array<TiketSengketa>): void  
-**ID Algoritma:** Algo-019-02
+**ID Algoritma:** Algo-077
 
 ```text
 procedure tampilkanTiketDasbor(tiket: Array<TiketSengketa>)
@@ -3661,7 +3661,7 @@ Tabel 5.28.2. Atribut Kelas RiwayatSengketaUI
 
 **Nama Kelas:** RiwayatSengketaUI  
 **Nama Operasi:** `tampilkanRiwayat(riwayat: Array<RiwayatSengketa>?): Array<RiwayatSengketa>`  
-**ID Algoritma:** Algo-047
+**ID Algoritma:** Algo-078
 
 ```text
 function tampilkanRiwayat(riwayat: Array<RiwayatSengketa>?) → Array<RiwayatSengketa>
@@ -3678,7 +3678,7 @@ Tabel 5.28.3. Query Operasi tampilkanRiwayat
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| - | - | Tidak menggunakan query; data riwayat diambil Controller melalui Q-021 (Tabel 5.4.4). |
+| - | - | Tidak menggunakan query; data riwayat diambil Controller melalui Q-016 (Tabel 5.4.6). |
 
 ---
 
@@ -3704,7 +3704,7 @@ Tabel 5.29.2. Atribut Kelas NotifikasiUI
 
 **Nama Kelas:** NotifikasiUI  
 **Nama Operasi:** `tampilkanNotifikasi(pesan: string): string`  
-**ID Algoritma:** Algo-048
+**ID Algoritma:** Algo-079
 
 ```text
 function tampilkanNotifikasi(pesan: string) → string
@@ -3726,7 +3726,7 @@ Tabel 5.29.3. Query Operasi tampilkanNotifikasi
 
 **Nama Kelas:** NotifikasiUI  
 **Nama Operasi:** `bacaNotifikasi(idNotifikasi: string): boolean`  
-**ID Algoritma:** Algo-049
+**ID Algoritma:** Algo-080
 
 ```text
 function bacaNotifikasi(idNotifikasi: string) → boolean
@@ -3746,7 +3746,7 @@ Tabel 5.29.4. Query Operasi bacaNotifikasi
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| - | - | Tidak ada query langsung di UI; pembaruan status baca dilakukan NotifikasiController melalui Q-014-02 (Tabel 5.14.4). |
+| - | - | Tidak ada query langsung di UI; pembaruan status baca dilakukan NotifikasiController melalui Q-047 (Tabel 5.14.4). |
 
 ---
 
@@ -3772,7 +3772,7 @@ Tabel 5.30.2. Atribut Kelas PaymentGatewayUI
 
 **Nama Kelas:** PaymentGatewayUI  
 **Nama Operasi:** `tampilkanHalamanPembayaranEksternal(urlPembayaran: string): boolean`  
-**ID Algoritma:** Algo-050
+**ID Algoritma:** Algo-081
 
 ```text
 function tampilkanHalamanPembayaranEksternal(urlPembayaran: string) → boolean
@@ -3799,7 +3799,7 @@ Tabel 5.30.3. Query Operasi tampilkanHalamanPembayaranEksternal
 
 **Nama Kelas:** PaymentGatewayUI  
 **Nama Operasi:** `tampilkanStatusGateway(status: string): string`  
-**ID Algoritma:** Algo-051
+**ID Algoritma:** Algo-082
 
 ```text
 function tampilkanStatusGateway(status: string) → string
@@ -3845,7 +3845,7 @@ Tabel 5.31.2. Atribut Kelas PenggunaController
 
 **Nama Kelas:** PenggunaController  
 **Nama Operasi:** `registrasi(dataProfil: Record<string, unknown>, peran: string, persetujuanPrivasi: boolean): boolean`  
-**ID Algoritma:** Algo-052
+**ID Algoritma:** Algo-083
 
 ```text
 function registrasi(dataProfil: Record<string, unknown>, peran: string, persetujuanPrivasi: boolean) → boolean
@@ -3890,14 +3890,14 @@ Tabel 5.31.3. Query Operasi registrasi
 | Supabase Auth | Tidak menggunakan query langsung dari controller. | `SupabaseAuth.daftar` memvalidasi dan menyimpan kredensial serta menghasilkan ID autentikasi yang menjadi `idPengguna`. |
 | Q-003 | `INSERT INTO pengguna ("idPengguna", nama, email, peran, "tanggalLahir", "akumulasiRating") VALUES ($1, $2, $3, $4, $5, 0) RETURNING "idPengguna";` | Menyimpan profil dasar Tenaga Kerja dengan ID dari Supabase Auth dan peran tetap Tenaga Kerja. |
 | Q-004 | `INSERT INTO tenaga_kerja ("idTenagaKerja", "idPengguna", "statusVerifikasi", "saldoPendapatan", "rekeningTujuan", "dokumenIdentitas", "waktuPengajuanVerifikasi", "alasanPenolakanVerifikasi") VALUES ($1, $2, $3, 0, $4, NULL, NULL, $5);` | Menyimpan profil Tenaga Kerja. |
-| Q-011 | `INSERT INTO pengguna ("idPengguna", nama, email, peran, "tanggalLahir", "akumulasiRating") VALUES ($1, $2, $3, $4, $5, 0) RETURNING "idPengguna";` | Menyimpan profil dasar Penyedia Kerja dengan ID dari Supabase Auth dan peran tetap Penyedia Kerja. |
-| Q-012 | `INSERT INTO penyedia_kerja ("idPenyediaKerja", "idPengguna") VALUES ($1, $2);` | Menyimpan profil Penyedia Kerja. |
+| Q-003 | `INSERT INTO pengguna ("idPengguna", nama, email, peran, "tanggalLahir", "akumulasiRating") VALUES ($1, $2, $3, $4, $5, 0) RETURNING "idPengguna";` | Menyimpan profil dasar Penyedia Kerja dengan ID dari Supabase Auth dan peran tetap Penyedia Kerja. |
+| Q-009 | `INSERT INTO penyedia_kerja ("idPenyediaKerja", "idPengguna") VALUES ($1, $2);` | Menyimpan profil Penyedia Kerja. |
 
 ### 5.31.2 Algoritma/Query
 
 **Nama Kelas:** PenggunaController  
 **Nama Operasi:** `validasiBatasUsia(tanggalLahir: Date): boolean`  
-**ID Algoritma:** Algo-053
+**ID Algoritma:** Algo-084
 
 ```text
 function validasiBatasUsia(tanggalLahir: Date) → boolean
@@ -3919,7 +3919,7 @@ Tabel 5.31.4. Query Operasi validasiBatasUsia
 
 **Nama Kelas:** PenggunaController  
 **Nama Operasi:** `prosesLogin(email: string, kataSandi: string): HasilLogin`  
-**ID Algoritma:** Algo-054
+**ID Algoritma:** Algo-085
 
 ```text
 function prosesLogin(email: string, kataSandi: string) → HasilLogin
@@ -3972,7 +3972,7 @@ Tabel 5.32.2. Atribut Kelas TenagaKerjaController
 
 **Nama Kelas:** TenagaKerjaController  
 **Nama Operasi:** `simpanProfilTenagaKerja(dataProfil: Record<string, unknown>, idPenggunaAuth: string): boolean`  
-**ID Algoritma:** Algo-055
+**ID Algoritma:** Algo-086
 
 ```text
 function simpanProfilTenagaKerja(dataProfil: Record<string, unknown>, idPenggunaAuth: string) → boolean
@@ -4000,7 +4000,7 @@ Tabel 5.32.3. Query Operasi simpanProfilTenagaKerja
 
 **Nama Kelas:** TenagaKerjaController  
 **Nama Operasi:** `prosesPengajuanVerifikasi(idTenagaKerja: string, dokumen: File, persetujuan: boolean): boolean`  
-**ID Algoritma:** Algo-056
+**ID Algoritma:** Algo-087
 
 ```text
 function prosesPengajuanVerifikasi(idTenagaKerja: string, dokumen: File, persetujuan: boolean) → boolean
@@ -4013,7 +4013,7 @@ function prosesPengajuanVerifikasi(idTenagaKerja: string, dokumen: File, persetu
         output("Dokumen tidak memenuhi ketentuan")
         -> false
     else
-        akun <- query(Q-013, idTenagaKerja)
+        akun <- query(Q-010, idTenagaKerja)
         if akun.statusVerifikasi not in ["Belum Terverifikasi", "Ditolak"] then
             output("Status verifikasi tidak mengizinkan pengajuan baru")
             -> false
@@ -4031,7 +4031,7 @@ Tabel 5.32.4. Query Operasi prosesPengajuanVerifikasi
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-013 | `SELECT "idTenagaKerja", "dokumenIdentitas", "statusVerifikasi", "waktuPengajuanVerifikasi", "alasanPenolakanVerifikasi" FROM tenaga_kerja WHERE "idTenagaKerja" = $1;` | Membaca status verifikasi; $1 = idTenagaKerja. |
+| Q-010 | `SELECT "idTenagaKerja", "dokumenIdentitas", "statusVerifikasi", "waktuPengajuanVerifikasi", "alasanPenolakanVerifikasi" FROM tenaga_kerja WHERE "idTenagaKerja" = $1;` | Membaca status verifikasi; $1 = idTenagaKerja. |
 | Q-005 | `UPDATE tenaga_kerja SET "statusVerifikasi" = $2 WHERE "idTenagaKerja" = $1 RETURNING "statusVerifikasi";` | Mengubah status menjadi Menunggu Verifikasi. |
 | Q-006 | `UPDATE tenaga_kerja SET "dokumenIdentitas" = $2, "waktuPengajuanVerifikasi" = $3 WHERE "idTenagaKerja" = $1 RETURNING "waktuPengajuanVerifikasi";` | Menyimpan path dokumen dan waktu pengajuan. |
 
@@ -4039,7 +4039,7 @@ Tabel 5.32.4. Query Operasi prosesPengajuanVerifikasi
 
 **Nama Kelas:** TenagaKerjaController  
 **Nama Operasi:** `validasiFormatDokumen(dokumen: File): boolean`  
-**ID Algoritma:** Algo-057
+**ID Algoritma:** Algo-088
 
 ```text
 function validasiFormatDokumen(dokumen: File) → boolean
@@ -4060,7 +4060,7 @@ Tabel 5.32.5. Query Operasi validasiFormatDokumen
 
 **Nama Kelas:** TenagaKerjaController  
 **Nama Operasi:** `validasiUkuranDokumen(dokumen: File): boolean`  
-**ID Algoritma:** Algo-058
+**ID Algoritma:** Algo-089
 
 ```text
 function validasiUkuranDokumen(dokumen: File) → boolean
@@ -4081,13 +4081,13 @@ Tabel 5.32.6. Query Operasi validasiUkuranDokumen
 
 **Nama Kelas:** TenagaKerjaController  
 **Nama Operasi:** `periksaAksesFitur(namaFitur: string): boolean`  
-**ID Algoritma:** Algo-059
+**ID Algoritma:** Algo-090
 
 ```text
 function periksaAksesFitur(namaFitur: string) → boolean
     requireAuthenticatedRole("TenagaKerja")
     if namaFitur in ["ajukanPenawaran", "serahkanPekerjaan", "ajukanPencairan"] then
-        akun <- query(Q-013, currentUser().idTenagaKerja)
+        akun <- query(Q-010, currentUser().idTenagaKerja)
         if akun = null or akun.statusVerifikasi != "Terverifikasi" then
             output("Fitur hanya untuk Tenaga Kerja terverifikasi")
             -> false
@@ -4101,18 +4101,18 @@ Tabel 5.32.7. Query Operasi periksaAksesFitur
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-013 | `SELECT "idTenagaKerja", "dokumenIdentitas", "statusVerifikasi", "waktuPengajuanVerifikasi", "alasanPenolakanVerifikasi" FROM tenaga_kerja WHERE "idTenagaKerja" = $1;` | Membaca statusVerifikasi; $1 berasal dari akun Tenaga Kerja pada sesi terautentikasi. |
+| Q-010 | `SELECT "idTenagaKerja", "dokumenIdentitas", "statusVerifikasi", "waktuPengajuanVerifikasi", "alasanPenolakanVerifikasi" FROM tenaga_kerja WHERE "idTenagaKerja" = $1;` | Membaca statusVerifikasi; $1 berasal dari akun Tenaga Kerja pada sesi terautentikasi. |
 
 ### 5.32.6 Algoritma/Query
 
 **Nama Kelas:** TenagaKerjaController  
 **Nama Operasi:** `validasiAksesPenyerahan(idTransaksi: string): boolean`  
-**ID Algoritma:** Algo-060
+**ID Algoritma:** Algo-091
 
 ```text
 function validasiAksesPenyerahan(idTransaksi: string) → boolean
     requireAuthenticatedRole("TenagaKerja")
-    transaksi <- query(Q-039, idTransaksi)
+    transaksi <- query(Q-014, idTransaksi)
     if transaksi = null then
         output("Transaksi tidak ditemukan")
         -> false
@@ -4127,13 +4127,13 @@ Tabel 5.32.8. Query Operasi validasiAksesPenyerahan
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-039 | `SELECT * FROM transaksi_pekerjaan WHERE "idTransaksi" = $1;` | Memeriksa pemilik dan status pekerjaan; pemilik dicocokkan dengan sesi terautentikasi. |
+| Q-014 | `SELECT * FROM transaksi_pekerjaan WHERE "idTransaksi" = $1;` | Memeriksa pemilik dan status pekerjaan; pemilik dicocokkan dengan sesi terautentikasi. |
 
 ### 5.32.7 Algoritma/Query
 
 **Nama Kelas:** TenagaKerjaController  
 **Nama Operasi:** `prosesPengajuanPencairan(nominal: Decimal, rekeningTujuan: string): boolean`  
-**ID Algoritma:** Algo-061
+**ID Algoritma:** Algo-092
 
 ```text
 function prosesPengajuanPencairan(nominal: Decimal, rekeningTujuan: string) → boolean
@@ -4144,13 +4144,13 @@ function prosesPengajuanPencairan(nominal: Decimal, rekeningTujuan: string) → 
     else
         hasil <- false
         transaction
-            saldo <- query(Q-009, currentUser().idTenagaKerja)
+            saldo <- query(Q-007, currentUser().idTenagaKerja)
             if saldo = null or saldo.saldoPendapatan < nominal then
                 output("Saldo pendapatan tidak cukup")
                 rollback
             else
-                wajibAda(exec(Q-010, currentUser().idTenagaKerja, saldo.saldoPendapatan - nominal))
-                wajibAda(exec(Q-010-01, uuid(), currentUser().idTenagaKerja, nominal, rekeningTujuan, "Menunggu Proses", waktuSekarang()))
+                wajibAda(exec(Q-008, currentUser().idTenagaKerja, saldo.saldoPendapatan - nominal))
+                wajibAda(exec(Q-049, uuid(), currentUser().idTenagaKerja, nominal, rekeningTujuan, "Menunggu Proses", waktuSekarang()))
                 commit
                 hasil <- true
         if hasil then
@@ -4162,9 +4162,9 @@ Tabel 5.32.9. Query Operasi prosesPengajuanPencairan
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-009 | `SELECT "saldoPendapatan" FROM tenaga_kerja WHERE "idTenagaKerja" = $1 FOR UPDATE;` | Mengunci saldo sebelum diperiksa; $1 berasal dari akun pada sesi terautentikasi. |
-| Q-010 | `UPDATE tenaga_kerja SET "saldoPendapatan" = $2 WHERE "idTenagaKerja" = $1 RETURNING "saldoPendapatan";` | Mengurangi saldo dalam transaksi yang sama. |
-| Q-010-01 | `INSERT INTO pencairanDana ("idPencairan", "idTenagaKerja", nominal, "rekeningTujuan", "statusPencairan", "waktuPengajuan") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "idPencairan";` | Menyimpan permohonan pencairan baru; $1-$6 = idPencairan, idTenagaKerja sesi, nominal, rekeningTujuan, statusPencairan, waktuPengajuan. |
+| Q-007 | `SELECT "saldoPendapatan" FROM tenaga_kerja WHERE "idTenagaKerja" = $1 FOR UPDATE;` | Mengunci saldo sebelum diperiksa; $1 berasal dari akun pada sesi terautentikasi. |
+| Q-008 | `UPDATE tenaga_kerja SET "saldoPendapatan" = $2 WHERE "idTenagaKerja" = $1 RETURNING "saldoPendapatan";` | Mengurangi saldo dalam transaksi yang sama. |
+| Q-049 | `INSERT INTO pencairanDana ("idPencairan", "idTenagaKerja", nominal, "rekeningTujuan", "statusPencairan", "waktuPengajuan") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "idPencairan";` | Menyimpan permohonan pencairan baru; $1-$6 = idPencairan, idTenagaKerja sesi, nominal, rekeningTujuan, statusPencairan, waktuPengajuan. |
 
 ---
 
@@ -4192,7 +4192,7 @@ Tabel 5.33.2. Atribut Kelas PenyediaKerjaController
 
 **Nama Kelas:** PenyediaKerjaController  
 **Nama Operasi:** `simpanProfilPenyediaKerja(dataProfil: Record<string, unknown>, idPenggunaAuth: string): boolean`  
-**ID Algoritma:** Algo-062
+**ID Algoritma:** Algo-093
 
 ```text
 function simpanProfilPenyediaKerja(dataProfil: Record<string, unknown>, idPenggunaAuth: string) → boolean
@@ -4202,8 +4202,8 @@ function simpanProfilPenyediaKerja(dataProfil: Record<string, unknown>, idPenggu
         -> false
     else
         transaction
-            wajibAda(exec(Q-011, idPenggunaAuth, dataProfil.nama, normalizeEmail(dataProfil.email), "PenyediaKerja", dataProfil.tanggalLahir))
-            wajibAda(exec(Q-012, uuid(), idPenggunaAuth))
+            wajibAda(exec(Q-003, idPenggunaAuth, dataProfil.nama, normalizeEmail(dataProfil.email), "PenyediaKerja", dataProfil.tanggalLahir))
+            wajibAda(exec(Q-009, uuid(), idPenggunaAuth))
             commit
         output("Profil Penyedia Kerja berhasil disimpan")
         -> true
@@ -4213,14 +4213,14 @@ Tabel 5.33.3. Query Operasi simpanProfilPenyediaKerja
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-011 | `INSERT INTO pengguna ("idPengguna", nama, email, peran, "tanggalLahir", "akumulasiRating") VALUES ($1, $2, $3, $4, $5, 0) RETURNING "idPengguna";` | Menyimpan profil dasar dengan ID dari Supabase Auth; $1-$5 = idPengguna, nama, email, peran tetap Penyedia Kerja, tanggalLahir. |
-| Q-012 | `INSERT INTO penyedia_kerja ("idPenyediaKerja", "idPengguna") VALUES ($1, $2);` | Menyimpan profil Penyedia Kerja. |
+| Q-003 | `INSERT INTO pengguna ("idPengguna", nama, email, peran, "tanggalLahir", "akumulasiRating") VALUES ($1, $2, $3, $4, $5, 0) RETURNING "idPengguna";` | Menyimpan profil dasar dengan ID dari Supabase Auth; $1-$5 = idPengguna, nama, email, peran tetap Penyedia Kerja, tanggalLahir. |
+| Q-009 | `INSERT INTO penyedia_kerja ("idPenyediaKerja", "idPengguna") VALUES ($1, $2);` | Menyimpan profil Penyedia Kerja. |
 
 ### 5.33.2 Algoritma/Query
 
 **Nama Kelas:** PenyediaKerjaController  
 **Nama Operasi:** `validasiAksesFormLowongan(): boolean`  
-**ID Algoritma:** Algo-063
+**ID Algoritma:** Algo-094
 
 ```text
 function validasiAksesFormLowongan() → boolean
@@ -4245,7 +4245,7 @@ Tabel 5.33.4. Query Operasi validasiAksesFormLowongan
 
 **Nama Kelas:** PenyediaKerjaController  
 **Nama Operasi:** `ambilDaftarPelamar(idLowongan: string): Array<PengajuanPenawaran>`  
-**ID Algoritma:** Algo-064
+**ID Algoritma:** Algo-095
 
 ```text
 function ambilDaftarPelamar(idLowongan: string) → Array<PengajuanPenawaran>
@@ -4269,12 +4269,12 @@ Tabel 5.33.5. Query Operasi ambilDaftarPelamar
 
 **Nama Kelas:** PenyediaKerjaController  
 **Nama Operasi:** `validasiAksesPembayaran(idTransaksi: string): boolean`  
-**ID Algoritma:** Algo-065
+**ID Algoritma:** Algo-096
 
 ```text
 function validasiAksesPembayaran(idTransaksi: string) → boolean
     requireAuthenticatedRole("PenyediaKerja")
-    transaksi <- query(Q-039, idTransaksi)
+    transaksi <- query(Q-014, idTransaksi)
     if transaksi = null then
         output("Transaksi tidak ditemukan")
         -> false
@@ -4289,7 +4289,7 @@ Tabel 5.33.6. Query Operasi validasiAksesPembayaran
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-039 | `SELECT * FROM transaksi_pekerjaan WHERE "idTransaksi" = $1;` | Memeriksa pemilik dan status transaksi; pemilik dicocokkan dengan sesi Penyedia Kerja. |
+| Q-014 | `SELECT * FROM transaksi_pekerjaan WHERE "idTransaksi" = $1;` | Memeriksa pemilik dan status transaksi; pemilik dicocokkan dengan sesi Penyedia Kerja. |
 
 ---
 
@@ -4317,12 +4317,12 @@ Tabel 5.34.2. Atribut Kelas CustomerServiceController
 
 **Nama Kelas:** CustomerServiceController  
 **Nama Operasi:** `tinjauDokumenIdentitas(idTenagaKerja: string): File?`  
-**ID Algoritma:** Algo-066
+**ID Algoritma:** Algo-097
 
 ```text
 function tinjauDokumenIdentitas(idTenagaKerja: string) → File?
     requirePermission(currentUser().hakAkses, "tinjauVerifikasi")
-    akun <- query(Q-013, idTenagaKerja)
+    akun <- query(Q-010, idTenagaKerja)
     if akun = null or akun.statusVerifikasi != "Menunggu Verifikasi" or akun.dokumenIdentitas kosong then
         output("Dokumen verifikasi yang menunggu tinjauan tidak ditemukan")
         -> null
@@ -4334,22 +4334,22 @@ Tabel 5.34.3. Query Operasi tinjauDokumenIdentitas
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-013 | `SELECT "idTenagaKerja", "dokumenIdentitas", "statusVerifikasi", "waktuPengajuanVerifikasi", "alasanPenolakanVerifikasi" FROM tenaga_kerja WHERE "idTenagaKerja" = $1;` | Membaca path dokumen dan status; berkas dimuat dari storage privat. |
+| Q-010 | `SELECT "idTenagaKerja", "dokumenIdentitas", "statusVerifikasi", "waktuPengajuanVerifikasi", "alasanPenolakanVerifikasi" FROM tenaga_kerja WHERE "idTenagaKerja" = $1;` | Membaca path dokumen dan status; berkas dimuat dari storage privat. |
 
 ### 5.34.2 Algoritma/Query
 
 **Nama Kelas:** CustomerServiceController  
 **Nama Operasi:** `prosesPersetujuanVerifikasi(idTenagaKerja: string): boolean`  
-**ID Algoritma:** Algo-067
+**ID Algoritma:** Algo-098
 
 ```text
 function prosesPersetujuanVerifikasi(idTenagaKerja: string) → boolean
     requirePermission(currentUser().hakAkses, "setujuiVerifikasi")
     hasil <- false
     transaction
-        data <- query(Q-014, idTenagaKerja)
+        data <- query(Q-011, idTenagaKerja)
         if data != null and data.dokumenIdentitas tidak kosong and data.statusVerifikasi = "Menunggu Verifikasi" then
-            hasil <- exec(Q-015, idTenagaKerja, "Terverifikasi", "") != null
+            hasil <- exec(Q-012, idTenagaKerja, "Terverifikasi", "") != null
             if hasil then
                 commit
             else
@@ -4368,14 +4368,14 @@ Tabel 5.34.4. Query Operasi prosesPersetujuanVerifikasi
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-014 | `SELECT "dokumenIdentitas", "statusVerifikasi" FROM tenaga_kerja WHERE "idTenagaKerja" = $1 FOR UPDATE;` | Mengunci pengajuan; $1 = idTenagaKerja. |
-| Q-015 | `UPDATE tenaga_kerja SET "statusVerifikasi" = $2, "alasanPenolakanVerifikasi" = $3 WHERE "idTenagaKerja" = $1 RETURNING "statusVerifikasi";` | Menyimpan status Terverifikasi. |
+| Q-011 | `SELECT "dokumenIdentitas", "statusVerifikasi" FROM tenaga_kerja WHERE "idTenagaKerja" = $1 FOR UPDATE;` | Mengunci pengajuan; $1 = idTenagaKerja. |
+| Q-012 | `UPDATE tenaga_kerja SET "statusVerifikasi" = $2, "alasanPenolakanVerifikasi" = $3 WHERE "idTenagaKerja" = $1 RETURNING "statusVerifikasi";` | Menyimpan status Terverifikasi. |
 
 ### 5.34.3 Algoritma/Query
 
 **Nama Kelas:** CustomerServiceController  
 **Nama Operasi:** `prosesPenolakanVerifikasi(idTenagaKerja: string, alasan: string): boolean`  
-**ID Algoritma:** Algo-068
+**ID Algoritma:** Algo-099
 
 ```text
 function prosesPenolakanVerifikasi(idTenagaKerja: string, alasan: string) → boolean
@@ -4386,9 +4386,9 @@ function prosesPenolakanVerifikasi(idTenagaKerja: string, alasan: string) → bo
     else
         hasil <- false
         transaction
-            data <- query(Q-016, idTenagaKerja)
+            data <- query(Q-011, idTenagaKerja)
             if data != null and data.dokumenIdentitas tidak kosong and data.statusVerifikasi = "Menunggu Verifikasi" then
-                hasil <- exec(Q-017, idTenagaKerja, "Ditolak", trim(alasan)) != null
+                hasil <- exec(Q-012, idTenagaKerja, "Ditolak", trim(alasan)) != null
                 if hasil then
                     commit
                 else
@@ -4407,26 +4407,26 @@ Tabel 5.34.5. Query Operasi prosesPenolakanVerifikasi
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-016 | `SELECT "dokumenIdentitas", "statusVerifikasi" FROM tenaga_kerja WHERE "idTenagaKerja" = $1 FOR UPDATE;` | Mengunci pengajuan; $1 = idTenagaKerja. |
-| Q-017 | `UPDATE tenaga_kerja SET "statusVerifikasi" = $2, "alasanPenolakanVerifikasi" = $3 WHERE "idTenagaKerja" = $1 RETURNING "statusVerifikasi";` | Menyimpan status Ditolak beserta alasannya. |
+| Q-011 | `SELECT "dokumenIdentitas", "statusVerifikasi" FROM tenaga_kerja WHERE "idTenagaKerja" = $1 FOR UPDATE;` | Mengunci pengajuan; $1 = idTenagaKerja. |
+| Q-012 | `UPDATE tenaga_kerja SET "statusVerifikasi" = $2, "alasanPenolakanVerifikasi" = $3 WHERE "idTenagaKerja" = $1 RETURNING "statusVerifikasi";` | Menyimpan status Ditolak beserta alasannya. |
 
 ### 5.34.4 Algoritma/Query
 
 **Nama Kelas:** CustomerServiceController  
 **Nama Operasi:** `prosesTiketSengketa(idTiket: string): TiketSengketa?`  
-**ID Algoritma:** Algo-069
+**ID Algoritma:** Algo-100
 
 ```text
 function prosesTiketSengketa(idTiket: string) → TiketSengketa?
     requirePermission(currentUser().hakAkses, "tinjauTiket")
-    tiket <- query(Q-018, idTiket)
+    tiket <- query(Q-013, idTiket)
     if tiket = null then
         output("Tiket sengketa tidak ditemukan")
         -> null
     else
-        transaksi <- query(Q-019, tiket.idTransaksi)
-        bukti <- query(Q-020, tiket.idTransaksi)
-        riwayat <- query(Q-021, idTiket)
+        transaksi <- query(Q-014, tiket.idTransaksi)
+        bukti <- query(Q-015, tiket.idTransaksi)
+        riwayat <- query(Q-016, idTiket)
         output(tiket, transaksi, bukti, riwayat)
         -> tiket
 ```
@@ -4435,10 +4435,10 @@ Tabel 5.34.6. Query Operasi prosesTiketSengketa
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-018 | `SELECT * FROM tiket_sengketa WHERE "idTiket" = $1;` | Mengambil data tiket; $1 = idTiket. |
-| Q-019 | `SELECT * FROM transaksi_pekerjaan WHERE "idTransaksi" = $1;` | Mengambil transaksi terkait tiket. |
-| Q-020 | `SELECT * FROM bukti_penyerahan WHERE "idTransaksi" = $1 ORDER BY "timestampPengiriman" DESC;` | Mengambil bukti pekerjaan. |
-| Q-021 | `SELECT * FROM riwayat_sengketa WHERE "idTiket" = $1 ORDER BY timestamp ASC, "idRiwayat" ASC;` | Mengambil riwayat penanganan. |
+| Q-013 | `SELECT * FROM tiket_sengketa WHERE "idTiket" = $1;` | Mengambil data tiket; $1 = idTiket. |
+| Q-014 | `SELECT * FROM transaksi_pekerjaan WHERE "idTransaksi" = $1;` | Mengambil transaksi terkait tiket. |
+| Q-015 | `SELECT * FROM bukti_penyerahan WHERE "idTransaksi" = $1 ORDER BY "timestampPengiriman" DESC;` | Mengambil bukti pekerjaan. |
+| Q-016 | `SELECT * FROM riwayat_sengketa WHERE "idTiket" = $1 ORDER BY timestamp ASC, "idRiwayat" ASC;` | Mengambil riwayat penanganan. |
 
 ---
 
@@ -4466,7 +4466,7 @@ Tabel 5.35.2. Atribut Kelas LowonganPekerjaanController
 
 **Nama Kelas:** LowonganPekerjaanController  
 **Nama Operasi:** `prosesPembuatanLowongan(dataLowongan: Record<string, unknown>): LowonganPekerjaan?`  
-**ID Algoritma:** Algo-070
+**ID Algoritma:** Algo-101
 
 ```text
 function prosesPembuatanLowongan(dataLowongan: Record<string, unknown>) → LowonganPekerjaan?
@@ -4476,7 +4476,7 @@ function prosesPembuatanLowongan(dataLowongan: Record<string, unknown>) → Lowo
         -> null
     else
         idLowongan <- uuid()
-        wajibAda(exec(Q-025, idLowongan, currentUser().idPenyediaKerja, dataLowongan.judul, dataLowongan.deskripsi, dataLowongan.kuota, dataLowongan.lokasi, dataLowongan.upah, "Open", dataLowongan.kategori))
+        wajibAda(exec(Q-020, idLowongan, currentUser().idPenyediaKerja, dataLowongan.judul, dataLowongan.deskripsi, dataLowongan.kuota, dataLowongan.lokasi, dataLowongan.upah, "Open", dataLowongan.kategori))
         lowonganBaru <- LowonganPekerjaan(idLowongan, currentUser().idPenyediaKerja, dataLowongan.judul, dataLowongan.deskripsi, dataLowongan.kuota, dataLowongan.lokasi, dataLowongan.upah, "Open", dataLowongan.kategori, 0)
         output("Lowongan berhasil dibuat")
         -> lowonganBaru
@@ -4486,34 +4486,34 @@ Tabel 5.35.3. Query Operasi prosesPembuatanLowongan
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-025 | `INSERT INTO lowongan_pekerjaan ("idLowongan", "idPenyediaKerja", judul, deskripsi, kuota, lokasi, upah, "statusLowongan", kategori, "jumlahDiterima") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 0);` | Menyimpan lowongan baru. |
-| - | - | Tidak menggunakan query tambahan; objek keluaran dibentuk dari data yang berhasil disimpan melalui Q-025. |
+| Q-020 | `INSERT INTO lowongan_pekerjaan ("idLowongan", "idPenyediaKerja", judul, deskripsi, kuota, lokasi, upah, "statusLowongan", kategori, "jumlahDiterima") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 0);` | Menyimpan lowongan baru. |
+| - | - | Tidak menggunakan query tambahan; objek keluaran dibentuk dari data yang berhasil disimpan melalui Q-020. |
 
 ### 5.35.2 Algoritma/Query
 
 **Nama Kelas:** LowonganPekerjaanController  
 **Nama Operasi:** `prosesCariLowongan(kataKunci: string): Array<LowonganPekerjaan>`  
-**ID Algoritma:** Algo-071
+**ID Algoritma:** Algo-102
 
 ```text
 function prosesCariLowongan(kataKunci: string) → Array<LowonganPekerjaan>
     if kataKunci kosong then
-        -> query(Q-026, null, null)
+        -> query(Q-021, null, null)
     else
-        -> query(Q-026, "%" + escapeLike(trim(kataKunci)) + "%", null)
+        -> query(Q-021, "%" + escapeLike(trim(kataKunci)) + "%", null)
 ```
 
 Tabel 5.35.4. Query Operasi prosesCariLowongan
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-026 | `SELECT * FROM lowongan_pekerjaan WHERE "statusLowongan" = 'Open' AND "jumlahDiterima" < kuota AND ($1::text IS NULL OR judul ILIKE $1 OR deskripsi ILIKE $1) AND ($2::text IS NULL OR kategori = $2);` | $1 = pola kata kunci atau NULL, $2 = kategori atau NULL. |
+| Q-021 | `SELECT * FROM lowongan_pekerjaan WHERE "statusLowongan" = 'Open' AND "jumlahDiterima" < kuota AND ($1::text IS NULL OR judul ILIKE $1 OR deskripsi ILIKE $1) AND ($2::text IS NULL OR kategori = $2);` | $1 = pola kata kunci atau NULL, $2 = kategori atau NULL. |
 
 ### 5.35.3 Algoritma/Query
 
 **Nama Kelas:** LowonganPekerjaanController  
 **Nama Operasi:** `prosesFilterLowongan(kategori: string): Array<LowonganPekerjaan>`  
-**ID Algoritma:** Algo-072
+**ID Algoritma:** Algo-103
 
 ```text
 function prosesFilterLowongan(kategori: string) → Array<LowonganPekerjaan>
@@ -4521,20 +4521,20 @@ function prosesFilterLowongan(kategori: string) → Array<LowonganPekerjaan>
         output("Kategori lowongan tidak valid")
         -> []
     else
-        -> query(Q-026, null, kategori)
+        -> query(Q-021, null, kategori)
 ```
 
 Tabel 5.35.5. Query Operasi prosesFilterLowongan
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-026 | Sama dengan Tabel 5.35.4. | $1 = NULL, $2 = kategori. |
+| Q-021 | Sama dengan Tabel 5.35.4. | $1 = NULL, $2 = kategori. |
 
 ### 5.35.4 Algoritma/Query
 
 **Nama Kelas:** LowonganPekerjaanController  
 **Nama Operasi:** `validasiKuota(idLowongan: string): boolean`  
-**ID Algoritma:** Algo-073
+**ID Algoritma:** Algo-104
 
 ```text
 function validasiKuota(idLowongan: string) → boolean
@@ -4542,7 +4542,7 @@ function validasiKuota(idLowongan: string) → boolean
         output("ID lowongan tidak valid")
         -> false
     else
-        daftarLowongan <- query(Q-026, null, null)
+        daftarLowongan <- query(Q-021, null, null)
         data <- cari(daftarLowongan, berdasarkan idLowongan)
         -> data != null and data.statusLowongan = "Open" and data.jumlahDiterima < data.kuota
 ```
@@ -4551,7 +4551,7 @@ Tabel 5.35.6. Query Operasi validasiKuota
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-026 | `SELECT * FROM lowongan_pekerjaan WHERE "statusLowongan" = 'Open' AND "jumlahDiterima" < kuota AND ($1::text IS NULL OR judul ILIKE $1 OR deskripsi ILIKE $1) AND ($2::text IS NULL OR kategori = $2);` | Mengambil lowongan terbuka yang masih memiliki kuota; $1 = NULL, $2 = NULL. |
+| Q-021 | `SELECT * FROM lowongan_pekerjaan WHERE "statusLowongan" = 'Open' AND "jumlahDiterima" < kuota AND ($1::text IS NULL OR judul ILIKE $1 OR deskripsi ILIKE $1) AND ($2::text IS NULL OR kategori = $2);` | Mengambil lowongan terbuka yang masih memiliki kuota; $1 = NULL, $2 = NULL. |
 
 ---
 
@@ -4579,7 +4579,7 @@ Tabel 5.36.2. Atribut Kelas PengajuanPenawaranController
 
 **Nama Kelas:** PengajuanPenawaranController  
 **Nama Operasi:** `prosesPengajuanPenawaran(idLowongan: string, pesan: string): boolean`  
-**ID Algoritma:** Algo-074
+**ID Algoritma:** Algo-105
 
 ```text
 function prosesPengajuanPenawaran(idLowongan: string, pesan: string) → boolean
@@ -4593,12 +4593,12 @@ function prosesPengajuanPenawaran(idLowongan: string, pesan: string) → boolean
     else
         hasil <- false
         transaction
-            lowongan <- query(Q-029, idLowongan)
+            lowongan <- query(Q-022, idLowongan)
             if lowongan = null or lowongan.statusLowongan != "Open" or lowongan.jumlahDiterima >= lowongan.kuota then
                 output("Lowongan tidak tersedia atau kuotanya penuh")
                 rollback
             else
-                hasil <- exec(Q-031, uuid(), idLowongan, idTenagaKerja, trim(pesan), waktuSekarang(), "Menunggu Pemilihan") != null
+                hasil <- exec(Q-025, uuid(), idLowongan, idTenagaKerja, trim(pesan), waktuSekarang(), "Menunggu Pemilihan") != null
                 if hasil then
                     commit
                 else
@@ -4612,19 +4612,19 @@ Tabel 5.36.3. Query Operasi prosesPengajuanPenawaran
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-029 | `SELECT kuota, "jumlahDiterima", "statusLowongan" FROM lowongan_pekerjaan WHERE "idLowongan" = $1 FOR UPDATE;` | Mengunci dan membaca lowongan sampai pengajuan disimpan. |
-| Q-031 | Sama dengan Tabel 5.6.1. | Menyimpan pengajuan penawaran baru dan mengembalikan idPenawaran untuk memastikan operasi berhasil. |
+| Q-022 | `SELECT kuota, "jumlahDiterima", "statusLowongan" FROM lowongan_pekerjaan WHERE "idLowongan" = $1 FOR UPDATE;` | Mengunci dan membaca lowongan sampai pengajuan disimpan. |
+| Q-025 | Sama dengan Tabel 5.6.3. | Menyimpan pengajuan penawaran baru dan mengembalikan idPenawaran untuk memastikan operasi berhasil. |
 
 ### 5.36.2 Algoritma/Query
 
 **Nama Kelas:** PengajuanPenawaranController  
 **Nama Operasi:** `validasiStatusAkun(): boolean`  
-**ID Algoritma:** Algo-075
+**ID Algoritma:** Algo-106
 
 ```text
 function validasiStatusAkun() → boolean
     requireAuthenticatedRole("TenagaKerja")
-    akun <- query(Q-013, currentUser().idTenagaKerja)
+    akun <- query(Q-010, currentUser().idTenagaKerja)
     if akun = null or akun.statusVerifikasi != "Terverifikasi" then
         output("Akun harus terverifikasi untuk mengajukan penawaran")
         -> false
@@ -4636,13 +4636,13 @@ Tabel 5.36.4. Query Operasi validasiStatusAkun
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-013 | `SELECT "idTenagaKerja", "dokumenIdentitas", "statusVerifikasi", "waktuPengajuanVerifikasi", "alasanPenolakanVerifikasi" FROM tenaga_kerja WHERE "idTenagaKerja" = $1;` | Hanya kolom statusVerifikasi yang dipakai; $1 berasal dari akun Tenaga Kerja pada sesi terautentikasi. |
+| Q-010 | `SELECT "idTenagaKerja", "dokumenIdentitas", "statusVerifikasi", "waktuPengajuanVerifikasi", "alasanPenolakanVerifikasi" FROM tenaga_kerja WHERE "idTenagaKerja" = $1;` | Hanya kolom statusVerifikasi yang dipakai; $1 berasal dari akun Tenaga Kerja pada sesi terautentikasi. |
 
 ### 5.36.3 Algoritma/Query
 
 **Nama Kelas:** PengajuanPenawaranController  
 **Nama Operasi:** `prosesPemilihanPelamar(idPenawaran: string): boolean`  
-**ID Algoritma:** Algo-076
+**ID Algoritma:** Algo-107
 
 ```text
 function prosesPemilihanPelamar(idPenawaran: string) → boolean
@@ -4666,7 +4666,7 @@ Tabel 5.36.5. Query Operasi prosesPemilihanPelamar
 
 **Nama Kelas:** PengajuanPenawaranController  
 **Nama Operasi:** `batalkanPengajuan(idPenawaran: string): boolean`  
-**ID Algoritma:** Algo-077
+**ID Algoritma:** Algo-108
 
 ```text
 function batalkanPengajuan(idPenawaran: string) → boolean
@@ -4717,26 +4717,304 @@ Tabel 5.37.2. Atribut Kelas TransaksiPekerjaanController
 Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
 
 **Nama Kelas:** TransaksiPekerjaanController  
-**Nama Operasi:** *[Signature operasi]*  
-**ID Algoritma:** *[Algo-037]*
+**Nama Operasi:** `prosesPembuatanTransaksi(idPenawaran: string): TransaksiPekerjaan`  
+**ID Algoritma:** Algo-109
 
 ```text
-[Tuliskan pseudocode algoritma operasi di sini.]
+function prosesPembuatanTransaksi(idPenawaran: string) -> TransaksiPekerjaan
+    { transaction bergabung dengan transaksi induk: commit saat sukses, rollback saat error. }
+    { enqueue...SetelahCommit menjadwalkan kirimNotifikasi/realtime setelah commit, termasuk retry jika pengiriman gagal. }
+    { require..., with...Context, adapter gateway, uuid, dan pemetaan objek adalah bantuan pseudocode, bukan method kelas tambahan. }
+    { Query merupakan rancangan PostgreSQL dengan tabel snake_case dan kolom camelCase seperti C01-C09. }
+    requireAuthenticated()
+    transaction
+        penawaran <- wajibAda(queryOne("Q-050", idPenawaran))
+        lowongan <- wajibAda(queryOne("Q-051", penawaran.idLowongan))
+        requireOwnerPenyedia(lowongan.idPenyediaKerja)
+        if penawaran.statusPenawaran != "Diterima" then
+            throw Error("Penawaran belum diterima")
+        lama <- queryOne("Q-052", penawaran.idLowongan, penawaran.idTenagaKerja)
+        if lama != null then
+            -> mapToObject(TransaksiPekerjaan, lama)
+        { Pemanggil mengurangi kuota dan menerima penawaran dalam transaksi induk yang sama. }
+        idBaru <- uuid()
+        execute("Q-053", idBaru, lowongan.idLowongan, penawaran.idTenagaKerja, lowongan.idPenyediaKerja, lowongan.upah)
+        hasil <- wajibAda(queryOne("Q-014", idBaru))
+    -> mapToObject(TransaksiPekerjaan, hasil)
 ```
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.37.3. Query Operasi [Nama Operasi]
+Tabel 5.37.3. Query Operasi prosesPembuatanTransaksi
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| *[Q-037]* | *[Tuliskan query]* | *[Fungsi query]* |
-| *...* | *...* | *...* |
+| Q-050 | `SELECT * FROM pengajuan_penawaran WHERE "idPenawaran" = $1 FOR UPDATE;` | $1 = idPenawaran; semua alur penerimaan mengunci penawaran lalu lowongan. |
+| Q-051 | `SELECT * FROM lowongan_pekerjaan WHERE "idLowongan" = $1 FOR UPDATE;` | $1 = idLowongan. |
+| Q-052 | `SELECT * FROM transaksi_pekerjaan WHERE "idLowongan" = $1 AND "idTenagaKerja" = $2;` | $1 = idLowongan, $2 = idTenagaKerja; rancangan mengasumsikan pasangan ini unik. |
+| Q-053 | `INSERT INTO transaksi_pekerjaan ("idTransaksi", "idLowongan", "idTenagaKerja", "idPenyediaKerja", "statusPekerjaan", "nominalUpah") VALUES ($1, $2, $3, $4, 'Menunggu Pembayaran', $5);` | $1-$5 = ID baru, idLowongan, idTenagaKerja, idPenyediaKerja, upah; UNIQUE(idLowongan, idTenagaKerja) mencegah duplikasi. |
+| Q-014 | `SELECT * FROM transaksi_pekerjaan WHERE "idTransaksi" = $1;` | $1 = idTransaksi baru. |
 
 ### 5.37.2 Algoritma/Query
 
-*[Ulangi pola 5.37.1 untuk operasi penting berikutnya pada kelas yang sama, jika ada.]*
+**Nama Kelas:** TransaksiPekerjaanController  
+**Nama Operasi:** `prosesInisiasiPembayaran(idTransaksi: string): void`  
+**ID Algoritma:** Algo-110
 
+```text
+function prosesInisiasiPembayaran(idTransaksi: string) -> void
+    transaksi <- getTransaksi(idTransaksi)
+    requireOwnerPenyedia(transaksi.idPenyediaKerja)
+    if transaksi.statusPekerjaan != "Menunggu Pembayaran" then
+        throw Error("Pekerjaan tidak menunggu pembayaran")
+    tagihan <- TagihanPembayaranController.prosesPembuatanTagihan(idTransaksi)
+    { UI menampilkan tagihan; pembayaran menunggu pengguna memilih metode. }
+```
+
+Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
+
+Tabel 5.37.4. Query Operasi prosesInisiasiPembayaran
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| - | - | Tidak menggunakan query langsung; operasi lokal atau akses data didelegasikan ke operasi yang dipanggil. |
+
+### 5.37.3 Algoritma/Query
+
+**Nama Kelas:** TransaksiPekerjaanController  
+**Nama Operasi:** `getTransaksi(idTransaksi: string): TransaksiPekerjaan`  
+**ID Algoritma:** Algo-111
+
+```text
+function getTransaksi(idTransaksi: string) -> TransaksiPekerjaan
+    requireAuthenticated()
+    data <- wajibAda(queryOne("Q-014", idTransaksi))
+    requireParticipantOrAuthorizedCS(data, currentUser())
+    { Helper otorisasi memetakan ID pengguna sesi ke ID profil; bukan method kelas baru. }
+    -> mapToObject(TransaksiPekerjaan, data)
+```
+
+Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
+
+Tabel 5.37.5. Query Operasi getTransaksi
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-014 | `SELECT * FROM transaksi_pekerjaan WHERE "idTransaksi" = $1;` | $1 = idTransaksi; hanya peserta atau petugas berwenang menerima hasil. |
+
+### 5.37.4 Algoritma/Query
+
+**Nama Kelas:** TransaksiPekerjaanController  
+**Nama Operasi:** `prosesPenyerahanHasil(idTransaksi: string): void`  
+**ID Algoritma:** Algo-112
+
+```text
+function prosesPenyerahanHasil(idTransaksi: string) -> void
+    requireAuthenticated()
+    transaction
+        data <- wajibAda(queryOne("Q-054", idTransaksi))
+        requireOwnerTenaga(data.idTenagaKerja)
+        if data.statusPekerjaan = "Submitted" then
+            ->
+        if data.statusPekerjaan != "In Progress" or queryOne("Q-055", idTransaksi).ada then
+            throw Error("Pekerjaan tidak dapat diserahkan")
+        if queryOne("Q-056", idTransaksi) = null then
+            throw Error("Bukti belum disimpan")
+        wajibAda(queryOne("Q-057", idTransaksi, "Submitted"))
+        { Alur unggah menyimpan bukti baru dan status dalam transaksi yang sama. }
+    enqueueNotifikasiSetelahCommit(data.idPenyediaKerja, "Hasil pekerjaan menunggu pemeriksaan")
+```
+
+Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
+
+Tabel 5.37.6. Query Operasi prosesPenyerahanHasil
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-054 | `SELECT * FROM transaksi_pekerjaan WHERE "idTransaksi" = $1 FOR UPDATE;` | $1 = idTransaksi. |
+| Q-055 | `SELECT EXISTS (SELECT 1 FROM tiket_sengketa WHERE "idTransaksi" = $1 AND "statusTiket" NOT IN ('Ditutup', 'Ditolak', 'Dibatalkan')) AS ada;` | $1 = idTransaksi; tiket aktif menahan perubahan pekerjaan. |
+| Q-056 | `SELECT "idPenyerahan" FROM bukti_penyerahan WHERE "idTransaksi" = $1 LIMIT 1;` | $1 = idTransaksi. |
+| Q-057 | `UPDATE transaksi_pekerjaan SET "statusPekerjaan" = $2 WHERE "idTransaksi" = $1 RETURNING "idTransaksi";` | $1 = idTransaksi, $2 = Submitted. |
+
+### 5.37.5 Algoritma/Query
+
+**Nama Kelas:** TransaksiPekerjaanController  
+**Nama Operasi:** `prosesPersetujuanHasil(idTransaksi: string): void`  
+**ID Algoritma:** Algo-113
+
+```text
+function prosesPersetujuanHasil(idTransaksi: string) -> void
+    requireAuthenticated()
+    transaction
+        data <- wajibAda(queryOne("Q-054", idTransaksi))
+        requireOwnerPenyedia(data.idPenyediaKerja)
+        if queryOne("Q-055", idTransaksi).ada then
+            throw Error("Pekerjaan sedang disengketakan")
+        if data.statusPekerjaan not in ["Submitted", "Completed"] then
+            throw Error("Hasil belum dapat disetujui")
+        if data.statusPekerjaan = "Submitted" then
+            wajibAda(queryOne("Q-057", idTransaksi, "Completed"))
+        withTrustedPaymentContext()
+            prosesPembayaranUpah(idTransaksi)
+        { Kredit upah dan status pekerjaan bergabung dalam transaksi ini. }
+```
+
+Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
+
+Tabel 5.37.7. Query Operasi prosesPersetujuanHasil
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-054 | `SELECT * FROM transaksi_pekerjaan WHERE "idTransaksi" = $1 FOR UPDATE;` | $1 = idTransaksi. |
+| Q-055 | `SELECT EXISTS (SELECT 1 FROM tiket_sengketa WHERE "idTransaksi" = $1 AND "statusTiket" NOT IN ('Ditutup', 'Ditolak', 'Dibatalkan')) AS ada;` | $1 = idTransaksi. |
+| Q-057 | `UPDATE transaksi_pekerjaan SET "statusPekerjaan" = $2 WHERE "idTransaksi" = $1 RETURNING "idTransaksi";` | $1 = idTransaksi, $2 = Completed. |
+
+### 5.37.6 Algoritma/Query
+
+**Nama Kelas:** TransaksiPekerjaanController  
+**Nama Operasi:** `prosesPembayaranUpah(idTransaksi: string): void`  
+**ID Algoritma:** Algo-114
+
+```text
+function prosesPembayaranUpah(idTransaksi: string) -> void
+    requireTrustedPaymentContext()
+    transaction
+        data <- wajibAda(queryOne("Q-054", idTransaksi))
+        if data.statusPekerjaan != "Completed" or queryOne("Q-055", idTransaksi).ada then
+            throw Error("Upah belum dapat dikreditkan")
+        if not queryOne("Q-058", idTransaksi).ada then
+            throw Error("Tagihan belum berhasil dibayar")
+        { mutasi_saldo adalah rancangan tabel teknis; kunciOperasi wajib UNIQUE. }
+        baru <- queryOne("Q-059", "upah:" + idTransaksi, data.idTenagaKerja, data.nominalUpah)
+        if baru = null then
+            ->
+        wajibAda(queryOne("Q-060", data.idTenagaKerja, data.nominalUpah))
+    enqueueNotifikasiSetelahCommit(data.idTenagaKerja, "Upah masuk ke saldo")
+    { Callback berulang tidak menambah saldo dua kali karena kunci mutasi yang sama. }
+```
+
+Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
+
+Tabel 5.37.8. Query Operasi prosesPembayaranUpah
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-054 | `SELECT * FROM transaksi_pekerjaan WHERE "idTransaksi" = $1 FOR UPDATE;` | $1 = idTransaksi. |
+| Q-055 | `SELECT EXISTS (SELECT 1 FROM tiket_sengketa WHERE "idTransaksi" = $1 AND "statusTiket" NOT IN ('Ditutup', 'Ditolak', 'Dibatalkan')) AS ada;` | $1 = idTransaksi. |
+| Q-058 | `SELECT EXISTS (SELECT 1 FROM tagihan_pembayaran WHERE "idTransaksi" = $1 AND "statusPembayaran" = 'Berhasil') AS ada;` | $1 = idTransaksi. |
+| Q-059 | `INSERT INTO mutasi_saldo ("kunciOperasi", "idTenagaKerja", nominal) VALUES ($1, $2, $3) ON CONFLICT ("kunciOperasi") DO NOTHING RETURNING "kunciOperasi";` | Rancangan tabel teknis: $1 = upah:idTransaksi (unik), $2 = idTenagaKerja, $3 = nominal kredit; rollback bersama saldo bila gagal. |
+| Q-060 | `UPDATE tenaga_kerja SET "saldoPendapatan" = "saldoPendapatan" + $2 WHERE "idTenagaKerja" = $1 RETURNING "saldoPendapatan";` | $1 = idTenagaKerja, $2 = nominalUpah. |
+
+### 5.37.7 Algoritma/Query
+
+**Nama Kelas:** TransaksiPekerjaanController  
+**Nama Operasi:** `prosesPermintaanRevisi(idTransaksi: string, catatan: string): void`  
+**ID Algoritma:** Algo-115
+
+```text
+function prosesPermintaanRevisi(idTransaksi: string, catatan: string) -> void
+    requireAuthenticated()
+    if isBlank(catatan) then
+        throw Error("Catatan revisi wajib diisi")
+    transaction
+        data <- wajibAda(queryOne("Q-054", idTransaksi))
+        requireOwnerPenyedia(data.idPenyediaKerja)
+        if data.statusPekerjaan != "Submitted" or queryOne("Q-055", idTransaksi).ada then
+            throw Error("Revisi tidak dapat diminta")
+        execute("Q-061", uuid(), idTransaksi, trim(catatan), now())
+        wajibAda(queryOne("Q-057", idTransaksi, "In Progress"))
+    enqueueNotifikasiSetelahCommit(data.idTenagaKerja, "Revisi: " + trim(catatan))
+```
+
+Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
+
+Tabel 5.37.9. Query Operasi prosesPermintaanRevisi
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-054 | `SELECT * FROM transaksi_pekerjaan WHERE "idTransaksi" = $1 FOR UPDATE;` | $1 = idTransaksi. |
+| Q-055 | `SELECT EXISTS (SELECT 1 FROM tiket_sengketa WHERE "idTransaksi" = $1 AND "statusTiket" NOT IN ('Ditutup', 'Ditolak', 'Dibatalkan')) AS ada;` | $1 = idTransaksi. |
+| Q-061 | `INSERT INTO catatan_revisi ("idRevisi", "idTransaksi", catatan, "waktuPermintaan") VALUES ($1, $2, $3, $4);` | Rancangan tabel pendukung revisi: $1-$4 = ID revisi, idTransaksi, catatan, waktu. |
+| Q-057 | `UPDATE transaksi_pekerjaan SET "statusPekerjaan" = $2 WHERE "idTransaksi" = $1 RETURNING "idTransaksi";` | $1 = idTransaksi, $2 = In Progress. |
+
+### 5.37.8 Algoritma/Query
+
+**Nama Kelas:** TransaksiPekerjaanController  
+**Nama Operasi:** `inisiasiKeluhan(idTransaksi: string): void`  
+**ID Algoritma:** Algo-116
+
+```text
+function inisiasiKeluhan(idTransaksi: string) -> void
+    transaksi <- getTransaksi(idTransaksi)
+    requireParticipant(transaksi, currentUser())
+    TransaksiPekerjaanUI.arahkanKeFormKeluhan(idTransaksi)
+    { Membuka formulir belum menerbitkan tiket atau menahan dana. }
+```
+
+Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
+
+Tabel 5.37.10. Query Operasi inisiasiKeluhan
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| - | - | Tidak menggunakan query langsung; operasi lokal atau akses data didelegasikan ke operasi yang dipanggil. |
+
+### 5.37.9 Algoritma/Query
+
+**Nama Kelas:** TransaksiPekerjaanController  
+**Nama Operasi:** `tahanStatusDana(idTransaksi: string): void`  
+**ID Algoritma:** Algo-117
+
+```text
+function tahanStatusDana(idTransaksi: string) -> void
+    requireTrustedDisputeContext()
+    transaction
+        wajibAda(queryOne("Q-054", idTransaksi))
+        if not queryOne("Q-055", idTransaksi).ada then
+            throw Error("Belum ada tiket aktif")
+        if queryOne("Q-062", "upah:" + idTransaksi).ada then
+            throw Error("Upah sudah dikreditkan; perlu penanganan lanjutan CS")
+        { Tiket aktif menjadi penahanan logis; tidak perlu atribut statusDana baru. }
+        { Semua kredit upah memeriksa tiket sambil mengunci pekerjaan yang sama. }
+```
+
+Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
+
+Tabel 5.37.11. Query Operasi tahanStatusDana
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-054 | `SELECT * FROM transaksi_pekerjaan WHERE "idTransaksi" = $1 FOR UPDATE;` | $1 = idTransaksi. |
+| Q-055 | `SELECT EXISTS (SELECT 1 FROM tiket_sengketa WHERE "idTransaksi" = $1 AND "statusTiket" NOT IN ('Ditutup', 'Ditolak', 'Dibatalkan')) AS ada;` | $1 = idTransaksi. |
+| Q-062 | `SELECT EXISTS (SELECT 1 FROM mutasi_saldo WHERE "kunciOperasi" = $1) AS ada;` | $1 = upah:idTransaksi. |
+
+### 5.37.10 Algoritma/Query
+
+**Nama Kelas:** TransaksiPekerjaanController  
+**Nama Operasi:** `validasiKelayakanUlasan(idTransaksi: string, idPenilai: string): boolean`  
+**ID Algoritma:** Algo-118
+
+```text
+function validasiKelayakanUlasan(idTransaksi: string, idPenilai: string) -> boolean
+    requireAuthenticated()
+    if idPenilai != currentUser().idPengguna then
+        -> false
+    data <- wajibAda(queryOne("Q-014", idTransaksi))
+    peserta <- queryOne("Q-063", data.idTenagaKerja, data.idPenyediaKerja, idPenilai)
+    if peserta = null or data.statusPekerjaan != "Completed" then
+        -> false
+    -> not queryOne("Q-032", idTransaksi, idPenilai).ada
+```
+
+Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
+
+Tabel 5.37.12. Query Operasi validasiKelayakanUlasan
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-014 | `SELECT * FROM transaksi_pekerjaan WHERE "idTransaksi" = $1;` | $1 = idTransaksi. |
+| Q-063 | `SELECT "idPengguna" FROM tenaga_kerja WHERE "idTenagaKerja" = $1 AND "idPengguna" = $3 UNION ALL SELECT "idPengguna" FROM penyedia_kerja WHERE "idPenyediaKerja" = $2 AND "idPengguna" = $3;` | $1 = idTenagaKerja, $2 = idPenyediaKerja, $3 = idPenilai pengguna; ID profil berbeda dari ID pengguna. |
+| Q-032 | `SELECT EXISTS (SELECT 1 FROM ulasan_rating WHERE "idTransaksi" = $1 AND "idPenilai" = $2) AS ada;` | $1 = idTransaksi, $2 = idPenilai. |
 
 ## 5.38 Kelas BuktiPenyerahanController
 
@@ -4763,26 +5041,101 @@ Tabel 5.38.2. Atribut Kelas BuktiPenyerahanController
 Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
 
 **Nama Kelas:** BuktiPenyerahanController  
-**Nama Operasi:** *[Signature operasi]*  
-**ID Algoritma:** *[Algo-038]*
+**Nama Operasi:** `prosesUnggahBukti(idTransaksi: string, deskripsi: string, berkas: File): boolean`  
+**ID Algoritma:** Algo-119
 
 ```text
-[Tuliskan pseudocode algoritma operasi di sini.]
+function prosesUnggahBukti(idTransaksi: string, deskripsi: string, berkas: File) -> boolean
+    requireAuthenticated()
+    if not validasiKeberadaanBerkas(berkas) or not validasiUkuranBerkas(berkas) or isBlank(deskripsi) then
+        -> false
+    { Otorisasi sebelum unggah; diperiksa ulang dengan kunci saat menyimpan. }
+    awal <- TransaksiPekerjaanController.getTransaksi(idTransaksi)
+    requireOwnerTenaga(awal.idTenagaKerja)
+    path <- storage.uploadPrivate(berkas)
+    try
+        transaction
+            data <- wajibAda(queryOne("Q-054", idTransaksi))
+            requireOwnerTenaga(data.idTenagaKerja)
+            if data.statusPekerjaan != "In Progress" or queryOne("Q-055", idTransaksi).ada then
+                throw Error("Pekerjaan tidak dapat diserahkan")
+            execute("Q-033", uuid(), idTransaksi, trim(deskripsi), path, berkas.size, now())
+            TransaksiPekerjaanController.prosesPenyerahanHasil(idTransaksi)
+        -> true
+    catch error
+        storage.deleteIfUnreferenced(path)
+        throw error
 ```
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.38.3. Query Operasi [Nama Operasi]
+Tabel 5.38.3. Query Operasi prosesUnggahBukti
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| *[Q-038]* | *[Tuliskan query]* | *[Fungsi query]* |
-| *...* | *...* | *...* |
+| Q-054 | `SELECT * FROM transaksi_pekerjaan WHERE "idTransaksi" = $1 FOR UPDATE;` | $1 = idTransaksi. |
+| Q-055 | `SELECT EXISTS (SELECT 1 FROM tiket_sengketa WHERE "idTransaksi" = $1 AND "statusTiket" NOT IN ('Ditutup', 'Ditolak', 'Dibatalkan')) AS ada;` | $1 = idTransaksi. |
+| Q-033 | `INSERT INTO bukti_penyerahan ("idPenyerahan", "idTransaksi", "deskripsiPengerjaan", "fileUrl", "ukuranFile", "timestampPengiriman") VALUES ($1, $2, $3, $4, $5, $6);` | $1-$6 = ID bukti, idTransaksi, deskripsi, path privat, ukuran byte, waktu; bukti dan status atomik. |
 
 ### 5.38.2 Algoritma/Query
 
-*[Ulangi pola 5.38.1 untuk operasi penting berikutnya pada kelas yang sama, jika ada.]*
+**Nama Kelas:** BuktiPenyerahanController  
+**Nama Operasi:** `validasiUkuranBerkas(berkas: File): boolean`  
+**ID Algoritma:** Algo-120
 
+```text
+function validasiUkuranBerkas(berkas: File) -> boolean
+    -> berkas != null and isInteger(berkas.size) and berkas.size > 0 and berkas.size <= this.batasUkuranBerkas
+```
+
+Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
+
+Tabel 5.38.4. Query Operasi validasiUkuranBerkas
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| - | - | Tidak menggunakan query langsung; operasi lokal atau akses data didelegasikan ke operasi yang dipanggil. |
+
+### 5.38.3 Algoritma/Query
+
+**Nama Kelas:** BuktiPenyerahanController  
+**Nama Operasi:** `validasiKeberadaanBerkas(berkas: File): boolean`  
+**ID Algoritma:** Algo-121
+
+```text
+function validasiKeberadaanBerkas(berkas: File) -> boolean
+    -> berkas != null and isFile(berkas) and not isBlank(berkas.name)
+```
+
+Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
+
+Tabel 5.38.5. Query Operasi validasiKeberadaanBerkas
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| - | - | Tidak menggunakan query langsung; operasi lokal atau akses data didelegasikan ke operasi yang dipanggil. |
+
+### 5.38.4 Algoritma/Query
+
+**Nama Kelas:** BuktiPenyerahanController  
+**Nama Operasi:** `getBuktiPenyerahan(idTransaksi: string): BuktiPenyerahan`  
+**ID Algoritma:** Algo-122
+
+```text
+function getBuktiPenyerahan(idTransaksi: string) -> BuktiPenyerahan
+    TransaksiPekerjaanController.getTransaksi(idTransaksi)
+    { getTransaksi memastikan hak akses pengguna sebelum bukti diberikan. }
+    data <- wajibAda(queryOne("Q-064", idTransaksi))
+    -> mapToObject(BuktiPenyerahan, data)
+```
+
+Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
+
+Tabel 5.38.6. Query Operasi getBuktiPenyerahan
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-064 | `SELECT * FROM bukti_penyerahan WHERE "idTransaksi" = $1 ORDER BY "timestampPengiriman" DESC, "idPenyerahan" DESC LIMIT 1;` | $1 = idTransaksi; mengambil bukti paling baru termasuk revisi. |
 
 ## 5.39 Kelas TagihanPembayaranController
 
@@ -4809,26 +5162,128 @@ Tabel 5.39.2. Atribut Kelas TagihanPembayaranController
 Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
 
 **Nama Kelas:** TagihanPembayaranController  
-**Nama Operasi:** *[Signature operasi]*  
-**ID Algoritma:** *[Algo-039]*
+**Nama Operasi:** `prosesPembuatanTagihan(idTransaksi: string): TagihanPembayaran`  
+**ID Algoritma:** Algo-123
 
 ```text
-[Tuliskan pseudocode algoritma operasi di sini.]
+function prosesPembuatanTagihan(idTransaksi: string) -> TagihanPembayaran
+    requireAuthenticated()
+    transaction
+        data <- wajibAda(queryOne("Q-054", idTransaksi))
+        requireOwnerPenyedia(data.idPenyediaKerja)
+        if data.statusPekerjaan != "Menunggu Pembayaran" then
+            throw Error("Pekerjaan tidak dapat ditagihkan")
+        lama <- queryOne("Q-065", idTransaksi)
+        if lama != null then
+            -> mapToObject(TagihanPembayaran, lama)
+        tagihan <- new TagihanPembayaran()
+        tagihan.idTagihan <- uuid()
+        tagihan.idTransaksi <- idTransaksi
+        tagihan.nominalUpah <- data.nominalUpah
+        tagihan.commissionFee <- biayaLayananSesuaiKonfigurasi(data.nominalUpah)
+        tagihan.totalBayar <- tagihan.hitungTotalTagihan()
+        tagihan.expiryTimestamp <- now() + durasiPembayaranSesuaiKonfigurasi()
+        tagihan.statusPembayaran <- "Menunggu Pembayaran"
+        execute("Q-066", tagihan.idTagihan, idTransaksi, tagihan.nominalUpah, tagihan.commissionFee, tagihan.totalBayar, tagihan.expiryTimestamp)
+    -> tagihan
 ```
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.39.3. Query Operasi [Nama Operasi]
+Tabel 5.39.3. Query Operasi prosesPembuatanTagihan
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| *[Q-039]* | *[Tuliskan query]* | *[Fungsi query]* |
-| *...* | *...* | *...* |
+| Q-054 | `SELECT * FROM transaksi_pekerjaan WHERE "idTransaksi" = $1 FOR UPDATE;` | $1 = idTransaksi; semua pembuatan tagihan mengunci pekerjaan yang sama. |
+| Q-065 | `SELECT * FROM tagihan_pembayaran WHERE "idTransaksi" = $1 AND (("statusPembayaran" = 'Menunggu Pembayaran' AND "expiryTimestamp" > CURRENT_TIMESTAMP) OR "statusPembayaran" IN ('Diproses', 'Berhasil')) LIMIT 1;` | $1 = idTransaksi; tagihan Diproses tidak diganti sampai hasil gateway final. |
+| Q-066 | `INSERT INTO tagihan_pembayaran ("idTagihan", "idTransaksi", "nominalUpah", "commissionFee", "totalBayar", "expiryTimestamp", "statusPembayaran") VALUES ($1, $2, $3, $4, $5, $6, 'Menunggu Pembayaran');` | $1-$6 = ID tagihan, idTransaksi, upah, biaya layanan, total, batas waktu. |
 
 ### 5.39.2 Algoritma/Query
 
-*[Ulangi pola 5.39.1 untuk operasi penting berikutnya pada kelas yang sama, jika ada.]*
+**Nama Kelas:** TagihanPembayaranController  
+**Nama Operasi:** `cekBatasWaktu(idTagihan: string): boolean`  
+**ID Algoritma:** Algo-124
 
+```text
+function cekBatasWaktu(idTagihan: string) -> boolean
+    requireAuthenticatedOrTrustedGateway()
+    data <- wajibAda(queryOne("Q-067", idTagihan))
+    requireOwnerPenyediaOrTrustedGateway(data.idPenyediaKerja)
+    -> data.expiryTimestamp > now() and data.statusPembayaran = "Menunggu Pembayaran"
+```
+
+Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
+
+Tabel 5.39.4. Query Operasi cekBatasWaktu
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-067 | `SELECT p.*, t."idPenyediaKerja" FROM tagihan_pembayaran p JOIN transaksi_pekerjaan t ON t."idTransaksi" = p."idTransaksi" WHERE p."idTagihan" = $1;` | $1 = idTagihan; pemeriksaan ini tidak mengganti status callback gateway. |
+
+### 5.39.3 Algoritma/Query
+
+**Nama Kelas:** TagihanPembayaranController  
+**Nama Operasi:** `prosesKegagalanPembayaran(idTagihan: string): void`  
+**ID Algoritma:** Algo-125
+
+```text
+function prosesKegagalanPembayaran(idTagihan: string) -> void
+    requireVerifiedGatewayContext()
+    { Hanya kegagalan final gateway; timeout tidak dianggap gagal. }
+    transaction
+        data <- wajibAda(queryOne("Q-068", idTagihan))
+        if data.statusPembayaran in ["Berhasil", "Gagal"] then
+            ->
+        if data.statusPembayaran not in ["Menunggu Pembayaran", "Diproses"] then
+            throw Error("Status perlu direkonsiliasi")
+        wajibAda(queryOne("Q-069", idTagihan))
+    enqueueNotifikasiSetelahCommit(penerimaTagihan(idTagihan), "Pembayaran gagal")
+```
+
+Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
+
+Tabel 5.39.5. Query Operasi prosesKegagalanPembayaran
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-068 | `SELECT * FROM tagihan_pembayaran WHERE "idTagihan" = $1 FOR UPDATE;` | $1 = idTagihan. |
+| Q-069 | `UPDATE tagihan_pembayaran SET "statusPembayaran" = 'Gagal' WHERE "idTagihan" = $1 RETURNING "idTagihan";` | $1 = idTagihan; status berhasil tidak diturunkan. |
+
+### 5.39.4 Algoritma/Query
+
+**Nama Kelas:** TagihanPembayaranController  
+**Nama Operasi:** `prosesPembayaranTagihan(idTagihan: string, metode: string): boolean`  
+**ID Algoritma:** Algo-126
+
+```text
+function prosesPembayaranTagihan(idTagihan: string, metode: string) -> boolean
+    requireAuthenticated()
+    if not metodePembayaranDiizinkan(metode) then
+        -> false
+    transaction
+        data <- wajibAda(queryOne("Q-070", idTagihan))
+        requireOwnerPenyedia(data.idPenyediaKerja)
+        if data.statusPembayaran = "Berhasil" then
+            -> true
+        if data.statusPembayaran not in ["Menunggu Pembayaran", "Diproses"] then
+            -> false
+        if data.statusPembayaran = "Menunggu Pembayaran" then
+            if data.expiryTimestamp <= now() then
+                -> false
+            wajibAda(queryOne("Q-071", idTagihan))
+    { Gateway di luar transaksi; percobaan ulang memakai idTagihan dan metode yang sama. }
+    withPaymentContext(idTagihan, metode)
+        -> PaymentGatewayController.kirimPermintaanPembayaran(idTagihan, data.totalBayar)
+```
+
+Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
+
+Tabel 5.39.6. Query Operasi prosesPembayaranTagihan
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-070 | `SELECT p.*, t."idPenyediaKerja" FROM tagihan_pembayaran p JOIN transaksi_pekerjaan t ON t."idTransaksi" = p."idTransaksi" WHERE p."idTagihan" = $1 FOR UPDATE OF p;` | $1 = idTagihan. |
+| Q-071 | `UPDATE tagihan_pembayaran SET "statusPembayaran" = 'Diproses' WHERE "idTagihan" = $1 RETURNING "idTagihan";` | $1 = idTagihan; hasil gateway yang tidak pasti direkonsiliasi. |
 
 ## 5.40 Kelas PencairanDanaController
 
@@ -4856,26 +5311,163 @@ Tabel 5.40.2. Atribut Kelas PencairanDanaController
 Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
 
 **Nama Kelas:** PencairanDanaController  
-**Nama Operasi:** *[Signature operasi]*  
-**ID Algoritma:** *[Algo-040]*
+**Nama Operasi:** `prosesPencairan(idTenagaKerja: string, nominal: Decimal, rekeningTujuan: string): PencairanDana`  
+**ID Algoritma:** Algo-127
 
 ```text
-[Tuliskan pseudocode algoritma operasi di sini.]
+function prosesPencairan(idTenagaKerja: string, nominal: Decimal, rekeningTujuan: string) -> PencairanDana
+    requireOwnerTenaga(idTenagaKerja)
+    if not isFinite(nominal) or nominal <= 0 or isBlank(rekeningTujuan) then
+        throw Error("Nominal atau rekening tidak valid")
+    transaction
+        wajibAda(queryOne("Q-007", idTenagaKerja))
+        if not validasiSaldo(idTenagaKerja, nominal) then
+            throw Error("Saldo tersedia tidak cukup")
+        idBaru <- uuid()
+        execute("Q-072", idBaru, idTenagaKerja, nominal, rekeningTujuan, now())
+        hasil <- wajibAda(queryOne("Q-073", idBaru))
+    -> mapToObject(PencairanDana, hasil)
 ```
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.40.3. Query Operasi [Nama Operasi]
+Tabel 5.40.3. Query Operasi prosesPencairan
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| *[Q-040]* | *[Tuliskan query]* | *[Fungsi query]* |
-| *...* | *...* | *...* |
+| Q-007 | `SELECT "saldoPendapatan" FROM tenaga_kerja WHERE "idTenagaKerja" = $1 FOR UPDATE;` | $1 = idTenagaKerja; seluruh pengajuan mengunci saldo sebelum menghitung reservasi. |
+| Q-072 | `INSERT INTO pencairan_dana ("idPencairan", "idTenagaKerja", nominal, "rekeningTujuan", "statusPencairan", "waktuPengajuan") VALUES ($1, $2, $3, $4, 'Menunggu Proses', $5);` | $1-$5 = ID pencairan, idTenagaKerja, nominal, rekening, waktu. |
+| Q-073 | `SELECT * FROM pencairan_dana WHERE "idPencairan" = $1;` | $1 = ID pencairan baru. |
 
 ### 5.40.2 Algoritma/Query
 
-*[Ulangi pola 5.40.1 untuk operasi penting berikutnya pada kelas yang sama, jika ada.]*
+**Nama Kelas:** PencairanDanaController  
+**Nama Operasi:** `konfirmasiPencairan(idPencairan: string): void`  
+**ID Algoritma:** Algo-128
 
+```text
+function konfirmasiPencairan(idPencairan: string) -> void
+    requireAuthenticatedOrTrustedReconciliation()
+    transaction
+        data <- wajibAda(queryOne("Q-074", idPencairan))
+        requireOwnerTenagaOrTrustedSystem(data.idTenagaKerja)
+        if data.statusPencairan = "Berhasil" then
+            ->
+        if data.statusPencairan not in ["Menunggu Proses", "Diproses"] then
+            throw Error("Pencairan tidak dapat diproses")
+        wajibAda(queryOne("Q-075", idPencairan))
+    { Transfer di luar transaksi; gateway wajib mendukung kunci idempotensi idPencairan. }
+    withDisbursementContext(idPencairan)
+        PaymentGatewayController.kirimPermintaanPencairan(data.rekeningTujuan, data.nominal)
+    cekKeberhasilanTransfer(idPencairan)
+    { Pending/timeout tetap Diproses dan dijadwalkan untuk rekonsiliasi. }
+```
+
+Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
+
+Tabel 5.40.4. Query Operasi konfirmasiPencairan
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-074 | `SELECT * FROM pencairan_dana WHERE "idPencairan" = $1 FOR UPDATE;` | $1 = idPencairan. |
+| Q-075 | `UPDATE pencairan_dana SET "statusPencairan" = 'Diproses' WHERE "idPencairan" = $1 RETURNING "idPencairan";` | $1 = idPencairan; saldo belum didebit sebelum transfer terkonfirmasi. |
+
+### 5.40.3 Algoritma/Query
+
+**Nama Kelas:** PencairanDanaController  
+**Nama Operasi:** `validasiSaldo(idTenagaKerja: string, nominal: Decimal): boolean`  
+**ID Algoritma:** Algo-129
+
+```text
+function validasiSaldo(idTenagaKerja: string, nominal: Decimal) -> boolean
+    requireOwnerTenagaOrTrustedSystem(idTenagaKerja)
+    if not isFinite(nominal) or nominal <= 0 then
+        -> false
+    data <- wajibAda(queryOne("Q-076", idTenagaKerja))
+    reservasi <- queryOne("Q-077", idTenagaKerja).total
+    -> nominal <= data.saldoPendapatan - reservasi
+```
+
+Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
+
+Tabel 5.40.5. Query Operasi validasiSaldo
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-076 | `SELECT "saldoPendapatan" FROM tenaga_kerja WHERE "idTenagaKerja" = $1;` | $1 = idTenagaKerja; prosesPencairan telah mengunci baris saldo. |
+| Q-077 | `SELECT COALESCE(SUM(nominal), 0) AS total FROM pencairan_dana WHERE "idTenagaKerja" = $1 AND "statusPencairan" IN ('Menunggu Proses', 'Diproses');` | $1 = idTenagaKerja; permintaan aktif mereservasi saldo tanpa mengubah saldo buku. |
+
+### 5.40.4 Algoritma/Query
+
+**Nama Kelas:** PencairanDanaController  
+**Nama Operasi:** `cekKeberhasilanTransfer(idPencairan: string): boolean`  
+**ID Algoritma:** Algo-130
+
+```text
+function cekKeberhasilanTransfer(idPencairan: string) -> boolean
+    requireAuthenticatedOrTrustedReconciliation()
+    awal <- wajibAda(queryOne("Q-073", idPencairan))
+    requireOwnerTenagaOrTrustedSystem(awal.idTenagaKerja)
+    statusGateway <- gatewayStatusTerverifikasi(idPencairan)
+    { Bantuan adapter membaca hasil otoritatif; timeout/pending tidak melepas reservasi. }
+    transaction
+        data <- wajibAda(queryOne("Q-074", idPencairan))
+        if data.statusPencairan = "Berhasil" then
+            -> true
+        if data.statusPencairan != "Diproses" then
+            -> false
+        if statusGateway = "Berhasil" then
+            wajibAda(queryOne("Q-078", data.idTenagaKerja, data.nominal))
+            wajibAda(queryOne("Q-079", idPencairan))
+        else if statusGateway = "Gagal Final" then
+            wajibAda(queryOne("Q-080", idPencairan))
+            -> false
+        else
+            -> false
+    enqueueNotifikasiSetelahCommit(data.idTenagaKerja, "Pencairan berhasil")
+    -> true
+```
+
+Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
+
+Tabel 5.40.6. Query Operasi cekKeberhasilanTransfer
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-073 | `SELECT * FROM pencairan_dana WHERE "idPencairan" = $1;` | $1 = idPencairan; otorisasi sebelum akses gateway. |
+| Q-074 | `SELECT * FROM pencairan_dana WHERE "idPencairan" = $1 FOR UPDATE;` | $1 = idPencairan; kunci dan status final mencegah debit ulang. |
+| Q-078 | `UPDATE tenaga_kerja SET "saldoPendapatan" = "saldoPendapatan" - $2 WHERE "idTenagaKerja" = $1 AND "saldoPendapatan" >= $2 RETURNING "saldoPendapatan";` | $1 = idTenagaKerja, $2 = nominal; satu transaksi dengan status Berhasil; kegagalan debit memerlukan rekonsiliasi. |
+| Q-079 | `UPDATE pencairan_dana SET "statusPencairan" = 'Berhasil' WHERE "idPencairan" = $1 RETURNING "idPencairan";` | $1 = idPencairan. |
+| Q-080 | `UPDATE pencairan_dana SET "statusPencairan" = 'Gagal' WHERE "idPencairan" = $1 RETURNING "idPencairan";` | $1 = idPencairan; hanya hasil final terverifikasi melepas reservasi. |
+
+### 5.40.5 Algoritma/Query
+
+**Nama Kelas:** PencairanDanaController  
+**Nama Operasi:** `tolakPencairan(idPencairan: string, alasan: string): void`  
+**ID Algoritma:** Algo-131
+
+```text
+function tolakPencairan(idPencairan: string, alasan: string) -> void
+    requireTrustedDisbursementOperator()
+    if isBlank(alasan) then
+        throw Error("Alasan wajib diisi")
+    transaction
+        data <- wajibAda(queryOne("Q-074", idPencairan))
+        if data.statusPencairan != "Menunggu Proses" then
+            throw Error("Transfer berjalan tidak dapat ditolak tanpa hasil gateway")
+        wajibAda(queryOne("Q-081", idPencairan))
+    enqueueNotifikasiSetelahCommit(data.idTenagaKerja, "Pencairan ditolak: " + trim(alasan))
+    { Saldo buku belum dipotong sehingga tidak ditambah kembali. }
+```
+
+Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
+
+Tabel 5.40.7. Query Operasi tolakPencairan
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-074 | `SELECT * FROM pencairan_dana WHERE "idPencairan" = $1 FOR UPDATE;` | $1 = idPencairan. |
+| Q-081 | `UPDATE pencairan_dana SET "statusPencairan" = 'Ditolak' WHERE "idPencairan" = $1 RETURNING "idPencairan";` | $1 = idPencairan. |
 
 ## 5.41 Kelas UlasanRatingController
 
@@ -4900,26 +5492,59 @@ Tabel 5.41.2. Atribut Kelas UlasanRatingController
 Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
 
 **Nama Kelas:** UlasanRatingController  
-**Nama Operasi:** *[Signature operasi]*  
-**ID Algoritma:** *[Algo-041]*
+**Nama Operasi:** `prosesPemberianUlasan(idTransaksi: string, idPenilai: string, nilai: Integer, deskripsi: string): void`  
+**ID Algoritma:** Algo-132
 
 ```text
-[Tuliskan pseudocode algoritma operasi di sini.]
+function prosesPemberianUlasan(idTransaksi: string, idPenilai: string, nilai: Integer, deskripsi: string) -> void
+    requireAuthenticated()
+    if not validasiNilaiUlasan(nilai) or idPenilai != currentUser().idPengguna then
+        throw Error("Penilai atau nilai tidak valid")
+    transaction
+        data <- wajibAda(queryOne("Q-054", idTransaksi))
+        if not TransaksiPekerjaanController.validasiKelayakanUlasan(idTransaksi, idPenilai) then
+            throw Error("Ulasan tidak diizinkan atau sudah diberikan")
+        peserta <- wajibAda(queryOne("Q-082", data.idTenagaKerja, data.idPenyediaKerja))
+        if idPenilai = peserta.idPenggunaTenaga then
+            idPenerima <- peserta.idPenggunaPenyedia
+        else
+            idPenerima <- peserta.idPenggunaTenaga
+        wajibAda(queryOne("Q-083", idPenerima))
+        execute("Q-084", uuid(), idTransaksi, idPenilai, idPenerima, nilai, deskripsi)
+        wajibAda(queryOne("Q-085", idPenerima))
+    { Seluruh penulisan ulasan mengunci pengguna penerima sebelum insert agar rating konsisten. }
 ```
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.41.3. Query Operasi [Nama Operasi]
+Tabel 5.41.3. Query Operasi prosesPemberianUlasan
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| *[Q-041]* | *[Tuliskan query]* | *[Fungsi query]* |
-| *...* | *...* | *...* |
+| Q-054 | `SELECT * FROM transaksi_pekerjaan WHERE "idTransaksi" = $1 FOR UPDATE;` | $1 = idTransaksi. |
+| Q-082 | `SELECT tk."idPengguna" AS "idPenggunaTenaga", pk."idPengguna" AS "idPenggunaPenyedia" FROM tenaga_kerja tk CROSS JOIN penyedia_kerja pk WHERE tk."idTenagaKerja" = $1 AND pk."idPenyediaKerja" = $2;` | $1 = idTenagaKerja, $2 = idPenyediaKerja; ulasan memakai ID pengguna. |
+| Q-083 | `SELECT "idPengguna" FROM pengguna WHERE "idPengguna" = $1 FOR UPDATE;` | $1 = idPenerima; mengunci pembaruan rata-rata. |
+| Q-084 | `INSERT INTO ulasan_rating ("idUlasan", "idTransaksi", "idPenilai", "idPenerima", nilai, "deskripsiUlasan") VALUES ($1, $2, $3, $4, $5, $6);` | $1-$6 = ID ulasan, idTransaksi, idPenilai, idPenerima, nilai, deskripsi; UNIQUE(idTransaksi, idPenilai) wajib. |
+| Q-085 | `UPDATE pengguna SET "akumulasiRating" = (SELECT COALESCE(AVG(nilai), 0) FROM ulasan_rating WHERE "idPenerima" = $1) WHERE "idPengguna" = $1 RETURNING "akumulasiRating";` | $1 = idPenerima; satu transaksi dengan penyimpanan ulasan. |
 
 ### 5.41.2 Algoritma/Query
 
-*[Ulangi pola 5.41.1 untuk operasi penting berikutnya pada kelas yang sama, jika ada.]*
+**Nama Kelas:** UlasanRatingController  
+**Nama Operasi:** `validasiNilaiUlasan(nilai: Integer): boolean`  
+**ID Algoritma:** Algo-133
 
+```text
+function validasiNilaiUlasan(nilai: Integer) -> boolean
+    -> isInteger(nilai) and nilai >= 1 and nilai <= 5
+```
+
+Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
+
+Tabel 5.41.4. Query Operasi validasiNilaiUlasan
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| - | - | Tidak menggunakan query langsung; operasi lokal atau akses data didelegasikan ke operasi yang dipanggil. |
 
 ## 5.42 Kelas TiketSengketaController
 
@@ -4947,26 +5572,207 @@ Tabel 5.42.2. Atribut Kelas TiketSengketaController
 Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
 
 **Nama Kelas:** TiketSengketaController  
-**Nama Operasi:** *[Signature operasi]*  
-**ID Algoritma:** *[Algo-042]*
+**Nama Operasi:** `prosesPembuatanTiket(idTransaksi: string, idPelapor: string, kategori: string, deskripsi: string, bukti: File): TiketSengketa`  
+**ID Algoritma:** Algo-134
 
 ```text
-[Tuliskan pseudocode algoritma operasi di sini.]
+function prosesPembuatanTiket(idTransaksi: string, idPelapor: string, kategori: string, deskripsi: string, bukti: File) -> TiketSengketa
+    requireAuthenticated()
+    if idPelapor != currentUser().idPengguna or isBlank(kategori) or isBlank(deskripsi) or bukti = null then
+        throw Error("Laporan dan bukti belum lengkap")
+    awal <- TransaksiPekerjaanController.getTransaksi(idTransaksi)
+    requireParticipant(awal, currentUser())
+    path <- storage.uploadPrivate(bukti)
+    try
+        transaction
+            data <- wajibAda(queryOne("Q-054", idTransaksi))
+            requireParticipant(data, currentUser())
+            if queryOne("Q-055", idTransaksi).ada then
+                throw Error("Masih ada tiket aktif")
+            if queryOne("Q-062", "upah:" + idTransaksi).ada then
+                throw Error("Dana sudah dikreditkan; perlu penanganan lanjutan CS")
+            idBaru <- uuid()
+            execute("Q-086", idBaru, idTransaksi, idPelapor, kategori, trim(deskripsi), path)
+            withTrustedDisputeContext()
+                TransaksiPekerjaanController.tahanStatusDana(idTransaksi)
+                RiwayatSengketaController.prosesPencatatanRiwayat(idBaru, "Laporan dibuat")
+            hasil <- wajibAda(queryOne("Q-013", idBaru))
+        -> mapToObject(TiketSengketa, hasil)
+    catch error
+        storage.deleteIfUnreferenced(path)
+        throw error
 ```
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.42.3. Query Operasi [Nama Operasi]
+Tabel 5.42.3. Query Operasi prosesPembuatanTiket
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| *[Q-042]* | *[Tuliskan query]* | *[Fungsi query]* |
-| *...* | *...* | *...* |
+| Q-054 | `SELECT * FROM transaksi_pekerjaan WHERE "idTransaksi" = $1 FOR UPDATE;` | $1 = idTransaksi; mengunci pekerjaan sebelum membuat tiket dan menahan dana. |
+| Q-055 | `SELECT EXISTS (SELECT 1 FROM tiket_sengketa WHERE "idTransaksi" = $1 AND "statusTiket" NOT IN ('Ditutup', 'Ditolak', 'Dibatalkan')) AS ada;` | $1 = idTransaksi. |
+| Q-062 | `SELECT EXISTS (SELECT 1 FROM mutasi_saldo WHERE "kunciOperasi" = $1) AS ada;` | $1 = upah:idTransaksi; dana yang sudah dibayar tidak dianggap masih dapat ditahan. |
+| Q-086 | `INSERT INTO tiket_sengketa ("idTiket", "idTransaksi", "idPelapor", "kategoriMasalah", "deskripsiKomplain", "urlBukti", "statusTiket", keputusan) VALUES ($1, $2, $3, $4, $5, $6, 'Diajukan', '');` | $1-$6 = ID tiket, idTransaksi, idPelapor, kategori, deskripsi, path bukti. |
+| Q-013 | `SELECT * FROM tiket_sengketa WHERE "idTiket" = $1;` | $1 = ID tiket baru. |
 
 ### 5.42.2 Algoritma/Query
 
-*[Ulangi pola 5.42.1 untuk operasi penting berikutnya pada kelas yang sama, jika ada.]*
+**Nama Kelas:** TiketSengketaController  
+**Nama Operasi:** `prosesKeputusanSengketa(idTiket: string, keputusan: string): void`  
+**ID Algoritma:** Algo-135
 
+```text
+function prosesKeputusanSengketa(idTiket: string, keputusan: string) -> void
+    requireAuthorizedCS()
+    if keputusan not in ["Refund", "Pencairan Dana"] then
+        throw Error("Keputusan tidak valid")
+    idTransaksi <- idTransaksiTiket(idTiket)
+    { Helper adapter mengambil relasi tiket; otorisasi petugas sudah diperiksa. }
+    transaction
+        data <- wajibAda(queryOne("Q-054", idTransaksi))
+        tiket <- wajibAda(queryOne("Q-017", idTiket))
+        if tiket.statusTiket = "Ditutup" then
+            ->
+        if tiket.statusTiket in ["Ditolak", "Dibatalkan"] then
+            throw Error("Tiket sudah final")
+        if not isBlank(tiket.keputusan) and tiket.keputusan != keputusan then
+            throw Error("Keputusan sudah tercatat berbeda")
+        requireBuktiCukup(tiket)
+        wajibAda(queryOne("Q-087", idTiket, keputusan))
+    { Refund di luar transaksi; adapter gateway memakai kunci idempotensi refund:idTiket. }
+    if keputusan = "Refund" then
+        hasil <- refundMelaluiGatewayTerverifikasi(idTransaksi, "refund:" + idTiket)
+        if hasil != "Berhasil" then
+            ->
+    transaction
+        wajibAda(queryOne("Q-054", idTransaksi))
+        tiket <- wajibAda(queryOne("Q-017", idTiket))
+        if tiket.statusTiket = "Ditutup" then
+            ->
+        wajibAda(queryOne("Q-088", idTiket, "Ditutup"))
+        if keputusan = "Pencairan Dana" then
+            wajibAda(queryOne("Q-057", idTransaksi, "Completed"))
+            withTrustedPaymentContext()
+                TransaksiPekerjaanController.prosesPembayaranUpah(idTransaksi)
+        else
+            execute("Q-089", idTransaksi)
+        withTrustedDisputeContext()
+            RiwayatSengketaController.prosesPencatatanRiwayat(idTiket, "Keputusan terlaksana: " + keputusan)
+    enqueueNotifikasiPesertaSetelahCommit(idTransaksi, "Sengketa selesai: " + keputusan)
+    { Adapter status pembayaran mengenali Dikembalikan sebagai status final; refund tidak memicu kredit upah. }
+```
+
+Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
+
+Tabel 5.42.4. Query Operasi prosesKeputusanSengketa
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-054 | `SELECT * FROM transaksi_pekerjaan WHERE "idTransaksi" = $1 FOR UPDATE;` | $1 = idTransaksi; seluruh sengketa mengunci pekerjaan lalu tiket. |
+| Q-017 | `SELECT * FROM tiket_sengketa WHERE "idTiket" = $1 FOR UPDATE;` | $1 = idTiket. |
+| Q-087 | `UPDATE tiket_sengketa SET keputusan = $2, "statusTiket" = 'Diproses' WHERE "idTiket" = $1 RETURNING "idTiket";` | $1 = idTiket, $2 = keputusan; masih aktif sampai tindak lanjut berhasil. |
+| Q-088 | `UPDATE tiket_sengketa SET "statusTiket" = $2 WHERE "idTiket" = $1 RETURNING "idTiket";` | $1 = idTiket, $2 = Ditutup; rollback jika kredit upah gagal. |
+| Q-057 | `UPDATE transaksi_pekerjaan SET "statusPekerjaan" = $2 WHERE "idTransaksi" = $1 RETURNING "idTransaksi";` | $1 = idTransaksi, $2 = Completed; keputusan petugas menggantikan persetujuan normal. |
+| Q-089 | `UPDATE tagihan_pembayaran SET "statusPembayaran" = 'Dikembalikan' WHERE "idTransaksi" = $1 AND "statusPembayaran" = 'Berhasil';` | $1 = idTransaksi; hanya setelah refund terverifikasi; Dikembalikan adalah status final tambahan pada rancangan refund. |
+
+### 5.42.3 Algoritma/Query
+
+**Nama Kelas:** TiketSengketaController  
+**Nama Operasi:** `mintaBuktiTambahan(idTiket: string, pesan: string): void`  
+**ID Algoritma:** Algo-136
+
+```text
+function mintaBuktiTambahan(idTiket: string, pesan: string) -> void
+    requireAuthorizedCS()
+    if isBlank(pesan) then
+        throw Error("Pesan permintaan bukti wajib diisi")
+    transaction
+        wajibAda(queryOne("Q-054", idTransaksiTiket(idTiket)))
+        tiket <- wajibAda(queryOne("Q-017", idTiket))
+        if tiket.statusTiket in ["Ditutup", "Ditolak", "Dibatalkan", "Diproses"] then
+            throw Error("Tiket tidak dapat dimintakan bukti")
+        wajibAda(queryOne("Q-088", idTiket, "Menunggu Balasan"))
+        withTrustedDisputeContext()
+            RiwayatSengketaController.prosesPencatatanRiwayat(idTiket, "Permintaan bukti: " + trim(pesan))
+    enqueueNotifikasiPesertaSetelahCommit(tiket.idTransaksi, pesan)
+```
+
+Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
+
+Tabel 5.42.5. Query Operasi mintaBuktiTambahan
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-054 | `SELECT * FROM transaksi_pekerjaan WHERE "idTransaksi" = $1 FOR UPDATE;` | $1 = idTransaksi tiket. |
+| Q-017 | `SELECT * FROM tiket_sengketa WHERE "idTiket" = $1 FOR UPDATE;` | $1 = idTiket. |
+| Q-088 | `UPDATE tiket_sengketa SET "statusTiket" = $2 WHERE "idTiket" = $1 RETURNING "idTiket";` | $1 = idTiket, $2 = Menunggu Balasan. |
+
+### 5.42.4 Algoritma/Query
+
+**Nama Kelas:** TiketSengketaController  
+**Nama Operasi:** `tolakTiket(idTiket: string, alasan: string): void`  
+**ID Algoritma:** Algo-137
+
+```text
+function tolakTiket(idTiket: string, alasan: string) -> void
+    requireAuthorizedCS()
+    if isBlank(alasan) then
+        throw Error("Alasan penolakan wajib diisi")
+    transaction
+        wajibAda(queryOne("Q-054", idTransaksiTiket(idTiket)))
+        tiket <- wajibAda(queryOne("Q-017", idTiket))
+        if tiket.statusTiket in ["Ditutup", "Ditolak", "Dibatalkan", "Diproses"] or not isBlank(tiket.keputusan) then
+            throw Error("Tiket tidak dapat ditolak")
+        wajibAda(queryOne("Q-088", idTiket, "Ditolak"))
+        withTrustedDisputeContext()
+            RiwayatSengketaController.prosesPencatatanRiwayat(idTiket, "Ditolak: " + trim(alasan))
+    enqueueNotifikasiPesertaSetelahCommit(tiket.idTransaksi, "Laporan ditolak: " + trim(alasan))
+    { Tiket tidak aktif melepas penahanan; upah tetap memerlukan prasyarat pembayaran dan pekerjaan. }
+```
+
+Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
+
+Tabel 5.42.6. Query Operasi tolakTiket
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-054 | `SELECT * FROM transaksi_pekerjaan WHERE "idTransaksi" = $1 FOR UPDATE;` | $1 = idTransaksi tiket. |
+| Q-017 | `SELECT * FROM tiket_sengketa WHERE "idTiket" = $1 FOR UPDATE;` | $1 = idTiket. |
+| Q-088 | `UPDATE tiket_sengketa SET "statusTiket" = $2 WHERE "idTiket" = $1 RETURNING "idTiket";` | $1 = idTiket, $2 = Ditolak. |
+
+### 5.42.5 Algoritma/Query
+
+**Nama Kelas:** TiketSengketaController  
+**Nama Operasi:** `batalkanTiket(idTiket: string): void`  
+**ID Algoritma:** Algo-138
+
+```text
+function batalkanTiket(idTiket: string) -> void
+    requireAuthenticated()
+    transaction
+        wajibAda(queryOne("Q-054", idTransaksiTiket(idTiket)))
+        tiket <- wajibAda(queryOne("Q-017", idTiket))
+        if tiket.idPelapor != currentUser().idPengguna then
+            throw Error("Hanya pelapor dapat membatalkan")
+        if tiket.statusTiket = "Dibatalkan" then
+            ->
+        if tiket.statusTiket != "Diajukan" or not isBlank(tiket.keputusan) then
+            throw Error("Tiket sudah ditangani")
+        wajibAda(queryOne("Q-088", idTiket, "Dibatalkan"))
+        withTrustedDisputeContext()
+            RiwayatSengketaController.prosesPencatatanRiwayat(idTiket, "Laporan dibatalkan pelapor")
+    enqueueNotifikasiPesertaSetelahCommit(tiket.idTransaksi, "Laporan dibatalkan")
+```
+
+Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
+
+Tabel 5.42.7. Query Operasi batalkanTiket
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-054 | `SELECT * FROM transaksi_pekerjaan WHERE "idTransaksi" = $1 FOR UPDATE;` | $1 = idTransaksi tiket. |
+| Q-017 | `SELECT * FROM tiket_sengketa WHERE "idTiket" = $1 FOR UPDATE;` | $1 = idTiket. |
+| Q-088 | `UPDATE tiket_sengketa SET "statusTiket" = $2 WHERE "idTiket" = $1 RETURNING "idTiket";` | $1 = idTiket, $2 = Dibatalkan; Diajukan berarti laporan belum ditangani. |
 
 ## 5.43 Kelas RiwayatSengketaController
 
@@ -4991,26 +5797,50 @@ Tabel 5.43.2. Atribut Kelas RiwayatSengketaController
 Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
 
 **Nama Kelas:** RiwayatSengketaController  
-**Nama Operasi:** *[Signature operasi]*  
-**ID Algoritma:** *[Algo-043]*
+**Nama Operasi:** `prosesPencatatanRiwayat(idTiket: string, aktivitas: string): void`  
+**ID Algoritma:** Algo-139
 
 ```text
-[Tuliskan pseudocode algoritma operasi di sini.]
+function prosesPencatatanRiwayat(idTiket: string, aktivitas: string) -> void
+    requireTrustedDisputeContext()
+    if isBlank(aktivitas) then
+        throw Error("Aktivitas wajib diisi")
+    wajibAda(queryOne("Q-090", idTiket))
+    execute("Q-019", uuid(), idTiket, trim(aktivitas), now())
+    { Riwayat memakai transaksi yang sama dengan perubahan sengketa pemanggil. }
 ```
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.43.3. Query Operasi [Nama Operasi]
+Tabel 5.43.3. Query Operasi prosesPencatatanRiwayat
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| *[Q-043]* | *[Tuliskan query]* | *[Fungsi query]* |
-| *...* | *...* | *...* |
+| Q-090 | `SELECT "idTiket" FROM tiket_sengketa WHERE "idTiket" = $1;` | $1 = idTiket. |
+| Q-019 | `INSERT INTO riwayat_sengketa ("idRiwayat", "idTiket", "logAktivitas", timestamp) VALUES ($1, $2, $3, $4);` | $1-$4 = ID riwayat, idTiket, aktivitas, waktu. |
 
 ### 5.43.2 Algoritma/Query
 
-*[Ulangi pola 5.43.1 untuk operasi penting berikutnya pada kelas yang sama, jika ada.]*
+**Nama Kelas:** RiwayatSengketaController  
+**Nama Operasi:** `getRiwayatSengketa(idTiket: string): Array<RiwayatSengketa>`  
+**ID Algoritma:** Algo-140
 
+```text
+function getRiwayatSengketa(idTiket: string) -> Array<RiwayatSengketa>
+    requireAuthenticated()
+    tiket <- wajibAda(queryOne("Q-013", idTiket))
+    requireParticipantOrAuthorizedCSPadaTiket(tiket, currentUser())
+    -> mapToObjects(RiwayatSengketa, queryAll("Q-016", idTiket))
+```
+
+Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
+
+Tabel 5.43.4. Query Operasi getRiwayatSengketa
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-013 | `SELECT * FROM tiket_sengketa WHERE "idTiket" = $1;` | $1 = idTiket; otorisasi dilakukan sebelum riwayat diberikan. |
+| Q-016 | `SELECT * FROM riwayat_sengketa WHERE "idTiket" = $1 ORDER BY timestamp ASC, "idRiwayat" ASC;` | $1 = idTiket; urutan kedua menjaga hasil stabil bila waktu sama. |
 
 ## 5.44 Kelas NotifikasiController
 
@@ -5033,78 +5863,84 @@ Tabel 5.44.2. Atribut Kelas NotifikasiController
 
 ### 5.44.1 Algoritma/Query
 
+Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
+
 **Nama Kelas:** NotifikasiController  
 **Nama Operasi:** `kirimNotifikasi(idPenerima: string, pesan: string): void`  
-**ID Algoritma:** Algo-079
+**ID Algoritma:** Algo-141
 
 ```text
-function kirimNotifikasi(idPenerima: string, pesan: string) → void
+function kirimNotifikasi(idPenerima: string, pesan: string) -> void
+    requireTrustedNotificationContext()
     if isBlank(idPenerima) or isBlank(pesan) then
-        throw Error("Penerima dan pesan notifikasi wajib diisi")
-    else
-        notifikasi <- new Notifikasi()
-        notifikasi.idPenerima <- idPenerima
-        notifikasi.pesanNotifikasi <- pesan
-        notifikasi.simpanNotifikasi()
-        kirimKePenerimaSecaraRealtime(idPenerima, pesan)
+        throw Error("Penerima dan pesan wajib diisi")
+    execute("Q-091", uuid(), idPenerima, pesan, now())
+    enqueueRealtimeSetelahCommit(idPenerima, pesan)
+    { Realtime gagal dijadwalkan ulang; notifikasi yang tersimpan tidak dihapus. }
 ```
+
+Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
 Tabel 5.44.3. Query Operasi kirimNotifikasi
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-014-01 | Sama dengan Tabel 5.14.3. | Penyimpanan didelegasikan ke Notifikasi.simpanNotifikasi(); notifikasi realtime dikirim setelah penyimpanan berhasil. |
+| Q-091 | `INSERT INTO notifikasi ("idNotifikasi", "idPenerima", "pesanNotifikasi", "statusBaca", "waktuKirim") VALUES ($1, $2, $3, FALSE, $4);` | $1-$4 = ID notifikasi, ID profil penerima, pesan, waktu; konteks berasal dari proses sistem. |
 
 ### 5.44.2 Algoritma/Query
 
 **Nama Kelas:** NotifikasiController  
 **Nama Operasi:** `buatNotifikasiVerifikasi(idTenagaKerja: string, status: string, alasan: string): void`  
-**ID Algoritma:** Algo-080
+**ID Algoritma:** Algo-142
 
 ```text
-function buatNotifikasiVerifikasi(idTenagaKerja: string, status: string, alasan: string) → void
-    if isBlank(idTenagaKerja) or status not in ["Terverifikasi", "Ditolak"] then
-        throw Error("Data notifikasi verifikasi tidak valid")
-    else if status = "Ditolak" and isBlank(alasan) then
-        throw Error("Alasan penolakan wajib disertakan")
+function buatNotifikasiVerifikasi(idTenagaKerja: string, status: string, alasan: string) -> void
+    requireTrustedVerificationContext()
+    if status not in ["Terverifikasi", "Ditolak"] then
+        throw Error("Status verifikasi tidak valid")
+    wajibAda(queryOne("Q-092", idTenagaKerja))
+    if status = "Terverifikasi" then
+        pesan <- "Verifikasi identitas berhasil"
     else
-        if status = "Terverifikasi" then
-            pesan <- "Verifikasi identitas berhasil"
-        else
-            pesan <- "Verifikasi identitas ditolak: " + trim(alasan)
+        if isBlank(alasan) then
+            throw Error("Alasan penolakan wajib diisi")
+        pesan <- "Verifikasi identitas ditolak: " + trim(alasan)
+    withTrustedNotificationContext()
         kirimNotifikasi(idTenagaKerja, pesan)
 ```
 
-Operasi ini menggunakan Q-014-01 melalui `kirimNotifikasi`.
+Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
+
+Tabel 5.44.4. Query Operasi buatNotifikasiVerifikasi
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-092 | `SELECT "idTenagaKerja" FROM tenaga_kerja WHERE "idTenagaKerja" = $1;` | $1 = idTenagaKerja; pengiriman didelegasikan ke kirimNotifikasi dengan ID profil yang sama. |
 
 ### 5.44.3 Algoritma/Query
 
 **Nama Kelas:** NotifikasiController  
 **Nama Operasi:** `prosesPembacaanNotifikasi(idNotifikasi: string): boolean`  
-**ID Algoritma:** Algo-081
+**ID Algoritma:** Algo-143
 
 ```text
-function prosesPembacaanNotifikasi(idNotifikasi: string) → boolean
+function prosesPembacaanNotifikasi(idNotifikasi: string) -> boolean
+    requireAuthenticated()
     if isBlank(idNotifikasi) then
-        output("ID notifikasi tidak valid")
         -> false
-    else
-        requireAuthenticated()
-        notifikasi <- new Notifikasi()
-        notifikasi.idNotifikasi <- idNotifikasi
-        idPenerima <- idPenerimaSesi(currentUser())
-        hasil <- notifikasi.tandaiSudahDibaca(idPenerima)
-        -> hasil
+    idPenerima <- idPenerimaSesi(currentUser())
+    { ID profil sesuai peran harus sama jenisnya dengan ID saat notifikasi dibuat. }
+    hasil <- queryOne("Q-047", idNotifikasi, idPenerima)
+    -> hasil != null
 ```
 
-`idPenerimaSesi` mengambil ID profil penerima sesuai peran dari sesi terautentikasi dan menggunakan jenis ID yang sama dengan saat notifikasi disimpan.
+Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.44.4. Query Operasi prosesPembacaanNotifikasi
+Tabel 5.44.5. Query Operasi prosesPembacaanNotifikasi
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-014-02 | `UPDATE notifikasi SET "statusBaca" = TRUE WHERE "idNotifikasi" = $1 AND "idPenerima" = $2 RETURNING "idNotifikasi";` | Memperbarui status hanya jika notifikasi dimiliki penerima pada sesi terautentikasi; $1 = idNotifikasi, $2 = idPenerima yang sama dengan ID penerima saat notifikasi dibuat. |
-
+| Q-047 | `UPDATE notifikasi SET "statusBaca" = TRUE WHERE "idNotifikasi" = $1 AND "idPenerima" = $2 RETURNING "idNotifikasi";` | $1 = idNotifikasi, $2 = ID profil sesi; notifikasi milik pengguna lain tidak diubah. |
 
 ## 5.45 Kelas PaymentGatewayController
 
@@ -5130,30 +5966,122 @@ Tabel 5.45.2. Atribut Kelas PaymentGatewayController
 Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
 
 **Nama Kelas:** PaymentGatewayController  
-**Nama Operasi:** *[Signature operasi]*  
-**ID Algoritma:** *[Algo-045]*
+**Nama Operasi:** `kirimPermintaanPembayaran(idTagihan: string, nominal: Decimal): boolean`  
+**ID Algoritma:** Algo-144
 
 ```text
-[Tuliskan pseudocode algoritma operasi di sini.]
+function kirimPermintaanPembayaran(idTagihan: string, nominal: Decimal) -> boolean
+    requireTrustedPaymentContext()
+    if not isFinite(nominal) or nominal <= 0 then
+        -> false
+    data <- wajibAda(queryOne("Q-093", idTagihan))
+    if nominal != data.totalBayar then
+        throw Error("Nominal tidak sesuai tagihan")
+    if data.statusPembayaran = "Berhasil" then
+        -> true
+    if data.statusPembayaran != "Diproses" then
+        -> false
+    { Adapter gateway memakai idTagihan sebagai idempotency key dan metode dari konteks. }
+    hasil <- gatewayCharge(idTagihan, nominal, metodePadaKonteks(), idTagihan)
+    if hasil.status in ["Diterima", "Pending", "Berhasil"] then
+        if hasil.status = "Berhasil" then
+            withVerifiedGatewayContext(hasil)
+                prosesNotifikasiPembayaran(idTagihan, "Berhasil")
+        -> true
+    if hasil.status = "Gagal Final" then
+        withVerifiedGatewayContext(hasil)
+            prosesNotifikasiPembayaran(idTagihan, "Gagal")
+    { Timeout tetap Diproses; rekonsiliasi memakai kunci yang sama. }
+    -> false
 ```
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.45.3. Query Operasi [Nama Operasi]
+Tabel 5.45.3. Query Operasi kirimPermintaanPembayaran
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| *[Q-045]* | *[Tuliskan query]* | *[Fungsi query]* |
-| *...* | *...* | *...* |
+| Q-093 | `SELECT "totalBayar", "statusPembayaran" FROM tagihan_pembayaran WHERE "idTagihan" = $1;` | $1 = idTagihan; true berarti permintaan diterima atau sudah lunas, bukan selalu settlement. |
 
 ### 5.45.2 Algoritma/Query
 
-*[Ulangi pola 5.45.1 untuk operasi penting berikutnya pada kelas yang sama, jika ada.]*
+**Nama Kelas:** PaymentGatewayController  
+**Nama Operasi:** `prosesNotifikasiPembayaran(idTagihan: string, status: string): void`  
+**ID Algoritma:** Algo-145
 
+```text
+function prosesNotifikasiPembayaran(idTagihan: string, status: string) -> void
+    requireVerifiedGatewayContext()
+    { Adapter memeriksa signature, provider, ID tagihan, nominal, dan status otoritatif. }
+    if status not in ["Diproses", "Berhasil", "Gagal", "Kedaluwarsa"] then
+        throw Error("Status gateway tidak dikenal")
+    idTransaksi <- idTransaksiTagihan(idTagihan)
+    transaction
+        pekerjaan <- wajibAda(queryOne("Q-054", idTransaksi))
+        tagihan <- wajibAda(queryOne("Q-068", idTagihan))
+        if tagihan.statusPembayaran = status then
+            ->
+        if tagihan.statusPembayaran in ["Berhasil", "Dikembalikan"] then
+            ->
+        if tagihan.statusPembayaran in ["Gagal", "Kedaluwarsa"] then
+            tandaiRekonsiliasiGateway(idTagihan, status)
+            ->
+        wajibAda(queryOne("Q-094", idTagihan, status))
+        if status = "Berhasil" then
+            if pekerjaan.statusPekerjaan != "Menunggu Pembayaran" then
+                throw Error("Status pekerjaan perlu direkonsiliasi")
+            wajibAda(queryOne("Q-057", idTransaksi, "In Progress"))
+    enqueueNotifikasiSetelahCommit(pekerjaan.idPenyediaKerja, "Status pembayaran: " + status)
+```
+
+Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
+
+Tabel 5.45.4. Query Operasi prosesNotifikasiPembayaran
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-054 | `SELECT * FROM transaksi_pekerjaan WHERE "idTransaksi" = $1 FOR UPDATE;` | $1 = idTransaksi; urutan kunci pekerjaan lalu tagihan. |
+| Q-068 | `SELECT * FROM tagihan_pembayaran WHERE "idTagihan" = $1 FOR UPDATE;` | $1 = idTagihan; callback duplikat tidak mengulangi perubahan. |
+| Q-094 | `UPDATE tagihan_pembayaran SET "statusPembayaran" = $2 WHERE "idTagihan" = $1 RETURNING "idTagihan";` | $1 = idTagihan, $2 = status terverifikasi; hasil final bertentangan direkonsiliasi. |
+| Q-057 | `UPDATE transaksi_pekerjaan SET "statusPekerjaan" = $2 WHERE "idTransaksi" = $1 RETURNING "idTransaksi";` | $1 = idTransaksi, $2 = In Progress; satu transaksi dengan status pembayaran. |
+
+### 5.45.3 Algoritma/Query
+
+**Nama Kelas:** PaymentGatewayController  
+**Nama Operasi:** `kirimPermintaanPencairan(rekeningTujuan: string, nominal: Decimal): boolean`  
+**ID Algoritma:** Algo-146
+
+```text
+function kirimPermintaanPencairan(rekeningTujuan: string, nominal: Decimal) -> boolean
+    requireTrustedDisbursementContext()
+    if isBlank(rekeningTujuan) or not isFinite(nominal) or nominal <= 0 then
+        -> false
+    idPencairan <- idPencairanPadaKonteks()
+    { Konteks internal berasal dari konfirmasiPencairan, bukan masukan bebas pengguna. }
+    data <- wajibAda(queryOne("Q-095", idPencairan))
+    if data.rekeningTujuan != rekeningTujuan or data.nominal != nominal then
+        throw Error("Data transfer tidak sesuai pencairan")
+    if data.statusPencairan = "Berhasil" then
+        -> true
+    if data.statusPencairan != "Diproses" then
+        -> false
+    hasil <- gatewayTransfer(rekeningTujuan, nominal, idPencairan)
+    { Idempotency key wajib idPencairan; bukan gabungan rekening dan nominal. }
+    -> hasil.status = "Berhasil"
+```
+
+Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
+
+Tabel 5.45.5. Query Operasi kirimPermintaanPencairan
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-095 | `SELECT "rekeningTujuan", nominal, "statusPencairan" FROM pencairan_dana WHERE "idPencairan" = $1;` | $1 = idPencairan konteks internal; pending/timeout menghasilkan false tetapi tetap Diproses hingga rekonsiliasi. |
 
 <br>
 
 ---
+
 
 # BAB 6: Perancangan Antarmuka
 
