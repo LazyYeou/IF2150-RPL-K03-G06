@@ -2380,7 +2380,7 @@ procedure createPencairanDana(idTenagaKerja: string, nominal: number, rekeningTu
     this.statusPencairan <- "Menunggu Proses"
     this.waktuPengajuan <- getCurrentTimestamp()
 
-    execute Q-010a with (this.idPencairan, this.idTenagaKerja, this.nominal, this.rekeningTujuan, this.statusPencairan, this.waktuPengajuan)
+    execute Q-010-01 with (this.idPencairan, this.idTenagaKerja, this.nominal, this.rekeningTujuan, this.statusPencairan, this.waktuPengajuan)
 end procedure
 ```
 
@@ -2399,7 +2399,7 @@ Tabel 5.10.3. Query Operasi createPencairanDana(idTenagaKerja: string, nominal: 
 ```text
 procedure setStatusPencairan(status: string)
     this.statusPencairan <- status
-    execute Q-010b with (status, this.idPencairan)
+    execute Q-010-02 with (status, this.idPencairan)
 end procedure
 ```
 
@@ -2434,28 +2434,36 @@ Tabel 5.11.2. Atribut Kelas UlasanRating
 
 ### 5.11.1 Algoritma/Query
 
-Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
-
 **Nama Kelas:** UlasanRating  
-**Nama Operasi:** *[Signature operasi]*  
-**ID Algoritma:** *[Algo-011]*
+**Nama Operasi:** simpanUlasan(): void  
+**ID Algoritma:** Algo-011-01
 
 ```text
-[Tuliskan pseudocode algoritma operasi di sini.]
+procedure simpanUlasan()
+    // Validasi domain: nilai rating wajib berada pada rentang 1 hingga 5
+    if this.nilai < 1 or this.nilai > 5 then
+        throw Error("Nilai rating tidak valid. Harus berada di antara 1 dan 5.")
+    end if
+
+    // Cek pencegahan double review pada transaksi yang sama
+    riwayatUlasan <- execute Q-011a with (this.idTransaksi, this.idPenilai)
+    if riwayatUlasan.totalUlasan > 0 then
+        throw Error("Pengguna telah memberikan ulasan pada transaksi ini.")
+    end if
+
+    this.idUlasan <- generateUUID()
+    execute Q-011-02 with (this.idUlasan, this.idTransaksi, this.idPenilai, this.idPenerima, this.nilai, this.deskripsiUlasan)
+end procedure
 ```
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.11.3. Query Operasi [Nama Operasi]
+Tabel 5.11.3. Query Operasi simpanUlasan(): void
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| *[Q-011]* | *[Tuliskan query]* | *[Fungsi query]* |
-| *...* | *...* | *...* |
-
-### 5.11.2 Algoritma/Query
-
-*[Ulangi pola 5.11.1 untuk operasi penting berikutnya pada kelas yang sama, jika ada.]*
+| Q-011-01 | SELECT COUNT(*) AS totalUlasan FROM ulasanRating WHERE idTransaksi = :idTransaksi AND idPenilai = :idPenilai; | Memeriksa apakah penilai telah memberikan ulasan pada transaksi yang sama untuk mencegah ulasan ganda. |
+| Q-011-02 | INSERT INTO ulasanRating (idUlasan, idTransaksi, idPenilai, idPenerima, nilai, deskripsiUlasan) VALUES (:idUlasan, :idTransaksi, :idPenilai, :idPenerima, :nilai, :deskripsiUlasan); | Menyimpan data penilaian dan ulasan baru ke basis data. |
 
 
 ## 5.12 Kelas TiketSengketa
