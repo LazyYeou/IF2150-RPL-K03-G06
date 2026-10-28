@@ -32,6 +32,7 @@
     - [Milestone 5](#milestone-5)
     - [Milestone 6](#milestone-6)
     - [Milestone 7](#milestone-7)
+    - [Milestone 8](#milestone-8)
 
 
 ---
@@ -133,6 +134,15 @@ Diagram 4.3 | 2 | Done | - |
 | 21-10-2026 | Aditya Rasyid | Mengerjakan Bab 3 UC03-UC05 | 4 | Done | Agak bingung mengenai cara membuat scenario diagramnya |
 | 21-10-2026 | Muhammad Ridwan Nasir Firdaus | Mengerjakan Bab 4 Class Diagram | 1 | Done | - |
 | 21-10-2026 | Davin Farel Santoso | Mengerjakan Bab 3 UC01 dan UC02, serta melakukan pembaruan pada chapter 1,2, dan 5 | 3 | Done | - |
+
+### Milestone 8
+**Periode:** 21 Oktober 2026 - 28 Oktober 2026
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
+| :--- | :--- | :--- | :--- | :--- | :--- | 
+| 27-10-2026 | Davin Farel Santoso | Memetakan method dan atribute pada semau class yang ada | 2 | Done | - |
+| 28-10-2026 | Davin Farel Santoso | Mengerjakan algoritma dan query untuk kelas 1 sampai 9 | 2 | Done | - |
+
+
 
 
 ---
