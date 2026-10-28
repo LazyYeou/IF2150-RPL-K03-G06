@@ -104,8 +104,11 @@ Tabel 1.4. Aturan Penomoran
 | Kebutuhan Fungsional | KFXX | Menandai fungsi atau layanan sistem, misalnya KF01. |
 | Kebutuhan Non-Fungsional | KNFXX | Menandai persyaratan kualitas atau batasan operasional sistem, misalnya KNF01. |
 | Aktor | AXX | Menandai peran pengguna: A01 untuk Tenaga Kerja, A02 untuk Penyedia Kerja, dan A03 untuk Customer Service. |
-| Use Case | UCXX | Menandai use case beserta skenarionya, misalnya UC01 untuk Melakukan Registrasi. |
-| Kelas | CXX | Menandai kelas pada identifikasi, diagram kelas, dan traceability, misalnya C01. |
+| Use Case | UCXX | Menandai use case beserta skenarionya, dari UC01 untuk Melakukan Registrasi hingga UC12 untuk Menangani Keluhan. |
+| Kelas | CXX | Menandai 45 kelas perancangan, dari C01 untuk Pengguna hingga C45 untuk PaymentGatewayController. ID yang sama digunakan pada identifikasi kelas, diagram, perancangan rinci, dan matriks kerunutan. |
+| Algoritma | Algo-NNN | Menandai algoritma operasi kelas, misalnya Algo-001. Nomor diurutkan lintas kelas dan setiap algoritma memiliki ID unik; penomoran tidak dimulai ulang pada kelas berikutnya. |
+| Query | Q-NNN | Menandai query yang dirujuk dalam pseudocode dan tabel query setiap algoritma, misalnya Q-001. Nomor diurutkan lintas kelas dan harus sesuai dengan referensinya pada pseudocode. |
+| Antarmuka/Layar | I-XX | Menandai rancangan antarmuka, misalnya I-01. ID yang sama digunakan pada spesifikasi layar dan daftar rancangan antarmuka keseluruhan di Bab 6. |
 
 ## 1.5 Referensi
 Dokumen dan sumber yang digunakan sebagai acuan penyusunan DPPL Kerja-In adalah sebagai berikut:
