@@ -2558,28 +2558,25 @@ Tabel 5.13.2. Atribut Kelas RiwayatSengketa
 
 ### 5.13.1 Algoritma/Query
 
-Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
-
 **Nama Kelas:** RiwayatSengketa  
-**Nama Operasi:** *[Signature operasi]*  
-**ID Algoritma:** *[Algo-013]*
+**Nama Operasi:** catatRiwayat(aktivitas: string): void  
+**ID Algoritma:** Algo-013-01
 
 ```text
-[Tuliskan pseudocode algoritma operasi di sini.]
+procedure catatRiwayat(aktivitas: string)
+    this.idRiwayat <- generateUUID()
+    this.logAktivitas <- aktivitas
+    this.timestamp <- getCurrentTimestamp()
+
+    execute Q-013-01 with (this.idRiwayat, this.idTiket, this.logAktivitas, this.timestamp)
+end procedure
 ```
 
-Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
-
-Tabel 5.13.3. Query Operasi [Nama Operasi]
+Tabel 5.13.3. Query Operasi catatRiwayat(aktivitas: string): void
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| *[Q-013]* | *[Tuliskan query]* | *[Fungsi query]* |
-| *...* | *...* | *...* |
-
-### 5.13.2 Algoritma/Query
-
-*[Ulangi pola 5.13.1 untuk operasi penting berikutnya pada kelas yang sama, jika ada.]*
+| Q-013-01 | INSERT INTO riwayatSengketa (idRiwayat, idTiket, logAktivitas, timestamp) VALUES (:idRiwayat, :idTiket, :logAktivitas, :timestamp); | Mencatat riwayat log aktivitas penyelesaian tiket sengketa ke basis data. |
 
 
 ## 5.14 Kelas Notifikasi
@@ -2606,28 +2603,44 @@ Tabel 5.14.2. Atribut Kelas Notifikasi
 
 ### 5.14.1 Algoritma/Query
 
-Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
-
 **Nama Kelas:** Notifikasi  
-**Nama Operasi:** *[Signature operasi]*  
-**ID Algoritma:** *[Algo-014]*
+**Nama Operasi:** simpanNotifikasi(): void  
+**ID Algoritma:** Algo-014-01
 
 ```text
-[Tuliskan pseudocode algoritma operasi di sini.]
-```
+procedure simpanNotifikasi()
+    this.idNotifikasi <- generateUUID()
+    this.statusBaca <- false
+    this.waktuKirim <- getCurrentTimestamp()
 
-Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
+    execute Q-014-01 with (this.idNotifikasi, this.idPenerima, this.pesanNotifikasi, this.statusBaca, this.waktuKirim)
+end procedure
+```
 
 Tabel 5.14.3. Query Operasi [Nama Operasi]
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| *[Q-014]* | *[Tuliskan query]* | *[Fungsi query]* |
-| *...* | *...* | *...* |
+| Q-014-01 | INSERT INTO notifikasi (idNotifikasi, idPenerima, pesanNotifikasi, statusBaca, waktuKirim) VALUES (:idNotifikasi, :idPenerima, :pesanNotifikasi, :statusBaca, :waktuKirim); | Menyimpan pesan pemberitahuan baru bagi pengguna ke basis data. |
 
 ### 5.14.2 Algoritma/Query
 
-*[Ulangi pola 5.14.1 untuk operasi penting berikutnya pada kelas yang sama, jika ada.]*
+**Nama Kelas:** Notifikasi  
+**Nama Operasi:** tandaiSudahDibaca(): void
+**ID Algoritma:** Algo-014-02
+
+```text
+procedure tandaiSudahDibaca()
+    this.statusBaca <- true
+    execute Q-014-02 with (this.idNotifikasi)
+end procedure
+```
+
+Tabel 5.14.4. Query Operasi tandaiSudahDibaca(): void
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-014-02 | UPDATE notifikasi SET statusBaca = true WHERE idNotifikasi = :idNotifikasi; | Memperbarui status notifikasi menjadi telah dibaca oleh pengguna. |
 
 
 ## 5.15 Kelas PaymentGateway
@@ -2653,28 +2666,56 @@ Tabel 5.15.2. Atribut Kelas PaymentGateway
 
 ### 5.15.1 Algoritma/Query
 
-Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
-
 **Nama Kelas:** PaymentGateway  
-**Nama Operasi:** *[Signature operasi]*  
-**ID Algoritma:** *[Algo-015]*
+**Nama Operasi:** prosesPembayaran(idTagihan: string, nominal: number): boolean
+**ID Algoritma:** Algo-015-01
 
 ```text
-[Tuliskan pseudocode algoritma operasi di sini.]
+function prosesPembayaran(idTagihan: string, nominal: number): boolean
+    payloadPembayaran <- createPaymentPayload(idTagihan, nominal)
+    responseGateway <- callPaymentGatewayApi("POST", "/charge", payloadPembayaran)
+
+    if responseGateway.statusCode == 200 and responseGateway.statusTransaksi == "settlement" then
+        execute Q-015a with (idTagihan)
+        return true
+    else if responseGateway.statusCode == 201 and responseGateway.statusTransaksi == "pending" then
+        return true
+    else
+        return false
+    end if
+end function
 ```
 
-Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
-
-Tabel 5.15.3. Query Operasi [Nama Operasi]
+Tabel 5.15.3. Query Operasi prosesPembayaran(idTagihan: string, nominal: number): boolean
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| *[Q-015]* | *[Tuliskan query]* | *[Fungsi query]* |
-| *...* | *...* | *...* |
+| Q-015-01 | UPDATE tagihanPembayaran SET statusBayar = 'Lunas' WHERE idTagihan = :idTagihan; | Memperbarui status bayar tagihan menjadi Lunas setelah verifikasi gateway berhasil. |
 
 ### 5.15.2 Algoritma/Query
 
-*[Ulangi pola 5.15.1 untuk operasi penting berikutnya pada kelas yang sama, jika ada.]*
+**Nama Kelas:** PaymentGateway  
+**Nama Operasi:** transferDana(rekeningTujuan: string, nominal: number): boolean
+**ID Algoritma:** Algo-015-02
+
+```text
+function transferDana(rekeningTujuan: string, nominal: number): boolean
+    payloadPencairan <- createDisbursementPayload(rekeningTujuan, nominal)
+    responseGateway <- callPaymentGatewayApi("POST", "/disbursement", payloadPencairan)
+
+    if responseGateway.statusCode == 200 and responseGateway.statusTransaksi == "completed" then
+        return true
+    else
+        return false
+    end if
+end function
+```
+
+Tabel 5.15.4. Query Operasi transferDana(rekeningTujuan: string, nominal: number): boolean
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-015-02 | Tidak ada query langsung ke basis data lokal (interaksi dilakukan via REST API payment gateway pihak ketiga). | Pengiriman instruksi pencairan dana upah ke rekening/e-wallet tujuan. |
 
 
 ## 5.16 Kelas PenggunaUI
@@ -2701,28 +2742,61 @@ Tabel 5.16.2. Atribut Kelas PenggunaUI
 
 ### 5.16.1 Algoritma/Query
 
-Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
-
 **Nama Kelas:** PenggunaUI  
-**Nama Operasi:** *[Signature operasi]*  
-**ID Algoritma:** *[Algo-016]*
+**Nama Operasi:** kirimDataRegistrasi(dataProfil: Record<string, unknown>, peran: string, persetujuanPrivasi: boolean): void
+**ID Algoritma:** Algo-016-01
 
 ```text
-[Tuliskan pseudocode algoritma operasi di sini.]
+procedure kirimDataRegistrasi(dataProfil: Record<string, unknown>, peran: string, persetujuanPrivasi: boolean)
+    if not persetujuanPrivasi then
+        tampilkanPesanKesalahan("Anda wajib menyetujui syarat & ketentuan dan kebijakan privasi.")
+        return
+    end if
+
+    statusRegistrasi <- PenggunaController.registrasi(dataProfil, peran)
+    if statusRegistrasi.isSuccess then
+        tampilkanPesanBerhasil("Registrasi berhasil. Silakan periksa email untuk verifikasi akun.")
+        arahkanKeHalamanLogin()
+    else
+        tampilkanPesanKesalahan(statusRegistrasi.pesanKesalahan)
+    end if
+end procedure
 ```
 
-Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
-
-Tabel 5.16.3. Query Operasi [Nama Operasi]
+Tabel 5.16.3. Query Operasi kirimDataRegistrasi(dataProfil: Record<string, unknown>, peran: string, persetujuanPrivasi: boolean): void
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| *[Q-016]* | *[Tuliskan query]* | *[Fungsi query]* |
-| *...* | *...* | *...* |
+| Q-016-01 | Tidak ada query langsung (operasi berada pada layer View antarmuka pengguna). | Pemrosesan basis data didelegasikan ke PenggunaController dan Model Pengguna. |
 
 ### 5.16.2 Algoritma/Query
 
-*[Ulangi pola 5.16.1 untuk operasi penting berikutnya pada kelas yang sama, jika ada.]*
+**Nama Kelas:** PenggunaUI  
+**Nama Operasi:** kirimDataLogin(email: string, kataSandi: string): void
+**ID Algoritma:** Algo-016-02
+
+```text
+procedure kirimDataLogin(email: string, kataSandi: string)
+    if email.trim() == "" or kataSandi.trim() == "" then
+        tampilkanPesanKesalahan("Email dan kata sandi wajib diisi.")
+        return
+    end if
+
+    statusLogin <- PenggunaController.login(email, kataSandi)
+    if statusLogin.isAuthenticated then
+        simpanTokenSesi(statusLogin.tokenAuth)
+        arahkanKeDashboard(statusLogin.peran)
+    else
+        tampilkanPesanKesalahan(statusLogin.pesanKesalahan)
+    end if
+end procedure
+```
+
+Tabel 5.16.4. Query Operasi kirimDataLogin(email: string, kataSandi: string): void
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-016-02 | Tidak ada query langsung (operasi berada pada layer View antarmuka pengguna). | Validasi autentikasi didelegasikan ke PenggunaController dan Supabase Auth. |
 
 
 ## 5.17 Kelas TenagaKerjaUI
@@ -2750,28 +2824,61 @@ Tabel 5.17.2. Atribut Kelas TenagaKerjaUI
 
 ### 5.17.1 Algoritma/Query
 
-Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
-
 **Nama Kelas:** TenagaKerjaUI  
-**Nama Operasi:** *[Signature operasi]*  
-**ID Algoritma:** *[Algo-017]*
+**Nama Operasi:** kirimDokumenIdentitas(dokumen: File, persetujuan: boolean): void
+**ID Algoritma:** Algo-017-01
 
 ```text
-[Tuliskan pseudocode algoritma operasi di sini.]
+procedure kirimDokumenIdentitas(dokumen: File, persetujuan: boolean)
+    if not persetujuan then
+        tampilkanPesanKesalahan("Harap centang konfirmasi keabsahan dokumen.")
+        return
+    end if
+
+    if dokumen.size > 5 * 1024 * 1024 then
+        tampilkanPesanKesalahan("Ukuran dokumen tidak boleh melebihi 5 MB.")
+        return
+    end if
+
+    formatDiizinkan <- ["application/pdf", "image/jpeg", "image/png"]
+    if not formatDiizinkan.contains(dokumen.type) then
+        tampilkanPesanKesalahan("Format dokumen harus PDF, JPG, atau PNG.")
+        return
+    end if
+
+    statusVerifikasi <- TenagaKerjaController.ajukanVerifikasi(dokumen)
+    if statusVerifikasi.isSuccess then
+        tampilkanPesanBerhasil("Dokumen identitas berhasil dikirim untuk diverifikasi.")
+    else
+        tampilkanPesanKesalahan(statusVerifikasi.pesanKesalahan)
+    end if
+end procedure
 ```
 
-Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
-
-Tabel 5.17.3. Query Operasi [Nama Operasi]
+Tabel 5.17.3. Query Operasi kirimDokumenIdentitas(dokumen: File, persetujuan: boolean): void
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| *[Q-017]* | *[Tuliskan query]* | *[Fungsi query]* |
-| *...* | *...* | *...* |
+| Q-017-01 | Tidak ada query langsung (operasi berada pada layer View antarmuka pengguna). | Pengunggahan berkas dan status verifikasi didelegasikan ke TenagaKerjaController. |
 
 ### 5.17.2 Algoritma/Query
 
-*[Ulangi pola 5.17.1 untuk operasi penting berikutnya pada kelas yang sama, jika ada.]*
+**Nama Kelas:** TenagaKerjaUI  
+**Nama Operasi:** pilihPencairanDana(): void
+**ID Algoritma:** Algo-017-02
+
+```text
+procedure pilihPencairanDana()
+    saldoPendapatan <- TenagaKerjaController.getSaldoPendapatan()
+    tampilkanModalPencairanDana(saldoPendapatan)
+end procedure
+```
+
+Tabel 5.17.4. Query Operasi pilihPencairanDana(): void
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-017-02 | Tidak ada query langsung (operasi berada pada layer View antarmuka pengguna). | Nilai saldo pendapatan diambil melalui TenagaKerjaController. |
 
 
 ## 5.18 Kelas PenyediaKerjaUI
@@ -2796,28 +2903,56 @@ Tabel 5.18.2. Atribut Kelas PenyediaKerjaUI
 
 ### 5.18.1 Algoritma/Query
 
-Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
-
 **Nama Kelas:** PenyediaKerjaUI  
-**Nama Operasi:** *[Signature operasi]*  
-**ID Algoritma:** *[Algo-018]*
+**Nama Operasi:** pilihPembuatanLowongan(): void
+**ID Algoritma:** Algo-018-01
 
 ```text
-[Tuliskan pseudocode algoritma operasi di sini.]
+procedure pilihPembuatanLowongan()
+    statusAkun <- PenyediaKerjaController.cekStatusAkun()
+    if statusAkun != "Aktif" then
+        tampilkanPesanPeringatan("Akun Penyedia Kerja belum aktif untuk mempublikasikan lowongan.")
+        return
+    end if
+
+    bukaFormulirLowongan()
+end procedure
 ```
 
-Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
-
-Tabel 5.18.3. Query Operasi [Nama Operasi]
+Tabel 5.18.3. Query Operasi pilihPembuatanLowongan(): void
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| *[Q-018]* | *[Tuliskan query]* | *[Fungsi query]* |
-| *...* | *...* | *...* |
+| Q-018-01 | Tidak ada query langsung (operasi berada pada layer View antarmuka pengguna). | Pemeriksaan status akun dilakukan melalui PenyediaKerjaController. |
 
 ### 5.18.2 Algoritma/Query
 
-*[Ulangi pola 5.18.1 untuk operasi penting berikutnya pada kelas yang sama, jika ada.]*
+**Nama Kelas:** PenyediaKerjaUI  
+**Nama Operasi:** tampilkanDaftarPelamar(pelamar: Array<PengajuanPenawaran>): void
+**ID Algoritma:** Algo-018-02
+
+```text
+procedure tampilkanDaftarPelamar(pelamar: Array<PengajuanPenawaran>)
+    if pelamar.length == 0 then
+        tampilkanPesanKosong("Belum ada penawaran tenaga kerja untuk lowongan ini.")
+    else
+        for each itemPelamar in pelamar do
+            renderKartuPelamar(
+                itemPelamar.idPenawaran,
+                itemPelamar.idTenagaKerja,
+                itemPelamar.pesanPenawaran,
+                itemPelamar.timestamp
+            )
+        end for
+    end if
+end procedure
+```
+
+Tabel 5.18.4. Query Operasi tampilkanDaftarPelamar(pelamar: Array<PengajuanPenawaran>): void
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-018-02 | Tidak ada query langsung (operasi berada pada layer View antarmuka pengguna). | Data daftar penawaran diambil dari Model PengajuanPenawaran melalui Controller. |
 
 
 ## 5.19 Kelas CustomerServiceUI
