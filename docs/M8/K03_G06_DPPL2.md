@@ -6085,44 +6085,702 @@ Tabel 5.45.5. Query Operasi kirimPermintaanPencairan
 
 # BAB 6: Perancangan Antarmuka
 
-## 6.1 Rancangan Antarmuka [ID Layar 1]
+Bagian ini memuat 29 rancangan antarmuka desktop berdasarkan gambar dan spesifikasi layar yang tersedia pada `assets/bab-6/layar/`, dengan ID I-01 sampai I-29 sesuai `assets/bab-6/capture-manifest.json`. Gambar ditempatkan pada `assets/UI/`.
 
-Masukkan versi awal prototipe antarmuka, dimana untuk setiap antarmuka/layar, tuliskan spesifikasi rinci objek yang ditampilkan dan reaksi sistem terhadap interaksi pengguna.
+Data identitas dan keuangan pada gambar merupakan simulasi. Penyimpanan lokal, perubahan status antarmuka, dan pembatasan berdasarkan mode akun tidak menyatakan adanya autentikasi, otorisasi server, verifikasi identitas, pengiriman email, atau pemindahan dana nyata. Tidak ada layar admin yang ditambahkan karena tidak tersedia pada sumber.
 
-**Antarmuka:** *[ID layar]*  
-**Nama Layar:** *[Nama layar]*
+## 6.1 Rancangan Antarmuka I-01
+
+**Antarmuka:** *I-01*  
+**Nama Layar:** *Beranda*  
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh-design.png" width="50%">
+<img alt="Rancangan Antarmuka I-01 - Beranda (desktop)" src="./assets/UI/I-01.png" width="80%">
 </p>
 <p align="center">
-<i>Gambar 6.1. Rancangan Antarmuka [ID Layar] - [Nama Layar]</i>
+<i>Gambar 6.1. Rancangan Antarmuka I-01 - Beranda</i>
 </p>
 
-Tabel 6.1. Spesifikasi Objek Antarmuka [ID Layar]
+Tabel 6.1. Spesifikasi Objek Antarmuka I-01
 
 | Id_Objek | Jenis | Konten | Keterangan |
 | :--- | :--- | :--- | :--- |
-| *[ID objek]* | *[Jenis objek, misalnya Button, RTF Box, dll]* | *[String yang tampil pada layar]* | *[Reaksi sistem, layar tujuan, tautan, atau ID algoritma yang dijalankan]* |
-| *[ID objek]* | *[Jenis objek]* | *[Konten yang ditampilkan]* | *[Reaksi sistem atau nama file terkait beserta deskripsi ringkasnya]* |
-| *...* | *...* | *...* | *...* |
+| I-01-O01 | Heading dan teks | Keahlianmu berarti. Temukan kerja yang cocok. | Reaksi sistem: Menampilkan pengantar tentang layanan pencarian pekerjaan harian. |
+| I-01-O02 | Text Field | Mau kerja apa? / Pekerjaan atau keahlian | Reaksi sistem: Menerima kata kunci pekerjaan atau keahlian untuk digunakan saat pencarian. |
+| I-01-O03 | Text Field | Di mana? / Bandung dan sekitarnya | Reaksi sistem: Menerima nama kota atau daerah untuk digunakan saat pencarian. |
+| I-01-O04 | Button | Cari Pekerjaan | Reaksi sistem: Menjalankan pencarian saat tombol diklik atau Enter ditekan. Kolom kosong menampilkan semua contoh pekerjaan. Layar tujuan: Pencarian Pekerjaan (I-02). |
+| I-01-O05 | Link | Bersih-bersih; Tukang; Pindahan | Layar tujuan: Pencarian Pekerjaan (I-02), dengan kategori Kebersihan, Pertukangan, atau Angkut Barang sesuai tautan yang dipilih. |
+| I-01-O06 | Daftar kategori | Kebersihan; Perbaikan Rumah; Angkut Barang; Acara & Katering; Pertukangan; Lainnya | Reaksi sistem: Menyaring pekerjaan sesuai kategori yang dipilih. Pilihan Semua kategori menampilkan daftar tanpa filter kategori. Layar tujuan: Pencarian Pekerjaan (I-02). |
+| I-01-O07 | Daftar pekerjaan dan Button | Pekerjaan dekat. Peluang baru.; Simpan; Lihat Detail | Reaksi sistem: Menampilkan empat contoh pekerjaan. Tombol Simpan menambahkan atau menghapus pekerjaan dari daftar tersimpan di browser. Layar tujuan: Detail Pekerjaan (I-03) saat judul atau Lihat Detail diklik. |
+| I-01-O08 | Segmented Button | Saya mencari kerja; Saya butuh tenaga | Reaksi sistem: Mengganti penjelasan Cara Kerja sesuai pilihan mencari kerja atau membutuhkan tenaga, tanpa berpindah halaman. |
+| I-01-O09 | Button dan Link | Pasang Pekerjaan; Lihat semua pekerjaan; Temukan pekerjaan lainnya | Layar tujuan: Pasang Pekerjaan — Detail (I-16) saat Pasang Pekerjaan diklik. Layar tujuan: Pencarian Pekerjaan (I-02) saat tautan daftar pekerjaan diklik. |
+| I-01-O10 | Image dan informasi | Tangan terampil. Peluang yang lebih baik.; penjelasan kepercayaan | Reaksi sistem: Menonaktifkan animasi masuk jika pengguna mengaktifkan pengaturan pengurangan gerakan. |
 
+## 6.2 Rancangan Antarmuka I-02
 
-## 6.X Rancangan Antarmuka [ID Layar X]
+**Antarmuka:** *I-02*  
+**Nama Layar:** *Pencarian Pekerjaan*  
 
-*[Ulangi pola 6.1 untuk layar berikutnya sampai semua layar teridentifikasi]*
+<p align="center">
+<img alt="Rancangan Antarmuka I-02 - Pencarian Pekerjaan (desktop)" src="./assets/UI/I-02.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.2. Rancangan Antarmuka I-02 - Pencarian Pekerjaan</i>
+</p>
 
-## 6.Y Rancangan Antarmuka Keseluruhan
+Tabel 6.2. Spesifikasi Objek Antarmuka I-02
 
-Tuliskan daftar gambar seluruh antarmuka. Berikan ID unik untuk setiap tampilan dan gunakan ID yang sama pada subbab perancangan antarmuka masing-masing.
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| I-02-O01 | Heading dan Label | Temukan pekerjaan; 6 pekerjaan tersedia | Reaksi sistem: Memperbarui jumlah pekerjaan sesuai hasil penyaringan dan mengumumkan perubahan kepada pengguna pembaca layar. |
+| I-02-O02 | Text Field dan Button | Pekerjaan atau keahlian; Kota atau daerah; Cari Pekerjaan | Reaksi sistem: Mencari pekerjaan berdasarkan isian tanpa membedakan huruf besar dan kecil, lalu menampilkan hasil setelah pesan Mencari pekerjaan…. |
+| I-02-O03 | Checkbox Group | Kategori pekerjaan | Reaksi sistem: Menampilkan pekerjaan yang sesuai dengan salah satu kategori terpilih. Jika tidak ada kategori dipilih, semua kategori ditampilkan. |
+| I-02-O04 | Combo Box | Upah minimum; Semua upah; Rp150.000; Rp200.000 | Reaksi sistem: Menampilkan contoh pekerjaan dengan upah setidaknya sebesar pilihan pengguna. Satuan per tugas atau per hari tetap ditampilkan tanpa dikonversi. |
+| I-02-O05 | Checkbox | Tersimpan (n) | Reaksi sistem: Menampilkan hanya pekerjaan tersimpan saat pilihan diaktifkan. Angka pada label menunjukkan jumlah pekerjaan yang tersimpan di browser. |
+| I-02-O06 | Combo Box | Terbaru; Upah tertinggi | Reaksi sistem: Pilihan Terbaru mengikuti urutan data contoh. Pilihan Upah tertinggi mengurutkan pekerjaan dari nominal terbesar. |
+| I-02-O07 | Button dan chip | Reset; Hapus filter; kata kunci/kategori aktif | Reaksi sistem: Menghapus seluruh filter pencarian dan mode pekerjaan tersimpan, lalu menampilkan kembali empat hasil awal. |
+| I-02-O08 | Listing Row dan Button | Judul; kategori; lokasi; tanggal; penyedia; upah/satuan; Simpan; Lihat Detail | Reaksi sistem: Tombol Simpan menambahkan atau menghapus pekerjaan dari daftar tersimpan di browser. Layar tujuan: Detail Pekerjaan (I-03) saat judul atau Lihat Detail diklik. |
+| I-02-O09 | Button | Muat lebih banyak | Reaksi sistem: Menambahkan paling banyak empat hasil ke daftar. Tombol disembunyikan jika semua hasil sudah ditampilkan. |
+## 6.3 Rancangan Antarmuka I-03
 
-Tabel 6.Y. Rancangan Antarmuka Keseluruhan
+**Antarmuka:** *I-03*  
+**Nama Layar:** *Detail Pekerjaan*  
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-03 - Detail Pekerjaan (desktop)" src="./assets/UI/I-03.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.3. Rancangan Antarmuka I-03 - Detail Pekerjaan</i>
+</p>
+
+Tabel 6.3. Spesifikasi Objek Antarmuka I-03
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| I-03-O01 | Heading dan Badge | Bantu pindahan kos area Dago; Terbuka | Reaksi sistem: Menampilkan judul dan status pekerjaan yang dipilih. Layar tujuan: Halaman Tidak Ditemukan (I-28) jika pekerjaan tidak dikenali. |
+| I-03-O02 | Metadata dan Ringkasan | Dago, Bandung; 28 Oktober 2026; 3–4 jam; Rp180.000 / tugas | Reaksi sistem: Menampilkan lokasi, jadwal, durasi, kategori, dan upah beserta satuannya. |
+| I-03-O03 | Text Block dan List | Deskripsi pekerjaan; Ruang lingkup; Kriteria keberhasilan; Lokasi & jadwal | Reaksi sistem: Menampilkan deskripsi tugas, ruang lingkup, kriteria hasil, serta lokasi dan jadwal. Informasi lokasi menjelaskan bahwa alamat lengkap dibagikan setelah kesepakatan. |
+| I-03-O04 | Identity Block | Raka Pratama; Identitas belum diverifikasi | Reaksi sistem: Menampilkan nama penyedia kerja dan keterangan bahwa identitasnya belum diverifikasi. |
+| I-03-O05 | Button | Ajukan Penawaran | Layar tujuan: Formulir Penawaran (I-04) saat Ajukan Penawaran diklik. Reaksi sistem: Jika sudah ada penawaran aktif, tombol diganti dengan status Penawaran sudah diajukan dan tautan ke Lamaran Saya (I-13). |
+| I-03-O06 | Toggle Button dan Link | Simpan pekerjaan; Butuh bantuan?; Semua pekerjaan | Reaksi sistem: Menambahkan atau menghapus pekerjaan dari daftar tersimpan di browser. Layar tujuan: Pusat Bantuan dan Keluhan (I-23) melalui Butuh bantuan?, atau Pencarian Pekerjaan (I-02) melalui Semua pekerjaan. |
+
+## 6.4 Rancangan Antarmuka I-04
+
+**Antarmuka:** *I-04*  
+**Nama Layar:** *Formulir Penawaran*  
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-04 - Formulir Penawaran (desktop)" src="./assets/UI/I-04.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.4. Rancangan Antarmuka I-04 - Formulir Penawaran</i>
+</p>
+
+Tabel 6.4. Spesifikasi Objek Antarmuka I-04
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| I-04-O01 | Dialog dan Label | Ajukan penawaran; Bantu pindahan kos area Dago | Reaksi sistem: Membuka dialog penawaran tanpa meninggalkan detail pekerjaan dan menjaga fokus keyboard di dalam dialog. |
+| I-04-O02 | Numeric Field | Upah penawaran (Rp) | Reaksi sistem: Mengisi nominal awal sesuai upah pekerjaan dan menerima nilai Rp1.000–Rp100.000.000 dalam kelipatan Rp1.000. Pengguna tidak dapat melanjutkan jika isian tidak valid. |
+| I-04-O03 | Text Field | Kapan kamu tersedia? | Reaksi sistem: Menerima ketersediaan dalam bentuk teks, wajib diisi hingga 120 karakter. Isian ini tidak membuat pemesanan jadwal. |
+| I-04-O04 | Text Area | Pesan untuk penyedia (opsional) | Reaksi sistem: Menerima pesan tambahan hingga 1.000 karakter. Kolom boleh dikosongkan. |
+| I-04-O05 | Button | Tinjau penawaran | Layar tujuan: Tinjau Penawaran (I-05) jika isian valid. Reaksi sistem: Penawaran belum disimpan atau dikirim pada tahap ini. |
+| I-04-O06 | Icon Button dan interaksi keyboard | Tutup (X); Escape; klik latar dialog | Reaksi sistem: Menutup dialog tanpa mengirim penawaran dan mengembalikan fokus ke tombol pembuka. Isian dapat tetap tersedia jika dialog dibuka kembali pada tampilan yang sama. |
+
+## 6.5 Rancangan Antarmuka I-05
+
+**Antarmuka:** *I-05*  
+**Nama Layar:** *Tinjau Penawaran*  
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-05 - Tinjau Penawaran (desktop)" src="./assets/UI/I-05.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.5. Rancangan Antarmuka I-05 - Tinjau Penawaran</i>
+</p>
+
+Tabel 6.5. Spesifikasi Objek Antarmuka I-05
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| I-05-O01 | Dialog dan Ringkasan | Tinjau penawaranmu; Penawaranmu; Ketersediaan; Pesan | Reaksi sistem: Menampilkan ringkasan upah, ketersediaan, dan pesan yang diisi pada Formulir Penawaran (I-04). |
+| I-05-O02 | Notice | Pastikan nominal dan jadwal sudah sesuai. | Reaksi sistem: Menampilkan pengingat untuk memeriksa nominal dan jadwal, serta informasi bahwa penawaran dapat ditarik sebelum ada kesepakatan. |
+| I-05-O03 | Button | Ubah | Layar tujuan: Formulir Penawaran (I-04), dengan isian sebelumnya tetap tersedia. |
+| I-05-O04 | Button | Ajukan penawaran | Reaksi sistem: Menyimpan penawaran di browser dengan status Menunggu tanggapan, menutup dialog, dan menampilkan pemberitahuan. Penawaran belum dikirim ke server. |
+| I-05-O05 | Status dan Link | Penawaran sudah diajukan.; Lihat lamaran saya | Reaksi sistem: Mengganti tombol pengajuan pada Detail Pekerjaan (I-03) dengan status Penawaran sudah diajukan. Layar tujuan: Lamaran Saya (I-13) melalui Lihat lamaran saya. |
+
+## 6.6 Rancangan Antarmuka I-06
+
+**Antarmuka:** *I-06*  
+**Nama Layar:** *Pencarian Tenaga Kerja*  
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-06 - Pencarian Tenaga Kerja (desktop)" src="./assets/UI/I-06.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.6. Rancangan Antarmuka I-06 - Pencarian Tenaga Kerja</i>
+</p>
+
+Tabel 6.6. Spesifikasi Objek Antarmuka I-06
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| I-06-O01 | Heading dan Label | Kenali tenaga terampil; n tenaga kerja | Reaksi sistem: Menampilkan jumlah profil tenaga kerja yang sesuai dengan pencarian. Profil yang tersedia merupakan data contoh. |
+| I-06-O02 | Text Field | Nama, keahlian, atau kota; Cari tenaga kerja… | Reaksi sistem: Langsung menyaring profil berdasarkan nama, keahlian, atau kota saat pengguna mengetik, tanpa membedakan huruf besar dan kecil. |
+| I-06-O03 | Combo Box | Keahlian; Semua keahlian | Reaksi sistem: Menyaring profil berdasarkan kategori keahlian yang dipilih, bersama kata kunci pencarian jika ada. |
+| I-06-O04 | Profile Card | Inisial; nama; spesialisasi; kota; tag; bio; Area layanan | Reaksi sistem: Menampilkan identitas singkat, keahlian, dan area layanan tanpa menambahkan rating atau klaim identitas terverifikasi. |
+| I-06-O05 | Link | Lihat profil | Layar tujuan: Profil Tenaga Kerja (I-07) sesuai profil yang dipilih. |
+| I-06-O06 | Empty State dan Button | Belum ada profil yang cocok; Reset pencarian | Reaksi sistem: Menampilkan pesan jika tidak ada profil yang cocok. Tombol Reset pencarian mengosongkan kata kunci dan kategori agar seluruh profil kembali ditampilkan. |
+
+## 6.7 Rancangan Antarmuka I-07
+
+**Antarmuka:** *I-07*  
+**Nama Layar:** *Profil Tenaga Kerja*  
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-07 - Profil Tenaga Kerja (desktop)" src="./assets/UI/I-07.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.7. Rancangan Antarmuka I-07 - Profil Tenaga Kerja</i>
+</p>
+
+Tabel 6.7. Spesifikasi Objek Antarmuka I-07
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| I-07-O01 | Link | Semua tenaga kerja | Layar tujuan: Pencarian Tenaga Kerja (I-06). Reaksi sistem: Jika profil yang dibuka tidak dikenali, sistem menampilkan Halaman Tidak Ditemukan (I-28). |
+| I-07-O02 | Identity Block | Agus Setiawan; Perbaikan rumah & instalasi air; Bandung | Reaksi sistem: Menampilkan nama, keahlian, dan area layanan dari profil contoh. |
+| I-07-O03 | Badge | Identitas belum diverifikasi | Reaksi sistem: Menampilkan status Identitas belum diverifikasi. |
+| I-07-O04 | Button | Undang ke Pekerjaan | Layar tujuan: Dialog Undangan Tenaga Kerja (I-26). Reaksi sistem: Setelah undangan dicatat, tombol berubah menjadi Undangan tersimpan dan dinonaktifkan selama tampilan tersebut masih terbuka. |
+| I-07-O05 | Text Block dan Tag | Tentang saya; Keahlian & area layanan | Reaksi sistem: Menampilkan biodata, keahlian, dan area layanan dari data contoh, serta mengingatkan bahwa jadwal perlu dikonfirmasi. |
+| I-07-O06 | Empty State | Portofolio; Ulasan pekerjaan | Reaksi sistem: Menampilkan keterangan bahwa belum tersedia portofolio dan ulasan dari transaksi nyata. |
+| I-07-O07 | Info Panel dan Link | Kenali sebelum sepakat; Panduan kesepakatan | Layar tujuan: Pusat Bantuan dan Keluhan (I-23) melalui Panduan kesepakatan. |
+
+## 6.8 Rancangan Antarmuka I-08
+
+**Antarmuka:** *I-08*  
+**Nama Layar:** *Masuk*  
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-08 - Masuk (desktop)" src="./assets/UI/I-08.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.8. Rancangan Antarmuka I-08 - Masuk</i>
+</p>
+
+Tabel 6.8. Spesifikasi Objek Antarmuka I-08
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| I-08-O01 | Heading | Selamat datang kembali. | Reaksi sistem: Menampilkan sapaan dan pengantar untuk masuk ke akun. |
+| I-08-O02 | Email Field | Email | Reaksi sistem: Menerima alamat email yang wajib diisi dengan format valid, hingga 254 karakter, dan mendukung pengisian otomatis oleh browser. |
+| I-08-O03 | Password Field | Kata sandi | Reaksi sistem: Menerima kata sandi sepanjang 8–128 karakter dan mendukung pengisian otomatis oleh browser. |
+| I-08-O04 | Toggle Button | Tampilkan kata sandi / Sembunyikan kata sandi | Reaksi sistem: Menampilkan atau menyembunyikan karakter kata sandi sesuai pilihan pengguna. |
+| I-08-O05 | Button | Masuk | Reaksi sistem: Memeriksa isian dan menandai pengguna sudah masuk pada browser. Layar tujuan: Dashboard Tenaga Kerja (I-11) atau Dashboard Penyedia Kerja (I-12), sesuai mode akun. |
+| I-08-O06 | Link | Lupa kata sandi?; Daftar sekarang; Kembali ke beranda | Layar tujuan: Pemulihan Kata Sandi (I-10), Daftar Akun (I-09), atau Beranda (I-01), sesuai tautan yang dipilih. |
+
+## 6.9 Rancangan Antarmuka I-09
+
+**Antarmuka:** *I-09*  
+**Nama Layar:** *Daftar Akun*  
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-09 - Daftar Akun (desktop)" src="./assets/UI/I-09.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.9. Rancangan Antarmuka I-09 - Daftar Akun</i>
+</p>
+
+Tabel 6.9. Spesifikasi Objek Antarmuka I-09
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| I-09-O01 | Heading dan Radio Group | Buat akunmu.; Saya ingin; Mencari pekerjaan; Mencari tenaga kerja | Reaksi sistem: Mengatur mode akun sebagai Tenaga Kerja atau Penyedia Kerja. Pilihan ini masih dapat diganti di ruang kerja dan bukan pengaturan hak akses server. |
+| I-09-O02 | Text Field dan Email Field | Nama lengkap; Email | Reaksi sistem: Menerima nama yang tidak hanya berisi spasi hingga 80 karakter dan email berformat valid hingga 254 karakter. Nama digunakan pada profil dan dashboard. |
+| I-09-O03 | Password Field | Kata sandi; Konfirmasi kata sandi | Reaksi sistem: Memeriksa panjang kata sandi 8–128 karakter dan kesesuaiannya dengan kolom konfirmasi. Jika berbeda, sistem menampilkan pesan kesalahan. Kata sandi tidak disimpan. |
+| I-09-O04 | Toggle Button | Tampilkan kata sandi / Sembunyikan kata sandi | Reaksi sistem: Menampilkan atau menyembunyikan isi kedua kolom kata sandi. |
+| I-09-O05 | Checkbox dan Link | Saya menyetujui Syarat & ketentuan dan Kebijakan privasi Kerja-In. | Reaksi sistem: Mewajibkan pengguna mencentang persetujuan sebelum melanjutkan. Layar tujuan: Syarat dan Ketentuan (I-25) atau Kebijakan Privasi (I-24), dibuka pada tab baru agar isian tetap tersedia. |
+| I-09-O06 | Button | Buat akun | Reaksi sistem: Setelah isian valid, menyimpan nama, mode akun, dan status masuk di browser. Layar tujuan: Dashboard Tenaga Kerja (I-11) atau Dashboard Penyedia Kerja (I-12), sesuai pilihan pengguna. |
+| I-09-O07 | Link | Masuk; Kembali ke beranda | Layar tujuan: Masuk (I-08) atau Beranda (I-01), sesuai tautan yang dipilih. |
+
+## 6.10 Rancangan Antarmuka I-10
+
+**Antarmuka:** *I-10*  
+**Nama Layar:** *Pemulihan Kata Sandi*  
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-10 - Pemulihan Kata Sandi (desktop)" src="./assets/UI/I-10.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.10. Rancangan Antarmuka I-10 - Pemulihan Kata Sandi</i>
+</p>
+
+Tabel 6.10. Spesifikasi Objek Antarmuka I-10
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| I-10-O01 | Heading dan Email Field | Lupa kata sandi?; Email | Reaksi sistem: Menerima alamat email dan memeriksa formatnya sebelum pengguna melanjutkan. |
+| I-10-O02 | Button | Kirim tautan pemulihan | Reaksi sistem: Mengganti formulir dengan pesan konfirmasi. |
+| I-10-O03 | Status | Periksa emailmu | Reaksi sistem: Menampilkan pesan bahwa tautan pemulihan akan dikirim jika email terdaftar, tanpa mengungkap keberadaan akun atau menyatakan email sudah terkirim. |
+| I-10-O04 | Button dan Link | Gunakan email lain; Kembali ke masuk; Kembali ke beranda | Reaksi sistem: Pilihan Gunakan email lain menampilkan kembali formulir. Layar tujuan: Masuk (I-08) atau Beranda (I-01), sesuai tautan yang dipilih. |
+
+## 6.11 Rancangan Antarmuka I-11
+
+**Antarmuka:** *I-11*  
+**Nama Layar:** *Dashboard Tenaga Kerja*  
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-11 - Dashboard Tenaga Kerja (desktop)" src="./assets/UI/I-11.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.11. Rancangan Antarmuka I-11 - Dashboard Tenaga Kerja</i>
+</p>
+
+Tabel 6.11. Spesifikasi Objek Antarmuka I-11
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| I-11-O01 | Heading | Selamat datang, Nadia.; Ruang tenaga kerja | Reaksi sistem: Menampilkan sapaan menggunakan nama depan dari profil yang tersimpan di browser. |
+| I-11-O02 | Action Panel dan Link | Langkah berikutnya; Selesaikan pekerjaanmu hari ini.; Lihat pekerjaan | Reaksi sistem: Menampilkan arahan sesuai status pekerjaan, terpisah dari daftar lamaran baru. Layar tujuan: Pekerjaan Saya (I-14) melalui Lihat pekerjaan. |
+| I-11-O03 | Summary Link | n Penawaran aktif; Status keuangan; Lihat rincian | Reaksi sistem: Menghitung penawaran aktif tanpa menyertakan penawaran berstatus Ditarik. Layar tujuan: Lamaran Saya (I-13) atau Dompet (I-20), sesuai ringkasan yang dipilih. |
+| I-11-O04 | Listing dan Link | Peluang untuk langkah berikutnya; Lihat semua | Reaksi sistem: Tombol Simpan menambahkan pekerjaan ke daftar tersimpan. Layar tujuan: Detail Pekerjaan (I-03) saat pekerjaan dipilih, atau Pencarian Pekerjaan (I-02) melalui Lihat semua. |
+| I-11-O05 | Sidebar dan Combo Box | Dashboard; Lamaran saya; Pekerjaan saya; Dompet; Profil saya; Mode akun | Layar tujuan: Dashboard Tenaga Kerja (I-11), Lamaran Saya (I-13), Pekerjaan Saya (I-14), Dompet (I-20), atau Pengaturan Profil Saya (I-22), sesuai menu. Reaksi sistem: Memilih mode Penyedia kerja mengganti tampilan menjadi Dashboard Penyedia Kerja (I-12). |
+| I-11-O06 | Button dan Link | Keluar; Butuh bantuan dengan pekerjaanmu? | Reaksi sistem: Tombol Keluar mengakhiri status masuk di browser tanpa menghapus profil, lalu membuka Masuk (I-08). Layar tujuan: Pusat Bantuan dan Keluhan (I-23) melalui tautan bantuan. |
+
+## 6.12 Rancangan Antarmuka I-12
+
+**Antarmuka:** *I-12*  
+**Nama Layar:** *Dashboard Penyedia Kerja*  
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-12 - Dashboard Penyedia Kerja (desktop)" src="./assets/UI/I-12.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.12. Rancangan Antarmuka I-12 - Dashboard Penyedia Kerja</i>
+</p>
+
+Tabel 6.12. Spesifikasi Objek Antarmuka I-12
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| I-12-O01 | Heading | Selamat datang, Nadia.; Ruang penyedia kerja | Reaksi sistem: Menampilkan sapaan dan ruang kerja sesuai mode Penyedia Kerja yang tersimpan di browser. |
+| I-12-O02 | Action Panel dan Link | Ada hasil pekerjaan untuk ditinjau.; Periksa hasil | Reaksi sistem: Menampilkan Periksa hasil saat pekerjaan berstatus Menunggu pemeriksaan. Pada status lain, sistem menampilkan arahan untuk memantau pekerjaan. Layar tujuan: Pemeriksaan dan Transaksi (I-21). |
+| I-12-O03 | Summary Link | n Lowongan saya; Status keuangan; Lihat rincian | Reaksi sistem: Menghitung lowongan yang tersimpan di browser. Layar tujuan: Lowongan Saya (I-15) atau Pemeriksaan dan Transaksi (I-21), sesuai ringkasan yang dipilih. |
+| I-12-O04 | Link Button | Lihat semua; Pasang pekerjaan | Layar tujuan: Pencarian Tenaga Kerja (I-06) melalui Lihat semua, atau Pasang Pekerjaan — Detail (I-16) melalui Pasang pekerjaan. |
+| I-12-O05 | Sidebar dan Combo Box | Dashboard; Lowongan saya; Pekerjaan saya; Transaksi; Profil saya; Mode akun | Layar tujuan: Dashboard Penyedia Kerja (I-12), Lowongan Saya (I-15), Pekerjaan Saya (I-14), Pemeriksaan dan Transaksi (I-21), atau Pengaturan Profil Saya (I-22), sesuai menu. Reaksi sistem: Memilih mode Tenaga kerja mengganti tampilan menjadi Dashboard Tenaga Kerja (I-11). |
+| I-12-O06 | Button | Keluar | Reaksi sistem: Mengakhiri status masuk di browser. Tindakan ini belum mengakhiri sesi pada server. Layar tujuan: Masuk (I-08). |
+
+## 6.13 Rancangan Antarmuka I-13
+
+**Antarmuka:** *I-13*  
+**Nama Layar:** *Lamaran Saya*  
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-13 - Lamaran Saya (desktop)" src="./assets/UI/I-13.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.13. Rancangan Antarmuka I-13 - Lamaran Saya</i>
+</p>
+
+Tabel 6.13. Spesifikasi Objek Antarmuka I-13
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| I-13-O01 | Heading dan List | Lamaran saya; Pantau penawaran dan perkembangan lamaranmu di satu tempat. | Reaksi sistem: Menampilkan daftar penawaran yang tersimpan di browser. Data pada gambar merupakan contoh, bukan penawaran kepada pengguna nyata. |
+| I-13-O02 | Status Badge | Menunggu tanggapan / Ditarik | Reaksi sistem: Menampilkan status Menunggu tanggapan atau Ditarik sesuai data penawaran di browser, bukan keputusan nyata dari penyedia kerja. |
+| I-13-O03 | Link judul | Bantu pindahan kos area Dago | Layar tujuan: Detail Pekerjaan (I-03) sesuai pekerjaan pada penawaran yang dipilih. |
+| I-13-O04 | Label | Rp180.000; ketersediaan penawar | Reaksi sistem: Menampilkan nominal dan ketersediaan yang sebelumnya disimpan melalui Tinjau Penawaran (I-05). |
+| I-13-O05 | Button | Tarik penawaran | Reaksi sistem: Menampilkan tombol hanya untuk penawaran yang belum ditarik. Layar tujuan: Dialog Konfirmasi Penarikan Penawaran (I-27). |
+| I-13-O06 | Empty State dan Link | Belum ada penawaran; Cari pekerjaan | Reaksi sistem: Menampilkan pesan jika belum ada penawaran. Layar tujuan: Pencarian Pekerjaan (I-02) melalui Cari pekerjaan. |
+
+## 6.14 Rancangan Antarmuka I-14
+
+**Antarmuka:** *I-14*  
+**Nama Layar:** *Pekerjaan Saya*  
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-14 - Pekerjaan Saya (desktop)" src="./assets/UI/I-14.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.14. Rancangan Antarmuka I-14 - Pekerjaan Saya</i>
+</p>
+
+Tabel 6.14. Spesifikasi Objek Antarmuka I-14
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| I-14-O01 | Heading dan Ringkasan | Pekerjaan saya; Bantu pindahan kos area Dago | Reaksi sistem: Menampilkan lokasi, tanggal, upah Rp180.000, biaya layanan Rp0, dan total Rp180.000 dari data contoh pekerjaan. |
+| I-14-O02 | Timeline | Alur pekerjaan & pembayaran; Status saat ini | Penanda ini bukan bukti pembayaran dari layanan keuangan. |
+| I-14-O03 | File Picker | Bukti hasil pekerjaan (JPG, PNG, PDF; maks. 5 MB) | Reaksi sistem: Menerima berkas JPG, PNG, atau PDF hingga 5 MB. Jika tidak sesuai, pilihan berkas dikosongkan dan pesan kesalahan ditampilkan. Reaksi sistem: Berkas hanya dipilih pada perangkat dan belum diunggah ke server. |
+| I-14-O04 | Button | Kirim hasil pekerjaan | Reaksi sistem: Mengaktifkan tombol setelah berkas valid dipilih. Saat diklik, status pekerjaan berubah menjadi Menunggu pemeriksaan. |
+| I-14-O05 | Notice | Catatan revisi; Hasil pekerjaan menunggu pemeriksaan penyedia kerja. | Reaksi sistem: Menampilkan catatan dari Permintaan Revisi Pekerjaan (I-29) ketika pekerjaan perlu diperbaiki. Setelah hasil dikirim ulang, sistem menampilkan status menunggu pemeriksaan. |
+| I-14-O06 | Button dan Link | Ajukan pencairan; Ajukan keluhan | Reaksi sistem: Tenaga Kerja dapat mengajukan pencairan saat pekerjaan Selesai. Status kemudian menjadi Pencairan diproses, tanpa menyatakan dana sudah diterima. Layar tujuan: Pusat Bantuan dan Keluhan (I-23) melalui Ajukan keluhan. |
+
+## 6.15 Rancangan Antarmuka I-15
+
+**Antarmuka:** *I-15*  
+**Nama Layar:** *Lowongan Saya*  
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-15 - Lowongan Saya (desktop)" src="./assets/UI/I-15.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.15. Rancangan Antarmuka I-15 - Lowongan Saya</i>
+</p>
+
+Tabel 6.15. Spesifikasi Objek Antarmuka I-15
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| I-15-O01 | Heading dan Label | Lowongan saya; Kelola pekerjaan yang kamu pasang dan pantau perkembangannya. | Reaksi sistem: Menampilkan lowongan yang tersimpan di browser. Gambar menggunakan contoh lowongan yang telah disiapkan. |
+| I-15-O02 | Link Button | Pasang pekerjaan | Layar tujuan: Pasang Pekerjaan — Detail (I-16). |
+| I-15-O03 | Listing Row | Judul; kategori; lokasi; tanggal; penyedia; upah/satuan | Reaksi sistem: Menampilkan informasi lowongan yang dibuat melalui Pasang Pekerjaan — Tinjau dan Terbitkan (I-19). Tampilan ini belum menyediakan pengubahan, penghapusan, atau daftar pelamar. |
+| I-15-O04 | Toggle Button | Simpan | Reaksi sistem: Menambahkan atau menghapus lowongan yang dipilih dari daftar tersimpan di browser. |
+| I-15-O05 | Link | Judul lowongan; Lihat Detail | Layar tujuan: Detail Pekerjaan (I-03) sesuai lowongan yang dipilih. |
+| I-15-O06 | Empty State dan Link | Belum ada lowongan; Pasang pekerjaan | Reaksi sistem: Menampilkan pesan jika belum ada lowongan tersimpan. Layar tujuan: Pasang Pekerjaan — Detail (I-16) melalui Pasang pekerjaan. |
+
+## 6.16 Rancangan Antarmuka I-16
+
+**Antarmuka:** *I-16*  
+**Nama Layar:** *Pasang Pekerjaan — Detail*  
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-16 - Pasang Pekerjaan — Detail (desktop)" src="./assets/UI/I-16.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.16. Rancangan Antarmuka I-16 - Pasang Pekerjaan — Detail</i>
+</p>
+
+Tabel 6.16. Spesifikasi Objek Antarmuka I-16
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| I-16-O01 | Stepper | Detail pekerjaan → Lokasi & jadwal → Upah & ketentuan → Tinjau & terbitkan | Reaksi sistem: Menandai Detail pekerjaan sebagai langkah pertama. Indikator langkah tidak dapat digunakan untuk melompati tahapan. |
+| I-16-O02 | Notice | Tulis kebutuhan dengan jelas agar tenaga kerja dapat memberikan penawaran yang sesuai. | Reaksi sistem: Menampilkan panduan agar pengguna menjelaskan kebutuhan pekerjaan dengan jelas. |
+| I-16-O03 | Text Field | Judul pekerjaan | Reaksi sistem: Menerima judul sepanjang 8–150 karakter dan mencegah pengguna melanjutkan jika isian tidak memenuhi batas tersebut. |
+| I-16-O04 | Combo Box | Kategori | Reaksi sistem: Menyediakan enam pilihan kategori dengan Kebersihan sebagai pilihan awal. |
+| I-16-O05 | Text Area | Deskripsi | Reaksi sistem: Menerima deskripsi wajib sepanjang 20–2.000 karakter. |
+| I-16-O06 | Text Area | Ruang lingkup (satu tugas per baris) | Reaksi sistem: Menerima ruang lingkup wajib hingga 1.000 karakter. Setiap baris yang tidak kosong menjadi satu butir tugas saat lowongan disimpan di browser. |
+| I-16-O07 | Button | Lanjutkan | Layar tujuan: Pasang Pekerjaan — Lokasi dan Jadwal (I-17) jika isian valid. Reaksi sistem: Draf belum disimpan permanen. Setelah judul diisi, peringatan muncul jika dokumen ditutup atau dimuat ulang; perpindahan halaman dalam aplikasi belum selalu terlindungi. |
+
+## 6.17 Rancangan Antarmuka I-17
+
+**Antarmuka:** *I-17*  
+**Nama Layar:** *Pasang Pekerjaan — Lokasi dan Jadwal*  
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-17 - Pasang Pekerjaan — Lokasi dan Jadwal (desktop)" src="./assets/UI/I-17.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.17. Rancangan Antarmuka I-17 - Pasang Pekerjaan — Lokasi dan Jadwal</i>
+</p>
+
+Tabel 6.17. Spesifikasi Objek Antarmuka I-17
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| I-17-O01 | Stepper dan Heading | Lokasi & jadwal; Di mana dan kapan dikerjakan? | Reaksi sistem: Menandai Lokasi & jadwal sebagai langkah kedua dan mempertahankan isian dari langkah sebelumnya. |
+| I-17-O02 | Text Field | Kecamatan dan kota (bukan alamat lengkap) | Reaksi sistem: Menerima kecamatan dan kota, wajib diisi hingga 150 karakter, tanpa meminta alamat lengkap. |
+| I-17-O03 | Date Picker | Tanggal pekerjaan | Reaksi sistem: Mewajibkan tanggal yang dapat dibaca oleh pemilih tanggal pada browser. |
+| I-17-O04 | Text Field | Estimasi durasi, misalnya 3–4 jam | Reaksi sistem: Menerima perkiraan durasi dalam bentuk teks, wajib diisi hingga 150 karakter, tanpa menghitung durasi secara otomatis. |
+| I-17-O05 | Button | Kembali | Layar tujuan: Pasang Pekerjaan — Detail (I-16), tanpa menghapus isian sebelumnya. |
+| I-17-O06 | Button | Lanjutkan | Layar tujuan: Pasang Pekerjaan — Upah dan Ketentuan (I-18) jika isian valid. Lowongan belum diterbitkan. |
+
+## 6.18 Rancangan Antarmuka I-18
+
+**Antarmuka:** *I-18*  
+**Nama Layar:** *Pasang Pekerjaan — Upah dan Ketentuan*  
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-18 - Pasang Pekerjaan — Upah dan Ketentuan (desktop)" src="./assets/UI/I-18.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.18. Rancangan Antarmuka I-18 - Pasang Pekerjaan — Upah dan Ketentuan</i>
+</p>
+
+Tabel 6.18. Spesifikasi Objek Antarmuka I-18
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| I-18-O01 | Stepper dan Heading | Upah & ketentuan; Tentukan upah dan hasilnya | Reaksi sistem: Menandai Upah & ketentuan sebagai langkah ketiga. |
+| I-18-O02 | Numeric Field | Upah yang ditawarkan (Rp) | Reaksi sistem: Menerima nominal wajib Rp1.000–Rp100.000.000 dengan kelipatan Rp1. Isian ini tidak memproses pembayaran. |
+| I-18-O03 | Combo Box | Satuan upah; Per tugas; Per hari | Reaksi sistem: Menyimpan pilihan satuan per tugas atau per hari untuk ditampilkan pada ringkasan dan detail pekerjaan. |
+| I-18-O04 | Text Area | Kriteria hasil pekerjaan | Reaksi sistem: Menerima kriteria hasil wajib sepanjang 10–1.000 karakter dan menambahkannya ke deskripsi saat lowongan disimpan di browser. |
+| I-18-O05 | Button | Kembali | Layar tujuan: Pasang Pekerjaan — Lokasi dan Jadwal (I-17), dengan isian sebelumnya tetap tersedia. |
+| I-18-O06 | Button | Lanjutkan | Layar tujuan: Pasang Pekerjaan — Tinjau dan Terbitkan (I-19) jika isian valid. Lowongan belum disimpan. |
+
+## 6.19 Rancangan Antarmuka I-19
+
+**Antarmuka:** *I-19*  
+**Nama Layar:** *Pasang Pekerjaan — Tinjau dan Terbitkan*  
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-19 - Pasang Pekerjaan — Tinjau dan Terbitkan (desktop)" src="./assets/UI/I-19.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.19. Rancangan Antarmuka I-19 - Pasang Pekerjaan — Tinjau dan Terbitkan</i>
+</p>
+
+Tabel 6.19. Spesifikasi Objek Antarmuka I-19
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| I-19-O01 | Stepper dan Heading | Tinjau & terbitkan; Sudah sesuai kebutuhanmu? | Reaksi sistem: Menandai Tinjau & terbitkan sebagai langkah terakhir sebelum lowongan disimpan di browser. |
+| I-19-O02 | Review Panel | Judul; kategori; upah/satuan; area; tanggal; durasi; deskripsi; ruang lingkup; kriteria hasil | Reaksi sistem: Menampilkan ringkasan dari tiga langkah sebelumnya. Tanggal pada ringkasan mengikuti format isian; setelah lowongan disimpan, tanggal pada detail ditampilkan dalam format Indonesia. |
+| I-19-O03 | Notice | Tulis kebutuhan dengan jelas agar tenaga kerja dapat memberikan penawaran yang sesuai. | Reaksi sistem: Menampilkan kembali panduan penulisan kebutuhan pekerjaan seperti pada langkah sebelumnya. |
+| I-19-O04 | Button | Kembali | Layar tujuan: Pasang Pekerjaan — Upah dan Ketentuan (I-18) untuk memperbaiki isian, tanpa menghapus data langkah lain. |
+| I-19-O05 | Button | Terbitkan pekerjaan | Reaksi sistem: Menyimpan lowongan di browser menggunakan nama penyedia dari profil dan mengaktifkan mode Penyedia Kerja. Lowongan belum diterbitkan ke server. Layar tujuan: Detail Pekerjaan (I-03) untuk lowongan yang baru dibuat. |
+
+## 6.20 Rancangan Antarmuka I-20
+
+**Antarmuka:** *I-20*  
+**Nama Layar:** *Dompet*  
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-20 - Dompet (desktop)" src="./assets/UI/I-20.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.20. Rancangan Antarmuka I-20 - Dompet</i>
+</p>
+
+Tabel 6.20. Spesifikasi Objek Antarmuka I-20
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| I-20-O01 | Heading dan Wallet Panel | Dompet; Saldo tersedia; Rp0 | Reaksi sistem: Menampilkan saldo tersedia Rp0 dan penjelasan bahwa pencairan memerlukan pekerjaan selesai serta pembayaran terkonfirmasi. |
+| I-20-O02 | Payment Breakdown | Upah pekerjaan; Biaya layanan; Total | Reaksi sistem: Menampilkan contoh rincian upah Rp180.000, biaya layanan Rp0, dan total Rp180.000. Angka tersebut bukan catatan transaksi keuangan dari server. |
+| I-20-O03 | Timeline | Alur pekerjaan & pembayaran; Status saat ini | Reaksi sistem: Menampilkan tahapan sesuai status pekerjaan yang sama dengan Pekerjaan Saya (I-14) dan Pemeriksaan dan Transaksi (I-21). |
+| I-20-O04 | Button kondisional | Kirim hasil pekerjaan; Ajukan pencairan | Reaksi sistem: Menyediakan pengiriman hasil seperti pada Pekerjaan Saya (I-14). Pengajuan pencairan hanya ditampilkan untuk Tenaga Kerja saat pekerjaan Selesai, bukan untuk Penyedia Kerja. |
+| I-20-O05 | Notice dan Link | Permintaan pencairan sedang diproses.; Ajukan keluhan | Reaksi sistem: Menampilkan status permintaan pencairan sedang diproses, tanpa tombol untuk menyatakan dana sudah diterima. Layar tujuan: Pusat Bantuan dan Keluhan (I-23) melalui Ajukan keluhan. |
+
+## 6.21 Rancangan Antarmuka I-21
+
+**Antarmuka:** *I-21*  
+**Nama Layar:** *Pemeriksaan dan Transaksi*  
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-21 - Pemeriksaan dan Transaksi (desktop)" src="./assets/UI/I-21.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.21. Rancangan Antarmuka I-21 - Pemeriksaan dan Transaksi</i>
+</p>
+
+Tabel 6.21. Spesifikasi Objek Antarmuka I-21
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| I-21-O01 | Heading dan Ringkasan | Transaksi; Bantu pindahan kos area Dago | Reaksi sistem: Menampilkan ringkasan pekerjaan yang menunggu pemeriksaan dalam mode Penyedia Kerja. |
+| I-21-O02 | Payment Breakdown dan Timeline | Upah pekerjaan; Biaya layanan; Total; Status saat ini | Informasi tersebut bukan konfirmasi pembayaran nyata. |
+| I-21-O03 | Button | Minta revisi | Layar tujuan: Dialog Permintaan Revisi Pekerjaan (I-29) untuk menjelaskan hasil yang perlu diperbaiki. |
+| I-21-O04 | Button | Terima hasil pekerjaan | Reaksi sistem: Mengubah status menjadi Selesai dan menghapus catatan revisi. Tindakan ini tidak memindahkan dana. |
+| I-21-O05 | Status kondisional | Hasil pekerjaan sudah diterima.; Pencairan diproses | Reaksi sistem: Menampilkan status penerimaan hasil atau proses pencairan sesuai tahapan pekerjaan. Tenaga Kerja dapat meminta pencairan setelah pekerjaan selesai, sedangkan Penyedia Kerja tidak mendapat tombol pencairan. Tidak ada kontrol untuk menyatakan dana sudah diterima. |
+| I-21-O06 | Combo Box dan Link | Mode akun; Ajukan keluhan | Reaksi sistem: Menyesuaikan tampilan menurut mode akun. Kontrol pemeriksaan tidak ditampilkan kepada Tenaga Kerja; pembatasan ini belum menjadi pemeriksaan hak akses server. Layar tujuan: Pusat Bantuan dan Keluhan (I-23) melalui Ajukan keluhan. |
+
+## 6.22 Rancangan Antarmuka I-22
+
+**Antarmuka:** *I-22*  
+**Nama Layar:** *Pengaturan Profil Saya*  
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-22 - Pengaturan Profil Saya (desktop)" src="./assets/UI/I-22.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.22. Rancangan Antarmuka I-22 - Pengaturan Profil Saya</i>
+</p>
+
+Tabel 6.22. Spesifikasi Objek Antarmuka I-22
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| I-22-O01 | Heading | Profil saya | Reaksi sistem: Menampilkan judul halaman pengaturan profil dan ajakan untuk melengkapi informasi keahlian. |
+| I-22-O02 | Text Field | Nama tampilan; Area layanan | Reaksi sistem: Menerima nama tampilan hingga 80 karakter dan area layanan hingga 150 karakter. Keduanya wajib diisi; perubahan baru disimpan setelah tombol simpan diklik. |
+| I-22-O03 | Text Area | Keahlian dan pengalaman | Reaksi sistem: Menerima keterangan keahlian dan pengalaman hingga 1.000 karakter. Kolom boleh kosong dan belum memperbarui daftar profil tenaga kerja contoh. |
+| I-22-O04 | Notice | Identitas belum diverifikasi. | Reaksi sistem: Menampilkan status identitas belum diverifikasi dan pengingat agar tidak menulis nomor identitas atau alamat pribadi. |
+| I-22-O05 | Button dan Status | Simpan perubahan; Perubahan profil disimpan. | Reaksi sistem: Memeriksa kolom wajib, menyimpan perubahan profil di browser, lalu memperbarui nama pada dashboard dan menampilkan pesan berhasil. |
+
+## 6.23 Rancangan Antarmuka I-23
+
+**Antarmuka:** *I-23*  
+**Nama Layar:** *Pusat Bantuan dan Keluhan*  
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-23 - Pusat Bantuan dan Keluhan (desktop)" src="./assets/UI/I-23.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.23. Rancangan Antarmuka I-23 - Pusat Bantuan dan Keluhan</i>
+</p>
+
+Tabel 6.23. Spesifikasi Objek Antarmuka I-23
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| I-23-O01 | Heading dan Accordion | Ada yang bisa dibantu?; pertanyaan umum | Reaksi sistem: Membuka jawaban saat pertanyaan dipilih, mencakup penawaran, identitas, pembayaran, perubahan lingkup, dan revisi. |
+| I-23-O02 | Combo Box | Jenis bantuan; Lingkup pekerjaan; Pembayaran; Hasil pekerjaan; Akun & privasi | Reaksi sistem: Mewajibkan pengguna memilih jenis bantuan sebelum laporan dapat diproses. |
+| I-23-O03 | Text Area | Ceritakan kendalanya | Reaksi sistem: Menerima uraian kendala sepanjang 20–1.000 karakter dan memeriksa bahwa isinya tetap minimal 20 karakter setelah spasi di awal dan akhir dihapus. |
+| I-23-O04 | Button | Kirim laporan | Reaksi sistem: Membuat nomor laporan KIN-xxxxxx dan menyimpan laporan di browser. Laporan belum dikirim ke tim dukungan. |
+| I-23-O05 | Status dan Button | Laporan dicatat; Nomor laporan; Menunggu peninjauan; Buat laporan lain | Reaksi sistem: Menampilkan nomor dan status laporan. Tombol Buat laporan lain mengosongkan formulir tanpa menghapus laporan yang sudah tersimpan. |
+| I-23-O06 | Alert | Laporan belum dapat disimpan. Isianmu tetap tersedia; coba lagi. | Reaksi sistem: Menampilkan pesan jika laporan gagal disimpan dan mempertahankan isian agar pengguna dapat mencoba kembali. |
+
+## 6.24 Rancangan Antarmuka I-24
+
+**Antarmuka:** *I-24*  
+**Nama Layar:** *Kebijakan Privasi*  
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-24 - Kebijakan Privasi (desktop)" src="./assets/UI/I-24.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.24. Rancangan Antarmuka I-24 - Kebijakan Privasi</i>
+</p>
+
+Tabel 6.24. Spesifikasi Objek Antarmuka I-24
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| I-24-O01 | Heading | Kebijakan privasi | Reaksi sistem: Menampilkan judul Kebijakan privasi. Isi kebijakan masih perlu ditinjau secara hukum sebelum layanan digunakan dalam produksi. |
+| I-24-O02 | Text Block | Informasi yang kamu kelola; Kontrol atas profil | Reaksi sistem: Menampilkan penjelasan tentang data profil dan cara mengubahnya melalui Pengaturan Profil Saya (I-22). |
+| I-24-O03 | Text Block | Jaga informasi pribadi; Pertanyaan tentang privasi | Reaksi sistem: Menampilkan pengingat agar pengguna tidak membagikan identitas, rekening, atau kata sandi. |
+| I-24-O04 | Link Button | Pusat bantuan | Layar tujuan: Pusat Bantuan dan Keluhan (I-23). |
+
+## 6.25 Rancangan Antarmuka I-25
+
+**Antarmuka:** *I-25*  
+**Nama Layar:** *Syarat dan Ketentuan*  
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-25 - Syarat dan Ketentuan (desktop)" src="./assets/UI/I-25.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.25. Rancangan Antarmuka I-25 - Syarat dan Ketentuan</i>
+</p>
+
+Tabel 6.25. Spesifikasi Objek Antarmuka I-25
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| I-25-O01 | Heading | Syarat & ketentuan | Reaksi sistem: Menampilkan panduan syarat dan ketentuan layanan, tanpa menyatakan dokumen telah disahkan secara hukum. |
+| I-25-O02 | Text Block | Kesepakatan pekerjaan; Perubahan ruang lingkup | Reaksi sistem: Menampilkan panduan kesepakatan mengenai tugas, waktu, lokasi, upah, dan perubahan ruang lingkup sebelum pekerjaan dimulai. |
+| I-25-O03 | Text Block | Pemeriksaan dan pembayaran; Sikap dan penyelesaian kendala | Reaksi sistem: Menjelaskan perbedaan permintaan pencairan dan dana diterima, serta mengarahkan pengguna untuk meminta bantuan jika ada kendala. |
+| I-25-O04 | Link Button | Pusat bantuan | Layar tujuan: Pusat Bantuan dan Keluhan (I-23). |
+
+## 6.26 Rancangan Antarmuka I-26
+
+**Antarmuka:** *I-26*  
+**Nama Layar:** *Undangan Tenaga Kerja*  
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-26 - Undangan Tenaga Kerja (desktop)" src="./assets/UI/I-26.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.26. Rancangan Antarmuka I-26 - Undangan Tenaga Kerja</i>
+</p>
+
+Tabel 6.26. Spesifikasi Objek Antarmuka I-26
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| I-26-O01 | Dialog dan Notice | Undang Agus | Reaksi sistem: Membuka dialog undangan untuk tenaga kerja yang sedang dilihat dan meminta pengguna menjelaskan kebutuhan pekerjaan. |
+| I-26-O02 | Combo Box | Pekerjaan; Pilih pekerjaan | Reaksi sistem: Mewajibkan pengguna memilih satu dari dua contoh pekerjaan. Pilihan belum diambil dari lowongan pengguna pada server. |
+| I-26-O03 | Text Area | Pesan undangan | Reaksi sistem: Menerima pesan undangan yang wajib diisi minimal 10 karakter. |
+| I-26-O04 | Button | Kirim undangan | Reaksi sistem: Mencatat undangan sementara, menutup dialog, dan menampilkan Undangan tersimpan. Undangan belum dikirim kepada tenaga kerja atau disimpan permanen. |
+| I-26-O05 | Icon Button | Tutup (X) | Reaksi sistem: Menutup dialog dan mengembalikan fokus ke tombol pembuka. Menekan Escape atau mengeklik latar dialog memberikan hasil yang sama. |
+
+## 6.27 Rancangan Antarmuka I-27
+
+**Antarmuka:** *I-27*  
+**Nama Layar:** *Konfirmasi Penarikan Penawaran*  
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-27 - Konfirmasi Penarikan Penawaran (desktop)" src="./assets/UI/I-27.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.27. Rancangan Antarmuka I-27 - Konfirmasi Penarikan Penawaran</i>
+</p>
+
+Tabel 6.27. Spesifikasi Objek Antarmuka I-27
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| I-27-O01 | Dialog | Tarik penawaran? | Reaksi sistem: Menampilkan konfirmasi penarikan dan penjelasan bahwa penawaran dapat diajukan kembali selama pekerjaan masih terbuka. |
+| I-27-O02 | Button | Batal | Reaksi sistem: Menutup dialog tanpa mengubah status penawaran. |
+| I-27-O03 | Button | Tarik penawaran | Reaksi sistem: Mengubah status penawaran yang dipilih menjadi Ditarik pada data di browser, lalu memperbarui daftar dan jumlah penawaran aktif. |
+| I-27-O04 | Icon Button | Tutup (X) | Reaksi sistem: Membatalkan penarikan, menutup dialog, dan mengembalikan fokus ke tombol pembuka. Menekan Escape atau mengeklik latar dialog memberikan hasil yang sama. |
+
+## 6.28 Rancangan Antarmuka I-28
+
+**Antarmuka:** *I-28*  
+**Nama Layar:** *Halaman Tidak Ditemukan*  
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-28 - Halaman Tidak Ditemukan (desktop)" src="./assets/UI/I-28.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.28. Rancangan Antarmuka I-28 - Halaman Tidak Ditemukan</i>
+</p>
+
+Tabel 6.28. Spesifikasi Objek Antarmuka I-28
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| I-28-O01 | Heading dan Text Block | Halaman tidak ditemukan; Halaman ini tidak tersedia. | Reaksi sistem: Menampilkan pesan jika halaman atau data yang diminta tidak ditemukan. Tampilan ini belum menjamin server memberikan kode kesalahan 404. |
+| I-28-O02 | Link Button | Kembali ke pekerjaan | Layar tujuan: Pencarian Pekerjaan (I-02). |
+
+## 6.29 Rancangan Antarmuka I-29
+
+**Antarmuka:** *I-29*  
+**Nama Layar:** *Permintaan Revisi Pekerjaan*  
+
+<p align="center">
+<img alt="Rancangan Antarmuka I-29 - Permintaan Revisi Pekerjaan (desktop)" src="./assets/UI/I-29.png" width="80%">
+</p>
+<p align="center">
+<i>Gambar 6.29. Rancangan Antarmuka I-29 - Permintaan Revisi Pekerjaan</i>
+</p>
+
+Tabel 6.29. Spesifikasi Objek Antarmuka I-29
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| I-29-O01 | Dialog | Minta revisi pekerjaan | Reaksi sistem: Membuka dialog saat Penyedia Kerja meminta revisi dari Pemeriksaan dan Transaksi (I-21). |
+| I-29-O02 | Text Area | Catatan revisi | Reaksi sistem: Menerima catatan revisi wajib sepanjang 10–1.000 karakter. Catatan tidak diterapkan jika pengguna membatalkan pengisian. |
+| I-29-O03 | Button | Kirim permintaan revisi | Reaksi sistem: Menyimpan catatan revisi di browser, mengubah status menjadi Sedang dikerjakan, dan menampilkan catatan pada pekerjaan aktif. |
+| I-29-O04 | Button dan Icon Button | Batal; Tutup (X) | Reaksi sistem: Membatalkan permintaan revisi, menutup dialog, dan mengembalikan fokus ke tombol pembuka. Menekan Escape atau mengeklik latar dialog memberikan hasil yang sama. |
+
+## 6.30 Rancangan Antarmuka Keseluruhan
+
+Tabel 6.30. Rancangan Antarmuka Keseluruhan
 
 | No | Tampilan Antarmuka |
 | :--- | :--- |
-| *[I-01]* | <img src="./assets/diagram/contoh-design.png" alt="Contoh Desain" width="400"> |
-| *[I-02]* | *[Sisipkan gambar antarmuka I-02]* |
-| *[I-XX]* | *[Sisipkan gambar antarmuka berikutnya]* |
+| I-01 | <img src="./assets/UI/I-01.png" alt="I-01 - Beranda" width="400"> |
+| I-02 | <img src="./assets/UI/I-02.png" alt="I-02 - Pencarian Pekerjaan" width="400"> |
+| I-03 | <img src="./assets/UI/I-03.png" alt="I-03 - Detail Pekerjaan" width="400"> |
+| I-04 | <img src="./assets/UI/I-04.png" alt="I-04 - Formulir Penawaran" width="400"> |
+| I-05 | <img src="./assets/UI/I-05.png" alt="I-05 - Tinjau Penawaran" width="400"> |
+| I-06 | <img src="./assets/UI/I-06.png" alt="I-06 - Pencarian Tenaga Kerja" width="400"> |
+| I-07 | <img src="./assets/UI/I-07.png" alt="I-07 - Profil Tenaga Kerja" width="400"> |
+| I-08 | <img src="./assets/UI/I-08.png" alt="I-08 - Masuk" width="400"> |
+| I-09 | <img src="./assets/UI/I-09.png" alt="I-09 - Daftar Akun" width="400"> |
+| I-10 | <img src="./assets/UI/I-10.png" alt="I-10 - Pemulihan Kata Sandi" width="400"> |
+| I-11 | <img src="./assets/UI/I-11.png" alt="I-11 - Dashboard Tenaga Kerja" width="400"> |
+| I-12 | <img src="./assets/UI/I-12.png" alt="I-12 - Dashboard Penyedia Kerja" width="400"> |
+| I-13 | <img src="./assets/UI/I-13.png" alt="I-13 - Lamaran Saya" width="400"> |
+| I-14 | <img src="./assets/UI/I-14.png" alt="I-14 - Pekerjaan Saya" width="400"> |
+| I-15 | <img src="./assets/UI/I-15.png" alt="I-15 - Lowongan Saya" width="400"> |
+| I-16 | <img src="./assets/UI/I-16.png" alt="I-16 - Pasang Pekerjaan — Detail" width="400"> |
+| I-17 | <img src="./assets/UI/I-17.png" alt="I-17 - Pasang Pekerjaan — Lokasi dan Jadwal" width="400"> |
+| I-18 | <img src="./assets/UI/I-18.png" alt="I-18 - Pasang Pekerjaan — Upah dan Ketentuan" width="400"> |
+| I-19 | <img src="./assets/UI/I-19.png" alt="I-19 - Pasang Pekerjaan — Tinjau dan Terbitkan" width="400"> |
+| I-20 | <img src="./assets/UI/I-20.png" alt="I-20 - Dompet" width="400"> |
+| I-21 | <img src="./assets/UI/I-21.png" alt="I-21 - Pemeriksaan dan Transaksi" width="400"> |
+| I-22 | <img src="./assets/UI/I-22.png" alt="I-22 - Pengaturan Profil Saya" width="400"> |
+| I-23 | <img src="./assets/UI/I-23.png" alt="I-23 - Pusat Bantuan dan Keluhan" width="400"> |
+| I-24 | <img src="./assets/UI/I-24.png" alt="I-24 - Kebijakan Privasi" width="400"> |
+| I-25 | <img src="./assets/UI/I-25.png" alt="I-25 - Syarat dan Ketentuan" width="400"> |
+| I-26 | <img src="./assets/UI/I-26.png" alt="I-26 - Undangan Tenaga Kerja" width="400"> |
+| I-27 | <img src="./assets/UI/I-27.png" alt="I-27 - Konfirmasi Penarikan Penawaran" width="400"> |
+| I-28 | <img src="./assets/UI/I-28.png" alt="I-28 - Halaman Tidak Ditemukan" width="400"> |
+| I-29 | <img src="./assets/UI/I-29.png" alt="I-29 - Permintaan Revisi Pekerjaan" width="400"> |
 
 <br>
 
