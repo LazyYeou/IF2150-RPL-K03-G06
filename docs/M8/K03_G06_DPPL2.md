@@ -2371,11 +2371,11 @@ Tabel 5.10.2. Atribut Kelas PencairanDana
 ### 5.10.1 Algoritma/Query
 
 **Nama Kelas:** PencairanDana  
-**Nama Operasi:** createPencairanDana(idTenagaKerja: string, nominal: number, rekeningTujuan: string): void
+**Nama Operasi:** createPencairanDana(idTenagaKerja: string, nominal: Decimal, rekeningTujuan: string): void
 **ID Algoritma:** Algo-010-01
 
 ```text
-procedure createPencairanDana(idTenagaKerja: string, nominal: number, rekeningTujuan: string)
+procedure createPencairanDana(idTenagaKerja: string, nominal: Decimal, rekeningTujuan: string)
     this.idPencairan <- generateUUID()
     this.idTenagaKerja <- idTenagaKerja
     this.nominal <- nominal
@@ -2387,11 +2387,11 @@ procedure createPencairanDana(idTenagaKerja: string, nominal: number, rekeningTu
 end procedure
 ```
 
-Tabel 5.10.3. Query Operasi createPencairanDana(idTenagaKerja: string, nominal: number, rekeningTujuan: string): void
+Tabel 5.10.3. Query Operasi createPencairanDana(idTenagaKerja: string, nominal: Decimal, rekeningTujuan: string): void
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-010-01 | INSERT INTO pencairanDana (idPencairan, idTenagaKerja, nominal, rekeningTujuan, statusPencairan, waktuPengajuan) VALUES (:idPencairan, :idTenagaKerja, :nominal, :rekeningTujuan, :statusPencairan, :waktuPengajuan); | Menyimpan permohonan pencairan dana baru tenaga kerja ke basis data. |
+| Q-047 | `INSERT INTO pencairanDana (idPencairan, idTenagaKerja, nominal, rekeningTujuan, statusPencairan, waktuPengajuan) VALUES (:idPencairan, :idTenagaKerja, :nominal, :rekeningTujuan, :statusPencairan, :waktuPengajuan);` | Menyimpan permohonan pencairan dana baru tenaga kerja ke basis data. |
 
 ### 5.10.2 Algoritma/Query
 
@@ -2410,7 +2410,7 @@ Tabel 5.10.4. Query Operasi setStatusPencairan(status: string): void
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-010-02 | UPDATE pencairanDana SET statusPencairan = :status WHERE idPencairan = :idPencairan; | Memperbarui status pemrosesan pencairan dana. |
+| Q-048 | `UPDATE pencairanDana SET statusPencairan = :status WHERE idPencairan = :idPencairan;` | Memperbarui status pemrosesan pencairan dana. |
 
 
 ## 5.11 Kelas UlasanRating
@@ -2449,7 +2449,7 @@ procedure simpanUlasan()
     end if
 
     // Cek pencegahan double review pada transaksi yang sama
-    riwayatUlasan <- execute Q-011a with (this.idTransaksi, this.idPenilai)
+    riwayatUlasan <- execute Q-011-01 with (this.idTransaksi, this.idPenilai)
     if riwayatUlasan.totalUlasan > 0 then
         throw Error("Pengguna telah memberikan ulasan pada transaksi ini.")
     end if
@@ -2465,8 +2465,8 @@ Tabel 5.11.3. Query Operasi simpanUlasan(): void
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-011-01 | SELECT COUNT(*) AS totalUlasan FROM ulasanRating WHERE idTransaksi = :idTransaksi AND idPenilai = :idPenilai; | Memeriksa apakah penilai telah memberikan ulasan pada transaksi yang sama untuk mencegah ulasan ganda. |
-| Q-011-02 | INSERT INTO ulasanRating (idUlasan, idTransaksi, idPenilai, idPenerima, nilai, deskripsiUlasan) VALUES (:idUlasan, :idTransaksi, :idPenilai, :idPenerima, :nilai, :deskripsiUlasan); | Menyimpan data penilaian dan ulasan baru ke basis data. |
+| Q-049 | `SELECT COUNT(*) AS totalUlasan FROM ulasanRating WHERE idTransaksi = :idTransaksi AND idPenilai = :idPenilai;` | Memeriksa apakah penilai telah memberikan ulasan pada transaksi yang sama untuk mencegah ulasan ganda. |
+| Q-050 | `INSERT INTO ulasanRating (idUlasan, idTransaksi, idPenilai, idPenerima, nilai, deskripsiUlasan) VALUES (:idUlasan, :idTransaksi, :idPenilai, :idPenerima, :nilai, :deskripsiUlasan);` | Menyimpan data penilaian dan ulasan baru ke basis data. |
 
 
 ## 5.12 Kelas TiketSengketa
@@ -2514,7 +2514,7 @@ Tabel 5.12.3. Query Operasi buatTiket(): void
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-012-01 | INSERT INTO tiketSengketa (idTiket, idTransaksi, idPelapor, kategoriMasalah, deskripsiKomplain, urlBukti, statusTiket, keputusan) VALUES (:idTiket, :idTransaksi, :idPelapor, :kategoriMasalah, :deskripsiKomplain, :urlBukti, :statusTiket, :keputusan); | Menyimpan berkas tiket sengketa baru ke basis data. |
+| Q-051 | `INSERT INTO tiketSengketa (idTiket, idTransaksi, idPelapor, kategoriMasalah, deskripsiKomplain, urlBukti, statusTiket, keputusan) VALUES (:idTiket, :idTransaksi, :idPelapor, :kategoriMasalah, :deskripsiKomplain, :urlBukti, :statusTiket, :keputusan);` | Menyimpan berkas tiket sengketa baru ke basis data. |
 
 ### 5.12.2 Algoritma/Query
 
@@ -2533,7 +2533,7 @@ Tabel 5.12.4. Query Operasi setStatusTiket(status: string): void
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-012-02 | UPDATE tiketSengketa SET statusTiket = :status WHERE idTiket = :idTiket; | Memperbarui status penanganan tiket sengketa. |
+| Q-052 | `UPDATE tiketSengketa SET statusTiket = :status WHERE idTiket = :idTiket;` | Memperbarui status penanganan tiket sengketa. |
 
 
 ## 5.13 Kelas RiwayatSengketa
@@ -2576,7 +2576,7 @@ Tabel 5.13.3. Query Operasi catatRiwayat(aktivitas: string): void
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-013-01 | INSERT INTO riwayatSengketa (idRiwayat, idTiket, logAktivitas, timestamp) VALUES (:idRiwayat, :idTiket, :logAktivitas, :timestamp); | Mencatat riwayat log aktivitas penyelesaian tiket sengketa ke basis data. |
+| Q-053 | `INSERT INTO riwayatSengketa (idRiwayat, idTiket, logAktivitas, timestamp) VALUES (:idRiwayat, :idTiket, :logAktivitas, :timestamp);` | Mencatat riwayat log aktivitas penyelesaian tiket sengketa ke basis data. |
 
 
 ## 5.14 Kelas Notifikasi
@@ -2617,11 +2617,11 @@ procedure simpanNotifikasi()
 end procedure
 ```
 
-Tabel 5.14.3. Query Operasi [Nama Operasi]
+Tabel 5.14.3. Query Operasi simpanNotifikasi(): void
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-014-01 | INSERT INTO notifikasi (idNotifikasi, idPenerima, pesanNotifikasi, statusBaca, waktuKirim) VALUES (:idNotifikasi, :idPenerima, :pesanNotifikasi, :statusBaca, :waktuKirim); | Menyimpan pesan pemberitahuan baru bagi pengguna ke basis data. |
+| Q-054 | `INSERT INTO notifikasi (idNotifikasi, idPenerima, pesanNotifikasi, statusBaca, waktuKirim) VALUES (:idNotifikasi, :idPenerima, :pesanNotifikasi, :statusBaca, :waktuKirim);` | Menyimpan pesan pemberitahuan baru bagi pengguna ke basis data. |
 
 ### 5.14.2 Algoritma/Query
 
@@ -2640,7 +2640,7 @@ Tabel 5.14.4. Query Operasi tandaiSudahDibaca(): void
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-014-02 | UPDATE notifikasi SET statusBaca = true WHERE idNotifikasi = :idNotifikasi; | Memperbarui status notifikasi menjadi telah dibaca oleh pengguna. |
+| Q-055 | `UPDATE notifikasi SET statusBaca = true WHERE idNotifikasi = :idNotifikasi;` | Memperbarui status notifikasi menjadi telah dibaca oleh pengguna. |
 
 
 ## 5.15 Kelas PaymentGateway
@@ -2667,16 +2667,16 @@ Tabel 5.15.2. Atribut Kelas PaymentGateway
 ### 5.15.1 Algoritma/Query
 
 **Nama Kelas:** PaymentGateway  
-**Nama Operasi:** prosesPembayaran(idTagihan: string, nominal: number): boolean
+**Nama Operasi:** prosesPembayaran(idTagihan: string, nominal: Decimal): boolean
 **ID Algoritma:** Algo-015-01
 
 ```text
-function prosesPembayaran(idTagihan: string, nominal: number): boolean
+function prosesPembayaran(idTagihan: string, nominal: Decimal): boolean
     payloadPembayaran <- createPaymentPayload(idTagihan, nominal)
     responseGateway <- callPaymentGatewayApi("POST", "/charge", payloadPembayaran)
 
     if responseGateway.statusCode == 200 and responseGateway.statusTransaksi == "settlement" then
-        execute Q-015a with (idTagihan)
+        execute Q-015-01 with (idTagihan)
         return true
     else if responseGateway.statusCode == 201 and responseGateway.statusTransaksi == "pending" then
         return true
@@ -2686,20 +2686,20 @@ function prosesPembayaran(idTagihan: string, nominal: number): boolean
 end function
 ```
 
-Tabel 5.15.3. Query Operasi prosesPembayaran(idTagihan: string, nominal: number): boolean
+Tabel 5.15.3. Query Operasi prosesPembayaran(idTagihan: string, nominal: Decimal): boolean
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-015-01 | UPDATE tagihanPembayaran SET statusBayar = 'Lunas' WHERE idTagihan = :idTagihan; | Memperbarui status bayar tagihan menjadi Lunas setelah verifikasi gateway berhasil. |
+| Q-056 | `UPDATE tagihanPembayaran SET statusBayar = 'Lunas' WHERE idTagihan = :idTagihan;` | Memperbarui status bayar tagihan menjadi Lunas setelah verifikasi gateway berhasil. |
 
 ### 5.15.2 Algoritma/Query
 
 **Nama Kelas:** PaymentGateway  
-**Nama Operasi:** transferDana(rekeningTujuan: string, nominal: number): boolean
+**Nama Operasi:** transferDana(rekeningTujuan: string, nominal: Decimal): boolean
 **ID Algoritma:** Algo-015-02
 
 ```text
-function transferDana(rekeningTujuan: string, nominal: number): boolean
+function transferDana(rekeningTujuan: string, nominal: Decimal): boolean
     payloadPencairan <- createDisbursementPayload(rekeningTujuan, nominal)
     responseGateway <- callPaymentGatewayApi("POST", "/disbursement", payloadPencairan)
 
@@ -2711,11 +2711,11 @@ function transferDana(rekeningTujuan: string, nominal: number): boolean
 end function
 ```
 
-Tabel 5.15.4. Query Operasi transferDana(rekeningTujuan: string, nominal: number): boolean
+Tabel 5.15.4. Query Operasi transferDana(rekeningTujuan: string, nominal: Decimal): boolean
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-015-02 | Tidak ada query langsung ke basis data lokal (interaksi dilakukan via REST API payment gateway pihak ketiga). | Pengiriman instruksi pencairan dana upah ke rekening/e-wallet tujuan. |
+| Q-057 | Tidak ada query langsung ke basis data lokal (interaksi dilakukan via REST API payment gateway pihak ketiga). | Pengiriman instruksi pencairan dana upah ke rekening/e-wallet tujuan. |
 
 
 ## 5.16 Kelas PenggunaUI
@@ -2767,7 +2767,7 @@ Tabel 5.16.3. Query Operasi kirimDataRegistrasi(dataProfil: Record<string, unkno
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-016-01 | Tidak ada query langsung (operasi berada pada layer View antarmuka pengguna). | Pemrosesan basis data didelegasikan ke PenggunaController dan Model Pengguna. |
+| Q-058 | Tidak ada query langsung (operasi berada pada layer View antarmuka pengguna). | Pemrosesan basis data didelegasikan ke PenggunaController dan Model Pengguna. |
 
 ### 5.16.2 Algoritma/Query
 
@@ -2796,7 +2796,7 @@ Tabel 5.16.4. Query Operasi kirimDataLogin(email: string, kataSandi: string): vo
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-016-02 | Tidak ada query langsung (operasi berada pada layer View antarmuka pengguna). | Validasi autentikasi didelegasikan ke PenggunaController dan Supabase Auth. |
+| Q-059 | Tidak ada query langsung (operasi berada pada layer View antarmuka pengguna). | Validasi autentikasi didelegasikan ke PenggunaController dan Supabase Auth. |
 
 
 ## 5.17 Kelas TenagaKerjaUI
@@ -2859,7 +2859,7 @@ Tabel 5.17.3. Query Operasi kirimDokumenIdentitas(dokumen: File, persetujuan: bo
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-017-01 | Tidak ada query langsung (operasi berada pada layer View antarmuka pengguna). | Pengunggahan berkas dan status verifikasi didelegasikan ke TenagaKerjaController. |
+| Q-060 | Tidak ada query langsung (operasi berada pada layer View antarmuka pengguna). | Pengunggahan berkas dan status verifikasi didelegasikan ke TenagaKerjaController. |
 
 ### 5.17.2 Algoritma/Query
 
@@ -2878,7 +2878,7 @@ Tabel 5.17.4. Query Operasi pilihPencairanDana(): void
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-017-02 | Tidak ada query langsung (operasi berada pada layer View antarmuka pengguna). | Nilai saldo pendapatan diambil melalui TenagaKerjaController. |
+| Q-061 | Tidak ada query langsung (operasi berada pada layer View antarmuka pengguna). | Nilai saldo pendapatan diambil melalui TenagaKerjaController. |
 
 
 ## 5.18 Kelas PenyediaKerjaUI
@@ -2923,7 +2923,7 @@ Tabel 5.18.3. Query Operasi pilihPembuatanLowongan(): void
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-018-01 | Tidak ada query langsung (operasi berada pada layer View antarmuka pengguna). | Pemeriksaan status akun dilakukan melalui PenyediaKerjaController. |
+| Q-062 | Tidak ada query langsung (operasi berada pada layer View antarmuka pengguna). | Pemeriksaan status akun dilakukan melalui PenyediaKerjaController. |
 
 ### 5.18.2 Algoritma/Query
 
@@ -2952,7 +2952,7 @@ Tabel 5.18.4. Query Operasi tampilkanDaftarPelamar(pelamar: Array<PengajuanPenaw
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| Q-018-02 | Tidak ada query langsung (operasi berada pada layer View antarmuka pengguna). | Data daftar penawaran diambil dari Model PengajuanPenawaran melalui Controller. |
+| Q-063 | Tidak ada query langsung (operasi berada pada layer View antarmuka pengguna). | Data daftar penawaran diambil dari Model PengajuanPenawaran melalui Controller. |
 
 
 ## 5.19 Kelas CustomerServiceUI
