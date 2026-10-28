@@ -1114,8 +1114,6 @@ Tabel 5.1.3. Query Operasi Kelas Pengguna
 | Q-001-01 | `SELECT COALESCE(AVG(nilai), 0) AS rating FROM ulasan_rating WHERE "idPenerima" = $1;` | perbaruiAkumulasiRating(): rata-rata ulasan penerima; $1 = idPengguna. |
 | Q-001-02 | `UPDATE pengguna SET "akumulasiRating" = $2 WHERE "idPengguna" = $1 RETURNING "akumulasiRating";` | perbaruiAkumulasiRating(): menyimpan rata-rata; $1 = idPengguna, $2 = rating. |
 
-
-
 ## 5.2 Kelas TenagaKerja
 
 **Nama Kelas:** TenagaKerja  
@@ -1325,8 +1323,6 @@ Tabel 5.2.3. Query Operasi Kelas TenagaKerja
 | Q-002-05 | `SELECT "saldoPendapatan" FROM tenaga_kerja WHERE "idTenagaKerja" = $1 FOR UPDATE;` | tambahSaldoPendapatan()/kurangiSaldoPendapatan(): mengunci saldo; $1 = idTenagaKerja. |
 | Q-002-06 | `UPDATE tenaga_kerja SET "saldoPendapatan" = $2 WHERE "idTenagaKerja" = $1 RETURNING "saldoPendapatan";` | tambahSaldoPendapatan()/kurangiSaldoPendapatan(): $1 = idTenagaKerja, $2 = saldo baru dalam transaksi yang sama. |
 
-
-
 ## 5.3 Kelas PenyediaKerja
 
 **Nama Kelas:** PenyediaKerja  
@@ -1384,8 +1380,6 @@ Tabel 5.3.3. Query Operasi Kelas PenyediaKerja
 | :--- | :--- | :--- |
 | Q-003-01 | `INSERT INTO pengguna ("idPengguna", nama, email, password, "tanggalLahir", "tokenAuth", "akumulasiRating") VALUES ($1, $2, $3, $4, $5, $6, $7);` | buatProfil(): $1?$7 = idPengguna, nama, email, hash kata sandi, tanggalLahir, tokenAuth, akumulasiRating. |
 | Q-003-02 | `INSERT INTO penyedia_kerja ("idPenyediaKerja", "idPengguna") VALUES ($1, $2);` | buatProfil(): $1 = idPenyediaKerja, $2 = idPengguna; satu transaksi dengan penyimpanan pengguna. |
-
-
 
 ## 5.4 Kelas CustomerService
 
@@ -1532,8 +1526,6 @@ Tabel 5.4.3. Query Operasi Kelas CustomerService
 | Q-004-08 | `SELECT * FROM tiket_sengketa WHERE "idTiket" = $1 FOR UPDATE;` | putuskanSengketa(): mengunci tiket; $1 = idTiket. |
 | Q-004-09 | `UPDATE tiket_sengketa SET keputusan = $2 WHERE "idTiket" = $1 RETURNING keputusan;` | putuskanSengketa(): $1 = idTiket, $2 = keputusan; dipakai setelah pemeriksaan status dan keputusan lama. |
 | Q-004-10 | `INSERT INTO riwayat_sengketa ("idRiwayat", "idTiket", "logAktivitas", timestamp) VALUES ($1, $2, $3, $4);` | putuskanSengketa(): $1?$4 = id riwayat baru, idTiket, teks keputusan beserta idAdmin, waktu pencatatan. |
-
-
 
 ## 5.5 Kelas LowonganPekerjaan
 
@@ -1755,8 +1747,6 @@ Tabel 5.5.3. Query Operasi Kelas LowonganPekerjaan
 | Q-005-04 | `UPDATE lowongan_pekerjaan SET "jumlahDiterima" = $2, "statusLowongan" = $3 WHERE "idLowongan" = $1 RETURNING "jumlahDiterima", "statusLowongan";` | kurangiKuota(): $1 = idLowongan, $2 = jumlahDiterima baru, $3 = status baru. |
 | Q-005-05 | `UPDATE lowongan_pekerjaan SET "statusLowongan" = $2 WHERE "idLowongan" = $1 RETURNING "statusLowongan";` | setStatusLowongan(): $1 = idLowongan, $2 = status. |
 
-
-
 ## 5.6 Kelas PengajuanPenawaran
 
 **Nama Kelas:** PengajuanPenawaran  
@@ -1852,8 +1842,6 @@ Tabel 5.6.3. Query Operasi Kelas PengajuanPenawaran
 | Q-006-02 | `SELECT "statusPenawaran" FROM pengajuan_penawaran WHERE "idPenawaran" = $1 FOR UPDATE;` | setStatusPersetujuan(): $1 = idPenawaran. |
 | Q-006-03 | `UPDATE pengajuan_penawaran SET "statusPenawaran" = $2 WHERE "idPenawaran" = $1 RETURNING "statusPenawaran";` | setStatusPersetujuan(): $1 = idPenawaran, $2 = status. |
 | Q-006-04 | `SELECT * FROM pengajuan_penawaran WHERE "idPenawaran" = $1;` | getDetailPenawaran(): $1 = idPenawaran. |
-
-
 
 ## 5.7 Kelas TransaksiPekerjaan
 
@@ -2013,8 +2001,6 @@ Tabel 5.7.3. Query Operasi Kelas TransaksiPekerjaan
 | Q-007-04 | `SELECT EXISTS (SELECT 1 FROM ulasan_rating WHERE "idTransaksi" = $1 AND "idPenilai" = $2) AS ada;` | isUlasanGanda(): $1 = idTransaksi, $2 = idPenilai. |
 | Q-007-05 | `SELECT * FROM transaksi_pekerjaan WHERE "idTransaksi" = $1;` | getDetailTransaksi(): $1 = idTransaksi. |
 
-
-
 ## 5.8 Kelas BuktiPenyerahan
 
 **Nama Kelas:** BuktiPenyerahan  
@@ -2089,8 +2075,6 @@ Tabel 5.8.3. Query Operasi Kelas BuktiPenyerahan
 | :--- | :--- | :--- |
 | Q-008-01 | `INSERT INTO bukti_penyerahan ("idPenyerahan", "idTransaksi", "deskripsiPengerjaan", "fileUrl", "ukuranFile", "timestampPengiriman") VALUES ($1, $2, $3, $4, $5, $6);` | simpanBukti(): $1?$6 = idPenyerahan, idTransaksi, deskripsiPengerjaan, fileUrl, ukuranFile, timestampPengiriman. |
 | Q-008-02 | `SELECT * FROM bukti_penyerahan WHERE "idPenyerahan" = $1;` | getDetailBukti(): $1 = idPenyerahan; Controller memeriksa hak akses. |
-
-
 
 ## 5.9 Kelas TagihanPembayaran
 
@@ -2209,8 +2193,6 @@ Tabel 5.9.3. Query Operasi Kelas TagihanPembayaran
 | Q-009-03 | `INSERT INTO tagihan_pembayaran ("idTagihan", "idTransaksi", "nominalUpah", "commissionFee", "totalBayar", "expiryTimestamp", "statusPembayaran") VALUES ($1, $2, $3, $4, $5, $6, $7);` | buatTagihan(): $1?$7 = idTagihan, idTransaksi, nominalUpah, commissionFee, totalBayar, expiryTimestamp, status awal. |
 | Q-009-04 | `SELECT "statusPembayaran" FROM tagihan_pembayaran WHERE "idTagihan" = $1 FOR UPDATE;` | setStatusPembayaran(): $1 = idTagihan. |
 | Q-009-05 | `UPDATE tagihan_pembayaran SET "statusPembayaran" = $2 WHERE "idTagihan" = $1 RETURNING "statusPembayaran";` | setStatusPembayaran(): $1 = idTagihan, $2 = status hasil validasi. |
-
-
 
 ## 5.10 Kelas PencairanDana
 
