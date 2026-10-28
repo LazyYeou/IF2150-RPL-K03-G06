@@ -141,7 +141,7 @@ Diagram 4.3 | 2 | Done | - |
 | :--- | :--- | :--- | :--- | :--- | :--- | 
 | 27-10-2026 | Davin Farel Santoso | Memetakan method dan atribute pada semau class yang ada | 2 | Done | - |
 | 28-10-2026 | Davin Farel Santoso | Mengerjakan algoritma dan query untuk kelas 1 sampai 9 | 2 | Done | - |
-
+| 28-10-2026 | Aditya Rasyid | Mengerjakan algoritma dan query untuk class 28-36 | 4 | Done | - |
 
 
 
