@@ -2219,28 +2219,47 @@ Tabel 5.10.2. Atribut Kelas PencairanDana
 
 ### 5.10.1 Algoritma/Query
 
-Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
-
 **Nama Kelas:** PencairanDana  
-**Nama Operasi:** *[Signature operasi]*  
-**ID Algoritma:** *[Algo-010]*
+**Nama Operasi:** createPencairanDana(idTenagaKerja: string, nominal: number, rekeningTujuan: string): void
+**ID Algoritma:** Algo-010-01
 
 ```text
-[Tuliskan pseudocode algoritma operasi di sini.]
+procedure createPencairanDana(idTenagaKerja: string, nominal: number, rekeningTujuan: string)
+    this.idPencairan <- generateUUID()
+    this.idTenagaKerja <- idTenagaKerja
+    this.nominal <- nominal
+    this.rekeningTujuan <- rekeningTujuan
+    this.statusPencairan <- "Menunggu Proses"
+    this.waktuPengajuan <- getCurrentTimestamp()
+
+    execute Q-010a with (this.idPencairan, this.idTenagaKerja, this.nominal, this.rekeningTujuan, this.statusPencairan, this.waktuPengajuan)
+end procedure
 ```
 
-Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
-
-Tabel 5.10.3. Query Operasi [Nama Operasi]
+Tabel 5.10.3. Query Operasi createPencairanDana(idTenagaKerja: string, nominal: number, rekeningTujuan: string): void
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| *[Q-010]* | *[Tuliskan query]* | *[Fungsi query]* |
-| *...* | *...* | *...* |
+| Q-010-01 | INSERT INTO pencairanDana (idPencairan, idTenagaKerja, nominal, rekeningTujuan, statusPencairan, waktuPengajuan) VALUES (:idPencairan, :idTenagaKerja, :nominal, :rekeningTujuan, :statusPencairan, :waktuPengajuan); | Menyimpan permohonan pencairan dana baru tenaga kerja ke basis data. |
 
 ### 5.10.2 Algoritma/Query
 
-*[Ulangi pola 5.10.1 untuk operasi penting berikutnya pada kelas yang sama, jika ada.]*
+**Nama Kelas:** PencairanDana  
+**Nama Operasi:** setStatusPencairan(status: string): void
+**ID Algoritma:** Algo-010-02
+
+```text
+procedure setStatusPencairan(status: string)
+    this.statusPencairan <- status
+    execute Q-010b with (status, this.idPencairan)
+end procedure
+```
+
+Tabel 5.10.4. Query Operasi setStatusPencairan(status: string): void
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-010-02 | UPDATE pencairanDana SET statusPencairan = :status WHERE idPencairan = :idPencairan; | Memperbarui status pemrosesan pencairan dana. |
 
 
 ## 5.11 Kelas UlasanRating
