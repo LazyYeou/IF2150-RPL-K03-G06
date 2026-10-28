@@ -146,7 +146,7 @@ Diagram 4.3 | 2 | Done | - |
 | 28-10-2026 | Aditya Rasyid | Mengerjakan algoritma dan query untuk class 28-36 | 4 | Done | - |
 | 28-10-2026 | Karmel Tua Haloho | Mengerjakan algoritma dan query untuk class 10-18 | 4 | Done | - |
 | 28-10-2026 | Sebastio Nugroho | Mengerjakan algoritma dan query untuk class 19-27 | 4 | Done | - |
-
+| 28-10-2026 | Muhammad Ridwan Nasir Firdaus | Mengerjakan Bab 6 dan UI | 4 | Done | - |
 
 ---
 
