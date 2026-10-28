@@ -2842,28 +2842,53 @@ Tabel 5.19.2. Atribut Kelas CustomerServiceUI
 
 ### 5.19.1 Algoritma/Query
 
-Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
-
 **Nama Kelas:** CustomerServiceUI  
-**Nama Operasi:** *[Signature operasi]*  
-**ID Algoritma:** *[Algo-019]*
+**Nama Operasi:** tampilkanDaftarAntreanVerifikasi(pengajuan: Array<TenagaKerja>): void  
+**ID Algoritma:** Algo-019-01
 
 ```text
-[Tuliskan pseudocode algoritma operasi di sini.]
+procedure tampilkanDaftarAntreanVerifikasi(pengajuan: Array<TenagaKerja>)
+    if input tampilan tidak tersedia or tidak valid then
+        tampilkan pesan kesalahan pada antarmuka
+        -> false
+    siapkan data dan komponen yang diperlukan
+    render tampilan pada halaman aplikasi
+    -> hasil tampilan
+end procedure
 ```
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.19.3. Query Operasi [Nama Operasi]
+Tabel 5.19.3. Query Operasi tampilkanDaftarAntreanVerifikasi
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| *[Q-019]* | *[Tuliskan query]* | *[Fungsi query]* |
-| *...* | *...* | *...* |
+| - | - | Tidak menggunakan query; operasi hanya mengelola interaksi antarmuka. |
 
 ### 5.19.2 Algoritma/Query
 
-*[Ulangi pola 5.19.1 untuk operasi penting berikutnya pada kelas yang sama, jika ada.]*
+**Nama Kelas:** CustomerServiceUI  
+**Nama Operasi:** pilihPersetujuanVerifikasi(idTenagaKerja: string): void  
+**ID Algoritma:** Algo-019-02
+
+```text
+procedure pilihPersetujuanVerifikasi(idTenagaKerja: string)
+    if input tampilan tidak tersedia or tidak valid then
+        tampilkan pesan kesalahan pada antarmuka
+        -> false
+    siapkan data dan komponen yang diperlukan
+    render tampilan pada halaman aplikasi
+    -> hasil tampilan
+end procedure
+```
+
+Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
+
+Tabel 5.19.4. Query Operasi pilihPersetujuanVerifikasi
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| - | - | Tidak menggunakan query; operasi hanya mengelola interaksi antarmuka. |
 
 
 ## 5.20 Kelas LowonganPekerjaanUI
@@ -2893,28 +2918,56 @@ Tabel 5.20.2. Atribut Kelas LowonganPekerjaanUI
 
 ### 5.20.1 Algoritma/Query
 
-Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
-
 **Nama Kelas:** LowonganPekerjaanUI  
-**Nama Operasi:** *[Signature operasi]*  
-**ID Algoritma:** *[Algo-020]*
+**Nama Operasi:** tampilkanFormLowongan(): void  
+**ID Algoritma:** Algo-019-01
 
 ```text
-[Tuliskan pseudocode algoritma operasi di sini.]
+procedure tampilkanFormLowongan
+    if input tampilan tidak tersedia or tidak valid then
+        tampilkan pesan kesalahan pada antarmuka
+        -> false
+    siapkan data dan komponen yang diperlukan
+    render tampilan pada halaman aplikasi
+    -> hasil tampilan
+end procedure
 ```
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.20.3. Query Operasi [Nama Operasi]
+Tabel 5.20.3. Query Operasi tampilkanFormLowongan
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| *[Q-020]* | *[Tuliskan query]* | *[Fungsi query]* |
-| *...* | *...* | *...* |
+| - | - | Tidak menggunakan query; operasi hanya mengelola interaksi antarmuka. |
 
 ### 5.20.2 Algoritma/Query
 
-*[Ulangi pola 5.20.1 untuk operasi penting berikutnya pada kelas yang sama, jika ada.]*
+**Nama Kelas:** LowonganPekerjaanUI  
+**Nama Operasi:** kirimDataLowongan(dataLowongan: Record<string, unknown>): void  
+**ID Algoritma:** Algo-019-02
+
+```text
+procedure kirimDataLowongan(dataLowongan: Record<string, unknown>)
+    if input tidak lengkap or tidak valid then
+        tampilkanPesanKesalahan("Data tidak valid")
+        -> false
+    panggil controller terkait untuk memproses permintaan
+    if respons controller gagal then
+        tampilkanPesanKesalahan(respons pesan)
+        -> false
+    tampilkanPesanBerhasil(respons pesan)
+    -> true
+end procedure
+```
+
+Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
+
+Tabel 5.20.4. Query Operasi kirimDataLowongan
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| - | - | Tidak menggunakan query; operasi hanya mengelola interaksi antarmuka. |
 
 
 ## 5.21 Kelas PengajuanPenawaranUI
@@ -2943,28 +2996,56 @@ Tabel 5.21.2. Atribut Kelas PengajuanPenawaranUI
 
 ### 5.21.1 Algoritma/Query
 
-Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
-
 **Nama Kelas:** PengajuanPenawaranUI  
-**Nama Operasi:** *[Signature operasi]*  
-**ID Algoritma:** *[Algo-021]*
+**Nama Operasi:** tampilkanTombolAjukan(diizinkan: boolean): void  
+**ID Algoritma:** Algo-019-01
 
 ```text
-[Tuliskan pseudocode algoritma operasi di sini.]
+procedure tampilkanTombolAjukan(diizinkan: boolean)
+    if input tampilan tidak tersedia or tidak valid then
+        tampilkan pesan kesalahan pada antarmuka
+        -> false
+    siapkan data dan komponen yang diperlukan
+    render tampilan pada halaman aplikasi
+    -> hasil tampilan
+end procedure
 ```
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.21.3. Query Operasi [Nama Operasi]
+Tabel 5.21.3. Query Operasi tampilkanTombolAjukan
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| *[Q-021]* | *[Tuliskan query]* | *[Fungsi query]* |
-| *...* | *...* | *...* |
+| - | - | Tidak menggunakan query; operasi hanya mengelola interaksi antarmuka. |
 
 ### 5.21.2 Algoritma/Query
 
-*[Ulangi pola 5.21.1 untuk operasi penting berikutnya pada kelas yang sama, jika ada.]*
+**Nama Kelas:** PengajuanPenawaranUI  
+**Nama Operasi:** kirimPenawaran(idLowongan: string, pesan: string): void  
+**ID Algoritma:** Algo-019-02
+
+```text
+procedure kirimPenawaran(idLowongan: string, pesan: string)
+    if input tidak lengkap or tidak valid then
+        tampilkanPesanKesalahan("Data tidak valid")
+        -> false
+    panggil controller terkait untuk memproses permintaan
+    if respons controller gagal then
+        tampilkanPesanKesalahan(respons pesan)
+        -> false
+    tampilkanPesanBerhasil(respons pesan)
+    -> true
+end procedure
+```
+
+Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
+
+Tabel 5.21.4. Query Operasi kirimPenawaran
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| - | - | Tidak menggunakan query; operasi hanya mengelola interaksi antarmuka. |
 
 
 ## 5.22 Kelas TransaksiPekerjaanUI
@@ -2999,28 +3080,56 @@ Tabel 5.22.2. Atribut Kelas TransaksiPekerjaanUI
 
 ### 5.22.1 Algoritma/Query
 
-Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
-
 **Nama Kelas:** TransaksiPekerjaanUI  
-**Nama Operasi:** *[Signature operasi]*  
-**ID Algoritma:** *[Algo-022]*
+**Nama Operasi:** tampilkanDetailTransaksi(transaksi: TransaksiPekerjaan): void  
+**ID Algoritma:** Algo-019-01
 
 ```text
-[Tuliskan pseudocode algoritma operasi di sini.]
+procedure tampilkanDetailTransaksi(transaksi: TransaksiPekerjaan)
+    if input tampilan tidak tersedia or tidak valid then
+        tampilkan pesan kesalahan pada antarmuka
+        -> false
+    siapkan data dan komponen yang diperlukan
+    render tampilan pada halaman aplikasi
+    -> hasil tampilan
+end procedure
 ```
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.22.3. Query Operasi [Nama Operasi]
+Tabel 5.22.3. Query Operasi tampilkanDetailTransaksi
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| *[Q-022]* | *[Tuliskan query]* | *[Fungsi query]* |
-| *...* | *...* | *...* |
+| - | - | Tidak menggunakan query; operasi hanya mengelola interaksi antarmuka. |
 
 ### 5.22.2 Algoritma/Query
 
-*[Ulangi pola 5.22.1 untuk operasi penting berikutnya pada kelas yang sama, jika ada.]*
+**Nama Kelas:** TransaksiPekerjaanUI  
+**Nama Operasi:** konfirmasiPersetujuan(idTransaksi: string): void  
+**ID Algoritma:** Algo-019-02
+
+```text
+procedure konfirmasiPersetujuan(idTransaksi: string)
+    if input tidak lengkap or tidak valid then
+        tampilkanPesanKesalahan("Data tidak valid")
+        -> false
+    panggil controller terkait untuk memproses permintaan
+    if respons controller gagal then
+        tampilkanPesanKesalahan(respons pesan)
+        -> false
+    tampilkanPesanBerhasil(respons pesan)
+    -> true
+end procedure
+```
+
+Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
+
+Tabel 5.22.4. Query Operasi konfirmasiPersetujuan
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| - | - | Tidak menggunakan query; operasi hanya mengelola interaksi antarmuka. |
 
 
 ## 5.23 Kelas BuktiPenyerahanUI
@@ -3045,28 +3154,56 @@ Tabel 5.23.2. Atribut Kelas BuktiPenyerahanUI
 
 ### 5.23.1 Algoritma/Query
 
-Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
-
 **Nama Kelas:** BuktiPenyerahanUI  
-**Nama Operasi:** *[Signature operasi]*  
-**ID Algoritma:** *[Algo-023]*
+**Nama Operasi:** tampilkanFormUnggah(): void  
+**ID Algoritma:** Algo-019-01
 
 ```text
-[Tuliskan pseudocode algoritma operasi di sini.]
+procedure tampilkanFormUnggah
+    if input tampilan tidak tersedia or tidak valid then
+        tampilkan pesan kesalahan pada antarmuka
+        -> false
+    siapkan data dan komponen yang diperlukan
+    render tampilan pada halaman aplikasi
+    -> hasil tampilan
+end procedure
 ```
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.23.3. Query Operasi [Nama Operasi]
+Tabel 5.23.3. Query Operasi tampilkanFormUnggah
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| *[Q-023]* | *[Tuliskan query]* | *[Fungsi query]* |
-| *...* | *...* | *...* |
+| - | - | Tidak menggunakan query; operasi hanya mengelola interaksi antarmuka. |
 
 ### 5.23.2 Algoritma/Query
 
-*[Ulangi pola 5.23.1 untuk operasi penting berikutnya pada kelas yang sama, jika ada.]*
+**Nama Kelas:** BuktiPenyerahanUI  
+**Nama Operasi:** kirimBukti(idTransaksi: string, deskripsi: string, berkas: File): void  
+**ID Algoritma:** Algo-019-02
+
+```text
+procedure kirimBukti(idTransaksi: string, deskripsi: string, berkas: File)
+    if input tidak lengkap or tidak valid then
+        tampilkanPesanKesalahan("Data tidak valid")
+        -> false
+    panggil controller terkait untuk memproses permintaan
+    if respons controller gagal then
+        tampilkanPesanKesalahan(respons pesan)
+        -> false
+    tampilkanPesanBerhasil(respons pesan)
+    -> true
+end procedure
+```
+
+Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
+
+Tabel 5.23.4. Query Operasi kirimBukti
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| - | - | Tidak menggunakan query; operasi hanya mengelola interaksi antarmuka. |
 
 
 ## 5.24 Kelas TagihanPembayaranUI
@@ -3091,28 +3228,56 @@ Tabel 5.24.2. Atribut Kelas TagihanPembayaranUI
 
 ### 5.24.1 Algoritma/Query
 
-Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
-
 **Nama Kelas:** TagihanPembayaranUI  
-**Nama Operasi:** *[Signature operasi]*  
-**ID Algoritma:** *[Algo-024]*
+**Nama Operasi:** tampilkanInstruksiPembayaran(tagihan: TagihanPembayaran): void  
+**ID Algoritma:** Algo-019-01
 
 ```text
-[Tuliskan pseudocode algoritma operasi di sini.]
+procedure tampilkanInstruksiPembayaran(tagihan: TagihanPembayaran)
+    if input tampilan tidak tersedia or tidak valid then
+        tampilkan pesan kesalahan pada antarmuka
+        -> false
+    siapkan data dan komponen yang diperlukan
+    render tampilan pada halaman aplikasi
+    -> hasil tampilan
+end procedure
 ```
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.24.3. Query Operasi [Nama Operasi]
+Tabel 5.24.3. Query Operasi tampilkanInstruksiPembayaran
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| *[Q-024]* | *[Tuliskan query]* | *[Fungsi query]* |
-| *...* | *...* | *...* |
+| - | - | Tidak menggunakan query; operasi hanya mengelola interaksi antarmuka. |
 
 ### 5.24.2 Algoritma/Query
 
-*[Ulangi pola 5.24.1 untuk operasi penting berikutnya pada kelas yang sama, jika ada.]*
+**Nama Kelas:** TagihanPembayaranUI  
+**Nama Operasi:** kirimPembayaran(idTagihan: string, metode: string): void  
+**ID Algoritma:** Algo-019-02
+
+```text
+procedure kirimPembayaran(idTagihan: string, metode: string)
+    if input tidak lengkap or tidak valid then
+        tampilkanPesanKesalahan("Data tidak valid")
+        -> false
+    panggil controller terkait untuk memproses permintaan
+    if respons controller gagal then
+        tampilkanPesanKesalahan(respons pesan)
+        -> false
+    tampilkanPesanBerhasil(respons pesan)
+    -> true
+end procedure
+```
+
+Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
+
+Tabel 5.24.4. Query Operasi kirimPembayaran
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| - | - | Tidak menggunakan query; operasi hanya mengelola interaksi antarmuka. |
 
 
 ## 5.25 Kelas PencairanDanaUI
@@ -3138,28 +3303,56 @@ Tabel 5.25.2. Atribut Kelas PencairanDanaUI
 
 ### 5.25.1 Algoritma/Query
 
-Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
-
 **Nama Kelas:** PencairanDanaUI  
-**Nama Operasi:** *[Signature operasi]*  
-**ID Algoritma:** *[Algo-025]*
+**Nama Operasi:** tampilkanFormPencairan(): void  
+**ID Algoritma:** Algo-019-01
 
 ```text
-[Tuliskan pseudocode algoritma operasi di sini.]
+procedure tampilkanFormPencairan
+    if input tampilan tidak tersedia or tidak valid then
+        tampilkan pesan kesalahan pada antarmuka
+        -> false
+    siapkan data dan komponen yang diperlukan
+    render tampilan pada halaman aplikasi
+    -> hasil tampilan
+end procedure
 ```
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.25.3. Query Operasi [Nama Operasi]
+Tabel 5.25.3. Query Operasi tampilkanFormPencairan
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| *[Q-025]* | *[Tuliskan query]* | *[Fungsi query]* |
-| *...* | *...* | *...* |
+| - | - | Tidak menggunakan query; operasi hanya mengelola interaksi antarmuka. |
 
 ### 5.25.2 Algoritma/Query
 
-*[Ulangi pola 5.25.1 untuk operasi penting berikutnya pada kelas yang sama, jika ada.]*
+**Nama Kelas:** PencairanDanaUI  
+**Nama Operasi:** kirimPencairan(nominal: Decimal, rekeningTujuan: string): void  
+**ID Algoritma:** Algo-019-02
+
+```text
+procedure kirimPencairan(nominal: Decimal, rekeningTujuan: string)
+    if input tidak lengkap or tidak valid then
+        tampilkanPesanKesalahan("Data tidak valid")
+        -> false
+    panggil controller terkait untuk memproses permintaan
+    if respons controller gagal then
+        tampilkanPesanKesalahan(respons pesan)
+        -> false
+    tampilkanPesanBerhasil(respons pesan)
+    -> true
+end procedure
+```
+
+Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
+
+Tabel 5.25.4. Query Operasi kirimPencairan
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| - | - | Tidak menggunakan query; operasi hanya mengelola interaksi antarmuka. |
 
 
 ## 5.26 Kelas UlasanRatingUI
@@ -3184,28 +3377,56 @@ Tabel 5.26.2. Atribut Kelas UlasanRatingUI
 
 ### 5.26.1 Algoritma/Query
 
-Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
-
 **Nama Kelas:** UlasanRatingUI  
-**Nama Operasi:** *[Signature operasi]*  
-**ID Algoritma:** *[Algo-026]*
+**Nama Operasi:** tampilkanFormUlasan(idTransaksi: string): void  
+**ID Algoritma:** Algo-019-01
 
 ```text
-[Tuliskan pseudocode algoritma operasi di sini.]
+procedure tampilkanFormUlasan(idTransaksi: string)
+    if input tampilan tidak tersedia or tidak valid then
+        tampilkan pesan kesalahan pada antarmuka
+        -> false
+    siapkan data dan komponen yang diperlukan
+    render tampilan pada halaman aplikasi
+    -> hasil tampilan
+end procedure
 ```
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.26.3. Query Operasi [Nama Operasi]
+Tabel 5.26.3. Query Operasi tampilkanFormUlasan
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| *[Q-026]* | *[Tuliskan query]* | *[Fungsi query]* |
-| *...* | *...* | *...* |
+| - | - | Tidak menggunakan query; operasi hanya mengelola interaksi antarmuka. |
 
 ### 5.26.2 Algoritma/Query
 
-*[Ulangi pola 5.26.1 untuk operasi penting berikutnya pada kelas yang sama, jika ada.]*
+**Nama Kelas:** UlasanRatingUI  
+**Nama Operasi:** kirimUlasan(idTransaksi: string, nilai: Integer, deskripsi: string): void  
+**ID Algoritma:** Algo-019-02
+
+```text
+procedure kirimUlasan(idTransaksi: string, nilai: Integer, deskripsi: string)
+    if input tidak lengkap or tidak valid then
+        tampilkanPesanKesalahan("Data tidak valid")
+        -> false
+    panggil controller terkait untuk memproses permintaan
+    if respons controller gagal then
+        tampilkanPesanKesalahan(respons pesan)
+        -> false
+    tampilkanPesanBerhasil(respons pesan)
+    -> true
+end procedure
+```
+
+Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
+
+Tabel 5.26.4. Query Operasi kirimUlasan
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| - | - | Tidak menggunakan query; operasi hanya mengelola interaksi antarmuka. |
 
 
 ## 5.27 Kelas TiketSengketaUI
@@ -3236,28 +3457,56 @@ Tabel 5.27.2. Atribut Kelas TiketSengketaUI
 
 ### 5.27.1 Algoritma/Query
 
-Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
-
 **Nama Kelas:** TiketSengketaUI  
-**Nama Operasi:** *[Signature operasi]*  
-**ID Algoritma:** *[Algo-027]*
+**Nama Operasi:** kirimLaporan(idTransaksi: string, kategori: string, deskripsi: string, bukti: File): void  
+**ID Algoritma:** Algo-019-01
 
 ```text
-[Tuliskan pseudocode algoritma operasi di sini.]
+procedure kirimLaporan(idTransaksi: string, kategori: string, deskripsi: string, bukti: File)
+    if input tidak lengkap or tidak valid then
+        tampilkanPesanKesalahan("Data tidak valid")
+        -> false
+    panggil controller terkait untuk memproses permintaan
+    if respons controller gagal then
+        tampilkanPesanKesalahan(respons pesan)
+        -> false
+    tampilkanPesanBerhasil(respons pesan)
+    -> true
+end procedure
 ```
 
 Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
 
-Tabel 5.27.3. Query Operasi [Nama Operasi]
+Tabel 5.27.3. Query Operasi kirimLaporan
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| *[Q-027]* | *[Tuliskan query]* | *[Fungsi query]* |
-| *...* | *...* | *...* |
+| - | - | Tidak menggunakan query; operasi hanya mengelola interaksi antarmuka. |
 
 ### 5.27.2 Algoritma/Query
 
-*[Ulangi pola 5.27.1 untuk operasi penting berikutnya pada kelas yang sama, jika ada.]*
+**Nama Kelas:** TiketSengketaUI  
+**Nama Operasi:** tampilkanTiketDasbor(tiket: Array<TiketSengketa>): void  
+**ID Algoritma:** Algo-019-02
+
+```text
+procedure tampilkanTiketDasbor(tiket: Array<TiketSengketa>)
+    if input tampilan tidak tersedia or tidak valid then
+        tampilkan pesan kesalahan pada antarmuka
+        -> false
+    siapkan data dan komponen yang diperlukan
+    render tampilan pada halaman aplikasi
+    -> hasil tampilan
+end procedure
+```
+
+Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
+
+Tabel 5.27.4. Query Operasi tampilkanTiketDasbor
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| - | - | Tidak menggunakan query; operasi hanya mengelola interaksi antarmuka. |
 
 
 ## 5.28 Kelas RiwayatSengketaUI
