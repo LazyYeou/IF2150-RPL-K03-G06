@@ -26,10 +26,10 @@
 
 | Catatan |
 | --- |
-| 1. *\[Berikan catatan hasil asistensi\]*  |
-| 2. ... |
-| 3. ... |
-| 4. ... |
+| 1. Pseudocode tidak perlu sama persis dengan yang alpro (atur-atur sesuai kebutuhan)  |
+| 2. Query tidak perlu ditulis jika memang tidak ada |
+| 3. Taruh link figma di lampiran |
+| 4. UI sudah aman |
 
 **Notes for this section:**  
 *Catatan dapat dituliskan dalam bentuk paragraf atau poin-poin, disesuaikan saja.* 
@@ -38,7 +38,7 @@
 
 <!-- ![](./assets/foto-asistensi.jpg) -->
 <p align="center">
-  <img src="./assets/foto-asistensi.jpg" width="100%">
+  <img src="./assets/Asistensi.png" width="100%">
 </p>
 
 <p align="center">
