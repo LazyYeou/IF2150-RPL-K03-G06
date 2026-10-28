@@ -74,6 +74,12 @@ Silakan catat penggunaan AI yang berdampak signifikan pada pengerjaan tugas (mis
 | *Gemini* | *Brainstorming logo Perangkat Lunak Kerja-In* | *Tolong berikan masukan mengenai poin-poin utama, color pallete, dan ide utama dari logo Kerja-In* | *AI memberikan beberapa alternatif solusi, lalu kita mempertimbangkan color pallete dan design yang cocok* |
 | | | | | |
 
+### Milestone 8
+| Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
+| :--- | :--- | :--- | :--- |
+| *Gemini* | *Brainstorming kerangka dan masukan color pallete untuk software berikut* | *Tolong berikan saran layout dan color pallete mengenai software berikut* | *AI memberikan beberapa alternatif layout utama dan color pallete yang cocok* |
+| | | | | |
+
 ---
 ### Pernyataan Integritas dan Persetujuan
 
