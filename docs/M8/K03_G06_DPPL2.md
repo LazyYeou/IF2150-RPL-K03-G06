@@ -6844,4 +6844,4 @@ Tabel 7.1. Matriks Kerunutan Kelas terhadap Use Case
 | C45 - PaymentGatewayController | UC07 - Melakukan Pembayaran Pekerjaan<br>UC10 - Melakukan Pencairan Dana 
 
 # Lampiran
-- Link Figma: 
+- Link Figma: https://www.figma.com/design/nUty3kIpMqJk4MyC8zdj6J/Kerja-In?node-id=3-3&t=xxxEx3N3RilcWNyp-1
