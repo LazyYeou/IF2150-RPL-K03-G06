@@ -2496,28 +2496,44 @@ Tabel 5.12.2. Atribut Kelas TiketSengketa
 
 ### 5.12.1 Algoritma/Query
 
-Bagian ini diisi untuk kerangka algoritma proses yang dianggap cukup penting. Algoritma dapat dituliskan sebagai *pseudocode*. Implementasi *skeleton code* juga dapat digunakan untuk kelas yang sudah terdefinisi pada bahasa pemrograman tertentu.
-
 **Nama Kelas:** TiketSengketa  
-**Nama Operasi:** *[Signature operasi]*  
-**ID Algoritma:** *[Algo-012]*
+**Nama Operasi:** buatTiket(): void
+**ID Algoritma:** Algo-012-01
 
 ```text
-[Tuliskan pseudocode algoritma operasi di sini.]
+procedure buatTiket()
+    this.idTiket <- generateUUID()
+    this.statusTiket <- "Diajukan"
+    this.keputusan <- ""
+
+    execute Q-012-01 with (this.idTiket, this.idTransaksi, this.idPelapor, this.kategoriMasalah, this.deskripsiKomplain, this.urlBukti, this.statusTiket, this.keputusan)
+end procedure
 ```
 
-Jika operasi mengacu pada query tertentu, lengkapi tabel berikut.
-
-Tabel 5.12.3. Query Operasi [Nama Operasi]
+Tabel 5.12.3. Query Operasi buatTiket(): void
 
 | No Query | Query | Keterangan |
 | :--- | :--- | :--- |
-| *[Q-012]* | *[Tuliskan query]* | *[Fungsi query]* |
-| *...* | *...* | *...* |
+| Q-012-01 | INSERT INTO tiketSengketa (idTiket, idTransaksi, idPelapor, kategoriMasalah, deskripsiKomplain, urlBukti, statusTiket, keputusan) VALUES (:idTiket, :idTransaksi, :idPelapor, :kategoriMasalah, :deskripsiKomplain, :urlBukti, :statusTiket, :keputusan); | Menyimpan berkas tiket sengketa baru ke basis data. |
 
 ### 5.12.2 Algoritma/Query
 
-*[Ulangi pola 5.12.1 untuk operasi penting berikutnya pada kelas yang sama, jika ada.]*
+**Nama Kelas:** TiketSengketa  
+**Nama Operasi:** setStatusTiket(status: string): void
+**ID Algoritma:** Algo-012-02
+
+```text
+procedure setStatusTiket(status: string)
+    this.statusTiket <- status
+    execute Q-012-02 with (status, this.idTiket)
+end procedure
+```
+
+Tabel 5.12.4. Query Operasi setStatusTiket(status: string): void
+
+| No Query | Query | Keterangan |
+| :--- | :--- | :--- |
+| Q-012-02 | UPDATE tiketSengketa SET statusTiket = :status WHERE idTiket = :idTiket; | Memperbarui status penanganan tiket sengketa. |
 
 
 ## 5.13 Kelas RiwayatSengketa
