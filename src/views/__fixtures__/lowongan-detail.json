@@ -1,0 +1,28 @@
+{
+  "id": "aaaaaaaa-0000-4000-8000-000000000001",
+  "judul": "Bersih-bersih rumah pindahan 2 lantai",
+  "kategori": "Kebersihan",
+  "lokasi": "Coblong, Bandung",
+  "tanggalPekerjaan": "2026-11-12",
+  "upah": 350000,
+  "satuanUpah": "PER_TUGAS",
+  "kuota": 2,
+  "jumlahDiterima": 0,
+  "status": "OPEN",
+  "createdAt": "2026-11-05T03:00:00Z",
+  "deskripsi": "Membersihkan rumah dua lantai setelah pindahan: menyapu, mengepel, dan membersihkan kamar mandi.",
+  "ruangLingkup": "Lantai 1 dan 2, dua kamar mandi, teras.",
+  "kriteriaHasil": "Lantai bersih dan kering, tidak ada sampah tersisa.",
+  "estimasiDurasi": "4 jam",
+  "pernyataanRisiko": false,
+  "penyedia": {
+    "id": "bbbbbbbb-0000-4000-8000-000000000001",
+    "nama": "Budi Santoso",
+    "akumulasiRating": 4.6,
+    "jumlahUlasan": 12
+  },
+  "penawaranSaya": {
+    "id": "cccccccc-0000-4000-8000-000000000001",
+    "status": "MENUNGGU"
+  }
+}
