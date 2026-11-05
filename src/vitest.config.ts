@@ -3,7 +3,7 @@ import path from "node:path";
 
 export default defineConfig({
   resolve: { alias: { "@": path.resolve(__dirname) } },
-  test: {
-    include: ["tests/unit/**/*.test.ts", "tests/integration/**/*.test.ts"],
-  },
+  // Next memakai postcss.config.mjs berformat string yang tidak bisa dibaca Vite; test tidak butuh CSS.
+  css: { postcss: { plugins: [] } },
+  test: { include: ["tests/unit/**/*.test.ts", "tests/integration/**/*.test.ts"] },
 });
