@@ -226,6 +226,14 @@ export default function AuthForm({ daftar = false }: { daftar?: boolean }) {
             </button>
           </fieldset>
         </form>
+        {!daftar && (
+          <Link
+            href="/lupa-sandi"
+            className="mt-4 inline-flex min-h-11 items-center text-sm underline underline-offset-4"
+          >
+            Lupa kata sandi?
+          </Link>
+        )}
         <p className="mt-6 text-center text-sm text-muted-foreground">
           {daftar ? "Sudah punya akun? " : "Belum punya akun? "}
           <Link
