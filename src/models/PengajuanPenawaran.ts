@@ -2,10 +2,14 @@ import "server-only";
 import { randomUUID } from "node:crypto";
 import { db, tx } from "@/lib/db";
 import { keIso } from "@/lib/http";
+import type { z } from "zod";
 import type {
   AjukanPenawaranInput,
+  Pelamar as PelamarSkema,
   Penawaran,
 } from "@/lib/validation/penawaran";
+
+type PelamarItem = z.infer<typeof PelamarSkema>;
 
 // C06. Status penawaran: src/docs/contracts/modules.md §2.3.
 export const UKURAN_HALAMAN = 12;
@@ -136,5 +140,122 @@ export function tarik(idPenawaran: string, idTK: string): HasilTarik {
       "UPDATE pengajuan_penawaran SET status_penawaran = 'DITARIK' WHERE id_penawaran = ?",
     ).run(idPenawaran);
     return { ok: true, penawaran: cari(idPenawaran)! } as const;
+  });
+}
+
+/** I-32: pelamar satu lowongan (kecuali yang ditarik), yang masih menunggu lebih dulu. */
+export function pelamar(idLowongan: string): PelamarItem[] {
+  const rows = db
+    .prepare(
+      `SELECT p.id_penawaran AS idPenawaran, u.id_pengguna AS idPengguna, u.nama, u.akumulasi_rating AS akumulasiRating,
+         u.jumlah_ulasan AS jumlahUlasan, p.harga_penawaran AS hargaPenawaran, p.ketersediaan,
+         p.pesan_penawaran AS pesan, p.status_penawaran AS status, p.created_at AS createdAt
+       FROM pengajuan_penawaran p
+       JOIN tenaga_kerja t ON t.id_tenaga_kerja = p.id_tenaga_kerja
+       JOIN pengguna u ON u.id_pengguna = t.id_pengguna
+       WHERE p.id_lowongan = ? AND p.status_penawaran <> 'DITARIK'
+       ORDER BY p.status_penawaran = 'MENUNGGU' DESC, p.created_at, p.id_penawaran`,
+    )
+    .all(idLowongan) as (Omit<PelamarItem, "tenagaKerja" | "createdAt"> & {
+    idPengguna: string;
+    nama: string;
+    akumulasiRating: number;
+    jumlahUlasan: number;
+    createdAt: string;
+  })[];
+  return rows.map(
+    ({ idPengguna, nama, akumulasiRating, jumlahUlasan, createdAt, ...r }) => ({
+      ...r,
+      tenagaKerja: { id: idPengguna, nama, akumulasiRating, jumlahUlasan },
+      createdAt: keIso(createdAt),
+    }),
+  );
+}
+
+export type HasilTerima =
+  | {
+      ok: true;
+      idTransaksi: string;
+      statusLowongan: "OPEN" | "CLOSED_FULL";
+      sisaKuota: number;
+      idPenggunaTK: string;
+      judul: string;
+    }
+  | {
+      ok: false;
+      alasan: "TIDAK_ADA" | "BUKAN_PEMILIK" | "BUKAN_MENUNGGU" | "KUOTA_PENUH";
+    };
+
+/**
+ * KF12, KF13, KNF07. Seluruh cek dan tulis dalam satu tx() (BEGIN IMMEDIATE): penulis lain antre,
+ * jadi sisa kuota yang dibaca di sini tidak bisa berubah sebelum commit.
+ * shortcut: transisi status dicek langsung di sini; ganti ke transisiDiizinkan() setelah #17.
+ */
+export function terima(idPenawaran: string, idPK: string): HasilTerima {
+  return tx(() => {
+    const p = db
+      .prepare(
+        `SELECT p.status_penawaran AS statusPenawaran, p.id_lowongan AS idLowongan, p.id_tenaga_kerja AS idTK,
+           p.harga_penawaran AS harga, l.id_penyedia_kerja AS idPemilik, l.status_lowongan AS statusLowongan,
+           l.kuota, l.jumlah_diterima AS diterima, l.judul, t.id_pengguna AS idPenggunaTK
+         FROM pengajuan_penawaran p
+         JOIN lowongan_pekerjaan l USING (id_lowongan)
+         JOIN tenaga_kerja t ON t.id_tenaga_kerja = p.id_tenaga_kerja
+         WHERE p.id_penawaran = ?`,
+      )
+      .get(idPenawaran) as
+      | {
+          statusPenawaran: string;
+          idLowongan: string;
+          idTK: string;
+          harga: number;
+          idPemilik: string;
+          statusLowongan: string;
+          kuota: number;
+          diterima: number;
+          judul: string;
+          idPenggunaTK: string;
+        }
+      | undefined;
+    if (!p) return { ok: false, alasan: "TIDAK_ADA" } as const;
+    if (p.idPemilik !== idPK)
+      return { ok: false, alasan: "BUKAN_PEMILIK" } as const;
+    if (p.statusLowongan !== "OPEN" || p.diterima >= p.kuota)
+      return { ok: false, alasan: "KUOTA_PENUH" } as const;
+    if (p.statusPenawaran !== "MENUNGGU")
+      return { ok: false, alasan: "BUKAN_MENUNGGU" } as const;
+
+    const penuh = p.diterima + 1 >= p.kuota;
+    db.prepare(
+      "UPDATE pengajuan_penawaran SET status_penawaran = 'DITERIMA' WHERE id_penawaran = ?",
+    ).run(idPenawaran);
+    // Lapis kedua KNF07: UPDATE bersyarat; 0 baris berubah = kuota sudah penuh.
+    const u = db
+      .prepare(
+        `UPDATE lowongan_pekerjaan SET jumlah_diterima = jumlah_diterima + 1,
+           status_lowongan = CASE WHEN jumlah_diterima + 1 >= kuota THEN 'CLOSED_FULL' ELSE status_lowongan END
+         WHERE id_lowongan = ? AND status_lowongan = 'OPEN' AND jumlah_diterima < kuota`,
+      )
+      .run(p.idLowongan);
+    if (u.changes !== 1) throw new Error("Kuota berubah di dalam transaksi");
+
+    const idTransaksi = randomUUID();
+    db.prepare(
+      `INSERT INTO transaksi_pekerjaan (id_transaksi, id_lowongan, id_penawaran, id_tenaga_kerja, id_penyedia_kerja, nominal_upah)
+       VALUES (?, ?, ?, ?, ?, ?)`,
+    ).run(idTransaksi, p.idLowongan, idPenawaran, p.idTK, idPK, p.harga);
+    if (penuh)
+      db.prepare(
+        `UPDATE pengajuan_penawaran SET status_penawaran = 'DITOLAK_OTOMATIS'
+         WHERE id_lowongan = ? AND status_penawaran = 'MENUNGGU'`,
+      ).run(p.idLowongan);
+    return {
+      ok: true,
+      idTransaksi,
+      statusLowongan: penuh ? "CLOSED_FULL" : "OPEN",
+      sisaKuota: p.kuota - p.diterima - 1,
+      idPenggunaTK: p.idPenggunaTK,
+      judul: p.judul,
+    } as const;
   });
 }
