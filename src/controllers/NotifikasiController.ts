@@ -3,7 +3,7 @@ import { randomUUID } from "node:crypto";
 import { db } from "@/lib/db";
 
 /**
- * Kontrak: docs/contracts/modules.md §1. Panggil SETELAH commit transaksi bisnis.
+ * Kontrak: src/docs/contracts/modules.md §1. Panggil SETELAH commit transaksi bisnis.
  * `idPengguna` = pengguna.id_pengguna (bukan id profil).
  * shortcut: hanya menyimpan baris notifikasi; API baca/tandai dan lonceng ada di #28.
  */

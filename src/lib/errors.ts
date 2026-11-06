@@ -1,6 +1,6 @@
 import { ZodError } from "zod";
 
-/** Error bisnis yang dipetakan ke respons HTTP. Kode: docs/contracts/api.md §1.1. */
+/** Error bisnis yang dipetakan ke respons HTTP. Kode: src/docs/contracts/api.md §1.1. */
 export class AppError extends Error {
   constructor(
     readonly code: string,

@@ -7,7 +7,7 @@ import type {
   Penawaran,
 } from "@/lib/validation/penawaran";
 
-// C06. Status penawaran: docs/contracts/modules.md §2.3.
+// C06. Status penawaran: src/docs/contracts/modules.md §2.3.
 export const UKURAN_HALAMAN = 12;
 
 const SELECT_DTO = `SELECT p.id_penawaran AS id, l.id_lowongan AS idLowongan, l.judul, p.harga_penawaran AS hargaPenawaran,

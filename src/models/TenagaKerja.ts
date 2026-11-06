@@ -2,7 +2,7 @@ import "server-only";
 import { db, tx } from "@/lib/db";
 import { keIso } from "@/lib/http";
 
-// C02. Status verifikasi: docs/contracts/modules.md §2.1.
+// C02. Status verifikasi: src/docs/contracts/modules.md §2.1.
 export type StatusVerifikasi =
   "BELUM_TERVERIFIKASI" | "MENUNGGU_VERIFIKASI" | "TERVERIFIKASI" | "DITOLAK";
 

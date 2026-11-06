@@ -10,7 +10,7 @@ import path from "node:path";
 import { AppError } from "./errors";
 import { BATAS_BERKAS_IDENTITAS } from "./validation/verifikasi";
 
-// Kontrak: docs/contracts/modules.md §4. KNF02, KNF22.
+// Kontrak: src/docs/contracts/modules.md §4. KNF02, KNF22.
 export type Kategori = "identitas" | "bukti" | "sengketa";
 
 const BATAS_LAIN = 10 * 1024 * 1024;
@@ -27,7 +27,7 @@ const JENIS = {
 } as const;
 type Ekstensi = keyof typeof JENIS;
 
-/** Berkas ditolak: 400 BERKAS_TIDAK_VALID (docs/contracts/api.md §1.1). */
+/** Berkas ditolak: 400 BERKAS_TIDAK_VALID (src/docs/contracts/api.md §1.1). */
 export class BerkasTidakValidError extends AppError {
   constructor(message: string) {
     super("BERKAS_TIDAK_VALID", 400, message);

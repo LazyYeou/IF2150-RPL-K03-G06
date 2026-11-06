@@ -3,7 +3,7 @@ import { createHash, randomBytes } from "node:crypto";
 import { cookies } from "next/headers";
 import { db } from "@/lib/db";
 
-// Kontrak: docs/contracts/modules.md §1. Q-105. KNF01.
+// Kontrak: src/docs/contracts/modules.md §1. Q-105. KNF01.
 export const NAMA_COOKIE = "kerjain_sesi";
 const HARI = 7;
 

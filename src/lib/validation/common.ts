@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-// Kontrak: docs/contracts/api.md §1–§2. Nilai enum: docs/contracts/db.md §4.
+// Kontrak: src/docs/contracts/api.md §1–§2. Nilai enum: src/docs/contracts/db.md §4.
 export const KATEGORI = [
   "Kebersihan",
   "Perbaikan Rumah",
