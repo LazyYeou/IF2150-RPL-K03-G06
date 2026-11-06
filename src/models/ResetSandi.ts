@@ -1,11 +1,17 @@
 import "server-only";
-import { db } from "@/lib/db";
+import { db, tx } from "@/lib/db";
 
+/** Hanya tautan terbaru yang berlaku: token lama pengguna dinonaktifkan di transaksi yang sama. */
 export function simpan(tokenHash: string, idPengguna: string) {
-  db.prepare(
-    `INSERT INTO reset_sandi (token_hash, id_pengguna, expires_at)
+  tx(() => {
+    db.prepare("UPDATE reset_sandi SET dipakai = 1 WHERE id_pengguna = ?").run(
+      idPengguna,
+    );
+    db.prepare(
+      `INSERT INTO reset_sandi (token_hash, id_pengguna, expires_at)
     VALUES (?, ?, datetime('now', '+30 minutes'))`,
-  ).run(tokenHash, idPengguna);
+    ).run(tokenHash, idPengguna);
+  });
 }
 
 export function cariAktif(tokenHash: string) {

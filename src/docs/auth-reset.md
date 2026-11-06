@@ -12,8 +12,8 @@ semua token reset pengguna ditandai dipakai, dan semua sesi pengguna dicabut
 dalam satu transaksi `BEGIN IMMEDIATE`. Login ulang dengan sandi baru diperlukan.
 Token diperiksa ulang setelah hashing di dalam transaksi untuk mencegah pemakaian ganda.
 
-Lupa sandi menggunakan limiter memori yang sama dengan login/registrasi:
-5 percobaan per 15 menit per IP+email. Restart proses mereset limiter.
+Lupa sandi punya jatah sendiri di limiter memori (terpisah dari login dan registrasi):
+5 permintaan per 15 menit per IP+email. Meminta tautan baru menonaktifkan tautan lama. Restart proses mereset limiter.
 Pengaturan proxy mengikuti `TRUST_PROXY` yang sudah tersedia pada `.env.example`.
 Gunakan akun fiktif untuk pengujian, dan jangan membagikan log berisi tautan reset aktif.
 

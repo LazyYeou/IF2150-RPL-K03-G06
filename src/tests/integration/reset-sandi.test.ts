@@ -216,6 +216,23 @@ describe("lupa/reset sandi (#9)", () => {
     ])
       expect((await reset(req(body))).status).toBe(400);
   });
+  it("tautan baru menonaktifkan tautan lama", async () => {
+    const akun = await akunBaru();
+    const lama = await tautan(akun.email);
+    const baru = await tautan(akun.email);
+    expect((await reset(req(payload(lama)))).status).toBe(400);
+    expect((await reset(req(payload(baru)))).status).toBe(204);
+  });
+  it("lupa sandi tidak menghabiskan jatah login", async () => {
+    const akun = await akunBaru();
+    for (let i = 0; i < 5; i++) await lupa(req({ email: akun.email }));
+    await expect(
+      auth.prosesLogin(
+        { email: akun.email, password: "Password123!" },
+        "local",
+      ),
+    ).resolves.toBeDefined();
+  });
   it("lupa sandi dibatasi lima percobaan per 15 menit", async () => {
     const email = `${randomUUID()}@kerjain.test`;
     for (let i = 0; i < 5; i++)
