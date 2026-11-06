@@ -12,7 +12,7 @@ Kontrak ini disepakati D0 agar lima anggota bisa bekerja paralel. Signature di �
 | Modul (pemilik) | Signature | Pemakai | Aturan |
 |---|---|---|---|
 | `lib/db.ts` (Davin) | `db: Database` · `tx<T>(fn: () => T): T` | semua model/controller | `tx` = `BEGIN IMMEDIATE`; **tanpa `await` di dalam `fn`**; error → rollback otomatis |
-| `lib/auth/guards.ts` (Davin) | `requireUser()` · `requireRole(peran)` · `requireVerifiedTK()` · `requireCS()` · `requireOwner(row, sesi)` | semua controller | Dipanggil di baris pertama controller; melempar `AppError` 401/403 |
+| `lib/auth/guards.ts` (Davin) | `requireUser()` · `requireRole(peran)` · `requireVerifiedTK()` · `requireCS()` · `requireOwner(idPemilik, idPelaku)` | semua controller | Dipanggil di baris pertama controller; melempar `AppError` 401/403 |
 | `lib/auth/session.ts` (Davin) | `buatSesi(idPengguna)` · `bacaSesi()` · `hapusSesi()` · `hapusSemuaSesi(idPengguna)` | auth, reset sandi | Token 32 byte di cookie; DB menyimpan SHA-256 |
 | `lib/errors.ts` (Davin) | `class AppError(code: string, status: number, message: string, fields?: Record<string,string>)` · `toResponse(err)` | semua route handler | Kode error: [api.md §1.1](api.md#11-format-error) |
 | `controllers/NotifikasiController.ts` (Davin) | `kirimNotifikasi(idPengguna: string, pesan: string, tautan?: string): Promise<void>` | semua domain | Dipanggil **setelah commit**; `idPengguna` = `pengguna.id_pengguna` (bukan id profil). Sebelum #28 selesai, pakai stub dengan signature yang sama |
