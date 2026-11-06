@@ -1,0 +1,22 @@
+{
+  "items": [
+    {
+      "id": "ffffffff-0000-4000-8000-000000000001",
+      "nomorTiket": "KIN-000123",
+      "idTransaksi": "eeeeeeee-0000-4000-8000-000000000001",
+      "kategoriMasalah": "Hasil pekerjaan tidak sesuai",
+      "deskripsi": "Lantai lantai dua belum dipel sesuai kesepakatan awal.",
+      "status": "DIAJUKAN",
+      "keputusan": null,
+      "createdAt": "2026-11-06T09:00:00Z",
+      "pelapor": {
+        "id": "bbbbbbbb-0000-4000-8000-000000000001",
+        "nama": "Budi Santoso"
+      },
+      "bukti": []
+    }
+  ],
+  "total": 1,
+  "page": 1,
+  "pageSize": 12
+}

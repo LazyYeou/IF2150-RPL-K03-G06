@@ -1,0 +1,19 @@
+{
+  "items": [
+    {
+      "id": "cccccccc-0000-4000-8000-000000000001",
+      "lowongan": {
+        "id": "aaaaaaaa-0000-4000-8000-000000000001",
+        "judul": "Bersih-bersih rumah pindahan 2 lantai"
+      },
+      "hargaPenawaran": 330000,
+      "ketersediaan": "Kamis pagi, sore",
+      "pesan": null,
+      "status": "MENUNGGU",
+      "createdAt": "2026-11-05T05:00:00Z"
+    }
+  ],
+  "total": 1,
+  "page": 1,
+  "pageSize": 12
+}
