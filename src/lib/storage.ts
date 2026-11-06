@@ -7,6 +7,7 @@ import {
 } from "node:crypto";
 import { mkdir, readFile, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { AppError } from "./errors";
 import { BATAS_BERKAS_IDENTITAS } from "./validation/verifikasi";
 
 // Kontrak: docs/contracts/modules.md §4. KNF02, KNF22.
@@ -26,10 +27,11 @@ const JENIS = {
 } as const;
 type Ekstensi = keyof typeof JENIS;
 
-/** Dilempar untuk berkas yang ditolak; route adapter memetakannya ke 400 BERKAS_TIDAK_VALID. */
-export class BerkasTidakValidError extends Error {
-  readonly code = "BERKAS_TIDAK_VALID";
-  readonly status = 400;
+/** Berkas ditolak: 400 BERKAS_TIDAK_VALID (docs/contracts/api.md §1.1). */
+export class BerkasTidakValidError extends AppError {
+  constructor(message: string) {
+    super("BERKAS_TIDAK_VALID", 400, message);
+  }
 }
 
 const jenisDariBytes = (b: Buffer): Ekstensi | null =>
