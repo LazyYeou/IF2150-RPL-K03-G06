@@ -208,27 +208,39 @@ describe("registrasi/login/logout (#8)", () => {
     const ip = randomUUID();
     const email = "limit@example.test";
     const now = Date.now();
-    for (let i = 0; i < 5; i++) limiter.batasiPercobaan(ip, email, now);
+    for (let i = 0; i < 5; i++)
+      limiter.batasiPercobaan("login", ip, email, now);
     expect(() =>
-      limiter.batasiPercobaan(ip, ` ${email.toUpperCase()} `, now),
+      limiter.batasiPercobaan("login", ip, ` ${email.toUpperCase()} `, now),
     ).toThrow(expect.objectContaining({ status: 429 }));
-    expect(() => limiter.batasiPercobaan(ip + "2", email, now)).not.toThrow();
     expect(() =>
-      limiter.batasiPercobaan(ip, "lain@example.test", now),
+      limiter.batasiPercobaan("login", ip + "2", email, now),
     ).not.toThrow();
     expect(() =>
-      limiter.batasiPercobaan(ip, email, now + 15 * 60 * 1000),
+      limiter.batasiPercobaan("login", ip, "lain@example.test", now),
+    ).not.toThrow();
+    expect(() =>
+      limiter.batasiPercobaan("login", ip, email, now + 15 * 60 * 1000),
     ).not.toThrow();
   });
-  it("endpoint login/registrasi berbagi jatah lima percobaan", async () => {
+  it("login: hanya kegagalan yang dihitung; jatah login dan registrasi terpisah", async () => {
     const email = `${randomUUID()}@example.test`;
+    expect((await register(request(input({ email })))).status).toBe(201);
+    for (let i = 0; i < 6; i++)
+      expect(
+        (await login(request({ email, password: "Password123!" }))).status,
+      ).toBe(200);
     for (let i = 0; i < 5; i++)
       expect((await login(request({ email, password: "salah" }))).status).toBe(
         401,
       );
-    const r = await register(request(input({ email })));
+    const r = await login(request({ email, password: "Password123!" }));
     expect(r.status).toBe(429);
     expect((await r.json()).error.code).toBe("TERLALU_BANYAK_PERCOBAAN");
+    const lain = `${randomUUID()}@example.test`;
+    for (let i = 0; i < 5; i++)
+      await login(request({ email: lain, password: "salah" }));
+    expect((await register(request(input({ email: lain })))).status).toBe(201);
   });
   it("JSON rusak -> 400", async () => {
     expect(
