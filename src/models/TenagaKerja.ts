@@ -54,3 +54,65 @@ export function ajukanVerifikasi(
     return r.changes === 1 ? { dokumenLama: lama?.p ?? null } : false;
   });
 }
+
+/** Antrean verifikasi CS: pengajuan MENUNGGU, terlama dulu (KF05). */
+export function antreanVerifikasi() {
+  const rows = db
+    .prepare(
+      `SELECT tk.id_tenaga_kerja AS idTenagaKerja, u.nama, u.email,
+              tk.waktu_pengajuan_verifikasi AS waktuPengajuan
+       FROM tenaga_kerja tk JOIN pengguna u USING (id_pengguna)
+       WHERE tk.status_verifikasi = 'MENUNGGU_VERIFIKASI'
+       ORDER BY tk.waktu_pengajuan_verifikasi, tk.id_tenaga_kerja`,
+    )
+    .all() as {
+    idTenagaKerja: string;
+    nama: string;
+    email: string;
+    waktuPengajuan: string;
+  }[];
+  return rows.map((r) => ({ ...r, waktuPengajuan: keIso(r.waktuPengajuan) }));
+}
+
+/** Path dokumen identitas (terenkripsi) milik satu TK, atau null bila TK/dokumen tidak ada. */
+export function dokumenIdentitas(idTenagaKerja: string): string | null {
+  const r = db
+    .prepare(
+      "SELECT dokumen_identitas_path AS p FROM tenaga_kerja WHERE id_tenaga_kerja = ?",
+    )
+    .get(idTenagaKerja) as { p: string | null } | undefined;
+  return r?.p ?? null;
+}
+
+export type HasilKeputusan =
+  | { ok: true; idPengguna: string }
+  | { ok: false; alasan: "TIDAK_ADA" | "BUKAN_MENUNGGU" };
+
+/**
+ * Setujui/tolak pengajuan (KF05). Hanya dari MENUNGGU_VERIFIKASI; dicek di dalam tx() agar dua CS
+ * yang memutus bersamaan tidak saling menimpa.
+ */
+export function putuskanVerifikasi(
+  idTenagaKerja: string,
+  keputusan: { setujui: true } | { tolak: string },
+): HasilKeputusan {
+  return tx(() => {
+    const tk = db
+      .prepare(
+        "SELECT id_pengguna AS idPengguna, status_verifikasi AS status FROM tenaga_kerja WHERE id_tenaga_kerja = ?",
+      )
+      .get(idTenagaKerja) as
+      { idPengguna: string; status: StatusVerifikasi } | undefined;
+    if (!tk) return { ok: false, alasan: "TIDAK_ADA" } as const;
+    if (tk.status !== "MENUNGGU_VERIFIKASI")
+      return { ok: false, alasan: "BUKAN_MENUNGGU" } as const;
+    db.prepare(
+      "UPDATE tenaga_kerja SET status_verifikasi = ?, alasan_penolakan = ? WHERE id_tenaga_kerja = ?",
+    ).run(
+      "setujui" in keputusan ? "TERVERIFIKASI" : "DITOLAK",
+      "tolak" in keputusan ? keputusan.tolak : null,
+      idTenagaKerja,
+    );
+    return { ok: true, idPengguna: tk.idPengguna } as const;
+  });
+}
