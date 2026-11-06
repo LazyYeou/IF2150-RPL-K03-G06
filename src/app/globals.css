@@ -5,6 +5,8 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --color-navy: #12315a;
+  --color-brand-orange: #ff7b12;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
@@ -50,21 +52,21 @@
 
 :root {
   --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+  --foreground: #12315a;
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
+  --primary: #12315a;
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
+  --muted: #f6f8fb;
+  --muted-foreground: #60748e;
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
+  --border: #dfe7f1;
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
   --chart-1: oklch(0.87 0 0);
@@ -122,9 +124,37 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply flex min-h-dvh flex-col bg-background font-sans text-foreground;
   }
   html {
     @apply font-sans;
+  }
+}
+
+@layer components {
+  .site-container {
+    @apply mx-auto w-full max-w-[1248px] px-5 sm:px-8;
+  }
+  .footer-link {
+    @apply flex min-h-11 items-center text-xs text-muted-foreground hover:text-foreground hover:underline;
+  }
+  .workspace-link {
+    @apply flex min-h-11 items-center gap-3 rounded-lg border-r-[3px] border-transparent px-3 py-3 text-sm text-muted-foreground transition-colors hover:bg-muted;
+  }
+  .workspace-link[aria-current="page"] {
+    @apply border-brand-orange bg-primary font-medium text-white;
+  }
+  .skip-link {
+    @apply fixed top-2 left-2 z-[100] -translate-y-24 rounded-lg bg-primary p-3 text-white focus:translate-y-0;
+  }
+}
+
+@layer base {
+  a,
+  button,
+  input,
+  select,
+  textarea {
+    @apply focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring;
   }
 }

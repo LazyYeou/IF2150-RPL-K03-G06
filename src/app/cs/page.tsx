@@ -1,4 +1,4 @@
-import RoleHome from "@/views/RoleHome";
+import { redirect } from "next/navigation";
 export default function Halaman() {
-  return <RoleHome peran="CS" />;
+  redirect("/cs/verifikasi");
 }
