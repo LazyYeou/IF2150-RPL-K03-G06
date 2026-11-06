@@ -11,11 +11,16 @@
     "format": "prettier --write .",
     "test": "vitest run --passWithNoTests",
     "test:e2e": "playwright test",
-    "prepare": "cd .. && husky src/.husky"
+    "prepare": "cd .. && husky src/.husky",
+    "db:migrate": "tsx scripts/migrate.ts",
+    "db:reset": "tsx scripts/reset-db.ts",
+    "predev": "tsx scripts/reset-db.ts --if-missing"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
     "@hookform/resolvers": "^7.0.2",
+    "@node-rs/argon2": "^2.2.2",
+    "better-sqlite3": "^11.10.0",
     "class-variance-authority": "^0.7.1",
     "cn": "^0.5.2",
     "lucide-react": "^1.68.0",
@@ -33,6 +38,7 @@
     "@eslint/eslintrc": "^3",
     "@playwright/test": "^1.64.1",
     "@tailwindcss/postcss": "^4",
+    "@types/better-sqlite3": "^9.6.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
@@ -41,6 +47,7 @@
     "husky": "^9.1.7",
     "prettier": "^3.9.10",
     "tailwindcss": "^4",
+    "tsx": "^4.23.15",
     "typescript": "^5",
     "vitest": "^2.1.9"
   }
