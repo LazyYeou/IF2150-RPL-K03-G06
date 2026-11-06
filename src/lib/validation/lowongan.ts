@@ -53,6 +53,9 @@ export const CariLowonganQuery = z
   .strict();
 export type CariLowonganQuery = z.infer<typeof CariLowonganQuery>;
 
+// GET /api/lowongan/saya?page= (PK)
+export const LowonganSayaQuery = z.object({ page: Page }).strict();
+
 export const LowonganRingkas = z.object({
   id: Id,
   judul: z.string(),
