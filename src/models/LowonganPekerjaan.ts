@@ -165,3 +165,17 @@ export function detail(
   }
   return hasil;
 }
+
+/** Ringkasan satu lowongan beserta id profil PK pemilik (untuk cek kepemilikan di controller). */
+export function ringkasDenganPemilik(
+  id: string,
+): { idPK: string; lowongan: LowonganRingkas } | null {
+  const r = db
+    .prepare(
+      `SELECT ${KOLOM_RINGKAS}, l.id_penyedia_kerja AS idPK FROM lowongan_pekerjaan l WHERE l.id_lowongan = ?`,
+    )
+    .get(id) as (BarisRingkas & { idPK: string }) | undefined;
+  if (!r) return null;
+  const { idPK, ...baris } = r;
+  return { idPK, lowongan: ringkas(baris) };
+}

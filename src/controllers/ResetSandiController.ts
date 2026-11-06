@@ -1,7 +1,7 @@
 import "server-only";
 import { createHash, randomBytes } from "node:crypto";
 import { hashPassword } from "@/lib/auth/password";
-import { batasiPercobaan } from "@/lib/auth/rate-limit";
+import { batasiPercobaan, emailDariBody } from "@/lib/auth/rate-limit";
 import { hapusSemuaSesi } from "@/lib/auth/session";
 import { tx } from "@/lib/db";
 import { AppError } from "@/lib/errors";
@@ -21,11 +21,7 @@ const tokenTidakValid = () =>
 
 /** Publik; respons sama untuk setiap email valid (issue #9, I-10). */
 export function lupaSandi(body: unknown, ip: string) {
-  const email =
-    body && typeof body === "object" && "email" in body
-      ? body.email
-      : undefined;
-  batasiPercobaan(ip, email);
+  batasiPercobaan("lupa-sandi", ip, emailDariBody(body));
   const input = LupaSandiInput.parse(body);
   const akun = cariEmail(input.email);
   if (akun) {
