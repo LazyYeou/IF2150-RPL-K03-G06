@@ -133,7 +133,7 @@ Setiap KF punya kriteria penerimaan yang **wajib diuji** (unit/integrasi/E2E). D
 | | KNF22 | Berkas ≤ 10 MB, gambar dikompres | Kompresi klien ke ≤ 2 MB |
 | Ergonomi | KNF05, KNF21 | Mobile-first, adaptif | Target sentuh ≥ 44 px; uji 360/768/1280 px |
 | Keselamatan | KNF09 | Lowongan berisiko wajib pernyataan risiko | Kategori berisiko (mis. Kelistrikan) tanpa centang → 400 |
-| Ketersediaan | KNF10, KNF23 | Downtime ≤ 24 jam/bulan; fail-closed | Lihat [CONTRIBUTING §Rilis & deploy](../../CONTRIBUTING.md#7-rilis--deploy) |
+| Ketersediaan | KNF10, KNF23 | Downtime ≤ 24 jam/bulan; fail-closed | Lihat [CONTRIBUTING §Rilis & deploy](CONTRIBUTING.md#7-rilis--deploy) |
 
 Konflik batas berkas diputuskan: **KTP ≤ 5 MB, bukti pekerjaan & bukti sengketa ≤ 10 MB**.
 

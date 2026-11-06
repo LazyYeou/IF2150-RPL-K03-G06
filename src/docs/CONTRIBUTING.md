@@ -1,6 +1,6 @@
 # Panduan Kontribusi — Kerja-In
 
-Alur kerja tim G06 untuk Tugas 9. Lingkup produk di [`src/docs/PRD.md`](src/docs/PRD.md), rancangan teknis di [`Kerja-In_Rancangan_Pengembangan.md`](Kerja-In_Rancangan_Pengembangan.md).
+Alur kerja tim G06 untuk Tugas 9. Lingkup produk di [`src/docs/PRD.md`](PRD.md), rancangan teknis di [`Kerja-In_Rancangan_Pengembangan.md`](../../Kerja-In_Rancangan_Pengembangan.md).
 
 ## 1. Setup lokal
 
@@ -73,7 +73,7 @@ Centang nama Anda di issue #6 setelah langkah di atas berhasil.
 
 ## 6. Perubahan bersama
 
-Kontrak tim ada di [`src/docs/contracts/`](src/docs/contracts/): [`db.md`](src/docs/contracts/db.md), [`api.md`](src/docs/contracts/api.md), [`modules.md`](src/docs/contracts/modules.md). Perubahan kontrak memperbarui dokumennya **di PR yang sama**.
+Kontrak tim ada di [`src/docs/contracts/`](contracts/): [`db.md`](contracts/db.md), [`api.md`](contracts/api.md), [`modules.md`](contracts/modules.md). Perubahan kontrak memperbarui dokumennya **di PR yang sama**.
 
 - **Skema DB**: migrasi baru = file baru bernomor di `db/migrations/`. Jangan mengedit migrasi yang sudah di-merge. Perbarui `db.md` dan seed.
 - **API & kontrak antarmodul** (`api.md`, `modules.md`, skema `lib/validation/*`): perubahan harus diumumkan di grup, fixture diperbarui, dan pemilik modul pemakai ikut me-review.
