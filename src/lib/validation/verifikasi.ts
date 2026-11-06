@@ -16,6 +16,12 @@ export const VerifikasiStatusResponse = z.object({
   alasanPenolakan: z.string().nullable(),
 });
 
+// Respons POST /api/verifikasi
+export const PengajuanVerifikasiResponse = VerifikasiStatusResponse.pick({
+  status: true,
+  waktuPengajuan: true,
+});
+
 // GET /api/cs/verifikasi (CS)
 export const AntreanVerifikasiResponse = z.object({
   items: z.array(

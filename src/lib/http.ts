@@ -13,6 +13,19 @@ export async function bacaJson(req: Request): Promise<unknown> {
   }
 }
 
+/** Body multipart/form-data; content-type salah = 400. */
+export async function bacaForm(req: Request): Promise<FormData> {
+  try {
+    return await req.formData();
+  } catch {
+    throw new AppError(
+      "VALIDATION_ERROR",
+      400,
+      "Body harus berupa multipart/form-data",
+    );
+  }
+}
+
 /** Query string -> objek, untuk divalidasi skema Zod `.strict()`. */
 export const bacaQuery = (req: Request) =>
   Object.fromEntries(new URL(req.url).searchParams);
