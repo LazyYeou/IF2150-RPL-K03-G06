@@ -55,6 +55,15 @@ export function ajukanVerifikasi(
   });
 }
 
+export function idDariPengguna(idPengguna: string): string | null {
+  const r = db
+    .prepare(
+      "SELECT id_tenaga_kerja AS id FROM tenaga_kerja WHERE id_pengguna = ?",
+    )
+    .get(idPengguna) as { id: string } | undefined;
+  return r?.id ?? null;
+}
+
 /** Antrean verifikasi CS: pengajuan MENUNGGU, terlama dulu (KF05). */
 export function antreanVerifikasi() {
   const rows = db
