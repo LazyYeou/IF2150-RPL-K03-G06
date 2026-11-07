@@ -1,7 +1,4 @@
 import { createHash, randomUUID } from "node:crypto";
-import { mkdtempSync, rmSync } from "node:fs";
-import { tmpdir } from "node:os";
-import path from "node:path";
 import {
   afterAll,
   beforeAll,
@@ -11,6 +8,7 @@ import {
   it,
   vi,
 } from "vitest";
+import { dbAplikasiSementara } from "../helpers/db";
 const jar = vi.hoisted(() => ({ token: "" }));
 vi.mock("next/headers", () => ({
   cookies: async () => ({
@@ -28,7 +26,8 @@ let auth: typeof import("@/controllers/PenggunaController");
 let session: typeof import("@/lib/auth/session");
 let lupa: typeof import("@/app/api/auth/lupa-sandi/route").POST;
 let reset: typeof import("@/app/api/auth/reset-sandi/route").POST;
-let dir: string;
+let tutupDb: (() => void) | undefined;
+let logout: typeof import("@/app/api/auth/logout/route").POST;
 const log = vi.spyOn(console, "info").mockImplementation(() => {});
 const req = (body: unknown) =>
   new Request("http://localhost:3000/api/auth", {
@@ -38,18 +37,12 @@ const req = (body: unknown) =>
 const sha = (s: string) => createHash("sha256").update(s).digest("hex");
 
 beforeAll(async () => {
-  dir = mkdtempSync(path.join(tmpdir(), "kerjain-reset-"));
-  process.env.DATABASE_PATH = path.join(dir, "test.db");
-  const { bukaDb } = await import("@/db/open");
-  const { migrate } = await import("@/scripts/migrate");
-  const awal = bukaDb();
-  migrate(awal);
-  awal.close();
-  ({ db } = await import("@/lib/db"));
+  ({ db, tutup: tutupDb } = await dbAplikasiSementara({ seed: false }));
   auth = await import("@/controllers/PenggunaController");
   session = await import("@/lib/auth/session");
   ({ POST: lupa } = await import("@/app/api/auth/lupa-sandi/route"));
   ({ POST: reset } = await import("@/app/api/auth/reset-sandi/route"));
+  ({ POST: logout } = await import("@/app/api/auth/logout/route"));
 });
 beforeEach(() => {
   jar.token = "";
@@ -57,8 +50,7 @@ beforeEach(() => {
 });
 afterAll(() => {
   log.mockRestore();
-  db?.close();
-  if (dir) rmSync(dir, { recursive: true, force: true });
+  tutupDb?.();
 });
 async function akunBaru() {
   const email = `${randomUUID()}@kerjain.test`;
@@ -120,6 +112,9 @@ describe("lupa/reset sandi (#9)", () => {
     const akun = await akunBaru();
     const sesiLama = jar.token;
     await session.buatSesi(akun.id);
+    const sesiLain = jar.token;
+    const akunLain = await akunBaru();
+    const tokenAkunLain = jar.token;
     const lain = await tautan(akun.email);
     const token = await tautan(akun.email);
     expect(lain).not.toBe(token);
@@ -133,6 +128,12 @@ describe("lupa/reset sandi (#9)", () => {
     ).toEqual({ c: 0 });
     jar.token = sesiLama;
     expect(await session.bacaSesi()).toBeNull();
+    for (const token of [sesiLama, sesiLain]) {
+      jar.token = token;
+      expect((await logout()).status).toBe(401);
+    }
+    jar.token = tokenAkunLain;
+    expect(await session.bacaSesi()).toMatchObject({ id: akunLain.id });
     expect((await reset(req(payload(token)))).status).toBe(400);
     expect((await reset(req(payload(lain)))).status).toBe(400);
     await expect(

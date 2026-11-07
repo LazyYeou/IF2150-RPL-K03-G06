@@ -1,7 +1,4 @@
 import { createHash } from "node:crypto";
-import { mkdtempSync, rmSync } from "node:fs";
-import { tmpdir } from "node:os";
-import path from "node:path";
 import { NextRequest } from "next/server";
 import {
   afterAll,
@@ -16,6 +13,7 @@ import { ZodError, z } from "zod";
 import { AppError, toResponse } from "@/lib/errors";
 import { originValid } from "@/lib/auth/origin";
 import { middleware } from "@/middleware";
+import { dbAplikasiSementara } from "../helpers/db";
 
 // Cookie palsu: tiruan `cookies()` dari next/headers
 const jar = vi.hoisted(() => new Map<string, string>());
@@ -29,7 +27,7 @@ vi.mock("next/headers", () => ({
 }));
 
 type Db = typeof import("@/lib/db").db;
-let dir: string;
+let tutupDb: (() => void) | undefined;
 let db: Db;
 let sesi: typeof import("@/lib/auth/session");
 let guards: typeof import("@/lib/auth/guards");
@@ -45,24 +43,13 @@ const cekError = async (p: Promise<unknown>, code: string, status: number) =>
   expect(await p.catch((e) => e)).toMatchObject({ code, status });
 
 beforeAll(async () => {
-  dir = mkdtempSync(path.join(tmpdir(), "kerjain-auth-"));
-  process.env.DATABASE_PATH = path.join(dir, "test.db");
-  // lib/db membuka koneksi saat diimpor, jadi DATABASE_PATH harus sudah diset (impor dinamis)
-  const { bukaDb } = await import("@/db/open");
-  const { migrate } = await import("@/scripts/migrate");
-  const { seed } = await import("@/db/seed");
-  const awal = bukaDb();
-  migrate(awal);
-  await seed(awal);
-  awal.close();
-  ({ db } = await import("@/lib/db"));
+  ({ db, tutup: tutupDb } = await dbAplikasiSementara());
   sesi = await import("@/lib/auth/session");
   guards = await import("@/lib/auth/guards");
   password = await import("@/lib/auth/password");
 });
 afterAll(() => {
-  db.close();
-  rmSync(dir, { recursive: true, force: true });
+  tutupDb?.();
 });
 beforeEach(() => jar.clear());
 
