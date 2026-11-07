@@ -5,7 +5,13 @@ import { usePathname } from "next/navigation";
 import { Menu, Plus } from "lucide-react";
 import { Dialog } from "@/components/ui/dialog";
 import { roleHome, type Role } from "@/lib/navigation";
-export default function SiteHeader({ peran }: { peran?: Role }) {
+export default function SiteHeader({
+  peran,
+  nama,
+}: {
+  peran?: Role;
+  nama?: string;
+}) {
   const pathname = usePathname();
   const links = [
     { href: "/lowongan", label: "Cari pekerjaan" },
@@ -38,7 +44,16 @@ export default function SiteHeader({ peran }: { peran?: Role }) {
             aria-current={pathname === link.href ? "page" : undefined}
             className="flex min-h-11 items-center rounded-lg px-2 text-sm font-medium hover:bg-muted aria-[current=page]:text-orange-700"
           >
-            {link.label}
+            <span>{link.label}</span>
+            {peran && link.href === roleHome[peran] && nama && (
+              <span
+                data-slot="header-user-name"
+                title={nama}
+                className="ml-2 max-w-28 truncate text-xs text-muted-foreground"
+              >
+                {nama}
+              </span>
+            )}
           </Link>
         ))}
         <Link
@@ -68,8 +83,8 @@ export default function SiteHeader({ peran }: { peran?: Role }) {
             className="h-14 w-auto object-contain"
           />
         </Link>
-        <div className="hidden md:block">{nav()}</div>
-        <div className="md:hidden">
+        <div className="hidden lg:block">{nav()}</div>
+        <div className="lg:hidden">
           <Dialog
             key={pathname}
             trigger={

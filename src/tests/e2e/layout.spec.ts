@@ -99,8 +99,8 @@ test("mobile: drawer, navigasi aktif, dan logout", async ({ page }) => {
     .getByRole("dialog")
     .getByRole("button", { name: "Keluar", exact: true })
     .click();
-  await expect(page).toHaveURL(/\/masuk$/);
   await expect(page.getByRole("status")).toContainText("sudah keluar");
+  await expect(page).toHaveURL(/\/masuk$/);
 });
 test("tanpa sesi dan sesi peran lain tidak dapat membuka halaman CS", async ({
   page,

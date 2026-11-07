@@ -36,7 +36,7 @@ export default async function RootLayout({
           <a href="#main-content" className="skip-link">
             Langsung ke konten
           </a>
-          <SiteHeader peran={user?.peran} />
+          <SiteHeader peran={user?.peran} nama={user?.nama} />
           <div className="flex-1">{children}</div>
           <SiteFooter />
         </ToastProvider>

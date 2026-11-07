@@ -1,6 +1,10 @@
 import { cn } from "@/lib/utils";
 const statuses: Record<string, { label: string; tone: string }> = {
   OPEN: { label: "Terbuka", tone: "bg-teal-50 text-teal-800" },
+  BELUM_TERVERIFIKASI: {
+    label: "Belum terverifikasi",
+    tone: "bg-muted text-muted-foreground",
+  },
   MENUNGGU: {
     label: "Menunggu tanggapan",
     tone: "bg-muted text-muted-foreground",
