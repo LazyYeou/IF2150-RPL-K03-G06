@@ -8,6 +8,7 @@ import type {
   Pelamar as PelamarSkema,
   Penawaran,
 } from "@/lib/validation/penawaran";
+import { transisiDiizinkan, type StatusPenawaran } from "@/models/statusMachine";
 
 type PelamarItem = z.infer<typeof PelamarSkema>;
 
@@ -189,7 +190,6 @@ export type HasilTerima =
 /**
  * KF12, KF13, KNF07. Seluruh cek dan tulis dalam satu tx() (BEGIN IMMEDIATE): penulis lain antre,
  * jadi sisa kuota yang dibaca di sini tidak bisa berubah sebelum commit.
- * shortcut: transisi status dicek langsung di sini; ganti ke transisiDiizinkan() setelah #17.
  */
 export function terima(idPenawaran: string, idPK: string): HasilTerima {
   return tx(() => {
@@ -222,7 +222,13 @@ export function terima(idPenawaran: string, idPK: string): HasilTerima {
       return { ok: false, alasan: "BUKAN_PEMILIK" } as const;
     if (p.statusLowongan !== "OPEN" || p.diterima >= p.kuota)
       return { ok: false, alasan: "KUOTA_PENUH" } as const;
-    if (p.statusPenawaran !== "MENUNGGU")
+    if (
+      !transisiDiizinkan(
+        "penawaran",
+        p.statusPenawaran as StatusPenawaran,
+        "DITERIMA",
+      )
+    )
       return { ok: false, alasan: "BUKAN_MENUNGGU" } as const;
 
     const penuh = p.diterima + 1 >= p.kuota;
