@@ -1,18 +1,36 @@
 import "server-only";
-import { randomUUID } from "node:crypto";
-import { db } from "@/lib/db";
+import { requireUser } from "@/lib/auth/guards";
+import { AppError } from "@/lib/errors";
+import { Id } from "@/lib/validation/common";
+import {
+  DaftarNotifikasiResponse,
+  NotifikasiQuery,
+} from "@/lib/validation/notifikasi";
+import * as Notifikasi from "@/models/Notifikasi";
 
 /**
  * Kontrak: src/docs/contracts/modules.md §1. Panggil SETELAH commit transaksi bisnis.
  * `idPengguna` = pengguna.id_pengguna (bukan id profil).
- * shortcut: hanya menyimpan baris notifikasi; API baca/tandai dan lonceng ada di #28.
+ * Fungsi internal dipakai modul domain; bukan endpoint pengiriman publik.
  */
 export async function kirimNotifikasi(
   idPengguna: string,
   pesan: string,
   tautan?: string,
 ): Promise<void> {
-  db.prepare(
-    "INSERT INTO notifikasi (id_notifikasi, id_penerima, pesan_notifikasi, tautan) VALUES (?, ?, ?, ?)",
-  ).run(randomUUID(), idPengguna, pesan, tautan ?? null);
+  Notifikasi.buat(idPengguna, pesan, tautan);
+}
+
+export async function ambilNotifikasi(query: unknown) {
+  const user = await requireUser();
+  const input = NotifikasiQuery.parse(query);
+  return DaftarNotifikasiResponse.parse(
+    Notifikasi.daftar(user.id, input.belumDibaca === "true"),
+  );
+}
+export async function tandaiNotifikasiDibaca(rawId: string) {
+  const user = await requireUser();
+  const id = Id.safeParse(rawId);
+  if (!id.success || !Notifikasi.tandaiDibaca(id.data, user.id))
+    throw new AppError("NOT_FOUND", 404, "Notifikasi tidak ditemukan");
 }
