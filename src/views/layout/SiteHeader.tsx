@@ -5,12 +5,15 @@ import { usePathname } from "next/navigation";
 import { Menu, Plus } from "lucide-react";
 import { Dialog } from "@/components/ui/dialog";
 import { roleHome, type Role } from "@/lib/navigation";
+import NotificationBell from "@/views/NotificationBell";
 export default function SiteHeader({
   peran,
   nama,
+  idPengguna,
 }: {
   peran?: Role;
   nama?: string;
+  idPengguna?: string;
 }) {
   const pathname = usePathname();
   const links = [
@@ -68,7 +71,7 @@ export default function SiteHeader({
   }
   return (
     <header className="border-b bg-background">
-      <div className="site-container flex min-h-[88px] items-center justify-between gap-6">
+      <div className="site-container flex min-h-[88px] items-center justify-between gap-3">
         <Link
           href="/"
           aria-label="Kerja-In — beranda"
@@ -83,21 +86,24 @@ export default function SiteHeader({
             className="h-14 w-auto object-contain"
           />
         </Link>
-        <div className="hidden lg:block">{nav()}</div>
-        <div className="lg:hidden">
-          <Dialog
-            key={pathname}
-            trigger={
-              <>
-                <Menu className="mr-2 inline size-5" aria-hidden="true" />
-                Menu utama
-              </>
-            }
-            title="Jelajahi Kerja-In"
-            description="Temukan pekerjaan dan akses ruang kerjamu."
-          >
-            {nav(true)}
-          </Dialog>
+        <div className="flex min-w-0 items-center gap-2 xl:gap-4">
+          <div className="hidden xl:block">{nav()}</div>
+          {peran && idPengguna && <NotificationBell key={idPengguna} />}
+          <div className="xl:hidden">
+            <Dialog
+              key={pathname}
+              trigger={
+                <>
+                  <Menu className="mr-2 inline size-5" aria-hidden="true" />
+                  Menu utama
+                </>
+              }
+              title="Jelajahi Kerja-In"
+              description="Temukan pekerjaan dan akses ruang kerjamu."
+            >
+              {nav(true)}
+            </Dialog>
+          </div>
         </div>
       </div>
     </header>
