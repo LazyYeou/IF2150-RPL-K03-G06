@@ -192,7 +192,7 @@ export default function AuthForm({ daftar = false }: { daftar?: boolean }) {
                     <span>
                       Saya menyetujui{" "}
                       <Link
-                        href="/ketentuan"
+                        href="/syarat"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="underline"

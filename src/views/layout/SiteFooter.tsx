@@ -54,7 +54,7 @@ export default function SiteFooter() {
             </Link>
             <Link
               className="inline-flex min-h-11 items-center hover:underline"
-              href="/ketentuan"
+              href="/syarat"
             >
               Syarat & ketentuan
             </Link>

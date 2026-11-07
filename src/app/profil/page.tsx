@@ -1,16 +1,13 @@
 import { penggunaHalaman } from "@/controllers/LayoutController";
 import WorkspaceShell from "@/views/layout/WorkspaceShell";
-import SectionPlaceholder from "@/views/dashboard/SectionPlaceholder";
-import { roleHome } from "@/lib/navigation";
+import { ambilProfil } from "@/controllers/ProfilController";
+import ProfilForm from "@/views/ProfilForm";
 export default async function Profil() {
   const user = await penggunaHalaman();
+  const profil = await ambilProfil();
   return (
     <WorkspaceShell peran={user.peran} nama={user.nama}>
-      <SectionPlaceholder
-        title="Profil saya"
-        description="Identitas dan informasi akun Kerja-In milikmu."
-        home={roleHome[user.peran]}
-      />
+      <ProfilForm awal={profil} />
     </WorkspaceShell>
   );
 }
