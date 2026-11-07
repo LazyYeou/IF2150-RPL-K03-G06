@@ -1,7 +1,11 @@
 import Link from "next/link";
 export default function Privasi() {
   return (
-    <main className="mx-auto max-w-2xl space-y-5 px-6 py-12">
+    <main
+      id="main-content"
+      tabIndex={-1}
+      className="mx-auto max-w-2xl space-y-5 px-6 py-12"
+    >
       <h1 className="text-3xl font-semibold">Kebijakan Privasi</h1>
       <p>
         Kerja-In adalah aplikasi proyek perkuliahan. Gunakan data fiktif saat

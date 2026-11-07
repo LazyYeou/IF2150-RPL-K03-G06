@@ -68,7 +68,11 @@ export default function ResetSandiForm({ token }: { token?: string }) {
   }
   const error = reset ? errors.passwordBaru : errors.email;
   return (
-    <main className="flex min-h-screen items-center justify-center bg-muted/40 px-5 py-12">
+    <main
+      id="main-content"
+      tabIndex={-1}
+      className="flex min-h-[70dvh] items-center justify-center bg-muted/40 px-5 py-12"
+    >
       <section
         className="w-full max-w-md rounded-2xl border bg-card p-7 shadow-sm sm:p-9"
         aria-labelledby="reset-title"
@@ -101,7 +105,7 @@ export default function ResetSandiForm({ token }: { token?: string }) {
         {!selesai && tokenValid && (
           <form onSubmit={handleSubmit(kirim)} className="mt-6 space-y-5">
             <fieldset
-            disabled={isSubmitting || !isReady}
+              disabled={isSubmitting || !isReady}
               className="space-y-5 disabled:opacity-60"
             >
               <legend className="sr-only">
