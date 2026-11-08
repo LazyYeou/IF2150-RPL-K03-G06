@@ -1,9 +1,7 @@
 import { createHash, randomUUID } from "node:crypto";
-import { mkdtempSync, rmSync } from "node:fs";
-import { tmpdir } from "node:os";
-import path from "node:path";
 import {
   afterAll,
+  afterEach,
   beforeAll,
   beforeEach,
   describe,
@@ -11,7 +9,8 @@ import {
   it,
   vi,
 } from "vitest";
-import { validasiBatasUsia, AuthResponse } from "@/lib/validation/auth";
+import { AuthResponse } from "@/lib/validation/auth";
+import { dbAplikasiSementara } from "../helpers/db";
 import authFixture from "@/views/__fixtures__/auth.json";
 
 const cookie = vi.hoisted(() => ({
@@ -32,7 +31,7 @@ vi.mock("next/headers", () => ({
 }));
 
 let db: typeof import("@/lib/db").db;
-let dir: string;
+let tutupDb: (() => void) | undefined;
 let register: typeof import("@/app/api/auth/register/route").POST;
 let login: typeof import("@/app/api/auth/login/route").POST;
 let logout: typeof import("@/app/api/auth/logout/route").POST;
@@ -55,16 +54,7 @@ const request = (body: unknown) =>
   });
 
 beforeAll(async () => {
-  dir = mkdtempSync(path.join(tmpdir(), "kerjain-auth-flow-"));
-  process.env.DATABASE_PATH = path.join(dir, "test.db");
-  const { bukaDb } = await import("@/db/open");
-  const { migrate } = await import("@/scripts/migrate");
-  const { seed } = await import("@/db/seed");
-  const awal = bukaDb();
-  migrate(awal);
-  await seed(awal);
-  awal.close();
-  ({ db } = await import("@/lib/db"));
+  ({ db, tutup: tutupDb } = await dbAplikasiSementara());
   ({ POST: register } = await import("@/app/api/auth/register/route"));
   ({ POST: login } = await import("@/app/api/auth/login/route"));
   ({ POST: logout } = await import("@/app/api/auth/logout/route"));
@@ -75,9 +65,9 @@ beforeEach(() => {
   cookie.value = "";
 });
 afterAll(() => {
-  db?.close();
-  if (dir) rmSync(dir, { recursive: true, force: true });
+  tutupDb?.();
 });
+afterEach(() => vi.useRealTimers());
 
 describe("registrasi/login/logout (#8)", () => {
   it("fixture frontend sesuai kontrak respons autentikasi", () => {
@@ -256,15 +246,55 @@ describe("registrasi/login/logout (#8)", () => {
   });
 });
 
-describe("batas usia kalender WIB", () => {
-  it("sehari sebelum 17 ditolak, tepat 17 diterima, tanggal mustahil ditolak", () => {
-    const sekarang = new Date("2026-11-05T17:00:00Z"); // 6 November WIB
-    expect(validasiBatasUsia("2009-11-07", sekarang)).toBe(false);
-    expect(validasiBatasUsia("2009-11-06", sekarang)).toBe(true);
-    expect(validasiBatasUsia("2009-11-05", sekarang)).toBe(true);
-    expect(validasiBatasUsia("2000-02-30", sekarang)).toBe(false);
-    expect(validasiBatasUsia("2009-02-29", sekarang)).toBe(false);
-    expect(validasiBatasUsia("invalid", sekarang)).toBe(false);
-    expect(validasiBatasUsia("2027-01-01", sekarang)).toBe(false);
+describe("batas registrasi melalui API (#40)", () => {
+  it.each([
+    ["2009-11-07", "2026-11-05T17:00:00Z", 400],
+    ["2009-11-06", "2026-11-05T17:00:00Z", 201],
+    ["2008-02-29", "2025-02-28T05:00:00Z", 400],
+    ["2008-02-29", "2025-03-01T05:00:00Z", 201],
+  ])("lahir %s pada %s -> %i", async (tanggalLahir, sekarang, status) => {
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(new Date(sekarang));
+    const data = input({ tanggalLahir });
+    const r = await register(request(data));
+    expect(r.status).toBe(status);
+    const tersimpan = db
+      .prepare("SELECT 1 FROM pengguna WHERE email = ?")
+      .get(data.email);
+    if (status === 400) {
+      expect((await r.json()).error.fields).toHaveProperty("tanggalLahir");
+      expect(tersimpan).toBeUndefined();
+      expect(cookie.value).toBe("");
+    } else {
+      expect(tersimpan).toBeDefined();
+      expect(cookie.value).toBeTruthy();
+    }
+  });
+  it("persetujuan privasi yang tidak dikirim ditolak sebelum akun/sesi dibuat", async () => {
+    const { persetujuanPrivasi: _privasi, ...data } = input();
+    void _privasi;
+    const r = await register(request(data));
+    expect(r.status).toBe(400);
+    expect((await r.json()).error.fields).toHaveProperty("persetujuanPrivasi");
+    expect(
+      db.prepare("SELECT 1 FROM pengguna WHERE email = ?").get(data.email),
+    ).toBeUndefined();
+    expect(cookie.value).toBe("");
+  });
+  it("cookie sesi kedaluwarsa ditolak endpoint yang memerlukan autentikasi", async () => {
+    expect(
+      (
+        await login(
+          request({ email: "pk1@kerjain.test", password: "Password123!" }),
+        )
+      ).status,
+    ).toBe(200);
+    const hash = createHash("sha256").update(cookie.value).digest("hex");
+    db.prepare(
+      "UPDATE sesi SET expires_at = datetime('now', '-1 minute') WHERE id_sesi = ?",
+    ).run(hash);
+    const r = await logout();
+    expect(r.status).toBe(401);
+    expect((await r.json()).error.code).toBe("UNAUTHENTICATED");
   });
 });
