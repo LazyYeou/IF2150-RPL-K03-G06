@@ -132,3 +132,28 @@ export function periksaKedaluwarsaLazy(tagihan: TagihanDTO): TagihanDTO {
   }
   return tagihan;
 }
+
+/**
+ * C09: Memperbarui status pembayaran tagihan (dan metode opsional)
+ */
+export function ubahStatusTagihan(
+  idTagihan: string,
+  status: StatusTagihan,
+  metode?: string | null,
+): TagihanDTO | null {
+  if (metode !== undefined) {
+    db.prepare(
+      `UPDATE tagihan_pembayaran
+       SET status_pembayaran = ?, metode = coalesce(?, metode)
+       WHERE id_tagihan = ?`,
+    ).run(status, metode, idTagihan);
+  } else {
+    db.prepare(
+      `UPDATE tagihan_pembayaran
+       SET status_pembayaran = ?
+       WHERE id_tagihan = ?`,
+    ).run(status, idTagihan);
+  }
+  return cariTagihanBerdasarkanId(idTagihan);
+}
+

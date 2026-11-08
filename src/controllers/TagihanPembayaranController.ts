@@ -7,10 +7,13 @@ import {
   cariTagihanAktif,
   cariTagihanBerdasarkanId,
   periksaKedaluwarsaLazy,
+  ubahStatusTagihan,
   type TagihanDTO,
 } from "@/models/TagihanPembayaran";
+import { MetodePembayaran } from "@/lib/validation/tagihan";
+import { getPaymentAdapter } from "@/lib/payment/adapter";
 
-interface TransaksiInfo {
+export interface TransaksiInfo {
   idTransaksi: string;
   idPenyediaKerja: string;
   idTenagaKerja: string;
@@ -22,7 +25,7 @@ interface TransaksiInfo {
   namaTenagaKerja: string;
 }
 
-function ambilInfoTransaksi(idTransaksi: string): TransaksiInfo | null {
+export function ambilInfoTransaksi(idTransaksi: string): TransaksiInfo | null {
   const row = db
     .prepare(
       `SELECT t.id_transaksi AS idTransaksi,
@@ -130,3 +133,88 @@ export async function ambilDataHalamanBayar(idTransaksi: string) {
     tagihan: hasilTagihan,
   };
 }
+
+/**
+ * C39: Memproses pembayaran tagihan dengan memilih metode pembayaran.
+ * Mengubah status tagihan menjadi DIPROSES dan memanggil adapter gateway.
+ */
+export async function bayarTagihan(
+  idTagihan: string,
+  metodeInput: unknown,
+): Promise<{ redirectUrl: string; status: string }> {
+  const user = await requireUser();
+  const metode = MetodePembayaran.parse(metodeInput);
+
+  const tagihan = cariTagihanBerdasarkanId(idTagihan);
+  if (!tagihan) {
+    throw new AppError("NOT_FOUND", 404, "Tagihan tidak ditemukan");
+  }
+
+  const trx = ambilInfoTransaksi(tagihan.idTransaksi);
+  if (user.peran === "PK" && trx && trx.idPenggunaPK !== user.id) {
+    throw new AppError("FORBIDDEN", 403, "Anda bukan pemilik tagihan ini");
+  }
+
+  // Idempoten jika tagihan sudah selesai dibayar
+  if (tagihan.status === "BERHASIL") {
+    return {
+      redirectUrl: `/pk/transaksi/${tagihan.idTransaksi}`,
+      status: "BERHASIL",
+    };
+  }
+
+  // Cek kedaluwarsa lazy
+  const tagihanCek = periksaKedaluwarsaLazy(tagihan);
+  if (tagihanCek.status === "KEDALUWARSA") {
+    throw new AppError(
+      "STATUS_TIDAK_VALID",
+      409,
+      "Tagihan telah kedaluwarsa dan tidak dapat dibayar",
+    );
+  }
+
+  if (tagihan.status !== "MENUNGGU_PEMBAYARAN" && tagihan.status !== "DIPROSES") {
+    throw new AppError(
+      "STATUS_TIDAK_VALID",
+      409,
+      `Tagihan dengan status ${tagihan.status} tidak dapat diproses`,
+    );
+  }
+
+  // Update status menjadi DIPROSES dan simpan metode
+  tx(() => {
+    ubahStatusTagihan(idTagihan, "DIPROSES", metode);
+  });
+
+  // Panggil adapter payment gateway
+  const adapter = getPaymentAdapter();
+  const chargeRes = await adapter.charge({
+    idTagihan: tagihan.id,
+    total: tagihan.totalBayar,
+    metode,
+  });
+
+  return {
+    redirectUrl: chargeRes.redirectUrl,
+    status: "DIPROSES",
+  };
+}
+
+/**
+ * Menyediakan data untuk halaman Mock Gateway simulator.
+ */
+export async function ambilDataMockGateway(idTagihan: string) {
+  const tagihan = cariTagihanBerdasarkanId(idTagihan);
+  if (!tagihan) {
+    throw new AppError("NOT_FOUND", 404, "Tagihan tidak ditemukan");
+  }
+
+  const trx = ambilInfoTransaksi(tagihan.idTransaksi);
+  if (!trx) {
+    throw new AppError("NOT_FOUND", 404, "Transaksi tidak ditemukan");
+  }
+
+  return { tagihan, transaksi: trx };
+}
+
+

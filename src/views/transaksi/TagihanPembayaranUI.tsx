@@ -121,12 +121,16 @@ export default function TagihanPembayaranUI({
         body: JSON.stringify({ metode: metodeDipilih }),
       });
 
+      const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data.message || "Gagal memproses pembayaran");
+        throw new Error(data.message || data.error || "Gagal memproses pembayaran");
       }
 
-      window.location.reload();
+      if (data.redirectUrl) {
+        window.location.href = data.redirectUrl;
+      } else {
+        window.location.reload();
+      }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Terjadi kesalahan";
       setPesanError(msg);
