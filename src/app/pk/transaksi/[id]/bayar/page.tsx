@@ -13,7 +13,7 @@ export default async function HalamanBayarPK({
     const { transaksi, tagihan } = await ambilDataHalamanBayar(id);
 
     return (
-      <main className="py-8">
+      <main className="space-y-6">
         <TagihanPembayaranUI transaksi={transaksi} tagihan={tagihan} />
       </main>
     );
