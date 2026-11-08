@@ -45,7 +45,7 @@ Centang nama Anda di issue #6 setelah langkah di atas berhasil.
 ## 4. Pull request
 
 1. Sebelum push: `npm run lint && npm run typecheck && npm test` lulus.
-2. Buka PR ke `dev` dengan templat PR (PR `dev` → `main` hanya saat rilis, lihat §7): `Closes #n`, UC/KF terkait, bukti (screenshot + hasil test), checklist keamanan, traceability.
+2. Buka PR ke `dev` dengan templat PR (PR `dev` → `main` hanya saat rilis, lihat §7): `Closes #n` (issue otomatis tertutup saat PR merge ke `dev`, tanpa menunggu rilis ke `main`), UC/KF terkait, bukti (screenshot + hasil test), checklist keamanan, traceability.
 3. PR kecil (< ±400 baris). Fitur besar dipecah.
 4. CI (`ci`) wajib hijau; `main` butuh 1 approval.
 

@@ -1,0 +1,25 @@
+name: tutup-issue
+
+# Issue ditutup saat PR ber-"Closes #n" ter-merge ke dev (GitHub hanya menutup otomatis di branch default).
+on:
+  pull_request:
+    types: [closed]
+    branches: [dev]
+
+permissions:
+  issues: write
+
+jobs:
+  tutup:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Tutup issue yang dirujuk
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BODY: ${{ github.event.pull_request.body }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          for n in $(printf '%s' "$BODY" | grep -oiE '(closes|fixes|resolves) #[0-9]+' | grep -oE '[0-9]+'); do
+            gh issue close "$n" --repo "$GITHUB_REPOSITORY" --reason completed --comment "Selesai lewat PR #$PR (merge ke dev)."
+          done
