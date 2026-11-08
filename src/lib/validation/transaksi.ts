@@ -35,3 +35,7 @@ export const TransaksiDetail = TransaksiRingkas.extend({
 });
 
 export const DaftarTransaksi = Paginasi(TransaksiRingkas);
+
+export const UnggahBuktiPekerjaanInput = z.object({
+  deskripsi: z.string().trim().min(10).max(2000),
+});
