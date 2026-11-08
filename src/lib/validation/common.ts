@@ -31,6 +31,14 @@ export const StatusVerifikasi = z.enum([
   "TERVERIFIKASI",
   "DITOLAK",
 ]);
+export const StatusPekerjaan = z.enum([
+  "MENUNGGU_PEMBAYARAN",
+  "IN_PROGRESS",
+  "SUBMITTED",
+  "COMPLETED",
+  "DISENGKETAKAN",
+  "DIBATALKAN",
+]);
 export const StatusTiket = z.enum([
   "DIAJUKAN",
   "DITINJAU",

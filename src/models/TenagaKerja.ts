@@ -1,12 +1,12 @@
 import "server-only";
 import { db, tx } from "@/lib/db";
 import { keIso } from "@/lib/http";
+import { transisiDiizinkan } from "@/models/statusMachine";
 
 // C02. Status verifikasi: src/docs/contracts/modules.md §2.1.
 export type StatusVerifikasi =
   "BELUM_TERVERIFIKASI" | "MENUNGGU_VERIFIKASI" | "TERVERIFIKASI" | "DITOLAK";
 
-// shortcut: transisi dicek di sini sampai transisiDiizinkan() (#17) tersedia; ganti saat #17 masuk.
 const BOLEH_DIAJUKAN = ["BELUM_TERVERIFIKASI", "DITOLAK"] as const;
 
 type Baris = {
@@ -38,6 +38,21 @@ export function ajukanVerifikasi(
   dokumenPath: string,
 ): { dokumenLama: string | null } | false {
   return tx(() => {
+    const status = db
+      .prepare(
+        "SELECT status_verifikasi AS status FROM tenaga_kerja WHERE id_pengguna = ?",
+      )
+      .get(idPengguna) as { status: StatusVerifikasi } | undefined;
+    if (
+      !status ||
+      !transisiDiizinkan(
+        "verifikasi",
+        status.status,
+        "MENUNGGU_VERIFIKASI",
+      )
+    )
+      return false;
+
     const lama = db
       .prepare(
         "SELECT dokumen_identitas_path AS p FROM tenaga_kerja WHERE id_pengguna = ?",
@@ -113,7 +128,13 @@ export function putuskanVerifikasi(
       .get(idTenagaKerja) as
       { idPengguna: string; status: StatusVerifikasi } | undefined;
     if (!tk) return { ok: false, alasan: "TIDAK_ADA" } as const;
-    if (tk.status !== "MENUNGGU_VERIFIKASI")
+    if (
+      !transisiDiizinkan(
+        "verifikasi",
+        tk.status,
+        "setujui" in keputusan ? "TERVERIFIKASI" : "DITOLAK",
+      )
+    )
       return { ok: false, alasan: "BUKAN_MENUNGGU" } as const;
     db.prepare(
       "UPDATE tenaga_kerja SET status_verifikasi = ?, alasan_penolakan = ? WHERE id_tenaga_kerja = ?",
