@@ -1,4 +1,5 @@
-import { mkdtempSync } from "node:fs";
+import { randomUUID } from "node:crypto";
+import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
@@ -38,7 +39,11 @@ describe("API transaksi", () => {
     detail = await import("@/app/api/transaksi/[id]/route");
   });
 
-  afterAll(() => jar.clear());
+  afterAll(() => {
+    jar.clear();
+    db.close();
+    rmSync(dir, { recursive: true, force: true });
+  });
 
   it("peserta dapat melihat daftar dan detail status Indonesia", async () => {
     const userTk = one<{ id: string }>(
@@ -96,5 +101,92 @@ describe("API transaksi", () => {
       { params: Promise.resolve({ id: transaksi.id }) },
     );
     expect(response.status).toBe(200);
+  });
+
+  it("peserta PK dapat melihat detail miliknya", async () => {
+    const pk = one<{ id: string }>(
+      "SELECT id_pengguna id FROM pengguna WHERE email = 'pk1@kerjain.test'",
+    );
+    const transaksi = one<{ id: string }>(
+      "SELECT id_transaksi id FROM transaksi_pekerjaan LIMIT 1",
+    );
+    const { buatSesi } = await import("@/lib/auth/session");
+    await buatSesi(pk.id);
+
+    const response = await detail.GET(
+      new Request(`http://localhost/api/transaksi/${transaksi.id}`),
+      { params: Promise.resolve({ id: transaksi.id }) },
+    );
+
+    expect(response.status).toBe(200);
+  });
+
+  it("TK lain tidak dapat melihat detail transaksi", async () => {
+    const transaksi = one<{ id: string }>(
+      "SELECT id_transaksi id FROM transaksi_pekerjaan LIMIT 1",
+    );
+    const tkLain = one<{ id: string }>(
+      "SELECT id_pengguna id FROM pengguna WHERE email = 'tk2@kerjain.test'",
+    );
+    const { buatSesi } = await import("@/lib/auth/session");
+    await buatSesi(tkLain.id);
+
+    const response = await detail.GET(
+      new Request(`http://localhost/api/transaksi/${transaksi.id}`),
+      { params: Promise.resolve({ id: transaksi.id }) },
+    );
+
+    expect(response.status).toBe(403);
+  });
+
+  it("PK lain tidak dapat melihat detail transaksi", async () => {
+    const idPengguna = randomUUID();
+    const idPk = randomUUID();
+    db.prepare(
+      `INSERT INTO pengguna
+       (id_pengguna, nama, email, password_hash, peran, tanggal_lahir, persetujuan_privasi_at)
+       VALUES (?, ?, ?, ?, 'PK', '1995-05-17', datetime('now'))`,
+    ).run(idPengguna, "PK Lain", "pk-lain@kerjain.test", "test-only");
+    db.prepare(
+      "INSERT INTO penyedia_kerja (id_penyedia_kerja, id_pengguna) VALUES (?, ?)",
+    ).run(idPk, idPengguna);
+
+    const transaksi = one<{ id: string }>(
+      "SELECT id_transaksi id FROM transaksi_pekerjaan LIMIT 1",
+    );
+    const { buatSesi } = await import("@/lib/auth/session");
+    await buatSesi(idPengguna);
+
+    const response = await detail.GET(
+      new Request(`http://localhost/api/transaksi/${transaksi.id}`),
+      { params: Promise.resolve({ id: transaksi.id }) },
+    );
+
+    expect(response.status).toBe(403);
+  });
+
+  it("daftar PK hanya memuat transaksi milik profil PK yang login", async () => {
+    const pk = one<{ userId: string; profileId: string }>(
+      `SELECT p.id_pengguna AS userId, pk.id_penyedia_kerja AS profileId
+       FROM pengguna p JOIN penyedia_kerja pk ON pk.id_pengguna = p.id_pengguna
+       WHERE p.email = 'pk1@kerjain.test'`,
+    );
+    const { buatSesi } = await import("@/lib/auth/session");
+    await buatSesi(pk.userId);
+
+    const response = await daftar.GET(
+      new Request("http://localhost/api/transaksi?peran=PK"),
+    );
+    expect(response.status).toBe(200);
+    const body = await response.json();
+
+    const milikPk = db
+      .prepare(
+        "SELECT id_transaksi AS id FROM transaksi_pekerjaan WHERE id_penyedia_kerja = ?",
+      )
+      .all(pk.profileId) as Array<{ id: string }>;
+    expect(body.items.map((item: { id: string }) => item.id).sort()).toEqual(
+      milikPk.map((item) => item.id).sort(),
+    );
   });
 });
