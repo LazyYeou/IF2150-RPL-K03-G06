@@ -1,5 +1,5 @@
-import { db } from "@/lib/db";
-import { tx } from "@/lib/db";
+import { db, tx } from "@/lib/db";
+import type Database from "better-sqlite3";
 import { keIso } from "@/lib/http";
 import { randomUUID } from "node:crypto";
 import type { z } from "zod";
@@ -99,9 +99,14 @@ export function milikPK(idPK: string, page = 1, status?: StatusPekerjaan) {
   return daftar("t.id_penyedia_kerja = @idPK", { idPK }, page, status);
 }
 
-export function semua(_peran: "TK" | "PK", page = 1, status?: StatusPekerjaan) {
+export function semua(
+  _peran: "TK" | "PK",
+  page = 1,
+  status?: StatusPekerjaan,
+) {
   return daftar("1 = 1", {}, page, status);
 }
+
 export function detail(idTransaksi: string, idPengguna?: string) {
   const row = db
     .prepare(
@@ -148,7 +153,8 @@ export function detail(idTransaksi: string, idPengguna?: string) {
      FROM tagihan_pembayaran WHERE id_transaksi = ? ORDER BY created_at DESC, id_tagihan DESC LIMIT 1`,
     )
     .get(idTransaksi) as
-    NonNullable<z.infer<typeof TransaksiDetail>["tagihan"]> | undefined;
+    | NonNullable<z.infer<typeof TransaksiDetail>["tagihan"]>
+    | undefined;
   const revisi = db
     .prepare(
       `SELECT catatan, waktu_permintaan AS waktu FROM catatan_revisi
@@ -276,5 +282,250 @@ export function submitBukti(
       ok: true as const,
       idPenggunaPK: transaksi.idPenggunaPK,
     };
+  });
+}
+
+export function kreditUpahDalamTx(
+  database: Database.Database,
+  idTransaksi: string,
+): boolean {
+  if (!database.inTransaction)
+    throw new Error("kreditUpahDalamTx harus dipanggil di dalam tx()");
+
+  const transaksi = database
+    .prepare(
+      `SELECT id_tenaga_kerja AS idTK, nominal_upah AS nominal
+       FROM transaksi_pekerjaan
+       WHERE id_transaksi = ?`,
+    )
+    .get(idTransaksi) as { idTK: string; nominal: number } | undefined;
+  if (!transaksi)
+    throw new Error("Transaksi tidak ditemukan saat mengkredit upah");
+
+  const mutasi = database
+    .prepare(
+      `INSERT INTO mutasi_saldo (kunci_operasi, id_tenaga_kerja, nominal)
+       VALUES (?, ?, ?)
+       ON CONFLICT(kunci_operasi) DO NOTHING`,
+    )
+    .run(`upah:${idTransaksi}`, transaksi.idTK, transaksi.nominal);
+  if (mutasi.changes === 0) return false;
+
+  database
+    .prepare(
+      `UPDATE tenaga_kerja
+       SET saldo_pendapatan = saldo_pendapatan + ?
+       WHERE id_tenaga_kerja = ?`,
+    )
+    .run(transaksi.nominal, transaksi.idTK);
+  return true;
+}
+
+type HasilTindakanTransaksi =
+  | { ok: true; idPenggunaTK: string; nominalUpah: number }
+  | {
+      ok: false;
+      alasan: "TIDAK_ADA" | "BUKAN_PEMILIK" | "STATUS_TIDAK_VALID";
+    };
+
+export function setujuiHasil(
+  idTransaksi: string,
+  idPenggunaPK: string,
+): HasilTindakanTransaksi {
+  return tx(() => {
+    const transaksi = db
+      .prepare(
+        `SELECT t.status_pekerjaan AS status, t.nominal_upah AS nominalUpah,
+                tk.id_pengguna AS idPenggunaTK, pk.id_pengguna AS idPenggunaPK
+         FROM transaksi_pekerjaan t
+         JOIN tenaga_kerja tk ON tk.id_tenaga_kerja = t.id_tenaga_kerja
+         JOIN penyedia_kerja pk ON pk.id_penyedia_kerja = t.id_penyedia_kerja
+         WHERE t.id_transaksi = ?`,
+      )
+      .get(idTransaksi) as
+      | {
+          status: StatusPekerjaan;
+          nominalUpah: number;
+          idPenggunaTK: string;
+          idPenggunaPK: string;
+        }
+      | undefined;
+
+    if (!transaksi) return { ok: false, alasan: "TIDAK_ADA" };
+    if (transaksi.idPenggunaPK !== idPenggunaPK)
+      return { ok: false, alasan: "BUKAN_PEMILIK" };
+    if (
+      transaksi.status !== "SUBMITTED" ||
+      !transisiDiizinkan("pekerjaan", transaksi.status, "COMPLETED")
+    )
+      return { ok: false, alasan: "STATUS_TIDAK_VALID" };
+
+    const prasyarat = db
+      .prepare(
+        `SELECT EXISTS (
+           SELECT 1 FROM tagihan_pembayaran
+           WHERE id_transaksi = ? AND status_pembayaran = 'BERHASIL'
+         ) AS tagihanBerhasil,
+         EXISTS (
+           SELECT 1 FROM tiket_sengketa
+           WHERE id_transaksi = ?
+             AND status_tiket NOT IN ('DITUTUP', 'DITOLAK', 'DIBATALKAN')
+         ) AS tiketAktif`,
+      )
+      .get(idTransaksi, idTransaksi) as {
+      tagihanBerhasil: number;
+      tiketAktif: number;
+    };
+    if (!prasyarat.tagihanBerhasil || prasyarat.tiketAktif)
+      return { ok: false, alasan: "STATUS_TIDAK_VALID" };
+
+    const berubah = db
+      .prepare(
+        `UPDATE transaksi_pekerjaan
+         SET status_pekerjaan = 'COMPLETED'
+         WHERE id_transaksi = ? AND status_pekerjaan = 'SUBMITTED'
+         RETURNING id_transaksi`,
+      )
+      .get(idTransaksi);
+    if (!berubah) return { ok: false, alasan: "STATUS_TIDAK_VALID" };
+
+    kreditUpahDalamTx(db, idTransaksi);
+    return {
+      ok: true,
+      idPenggunaTK: transaksi.idPenggunaTK,
+      nominalUpah: transaksi.nominalUpah,
+    };
+  });
+}
+
+type HasilRevisi =
+  | { ok: true; idPenggunaTK: string }
+  | {
+      ok: false;
+      alasan: "TIDAK_ADA" | "BUKAN_PEMILIK" | "STATUS_TIDAK_VALID";
+    };
+
+export function mintaRevisi(
+  idTransaksi: string,
+  idPenggunaPK: string,
+  catatan: string,
+): HasilRevisi {
+  return tx(() => {
+    const transaksi = db
+      .prepare(
+        `SELECT t.status_pekerjaan AS status, tk.id_pengguna AS idPenggunaTK,
+                pk.id_pengguna AS idPenggunaPK
+         FROM transaksi_pekerjaan t
+         JOIN tenaga_kerja tk ON tk.id_tenaga_kerja = t.id_tenaga_kerja
+         JOIN penyedia_kerja pk ON pk.id_penyedia_kerja = t.id_penyedia_kerja
+         WHERE t.id_transaksi = ?`,
+      )
+      .get(idTransaksi) as
+      | {
+          status: StatusPekerjaan;
+          idPenggunaTK: string;
+          idPenggunaPK: string;
+        }
+      | undefined;
+
+    if (!transaksi) return { ok: false, alasan: "TIDAK_ADA" };
+    if (transaksi.idPenggunaPK !== idPenggunaPK)
+      return { ok: false, alasan: "BUKAN_PEMILIK" };
+    if (
+      transaksi.status !== "SUBMITTED" ||
+      !transisiDiizinkan("pekerjaan", transaksi.status, "IN_PROGRESS")
+    )
+      return { ok: false, alasan: "STATUS_TIDAK_VALID" };
+
+    const berubah = db
+      .prepare(
+        `UPDATE transaksi_pekerjaan
+         SET status_pekerjaan = 'IN_PROGRESS'
+         WHERE id_transaksi = ? AND status_pekerjaan = 'SUBMITTED'
+         RETURNING id_transaksi`,
+      )
+      .get(idTransaksi);
+    if (!berubah) return { ok: false, alasan: "STATUS_TIDAK_VALID" };
+
+    db.prepare(
+      `INSERT INTO catatan_revisi (id_revisi, id_transaksi, catatan)
+       VALUES (?, ?, ?)`,
+    ).run(randomUUID(), idTransaksi, catatan);
+    return { ok: true, idPenggunaTK: transaksi.idPenggunaTK };
+  });
+}
+
+export function sudahDiulas(idTransaksi: string, idPengguna: string) {
+  return Boolean(
+    db
+      .prepare(
+        `SELECT 1 FROM ulasan_rating
+         WHERE id_transaksi = ? AND id_penilai = ?`,
+      )
+      .get(idTransaksi, idPengguna),
+  );
+}
+
+export function buatUlasan(
+  idTransaksi: string,
+  idPenggunaPK: string,
+  input: { nilai: number; deskripsi?: string },
+) {
+  return tx(() => {
+    const transaksi = db
+      .prepare(
+        `SELECT t.status_pekerjaan AS status, tk.id_pengguna AS idPenggunaTK,
+                pk.id_pengguna AS idPenggunaPK
+         FROM transaksi_pekerjaan t
+         JOIN tenaga_kerja tk ON tk.id_tenaga_kerja = t.id_tenaga_kerja
+         JOIN penyedia_kerja pk ON pk.id_penyedia_kerja = t.id_penyedia_kerja
+         WHERE t.id_transaksi = ?`,
+      )
+      .get(idTransaksi) as
+      | {
+          status: StatusPekerjaan;
+          idPenggunaTK: string;
+          idPenggunaPK: string;
+        }
+      | undefined;
+
+    if (!transaksi)
+      return { ok: false as const, alasan: "TIDAK_ADA" as const };
+    if (transaksi.idPenggunaPK !== idPenggunaPK)
+      return { ok: false as const, alasan: "BUKAN_PEMILIK" as const };
+    if (transaksi.status !== "COMPLETED")
+      return { ok: false as const, alasan: "STATUS_TIDAK_VALID" as const };
+    if (sudahDiulas(idTransaksi, idPenggunaPK))
+      return { ok: false as const, alasan: "SUDAH_ADA" as const };
+
+    const id = randomUUID();
+    const deskripsi = input.deskripsi?.trim() || null;
+    db.prepare(
+      `INSERT INTO ulasan_rating
+       (id_ulasan, id_transaksi, id_penilai, id_penerima, nilai, deskripsi_ulasan)
+       VALUES (?, ?, ?, ?, ?, ?)`,
+    ).run(
+      id,
+      idTransaksi,
+      idPenggunaPK,
+      transaksi.idPenggunaTK,
+      input.nilai,
+      deskripsi,
+    );
+    db.prepare(
+      `UPDATE pengguna
+       SET akumulasi_rating = (
+             SELECT COALESCE(AVG(nilai), 0) FROM ulasan_rating WHERE id_penerima = ?
+           ),
+           jumlah_ulasan = (
+             SELECT COUNT(*) FROM ulasan_rating WHERE id_penerima = ?
+           )
+       WHERE id_pengguna = ?`,
+    ).run(
+      transaksi.idPenggunaTK,
+      transaksi.idPenggunaTK,
+      transaksi.idPenggunaTK,
+    );
+    return { ok: true as const, id, nilai: input.nilai, deskripsi };
   });
 }

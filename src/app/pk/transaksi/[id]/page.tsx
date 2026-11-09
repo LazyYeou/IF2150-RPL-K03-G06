@@ -13,7 +13,7 @@ export default async function DetailTransaksiPK({
     const transaksi = await ambilDetailTransaksi(id);
     return (
       <main>
-        <DetailTransaksi transaksi={transaksi} />
+        <DetailTransaksi transaksi={transaksi} peran="PK" />
       </main>
     );
   } catch (error) {

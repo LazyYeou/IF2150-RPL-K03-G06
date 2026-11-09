@@ -85,3 +85,16 @@ export const DaftarTransaksi = Paginasi(TransaksiRingkas);
 export const UnggahBuktiPekerjaanInput = z.object({
   deskripsi: z.string().trim().min(10).max(1000),
 });
+
+export const MintaRevisiInput = z
+  .object({
+    catatan: z.string().trim().min(10).max(1000),
+  })
+  .strict();
+
+export const UlasanTransaksiInput = z
+  .object({
+    nilai: z.number().int().min(1).max(5),
+    deskripsi: z.string().trim().max(1000).optional(),
+  })
+  .strict();
