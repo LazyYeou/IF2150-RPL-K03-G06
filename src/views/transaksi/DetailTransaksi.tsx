@@ -4,19 +4,29 @@ import Link from "next/link";
 import { CreditCard } from "lucide-react";
 import imageCompression from "browser-image-compression";
 import { Button } from "@/components/ui/button";
+import { Dialog } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/toast";
+import { useRouter } from "next/navigation";
 import type { z } from "zod";
 import type { TransaksiDetail } from "@/lib/validation/transaksi";
 
 type Props = {
   idTransaksi?: string;
+  peran?: "PK" | "TK";
   transaksi: z.infer<typeof TransaksiDetail>;
 };
 
-export default function DetailTransaksi({ transaksi, idTransaksi }: Props) {
+export default function DetailTransaksi({
+  transaksi,
+  idTransaksi,
+  peran,
+}: Props) {
   const toast = useToast();
+  const router = useRouter();
   const [pesan, setPesan] = useState("");
   const [mengirim, setMengirim] = useState(false);
+  const [pesanTindakan, setPesanTindakan] = useState("");
+  const [memprosesTindakan, setMemprosesTindakan] = useState(false);
 
   const rupiah = (nilai: number) =>
     new Intl.NumberFormat("id-ID", {
@@ -28,6 +38,64 @@ export default function DetailTransaksi({ transaksi, idTransaksi }: Props) {
   const statusLabelBersih = transaksi.labelStatus.replace(/_/g, " ");
   const perluBayar = !idTransaksi && transaksi.status === "MENUNGGU_PEMBAYARAN";
   const targetIdTransaksi = transaksi.id || idTransaksi;
+
+  async function setujuiHasil() {
+    if (!targetIdTransaksi) return;
+    setMemprosesTindakan(true);
+    setPesanTindakan("");
+    try {
+      const response = await fetch(
+        `/api/transaksi/${targetIdTransaksi}/setujui`,
+        { method: "POST" },
+      );
+      const json = await response.json();
+      if (!response.ok) {
+        setPesanTindakan(
+          json.error?.message ?? "Hasil pekerjaan belum dapat disetujui.",
+        );
+        return;
+      }
+      toast("Hasil pekerjaan disetujui dan upah telah masuk ke saldo tenaga kerja.");
+      router.push(`/pk/transaksi/${targetIdTransaksi}/ulasan`);
+    } catch {
+      setPesanTindakan(
+        "Hasil belum dapat disetujui. Periksa koneksi dan coba lagi.",
+      );
+    } finally {
+      setMemprosesTindakan(false);
+    }
+  }
+
+  async function mintaRevisi(form: FormData) {
+    if (!targetIdTransaksi) return;
+    setMemprosesTindakan(true);
+    setPesanTindakan("");
+    try {
+      const response = await fetch(
+        `/api/transaksi/${targetIdTransaksi}/revisi`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ catatan: form.get("catatan") }),
+        },
+      );
+      const json = await response.json();
+      if (!response.ok) {
+        setPesanTindakan(
+          json.error?.message ?? "Permintaan revisi belum dapat dikirim.",
+        );
+        return;
+      }
+      toast("Permintaan revisi berhasil dikirim.");
+      window.location.reload();
+    } catch {
+      setPesanTindakan(
+        "Permintaan revisi gagal. Periksa koneksi dan coba lagi.",
+      );
+    } finally {
+      setMemprosesTindakan(false);
+    }
+  }
 
   async function kirimBukti(form: FormData) {
     const input = form.get("berkas");
@@ -116,6 +184,121 @@ export default function DetailTransaksi({ transaksi, idTransaksi }: Props) {
           </div>
         </div>
       </div>
+
+      {peran === "TK" && transaksi.revisi.length > 0 && (
+        <section
+          aria-labelledby="catatan-revisi-title"
+          className="rounded-xl border border-amber-300 bg-amber-50 p-5 sm:p-6"
+        >
+          <h2 id="catatan-revisi-title" className="font-semibold text-amber-950">
+            Catatan revisi
+          </h2>
+          <ul className="mt-3 space-y-3">
+            {transaksi.revisi.map((revisi, index) => (
+              <li
+                key={`${revisi.waktu}-${index}`}
+                className="rounded-lg bg-white/70 p-3 text-sm text-amber-950"
+              >
+                <p className="whitespace-pre-wrap">{revisi.catatan}</p>
+                <time
+                  dateTime={revisi.waktu}
+                  className="mt-2 block text-xs text-amber-800"
+                >
+                  {new Intl.DateTimeFormat("id-ID", {
+                    dateStyle: "medium",
+                    timeStyle: "short",
+                    timeZone: "Asia/Jakarta",
+                  }).format(new Date(revisi.waktu))}{" "}
+                  WIB
+                </time>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {peran === "PK" &&
+        transaksi.status === "SUBMITTED" &&
+        targetIdTransaksi && (
+          <section className="rounded-xl border border-border bg-card p-5 shadow-xs sm:p-6">
+            <h2 className="text-lg font-semibold">Periksa hasil pekerjaan</h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Setujui hasil untuk menyelesaikan transaksi dan mengkredit upah,
+              atau minta tenaga kerja melakukan revisi.
+            </p>
+            {pesanTindakan && (
+              <p role="alert" className="mt-3 text-sm text-rose-600">
+                {pesanTindakan}
+              </p>
+            )}
+            <div className="mt-4 flex flex-wrap gap-3">
+              <Dialog
+                trigger="Terima hasil pekerjaan"
+                title="Setujui hasil pekerjaan?"
+                description="Transaksi akan diselesaikan dan upah dikreditkan ke saldo tenaga kerja. Tindakan ini tidak dapat dibatalkan."
+              >
+                {pesanTindakan && (
+                  <p role="alert" className="mb-4 text-sm text-rose-600">
+                    {pesanTindakan}
+                  </p>
+                )}
+                <div className="flex justify-end">
+                  <Button onClick={setujuiHasil} disabled={memprosesTindakan}>
+                    {memprosesTindakan ? "Memproses..." : "Ya, setujui hasil"}
+                  </Button>
+                </div>
+              </Dialog>
+              <Dialog
+                trigger="Minta revisi"
+                title="Permintaan revisi pekerjaan"
+                description="Jelaskan bagian hasil yang perlu diperbaiki (10–1.000 karakter)."
+              >
+                <form action={mintaRevisi} className="space-y-4">
+                  {pesanTindakan && (
+                    <p role="alert" className="text-sm text-rose-600">
+                      {pesanTindakan}
+                    </p>
+                  )}
+                  <label
+                    htmlFor="catatan-revisi"
+                    className="block text-sm font-medium"
+                  >
+                    Catatan revisi
+                  </label>
+                  <textarea
+                    id="catatan-revisi"
+                    name="catatan"
+                    required
+                    minLength={10}
+                    maxLength={1000}
+                    className="min-h-32 w-full rounded-lg border border-border bg-background px-3 py-2 text-sm"
+                  />
+                  <Button type="submit" disabled={memprosesTindakan}>
+                    {memprosesTindakan
+                      ? "Mengirim..."
+                      : "Kirim permintaan revisi"}
+                  </Button>
+                </form>
+              </Dialog>
+            </div>
+          </section>
+        )}
+
+      {peran === "PK" &&
+        transaksi.status === "COMPLETED" &&
+        !transaksi.ulasanSaya &&
+        targetIdTransaksi && (
+          <p className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
+            Hasil pekerjaan telah disetujui.{" "}
+            <Link
+              href={`/pk/transaksi/${targetIdTransaksi}/ulasan`}
+              className="font-semibold underline underline-offset-2"
+            >
+              Berikan ulasan kepada tenaga kerja
+            </Link>
+            .
+          </p>
+        )}
 
       {/* Form Kirim Bukti jika Tenaga Kerja & status IN_PROGRESS */}
       {idTransaksi && transaksi.status === "IN_PROGRESS" && (

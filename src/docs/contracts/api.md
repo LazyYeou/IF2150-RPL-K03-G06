@@ -152,12 +152,12 @@ Endpoint yang memakai gate `requireVerifiedTK` (→ 403 `NOT_VERIFIED`): `POST /
 
 | Method & path | Peran | Request | Respons 2xx | Error khusus |
 |---|---|---|---|---|
-| `GET /transaksi` | user | query `peran: 'TK'\|'PK'`, `status?`, `page?` | 200 paginasi `Transaksi` (ringkas: tanpa `bukti`, `revisi`) | – |
-| `GET /transaksi/:id` | peserta / CS | – | 200 `Transaksi` | 403, 404 |
-| `POST /transaksi/:id/bukti` | TK✔ yang ditugaskan | multipart: `deskripsi` (10–1000), `berkas` (JPG/PNG/PDF ≤ 10 MB) | 201 `Transaksi` (status `SUBMITTED`) | 400 `BERKAS_TIDAK_VALID`, 403, 409 bukan `IN_PROGRESS` |
-| `POST /transaksi/:id/setujui` | PK pemilik | – | 200 `Transaksi` (status `COMPLETED`) | 409 bukan `SUBMITTED`/tagihan belum `BERHASIL`/ada tiket aktif |
-| `POST /transaksi/:id/revisi` | PK pemilik | `{ catatan (10–1000) }` | 200 `Transaksi` (status `IN_PROGRESS`) | 400, 409 |
-| `POST /transaksi/:id/ulasan` | peserta | `{ nilai: 1–5, deskripsi? (≤1000) }` | 201 `{ id, nilai, deskripsi, createdAt }` | 409 `ULASAN_GANDA`/bukan `COMPLETED` |
+| `GET /transaksi` | user | query `peran: 'TK'\|'PK'`, `page?` | 200 paginasi transaksi ringkas (tanpa `bukti`, `revisi`) | – |
+| `GET /transaksi/:id` | peserta / CS | – | 200 `Transaksi` (termasuk `bukti`, `revisi`, `tiketAktif`, `ulasanSaya`) | 403, 404 |
+| `POST /transaksi/:id/bukti` | TK✔ yang ditugaskan | multipart: `deskripsi` (10–1000), `berkas` (JPG/PNG/PDF ≤ 10 MB) | 201 `{ idTransaksi, status: 'SUBMITTED' }` | 400 `BERKAS_TIDAK_VALID`, 403, 409 bukan `IN_PROGRESS` |
+| `POST /transaksi/:id/setujui` | PK pemilik | – | 200 `{ idTransaksi, status: 'COMPLETED' }`; upah dikreditkan idempoten | 409 bukan `SUBMITTED`/tagihan belum `BERHASIL`/ada tiket aktif |
+| `POST /transaksi/:id/revisi` | PK pemilik | `{ catatan (10–1000) }` | 200 `{ idTransaksi, status: 'IN_PROGRESS' }` | 400, 409 |
+| `POST /transaksi/:id/ulasan` | PK pemilik | `{ nilai: 1–5, deskripsi? (≤1000) }` | 201 `{ id, nilai, deskripsi }` | 409 `ULASAN_GANDA`/bukan `COMPLETED` |
 | `GET /berkas/bukti/:id` | peserta / CS | – | 200 stream, `Cache-Control: no-store` | 403, 404 |
 
 ### 3.6 Pembayaran & dompet (Karmel) — UC07, UC10, KF14, KF15, KF19, KF20, I-20, I-33, I-34

@@ -14,6 +14,10 @@ seluruh notifikasi belum dibaca milik pengguna. Respons tidak di-cache.
 ID tidak dikenal atau milik orang lain menghasilkan 404 tanpa perubahan.
 Pengulangan penandaan oleh pemilik tetap menghasilkan 204.
 
+Saat PK menyetujui hasil, TK menerima notifikasi upah masuk. Saat PK meminta
+revisi, TK menerima notifikasi permintaan revisi dengan tautan ke transaksi.
+Keduanya hanya dikirim setelah perubahan transaksi berhasil di-commit.
+
 Lonceng muncul di header desktop/mobile setelah login. Polling dimulai saat
 komponen terpasang, berjalan setiap 30 detik, dan berhenti saat komponen dilepas.
 Membuka popover/menekan retry juga memuat ulang data. Request tidak ditumpuk
