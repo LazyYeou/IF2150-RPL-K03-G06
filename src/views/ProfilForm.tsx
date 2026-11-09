@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,9 +14,17 @@ import {
   ProfilResponse,
   type PerbaruiProfil,
   type Profil,
+  type UlasanProfil,
 } from "@/lib/validation/profil";
+import DaftarUlasanProfil from "@/views/DaftarUlasanProfil";
 
-export default function ProfilForm({ awal }: { awal: Profil }) {
+export default function ProfilForm({
+  awal,
+  ulasan,
+}: {
+  awal: Profil;
+  ulasan: UlasanProfil[];
+}) {
   const [profil, setProfil] = useState(awal);
   const [pesan, setPesan] = useState("");
   const router = useRouter();
@@ -107,6 +116,13 @@ export default function ProfilForm({ awal }: { awal: Profil }) {
           </p>
         </div>
       </section>
+      <Link
+        href={`/profil/${profil.id}`}
+        className="mt-4 inline-flex min-h-11 items-center text-sm font-medium text-primary underline underline-offset-2"
+      >
+        Lihat profil publik
+      </Link>
+      <DaftarUlasanProfil ulasan={ulasan} />
       <form
         onSubmit={handleSubmit(simpan)}
         className="mt-8 max-w-2xl space-y-6"

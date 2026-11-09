@@ -115,6 +115,7 @@ Kolom **Peran**: `publik` = tanpa login · `user` = login peran apa pun · `TK�
 | `POST /auth/reset-sandi` | publik | `{ token, passwordBaru (8–72) }` | 204; semua sesi pengguna dihapus | 400 token kedaluwarsa/dipakai |
 | `GET /profil` | user | – | 200 `PenggunaSesi & { areaLayanan, bio, akumulasiRating, jumlahUlasan }` | – |
 | `PATCH /profil` | user | `{ nama?, areaLayanan? (≤150), bio? (≤1000) }` | 200 objek yang sama | 400 |
+| `GET /profil/:id` | publik | – | 200 `{ id, nama, peran, areaLayanan, bio, statusVerifikasi?, akumulasiRating, jumlahUlasan, ulasan[] }` | 404 |
 
 ### 3.2 Verifikasi identitas (Ridwan) — UC02, KF04–KF06, I-30, I-31
 
@@ -157,7 +158,7 @@ Endpoint yang memakai gate `requireVerifiedTK` (→ 403 `NOT_VERIFIED`): `POST /
 | `POST /transaksi/:id/bukti` | TK✔ yang ditugaskan | multipart: `deskripsi` (10–1000), `berkas` (JPG/PNG/PDF ≤ 10 MB) | 201 `{ idTransaksi, status: 'SUBMITTED' }` | 400 `BERKAS_TIDAK_VALID`, 403, 409 bukan `IN_PROGRESS` |
 | `POST /transaksi/:id/setujui` | PK pemilik | – | 200 `{ idTransaksi, status: 'COMPLETED' }`; upah dikreditkan idempoten | 409 bukan `SUBMITTED`/tagihan belum `BERHASIL`/ada tiket aktif |
 | `POST /transaksi/:id/revisi` | PK pemilik | `{ catatan (10–1000) }` | 200 `{ idTransaksi, status: 'IN_PROGRESS' }` | 400, 409 |
-| `POST /transaksi/:id/ulasan` | PK pemilik | `{ nilai: 1–5, deskripsi? (≤1000) }` | 201 `{ id, nilai, deskripsi }` | 409 `ULASAN_GANDA`/bukan `COMPLETED` |
+| `POST /transaksi/:id/ulasan` | peserta TK/PK | `{ nilai: 1–5 (wajib), deskripsi? (≤1000) }` | 201 `{ id, idPenerima, nilai, deskripsi }`; ulasan dan hitung ulang rating tersimpan atomik | 400 rating tidak valid, 403 bukan peserta, 409 `ULASAN_GANDA`/bukan `COMPLETED` |
 | `GET /berkas/bukti/:id` | peserta / CS | – | 200 stream, `Cache-Control: no-store` | 403, 404 |
 
 ### 3.6 Pembayaran & dompet (Karmel) — UC07, UC10, KF14, KF15, KF19, KF20, I-20, I-33, I-34

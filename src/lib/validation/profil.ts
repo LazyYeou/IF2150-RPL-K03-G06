@@ -27,5 +27,37 @@ export const ProfilResponse = PenggunaSesi.extend({
   akumulasiRating: z.number(),
   jumlahUlasan: z.number().int().nonnegative(),
 }).strict();
+export const UlasanProfil = z
+  .object({
+    id: z.string().uuid(),
+    namaPenilai: z.string(),
+    judulPekerjaan: z.string(),
+    nilai: z.number().int().min(1).max(5),
+    deskripsi: z.string().nullable(),
+    createdAt: z.string().datetime(),
+  })
+  .strict();
+export const ProfilPublikResponse = z
+  .object({
+    id: z.string().uuid(),
+    nama: z.string(),
+    peran: z.enum(["TK", "PK"]),
+    areaLayanan: z.string().nullable(),
+    bio: z.string().nullable(),
+    statusVerifikasi: z
+      .enum([
+        "BELUM_TERVERIFIKASI",
+        "MENUNGGU_VERIFIKASI",
+        "TERVERIFIKASI",
+        "DITOLAK",
+      ])
+      .optional(),
+    akumulasiRating: z.number(),
+    jumlahUlasan: z.number().int().nonnegative(),
+    ulasan: z.array(UlasanProfil),
+  })
+  .strict();
 export type PerbaruiProfil = z.infer<typeof PerbaruiProfilInput>;
 export type Profil = z.infer<typeof ProfilResponse>;
+export type UlasanProfil = z.infer<typeof UlasanProfil>;
+export type ProfilPublik = z.infer<typeof ProfilPublikResponse>;

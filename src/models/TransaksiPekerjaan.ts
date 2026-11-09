@@ -468,7 +468,7 @@ export function sudahDiulas(idTransaksi: string, idPengguna: string) {
 
 export function buatUlasan(
   idTransaksi: string,
-  idPenggunaPK: string,
+  idPenilai: string,
   input: { nilai: number; deskripsi?: string },
 ) {
   return tx(() => {
@@ -491,13 +491,20 @@ export function buatUlasan(
 
     if (!transaksi)
       return { ok: false as const, alasan: "TIDAK_ADA" as const };
-    if (transaksi.idPenggunaPK !== idPenggunaPK)
+    if (
+      transaksi.idPenggunaPK !== idPenilai &&
+      transaksi.idPenggunaTK !== idPenilai
+    )
       return { ok: false as const, alasan: "BUKAN_PEMILIK" as const };
     if (transaksi.status !== "COMPLETED")
       return { ok: false as const, alasan: "STATUS_TIDAK_VALID" as const };
-    if (sudahDiulas(idTransaksi, idPenggunaPK))
+    if (sudahDiulas(idTransaksi, idPenilai))
       return { ok: false as const, alasan: "SUDAH_ADA" as const };
 
+    const idPenerima =
+      idPenilai === transaksi.idPenggunaPK
+        ? transaksi.idPenggunaTK
+        : transaksi.idPenggunaPK;
     const id = randomUUID();
     const deskripsi = input.deskripsi?.trim() || null;
     db.prepare(
@@ -507,8 +514,8 @@ export function buatUlasan(
     ).run(
       id,
       idTransaksi,
-      idPenggunaPK,
-      transaksi.idPenggunaTK,
+      idPenilai,
+      idPenerima,
       input.nilai,
       deskripsi,
     );
@@ -522,10 +529,16 @@ export function buatUlasan(
            )
        WHERE id_pengguna = ?`,
     ).run(
-      transaksi.idPenggunaTK,
-      transaksi.idPenggunaTK,
-      transaksi.idPenggunaTK,
+      idPenerima,
+      idPenerima,
+      idPenerima,
     );
-    return { ok: true as const, id, nilai: input.nilai, deskripsi };
+    return {
+      ok: true as const,
+      id,
+      idPenerima,
+      nilai: input.nilai,
+      deskripsi,
+    };
   });
 }

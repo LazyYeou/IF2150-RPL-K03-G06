@@ -303,8 +303,30 @@ describe("pemeriksaan hasil transaksi (Issue #35)", () => {
   it("mengirim ulasan sesudah disetujui dan mencegah duplikat", async () => {
     const trx = await buatTransaksiSubmitted();
     await buatSesi(trx.idPenggunaPK);
+    expect(
+      (
+        await postJson(ulasanRoute, trx.idTransaksi, {
+          nilai: 4,
+          deskripsi: "Belum selesai",
+        })
+      ).status,
+    ).toBe(409);
     expect((await postSetujui(trx.idTransaksi)).status).toBe(200);
+    const { ambilDataFormUlasan } = await import(
+      "@/controllers/TransaksiPekerjaanController"
+    );
+    expect(await ambilDataFormUlasan(trx.idTransaksi)).toMatchObject({
+      peran: "PK",
+      namaPenerima: trx.namaTK,
+    });
 
+    expect(
+      (
+        await postJson(ulasanRoute, trx.idTransaksi, {
+          deskripsi: "Rating wajib dipilih sebelum ulasan dikirim.",
+        })
+      ).status,
+    ).toBe(400);
     const response = await postJson(ulasanRoute, trx.idTransaksi, {
       nilai: 4,
       deskripsi: "Pekerjaan sesuai kesepakatan dan selesai tepat waktu.",
@@ -319,6 +341,9 @@ describe("pemeriksaan hasil transaksi (Issue #35)", () => {
         await postJson(ulasanRoute, trx.idTransaksi, { nilai: 5 })
       ).status,
     ).toBe(409);
+    expect(await ambilDataFormUlasan(trx.idTransaksi)).toMatchObject({
+      sudahDiulas: true,
+    });
     expect(
       one<{ jumlah: number; rating: number }>(
         `SELECT jumlah_ulasan AS jumlah, akumulasi_rating AS rating
@@ -326,5 +351,45 @@ describe("pemeriksaan hasil transaksi (Issue #35)", () => {
         trx.idPenggunaTK,
       ),
     ).toMatchObject({ jumlah: 1, rating: 4 });
+
+    await buatSesi(trx.idPenggunaTK);
+    expect(await ambilDataFormUlasan(trx.idTransaksi)).toMatchObject({
+      peran: "TK",
+    });
+    const ulasanPenyedia = await postJson(ulasanRoute, trx.idTransaksi, {
+      nilai: 5,
+      deskripsi: "Komunikasi dan kesepakatan berjalan baik.",
+    });
+    expect(ulasanPenyedia.status).toBe(201);
+    expect(await ulasanPenyedia.json()).toMatchObject({
+      idPenerima: trx.idPenggunaPK,
+      nilai: 5,
+    });
+    expect(
+      one<{ jumlah: number; rating: number }>(
+        `SELECT jumlah_ulasan AS jumlah, akumulasi_rating AS rating
+         FROM pengguna WHERE id_pengguna = ?`,
+        trx.idPenggunaPK,
+      ),
+    ).toMatchObject({ jumlah: 1, rating: 5 });
+
+    const { ambilProfilPublik } = await import(
+      "@/controllers/TransaksiPekerjaanController"
+    );
+    const profil = await ambilProfilPublik(trx.idPenggunaTK);
+    expect(profil).toMatchObject({
+      id: trx.idPenggunaTK,
+      jumlahUlasan: 1,
+      akumulasiRating: 4,
+      ulasan: [
+        {
+          namaPenilai: expect.any(String),
+          judulPekerjaan: expect.any(String),
+          nilai: 4,
+          deskripsi:
+            "Pekerjaan sesuai kesepakatan dan selesai tepat waktu.",
+        },
+      ],
+    });
   });
 });

@@ -12,6 +12,8 @@ import { idPenyediaKerja } from "@/models/LowonganPekerjaan";
 import * as Transaksi from "@/models/TransaksiPekerjaan";
 import { idDariPengguna } from "@/models/TenagaKerja";
 import { kirimNotifikasi } from "./NotifikasiController";
+import * as Profil from "@/models/Profil";
+import { ProfilPublikResponse } from "@/lib/validation/profil";
 
 export async function ambilTransaksiSaya(query: unknown) {
   const user = await requireUser();
@@ -128,7 +130,9 @@ export async function prosesMintaRevisi(rawId: string, body: unknown) {
 }
 
 export async function prosesUlasanTransaksi(rawId: string, body: unknown) {
-  const { user } = await penyediaAktif();
+  const user = await requireUser();
+  if (user.peran !== "PK" && user.peran !== "TK")
+    throw new AppError("FORBIDDEN", 403, "Hanya peserta transaksi yang dapat memberi ulasan");
   const id = idTransaksiValid(rawId);
   const input = UlasanTransaksiInput.parse(body);
   const hasil = Transaksi.buatUlasan(id, user.id, input);
@@ -137,17 +141,28 @@ export async function prosesUlasanTransaksi(rawId: string, body: unknown) {
       throw new AppError("ULASAN_GANDA", 409, "Ulasan untuk transaksi ini sudah diberikan");
     tanganiKesalahanTindakan(hasil.alasan);
   }
-  return { id: hasil.id, nilai: hasil.nilai, deskripsi: hasil.deskripsi };
+  return {
+    id: hasil.id,
+    idPenerima: hasil.idPenerima,
+    nilai: hasil.nilai,
+    deskripsi: hasil.deskripsi,
+  };
 }
 
 export async function ambilDataFormUlasan(rawId: string) {
-  const { user, idPK } = await penyediaAktif();
+  const user = await requireUser();
+  if (user.peran !== "PK" && user.peran !== "TK")
+    throw new AppError("FORBIDDEN", 403, "Hanya peserta transaksi yang dapat memberi ulasan");
   const id = idTransaksiValid(rawId);
   const transaksi = Transaksi.detail(id, user.id);
   if (!transaksi)
     throw new AppError("NOT_FOUND", 404, "Transaksi tidak ditemukan");
-  if (!Transaksi.detailPeserta(id, "PK", idPK))
-    throw new AppError("FORBIDDEN", 403, "Anda bukan pemilik transaksi ini");
+  const peserta =
+    user.peran === "PK"
+      ? Transaksi.detailPeserta(id, "PK", idPenyediaKerja(user.id))
+      : Transaksi.detailPeserta(id, "TK", idDariPengguna(user.id));
+  if (!peserta)
+    throw new AppError("FORBIDDEN", 403, "Anda bukan peserta transaksi ini");
   if (transaksi.status !== "COMPLETED")
     throw new AppError(
       "STATUS_TIDAK_VALID",
@@ -157,7 +172,26 @@ export async function ambilDataFormUlasan(rawId: string) {
   return {
     idTransaksi: id,
     judul: transaksi.lowongan.judul,
-    tenagaKerja: transaksi.tenagaKerja.nama,
+    namaPenerima:
+      user.peran === "PK"
+        ? transaksi.tenagaKerja.nama
+        : transaksi.penyediaKerja.nama,
+    peran: user.peran,
     sudahDiulas: transaksi.ulasanSaya !== null,
   };
+}
+
+export async function ambilUlasanSaya() {
+  const user = await requireUser();
+  return Profil.ulasanDiterima(user.id);
+}
+
+export async function ambilProfilPublik(rawId: string) {
+  const parsed = Id.safeParse(rawId);
+  if (!parsed.success)
+    throw new AppError("NOT_FOUND", 404, "Profil tidak ditemukan");
+  const profil = Profil.ambilPublik(parsed.data);
+  if (!profil)
+    throw new AppError("NOT_FOUND", 404, "Profil tidak ditemukan");
+  return ProfilPublikResponse.parse(profil);
 }
