@@ -1,10 +1,10 @@
-import { db } from "@/lib/db";
-import { tx } from "@/lib/db";
+import { db, tx } from "@/lib/db";
 import type Database from "better-sqlite3";
 import { keIso } from "@/lib/http";
 import { randomUUID } from "node:crypto";
 import type { z } from "zod";
 import type { TransaksiDetail } from "@/lib/validation/transaksi";
+import { timeline } from "./transaksiTimeline";
 import {
   labelStatus,
   transisiDiizinkan,
@@ -67,70 +67,53 @@ function dto(r: TransaksiRingkasBaris): TransaksiRingkasDTO {
   return out;
 }
 
-export function milikTK(idTK: string, page = 1) {
-  const p = {
-    idTK,
-    limit: UKURAN_HALAMAN,
-    offset: (page - 1) * UKURAN_HALAMAN,
-  };
+function daftar(
+  where: string,
+  pemilik: Record<string, string>,
+  page: number,
+  status?: StatusPekerjaan,
+) {
+  const kondisi = `${where} AND (@status IS NULL OR t.status_pekerjaan = @status)`;
+  const filter = { ...pemilik, status: status ?? null };
   const rows = db
     .prepare(
-      `${SELECT_TRANSaksi} ${DARI_TRANSaksi}
-       WHERE t.id_tenaga_kerja = @idTK
-       ORDER BY t.created_at DESC LIMIT @limit OFFSET @offset`,
+      `${SELECT_TRANSaksi} ${DARI_TRANSaksi} WHERE ${kondisi}
+     ORDER BY t.created_at DESC, t.id_transaksi DESC LIMIT @limit OFFSET @offset`,
     )
-    .all(p) as TransaksiRingkasBaris[];
+    .all({
+      ...filter,
+      limit: UKURAN_HALAMAN,
+      offset: (page - 1) * UKURAN_HALAMAN,
+    }) as TransaksiRingkasBaris[];
   const { total } = db
-    .prepare(
-      `SELECT COUNT(*) AS total ${DARI_TRANSaksi}
-       WHERE t.id_tenaga_kerja = @idTK`,
-    )
-    .get({ idTK }) as { total: number };
+    .prepare(`SELECT COUNT(*) AS total ${DARI_TRANSaksi} WHERE ${kondisi}`)
+    .get(filter) as { total: number };
   return { items: rows.map(dto), total, page, pageSize: UKURAN_HALAMAN };
 }
 
-export function milikPK(idPK: string, page = 1) {
-  const p = {
-    idPK,
-    limit: UKURAN_HALAMAN,
-    offset: (page - 1) * UKURAN_HALAMAN,
-  };
-  const rows = db
-    .prepare(
-      `${SELECT_TRANSaksi} ${DARI_TRANSaksi}
-       WHERE t.id_penyedia_kerja = @idPK
-       ORDER BY t.created_at DESC LIMIT @limit OFFSET @offset`,
-    )
-    .all(p) as TransaksiRingkasBaris[];
-  const { total } = db
-    .prepare(
-      `SELECT COUNT(*) AS total ${DARI_TRANSaksi}
-       WHERE t.id_penyedia_kerja = @idPK`,
-    )
-    .get({ idPK }) as { total: number };
-  return { items: rows.map(dto), total, page, pageSize: UKURAN_HALAMAN };
+export function milikTK(idTK: string, page = 1, status?: StatusPekerjaan) {
+  return daftar("t.id_tenaga_kerja = @idTK", { idTK }, page, status);
 }
 
-export function semua(peran: "TK" | "PK", page = 1) {
-  const rows = db
-    .prepare(
-      `${SELECT_TRANSaksi} ${DARI_TRANSaksi}
-       ORDER BY t.created_at DESC LIMIT ? OFFSET ?`,
-    )
-    .all(
-      UKURAN_HALAMAN,
-      (page - 1) * UKURAN_HALAMAN,
-    ) as TransaksiRingkasBaris[];
-  const { total } = db
-    .prepare(`SELECT COUNT(*) AS total ${DARI_TRANSaksi}`)
-    .get() as { total: number };
-  return { items: rows.map(dto), total, page, pageSize: UKURAN_HALAMAN };
+export function milikPK(idPK: string, page = 1, status?: StatusPekerjaan) {
+  return daftar("t.id_penyedia_kerja = @idPK", { idPK }, page, status);
+}
+
+export function semua(
+  _peran: "TK" | "PK",
+  page = 1,
+  status?: StatusPekerjaan,
+) {
+  return daftar("1 = 1", {}, page, status);
 }
 
 export function detail(idTransaksi: string, idPengguna?: string) {
   const row = db
     .prepare(
       `${SELECT_TRANSaksi}, t.id_lowongan AS idLowongan,
+      t.status_sebelum_sengketa AS statusSebelumSengketa,
+      EXISTS(SELECT 1 FROM tagihan_pembayaran paid WHERE paid.id_transaksi = t.id_transaksi
+        AND paid.status_pembayaran IN ('BERHASIL', 'DIKEMBALIKAN')) AS pernahDibayar,
       utk.id_pengguna AS idPenggunaTK, upk.id_pengguna AS idPenggunaPK,
       utk.akumulasi_rating AS ratingTK, utk.jumlah_ulasan AS ulasanTK,
       upk.akumulasi_rating AS ratingPK, upk.jumlah_ulasan AS ulasanPK
@@ -139,6 +122,8 @@ export function detail(idTransaksi: string, idPengguna?: string) {
     .get(idTransaksi) as
     | (TransaksiRingkasBaris & {
         idLowongan: string;
+        statusSebelumSengketa: StatusPekerjaan | null;
+        pernahDibayar: number;
         idPenggunaTK: string;
         idPenggunaPK: string;
         ratingTK: number;
@@ -168,7 +153,8 @@ export function detail(idTransaksi: string, idPengguna?: string) {
      FROM tagihan_pembayaran WHERE id_transaksi = ? ORDER BY created_at DESC, id_tagihan DESC LIMIT 1`,
     )
     .get(idTransaksi) as
-    NonNullable<z.infer<typeof TransaksiDetail>["tagihan"]> | undefined;
+    | NonNullable<z.infer<typeof TransaksiDetail>["tagihan"]>
+    | undefined;
   const revisi = db
     .prepare(
       `SELECT catatan, waktu_permintaan AS waktu FROM catatan_revisi
@@ -214,7 +200,11 @@ export function detail(idTransaksi: string, idPengguna?: string) {
     tiketAktif: tiketAktif ?? null,
     ulasanSaya: ulasanSaya ?? null,
     labelStatus: labelStatus(row.status),
-    timeline: timeline(row.status),
+    timeline: timeline(row.status, {
+      statusSebelumSengketa: row.statusSebelumSengketa,
+      pernahDibayar: Boolean(row.pernahDibayar),
+      pernahMenyerahkanBukti: bukti.length > 0 || revisi.length > 0,
+    }),
   } satisfies z.infer<typeof TransaksiDetail>;
 }
 
@@ -360,6 +350,7 @@ export function setujuiHasil(
           idPenggunaPK: string;
         }
       | undefined;
+
     if (!transaksi) return { ok: false, alasan: "TIDAK_ADA" };
     if (transaksi.idPenggunaPK !== idPenggunaPK)
       return { ok: false, alasan: "BUKAN_PEMILIK" };
@@ -407,16 +398,23 @@ export function setujuiHasil(
   });
 }
 
+type HasilRevisi =
+  | { ok: true; idPenggunaTK: string }
+  | {
+      ok: false;
+      alasan: "TIDAK_ADA" | "BUKAN_PEMILIK" | "STATUS_TIDAK_VALID";
+    };
+
 export function mintaRevisi(
   idTransaksi: string,
   idPenggunaPK: string,
   catatan: string,
-): HasilTindakanTransaksi | { ok: true; idPenggunaTK: string } {
+): HasilRevisi {
   return tx(() => {
     const transaksi = db
       .prepare(
-        `SELECT t.status_pekerjaan AS status, t.nominal_upah AS nominalUpah,
-                tk.id_pengguna AS idPenggunaTK, pk.id_pengguna AS idPenggunaPK
+        `SELECT t.status_pekerjaan AS status, tk.id_pengguna AS idPenggunaTK,
+                pk.id_pengguna AS idPenggunaPK
          FROM transaksi_pekerjaan t
          JOIN tenaga_kerja tk ON tk.id_tenaga_kerja = t.id_tenaga_kerja
          JOIN penyedia_kerja pk ON pk.id_penyedia_kerja = t.id_penyedia_kerja
@@ -425,11 +423,11 @@ export function mintaRevisi(
       .get(idTransaksi) as
       | {
           status: StatusPekerjaan;
-          nominalUpah: number;
           idPenggunaTK: string;
           idPenggunaPK: string;
         }
       | undefined;
+
     if (!transaksi) return { ok: false, alasan: "TIDAK_ADA" };
     if (transaksi.idPenggunaPK !== idPenggunaPK)
       return { ok: false, alasan: "BUKAN_PEMILIK" };
@@ -448,6 +446,7 @@ export function mintaRevisi(
       )
       .get(idTransaksi);
     if (!berubah) return { ok: false, alasan: "STATUS_TIDAK_VALID" };
+
     db.prepare(
       `INSERT INTO catatan_revisi (id_revisi, id_transaksi, catatan)
        VALUES (?, ?, ?)`,
@@ -489,21 +488,13 @@ export function buatUlasan(
           idPenggunaPK: string;
         }
       | undefined;
+
     if (!transaksi)
-      return {
-        ok: false as const,
-        alasan: "TIDAK_ADA" as const,
-      };
+      return { ok: false as const, alasan: "TIDAK_ADA" as const };
     if (transaksi.idPenggunaPK !== idPenggunaPK)
-      return {
-        ok: false as const,
-        alasan: "BUKAN_PEMILIK" as const,
-      };
+      return { ok: false as const, alasan: "BUKAN_PEMILIK" as const };
     if (transaksi.status !== "COMPLETED")
-      return {
-        ok: false as const,
-        alasan: "STATUS_TIDAK_VALID" as const,
-      };
+      return { ok: false as const, alasan: "STATUS_TIDAK_VALID" as const };
     if (sudahDiulas(idTransaksi, idPenggunaPK))
       return { ok: false as const, alasan: "SUDAH_ADA" as const };
 
@@ -513,7 +504,14 @@ export function buatUlasan(
       `INSERT INTO ulasan_rating
        (id_ulasan, id_transaksi, id_penilai, id_penerima, nilai, deskripsi_ulasan)
        VALUES (?, ?, ?, ?, ?, ?)`,
-    ).run(id, idTransaksi, idPenggunaPK, transaksi.idPenggunaTK, input.nilai, deskripsi);
+    ).run(
+      id,
+      idTransaksi,
+      idPenggunaPK,
+      transaksi.idPenggunaTK,
+      input.nilai,
+      deskripsi,
+    );
     db.prepare(
       `UPDATE pengguna
        SET akumulasi_rating = (
@@ -523,43 +521,11 @@ export function buatUlasan(
              SELECT COUNT(*) FROM ulasan_rating WHERE id_penerima = ?
            )
        WHERE id_pengguna = ?`,
-    ).run(transaksi.idPenggunaTK, transaksi.idPenggunaTK, transaksi.idPenggunaTK);
+    ).run(
+      transaksi.idPenggunaTK,
+      transaksi.idPenggunaTK,
+      transaksi.idPenggunaTK,
+    );
     return { ok: true as const, id, nilai: input.nilai, deskripsi };
   });
-}
-
-const ALUR_PEKERJAAN: readonly StatusPekerjaan[] = [
-  "MENUNGGU_PEMBAYARAN",
-  "IN_PROGRESS",
-  "SUBMITTED",
-  "COMPLETED",
-];
-
-export function timeline(statusSaatIni: StatusPekerjaan) {
-  const urutan = [...ALUR_PEKERJAAN];
-  const tercapaiStatus = (status: StatusPekerjaan) =>
-    urutan.indexOf(statusSaatIni) >= urutan.indexOf(status) &&
-    statusSaatIni !== "DIBATALKAN";
-  if (statusSaatIni === "DISENGKETAKAN" || statusSaatIni === "DIBATALKAN") {
-    return [
-      ...urutan.map((status) => ({
-        status,
-        label: labelStatus(status),
-        tercapai: status === "MENUNGGU_PEMBAYARAN" || status === "IN_PROGRESS",
-        aktif: false,
-      })),
-      {
-        status: statusSaatIni,
-        label: labelStatus(statusSaatIni),
-        tercapai: true,
-        aktif: true,
-      },
-    ];
-  }
-  return urutan.map((status) => ({
-    status,
-    label: labelStatus(status),
-    tercapai: tercapaiStatus(status),
-    aktif: status === statusSaatIni,
-  }));
 }

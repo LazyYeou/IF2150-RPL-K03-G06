@@ -39,6 +39,17 @@ export const StatusPekerjaan = z.enum([
   "DISENGKETAKAN",
   "DIBATALKAN",
 ]);
+export const LABEL_STATUS_PEKERJAAN: Record<
+  z.infer<typeof StatusPekerjaan>,
+  string
+> = {
+  MENUNGGU_PEMBAYARAN: "Menunggu pembayaran",
+  IN_PROGRESS: "Sedang dikerjakan",
+  SUBMITTED: "Menunggu pemeriksaan",
+  COMPLETED: "Selesai",
+  DISENGKETAKAN: "Dalam peninjauan CS",
+  DIBATALKAN: "Dibatalkan",
+};
 export const StatusTiket = z.enum([
   "DIAJUKAN",
   "DITINJAU",

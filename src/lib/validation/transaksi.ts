@@ -16,6 +16,7 @@ export const PeranTransaksi = z.preprocess(
 
 export const DaftarTransaksiQuery = z.object({
   peran: PeranTransaksi.optional(),
+  status: StatusPekerjaan.optional(),
   page: Page,
 });
 

@@ -27,7 +27,7 @@ export async function ambilTransaksiSaya(query: unknown) {
         403,
         "Profil tenaga kerja tidak ditemukan",
       );
-    return Transaksi.milikTK(idTK, q.page);
+    return Transaksi.milikTK(idTK, q.page, q.status);
   }
   if (user.peran === "PK") {
     const idPK = idPenyediaKerja(user.id);
@@ -37,9 +37,9 @@ export async function ambilTransaksiSaya(query: unknown) {
         403,
         "Profil penyedia kerja tidak ditemukan",
       );
-    return Transaksi.milikPK(idPK, q.page);
+    return Transaksi.milikPK(idPK, q.page, q.status);
   }
-  return Transaksi.semua(q.peran ?? "TK", q.page);
+  return Transaksi.semua(q.peran ?? "TK", q.page, q.status);
 }
 
 export async function ambilDetailTransaksi(rawId: string) {
