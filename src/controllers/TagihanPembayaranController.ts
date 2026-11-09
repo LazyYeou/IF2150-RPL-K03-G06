@@ -4,8 +4,8 @@ import { requireUser } from "@/lib/auth/guards";
 import { AppError } from "@/lib/errors";
 import {
   buatTagihan,
-  cariTagihanAktif,
   cariTagihanBerdasarkanId,
+  cariTagihanTerakhir,
   periksaKedaluwarsaLazy,
   ubahStatusTagihan,
   type TagihanDTO,
@@ -117,9 +117,11 @@ export async function ambilDataHalamanBayar(idTransaksi: string) {
   }
 
   const hasilTagihan = tx(() => {
-    const aktif = cariTagihanAktif(idTransaksi);
-    if (aktif) return periksaKedaluwarsaLazy(aktif);
-    return buatTagihan(idTransaksi, trx.nominalUpah).tagihan;
+    const terakhir = cariTagihanTerakhir(idTransaksi);
+    if (!terakhir) {
+      return buatTagihan(idTransaksi, trx.nominalUpah).tagihan;
+    }
+    return periksaKedaluwarsaLazy(terakhir);
   });
 
   return {
@@ -169,15 +171,23 @@ export async function bayarTagihan(
     throw new AppError(
       "STATUS_TIDAK_VALID",
       409,
-      "Tagihan telah kedaluwarsa dan tidak dapat dibayar",
+      "Tagihan telah kedaluwarsa dan tidak dapat dibayar. Silakan buat tagihan baru.",
     );
   }
 
-  if (tagihan.status !== "MENUNGGU_PEMBAYARAN" && tagihan.status !== "DIPROSES") {
+  if (tagihanCek.status === "GAGAL") {
     throw new AppError(
       "STATUS_TIDAK_VALID",
       409,
-      `Tagihan dengan status ${tagihan.status} tidak dapat diproses`,
+      "Tagihan telah gagal diproses. Silakan buat tagihan baru.",
+    );
+  }
+
+  if (tagihanCek.status !== "MENUNGGU_PEMBAYARAN" && tagihanCek.status !== "DIPROSES") {
+    throw new AppError(
+      "STATUS_TIDAK_VALID",
+      409,
+      `Tagihan dengan status ${tagihanCek.status} tidak dapat diproses. Silakan buat tagihan baru.`,
     );
   }
 
@@ -200,9 +210,6 @@ export async function bayarTagihan(
   };
 }
 
-/**
- * Menyediakan data untuk halaman Mock Gateway simulator.
- */
 export async function ambilDataMockGateway(idTagihan: string) {
   const tagihan = cariTagihanBerdasarkanId(idTagihan);
   if (!tagihan) {
