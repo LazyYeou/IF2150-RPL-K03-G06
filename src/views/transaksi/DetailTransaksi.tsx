@@ -9,6 +9,7 @@ import { useToast } from "@/components/ui/toast";
 import { useRouter } from "next/navigation";
 import type { z } from "zod";
 import type { TransaksiDetail } from "@/lib/validation/transaksi";
+import FormUlasanTransaksi from "@/views/transaksi/FormUlasanTransaksi";
 
 type Props = {
   idTransaksi?: string;
@@ -170,17 +171,23 @@ export default function DetailTransaksi({
             <span className="text-muted-foreground block text-xs">
               Tenaga Kerja:
             </span>
-            <span className="font-medium text-foreground">
+            <Link
+              href={`/profil/${transaksi.tenagaKerja.id}`}
+              className="font-medium text-foreground underline underline-offset-2"
+            >
               {transaksi.tenagaKerja.nama}
-            </span>
+            </Link>
           </div>
           <div>
             <span className="text-muted-foreground block text-xs">
               Penyedia Kerja:
             </span>
-            <span className="font-medium text-foreground">
+            <Link
+              href={`/profil/${transaksi.penyediaKerja.id}`}
+              className="font-medium text-foreground underline underline-offset-2"
+            >
               {transaksi.penyediaKerja.nama}
-            </span>
+            </Link>
           </div>
         </div>
       </div>
@@ -284,21 +291,52 @@ export default function DetailTransaksi({
           </section>
         )}
 
-      {peran === "PK" &&
+      {(peran === "PK" || peran === "TK") &&
         transaksi.status === "COMPLETED" &&
-        !transaksi.ulasanSaya &&
-        targetIdTransaksi && (
+        targetIdTransaksi &&
+        (transaksi.ulasanSaya ? (
           <p className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
-            Hasil pekerjaan telah disetujui.{" "}
-            <Link
-              href={`/pk/transaksi/${targetIdTransaksi}/ulasan`}
-              className="font-semibold underline underline-offset-2"
-            >
-              Berikan ulasan kepada tenaga kerja
-            </Link>
-            .
+            Anda telah mengirim ulasan untuk transaksi ini.
           </p>
-        )}
+        ) : (
+          <section className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
+            <p>
+              Transaksi telah selesai. Bagikan pengalamanmu dengan memberi
+              ulasan kepada{" "}
+              {peran === "PK"
+                ? transaksi.tenagaKerja.nama
+                : transaksi.penyediaKerja.nama}
+              .
+            </p>
+            <div className="mt-3">
+              <Dialog
+                trigger="Beri ulasan"
+                title="Ulasan pekerjaan"
+                description="Pilih rating bintang 1–5. Komentar bersifat opsional."
+              >
+                <FormUlasanTransaksi
+                  idTransaksi={targetIdTransaksi}
+                  judul={transaksi.judul}
+                  namaPenerima={
+                    peran === "PK"
+                      ? transaksi.tenagaKerja.nama
+                      : transaksi.penyediaKerja.nama
+                  }
+                  peran={peran}
+                  sudahDiulas={false}
+                />
+              </Dialog>
+              {peran === "PK" && (
+                <Link
+                  href={`/pk/transaksi/${targetIdTransaksi}/ulasan`}
+                  className="ml-3 font-semibold underline underline-offset-2"
+                >
+                  Buka formulir ulasan
+                </Link>
+              )}
+            </div>
+          </section>
+        ))}
 
       {/* Form Kirim Bukti jika Tenaga Kerja & status IN_PROGRESS */}
       {idTransaksi && transaksi.status === "IN_PROGRESS" && (
