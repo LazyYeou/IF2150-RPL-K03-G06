@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import SectionPlaceholder from "@/views/dashboard/SectionPlaceholder";
 import { ambilTransaksiSaya } from "@/controllers/TransaksiPekerjaanController";
 import DaftarTransaksi from "@/views/transaksi/DaftarTransaksi";
+
 const sections: Record<string, [string, string]> = {
   lowongan: [
     "Lowongan saya",
@@ -12,6 +13,7 @@ const sections: Record<string, [string, string]> = {
     "Pantau pekerjaan, pembayaran, dan hasil yang perlu ditinjau.",
   ],
 };
+
 export default async function Section({
   params,
 }: {
@@ -22,9 +24,13 @@ export default async function Section({
   if ((await params).section === "transaksi") {
     const data = await ambilTransaksiSaya({ peran: "PK", page: 1 });
     return (
-      <main>
-        <h1>{section[0]}</h1>
-        <p>{section[1]}</p>
+      <main className="space-y-6">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground">
+            {section[0]}
+          </h1>
+          <p className="mt-1 text-sm text-muted-foreground">{section[1]}</p>
+        </div>
         <DaftarTransaksi items={data.items} detailPath="pk" />
       </main>
     );
