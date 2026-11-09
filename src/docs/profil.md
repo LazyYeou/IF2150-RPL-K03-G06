@@ -12,6 +12,11 @@ sidebar serta dashboard. Verifikasi ditampilkan untuk TK; rating tanpa ulasan
 ditampilkan sebagai “Belum ada ulasan”. Rata-rata rating mengikuti nilai tersimpan
 `akumulasi_rating` sesuai DPPL2 M8 Q-001/Q-002, bukan dihitung ulang dari form profil.
 
+Ulasan dari transaksi berstatus `COMPLETED` ditampilkan pada halaman profil pemilik
+ulasan dan pada profil publik `/profil/:id`. Profil publik hanya mengembalikan nama,
+peran, area layanan, bio, status verifikasi tenaga kerja, rating, dan maksimal 20
+ulasan terbaru; email dan informasi akun privat tidak disertakan.
+
 Halaman publik `/privasi` dan `/syarat` berisi informasi lingkungan proyek.
 Route lama `/ketentuan` tetap tersedia dan menampilkan isi yang sama dengan `/syarat`.
 Tautan formulir pendaftaran/footer menggunakan `/syarat`.
