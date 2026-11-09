@@ -15,12 +15,22 @@ export async function ambilTransaksiSaya(query: unknown) {
 
   if (user.peran === "TK") {
     const idTK = idDariPengguna(user.id);
-    if (!idTK) throw new AppError("FORBIDDEN", 403, "Profil tenaga kerja tidak ditemukan");
+    if (!idTK)
+      throw new AppError(
+        "FORBIDDEN",
+        403,
+        "Profil tenaga kerja tidak ditemukan",
+      );
     return Transaksi.milikTK(idTK, q.page);
   }
   if (user.peran === "PK") {
     const idPK = idPenyediaKerja(user.id);
-    if (!idPK) throw new AppError("FORBIDDEN", 403, "Profil penyedia kerja tidak ditemukan");
+    if (!idPK)
+      throw new AppError(
+        "FORBIDDEN",
+        403,
+        "Profil penyedia kerja tidak ditemukan",
+      );
     return Transaksi.milikPK(idPK, q.page);
   }
   return Transaksi.semua(q.peran ?? "TK", q.page);
@@ -29,9 +39,11 @@ export async function ambilTransaksiSaya(query: unknown) {
 export async function ambilDetailTransaksi(rawId: string) {
   const user = await requireUser();
   const parsed = Id.safeParse(rawId);
-  if (!parsed.success) throw new AppError("NOT_FOUND", 404, "Transaksi tidak ditemukan");
-  const transaksi = Transaksi.detail(parsed.data);
-  if (!transaksi) throw new AppError("NOT_FOUND", 404, "Transaksi tidak ditemukan");
+  if (!parsed.success)
+    throw new AppError("NOT_FOUND", 404, "Transaksi tidak ditemukan");
+  const transaksi = Transaksi.detail(parsed.data, user.id);
+  if (!transaksi)
+    throw new AppError("NOT_FOUND", 404, "Transaksi tidak ditemukan");
 
   const peserta =
     user.peran === "TK"

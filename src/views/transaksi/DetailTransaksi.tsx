@@ -3,20 +3,12 @@ import { useState } from "react";
 import imageCompression from "browser-image-compression";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/toast";
+import type { z } from "zod";
+import type { TransaksiDetail } from "@/lib/validation/transaksi";
 
 type Props = {
   idTransaksi?: string;
-  transaksi: {
-    judul: string;
-    status: string;
-    labelStatus: string;
-    nominalUpah: number;
-    commissionFee?: number;
-    totalBayar?: number;
-    tenagaKerja: string;
-    penyediaKerja: string;
-    timeline: Array<{ status: string; label: string; aktif: boolean; tercapai: boolean }>;
-  };
+  transaksi: z.infer<typeof TransaksiDetail>;
 };
 
 export default function DetailTransaksi({ transaksi, idTransaksi }: Props) {
@@ -32,7 +24,7 @@ export default function DetailTransaksi({ transaksi, idTransaksi }: Props) {
 
   async function kirimBukti(form: FormData) {
     const input = form.get("berkas");
-    if (!(input instanceof File)) {
+    if (!(input instanceof File) || input.size === 0) {
       setPesan("Pilih berkas bukti pekerjaan.");
       return;
     }
@@ -42,11 +34,21 @@ export default function DetailTransaksi({ transaksi, idTransaksi }: Props) {
       let berkas = input;
       if (input.type.startsWith("image/")) {
         berkas = await imageCompression(input, {
-          maxSizeMB: 9,
+          maxSizeMB: 2,
           maxWidthOrHeight: 2400,
           useWebWorker: true,
           fileType: input.type,
         });
+        if (berkas.size > 2 * 1024 * 1024) {
+          setPesan(
+            "Gambar belum dapat dikompres hingga 2 MB. Pilih gambar yang lebih kecil.",
+          );
+          return;
+        }
+      }
+      if (berkas.size > 10 * 1024 * 1024) {
+        setPesan("Ukuran berkas maksimal 10 MB.");
+        return;
       }
       form.set("berkas", berkas, berkas.name || input.name);
       const response = await fetch(`/api/transaksi/${idTransaksi}/bukti`, {
@@ -72,9 +74,11 @@ export default function DetailTransaksi({ transaksi, idTransaksi }: Props) {
       <div className="card">
         <p className="text-sm">Ringkasan transaksi</p>
         <h1>{transaksi.judul}</h1>
-        <p>Status saat ini: <strong>{transaksi.labelStatus}</strong></p>
-        <p>Tenaga kerja: {transaksi.tenagaKerja}</p>
-        <p>Penyedia kerja: {transaksi.penyediaKerja}</p>
+        <p>
+          Status saat ini: <strong>{transaksi.labelStatus}</strong>
+        </p>
+        <p>Tenaga kerja: {transaksi.tenagaKerja.nama}</p>
+        <p>Penyedia kerja: {transaksi.penyediaKerja.nama}</p>
       </div>
 
       {idTransaksi && transaksi.status === "IN_PROGRESS" && (
@@ -91,10 +95,13 @@ export default function DetailTransaksi({ transaksi, idTransaksi }: Props) {
             id="deskripsi"
             name="deskripsi"
             minLength={10}
-            maxLength={2000}
+            maxLength={1000}
             required
             className="min-h-28 w-full rounded border px-3 py-2"
           />
+          <p className="text-sm text-muted-foreground">
+            Deskripsi 10–1000 karakter.
+          </p>
           <label htmlFor="berkas" className="block text-sm font-medium">
             Berkas bukti (JPG, PNG, atau PDF; maksimal 10 MB)
           </label>
@@ -105,11 +112,58 @@ export default function DetailTransaksi({ transaksi, idTransaksi }: Props) {
             accept=".jpg,.jpeg,.png,.pdf,image/jpeg,image/png,application/pdf"
             required
           />
+          <p className="text-sm text-muted-foreground">
+            Gambar dikompres hingga maksimal 2 MB sebelum dikirim.
+          </p>
           <Button type="submit" disabled={mengirim}>
             {mengirim ? "Mengirim..." : "Kirim bukti"}
           </Button>
         </form>
       )}
+
+      <section
+        className="rounded-lg border p-5"
+        aria-labelledby="bukti-heading"
+      >
+        <h2 id="bukti-heading" className="text-lg font-semibold">
+          Bukti pekerjaan
+        </h2>
+        {transaksi.bukti.length === 0 ? (
+          <p className="mt-3 text-sm text-muted-foreground">
+            Belum ada bukti pekerjaan yang dikirim.
+          </p>
+        ) : (
+          <ol className="mt-4 space-y-4">
+            {transaksi.bukti.map((bukti, index) => (
+              <li key={bukti.id} className="rounded-lg border p-4">
+                <h3 className="font-medium">Bukti {index + 1}</h3>
+                <time
+                  dateTime={bukti.waktu}
+                  className="text-sm text-muted-foreground"
+                >
+                  {new Intl.DateTimeFormat("id-ID", {
+                    dateStyle: "long",
+                    timeStyle: "short",
+                    timeZone: "Asia/Jakarta",
+                  }).format(new Date(bukti.waktu))}{" "}
+                  WIB
+                </time>
+                <p className="mt-3 whitespace-pre-wrap break-words">
+                  {bukti.deskripsi}
+                </p>
+                <a
+                  href={bukti.urlBerkas}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-3 inline-flex min-h-11 items-center rounded px-3 font-medium text-primary underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2"
+                >
+                  Buka berkas bukti {index + 1} (tab baru)
+                </a>
+              </li>
+            ))}
+          </ol>
+        )}
+      </section>
 
       <div className="card">
         <h2>Rincian biaya</h2>
@@ -118,7 +172,9 @@ export default function DetailTransaksi({ transaksi, idTransaksi }: Props) {
           <p>Biaya layanan: {rupiah(transaksi.commissionFee)}</p>
         )}
         {transaksi.totalBayar !== undefined && (
-          <p><strong>Total: {rupiah(transaksi.totalBayar)}</strong></p>
+          <p>
+            <strong>Total: {rupiah(transaksi.totalBayar)}</strong>
+          </p>
         )}
       </div>
 

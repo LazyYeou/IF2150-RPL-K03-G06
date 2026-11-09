@@ -2,6 +2,8 @@ import { db } from "@/lib/db";
 import { tx } from "@/lib/db";
 import { keIso } from "@/lib/http";
 import { randomUUID } from "node:crypto";
+import type { z } from "zod";
+import type { TransaksiDetail } from "@/lib/validation/transaksi";
 import {
   labelStatus,
   transisiDiizinkan,
@@ -65,7 +67,11 @@ function dto(r: TransaksiRingkasBaris): TransaksiRingkasDTO {
 }
 
 export function milikTK(idTK: string, page = 1) {
-  const p = { idTK, limit: UKURAN_HALAMAN, offset: (page - 1) * UKURAN_HALAMAN };
+  const p = {
+    idTK,
+    limit: UKURAN_HALAMAN,
+    offset: (page - 1) * UKURAN_HALAMAN,
+  };
   const rows = db
     .prepare(
       `${SELECT_TRANSaksi} ${DARI_TRANSaksi}
@@ -83,7 +89,11 @@ export function milikTK(idTK: string, page = 1) {
 }
 
 export function milikPK(idPK: string, page = 1) {
-  const p = { idPK, limit: UKURAN_HALAMAN, offset: (page - 1) * UKURAN_HALAMAN };
+  const p = {
+    idPK,
+    limit: UKURAN_HALAMAN,
+    offset: (page - 1) * UKURAN_HALAMAN,
+  };
   const rows = db
     .prepare(
       `${SELECT_TRANSaksi} ${DARI_TRANSaksi}
@@ -106,22 +116,105 @@ export function semua(peran: "TK" | "PK", page = 1) {
       `${SELECT_TRANSaksi} ${DARI_TRANSaksi}
        ORDER BY t.created_at DESC LIMIT ? OFFSET ?`,
     )
-    .all(UKURAN_HALAMAN, (page - 1) * UKURAN_HALAMAN) as TransaksiRingkasBaris[];
+    .all(
+      UKURAN_HALAMAN,
+      (page - 1) * UKURAN_HALAMAN,
+    ) as TransaksiRingkasBaris[];
   const { total } = db
-    .prepare(
-      `SELECT COUNT(*) AS total ${DARI_TRANSaksi}`,
-    )
+    .prepare(`SELECT COUNT(*) AS total ${DARI_TRANSaksi}`)
     .get() as { total: number };
   return { items: rows.map(dto), total, page, pageSize: UKURAN_HALAMAN };
 }
 
-export function detail(idTransaksi: string) {
+export function detail(idTransaksi: string, idPengguna?: string) {
   const row = db
-    .prepare(`${SELECT_TRANSaksi} ${DARI_TRANSaksi} WHERE t.id_transaksi = ?`)
-    .get(idTransaksi) as TransaksiRingkasBaris | undefined;
-  return row
-    ? { ...dto(row), labelStatus: labelStatus(row.status), timeline: timeline(row.status) }
-    : null;
+    .prepare(
+      `${SELECT_TRANSaksi}, t.id_lowongan AS idLowongan,
+      utk.id_pengguna AS idPenggunaTK, upk.id_pengguna AS idPenggunaPK,
+      utk.akumulasi_rating AS ratingTK, utk.jumlah_ulasan AS ulasanTK,
+      upk.akumulasi_rating AS ratingPK, upk.jumlah_ulasan AS ulasanPK
+      ${DARI_TRANSaksi} WHERE t.id_transaksi = ?`,
+    )
+    .get(idTransaksi) as
+    | (TransaksiRingkasBaris & {
+        idLowongan: string;
+        idPenggunaTK: string;
+        idPenggunaPK: string;
+        ratingTK: number;
+        ulasanTK: number;
+        ratingPK: number;
+        ulasanPK: number;
+      })
+    | undefined;
+  if (!row) return null;
+
+  const bukti = db
+    .prepare(
+      `SELECT id_penyerahan AS id, deskripsi_pengerjaan AS deskripsi,
+      timestamp_pengiriman AS waktu FROM bukti_penyerahan
+     WHERE id_transaksi = ? ORDER BY timestamp_pengiriman, id_penyerahan`,
+    )
+    .all(idTransaksi) as Array<{
+    id: string;
+    deskripsi: string;
+    waktu: string;
+  }>;
+  const tagihan = db
+    .prepare(
+      `SELECT id_tagihan AS id, id_transaksi AS idTransaksi, nominal_upah AS nominalUpah,
+      commission_fee AS commissionFee, total_bayar AS totalBayar, metode,
+      expiry_timestamp AS expiry, status_pembayaran AS status
+     FROM tagihan_pembayaran WHERE id_transaksi = ? ORDER BY created_at DESC, id_tagihan DESC LIMIT 1`,
+    )
+    .get(idTransaksi) as
+    NonNullable<z.infer<typeof TransaksiDetail>["tagihan"]> | undefined;
+  const revisi = db
+    .prepare(
+      `SELECT catatan, waktu_permintaan AS waktu FROM catatan_revisi
+     WHERE id_transaksi = ? ORDER BY waktu_permintaan, id_revisi`,
+    )
+    .all(idTransaksi) as Array<{ catatan: string; waktu: string }>;
+  const tiketAktif = db
+    .prepare(
+      `SELECT id_tiket AS id, nomor_tiket AS nomorTiket FROM tiket_sengketa
+     WHERE id_transaksi = ? AND status_tiket NOT IN ('DITUTUP', 'DITOLAK', 'DIBATALKAN')`,
+    )
+    .get(idTransaksi) as { id: string; nomorTiket: string } | undefined;
+  const ulasanSaya = idPengguna
+    ? (db
+        .prepare(
+          "SELECT nilai FROM ulasan_rating WHERE id_transaksi = ? AND id_penilai = ?",
+        )
+        .get(idTransaksi, idPengguna) as { nilai: number } | undefined)
+    : undefined;
+
+  return {
+    ...dto(row),
+    lowongan: { id: row.idLowongan, judul: row.judul },
+    tenagaKerja: {
+      id: row.idPenggunaTK,
+      nama: row.tenagaKerja,
+      akumulasiRating: row.ratingTK,
+      jumlahUlasan: row.ulasanTK,
+    },
+    penyediaKerja: {
+      id: row.idPenggunaPK,
+      nama: row.penyediaKerja,
+      akumulasiRating: row.ratingPK,
+      jumlahUlasan: row.ulasanPK,
+    },
+    tagihan: tagihan ? { ...tagihan, expiry: keIso(tagihan.expiry) } : null,
+    bukti: bukti.map((item) => ({
+      ...item,
+      waktu: keIso(item.waktu),
+      urlBerkas: `/api/berkas/bukti/${item.id}`,
+    })),
+    revisi: revisi.map((item) => ({ ...item, waktu: keIso(item.waktu) })),
+    tiketAktif: tiketAktif ?? null,
+    ulasanSaya: ulasanSaya ?? null,
+    labelStatus: labelStatus(row.status),
+    timeline: timeline(row.status),
+  } satisfies z.infer<typeof TransaksiDetail>;
 }
 
 export function detailPeserta(
@@ -132,7 +225,9 @@ export function detailPeserta(
   if (!idProfil) return false;
   const kolom = peran === "TK" ? "t.id_tenaga_kerja" : "t.id_penyedia_kerja";
   const baris = db
-    .prepare(`SELECT 1 AS ditemukan FROM transaksi_pekerjaan t WHERE t.id_transaksi = ? AND ${kolom} = ?`)
+    .prepare(
+      `SELECT 1 AS ditemukan FROM transaksi_pekerjaan t WHERE t.id_transaksi = ? AND ${kolom} = ?`,
+    )
     .get(idTransaksi, idProfil);
   return Boolean(baris);
 }

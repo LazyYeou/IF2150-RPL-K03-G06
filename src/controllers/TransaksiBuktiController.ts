@@ -43,25 +43,25 @@ export async function prosesUnggahBuktiPekerjaan(
     throw error;
   }
   if (!hasil.ok) {
-      await hapusBerkas(disimpan.path);
-      if (hasil.alasan === "TIDAK_ADA")
-        throw new AppError("NOT_FOUND", 404, "Transaksi tidak ditemukan");
-      if (hasil.alasan === "BUKAN_TK_TUGAS")
-        throw new AppError(
-          "FORBIDDEN",
-          403,
-          "Anda bukan tenaga kerja terverifikasi yang ditugaskan",
-        );
+    await hapusBerkas(disimpan.path);
+    if (hasil.alasan === "TIDAK_ADA")
+      throw new AppError("NOT_FOUND", 404, "Transaksi tidak ditemukan");
+    if (hasil.alasan === "BUKAN_TK_TUGAS")
       throw new AppError(
-        "STATUS_TIDAK_VALID",
-        409,
-        "Bukti hanya dapat dikirim saat pekerjaan sedang berlangsung",
+        "FORBIDDEN",
+        403,
+        "Anda bukan tenaga kerja terverifikasi yang ditugaskan",
       );
+    throw new AppError(
+      "STATUS_TIDAK_VALID",
+      409,
+      "Bukti hanya dapat dikirim saat pekerjaan sedang berlangsung",
+    );
   }
   await kirimNotifikasi(
     hasil.idPenggunaPK,
     "Tenaga kerja telah mengirim bukti penyelesaian pekerjaan.",
     `/pk/transaksi/${id.data}`,
   );
-  return { idTransaksi: id.data, status: "SUBMITTED" };
+  return Transaksi.detail(id.data, user.id);
 }
