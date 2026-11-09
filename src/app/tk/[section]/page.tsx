@@ -1,7 +1,8 @@
 import { notFound } from "next/navigation";
 import SectionPlaceholder from "@/views/dashboard/SectionPlaceholder";
-import { ambilTransaksiSaya } from "@/controllers/TransaksiPekerjaanController";
-import DaftarTransaksi from "@/views/transaksi/DaftarTransaksi";
+import HalamanDaftarTransaksi, {
+  type QueryDaftarTransaksi,
+} from "@/views/transaksi/HalamanDaftarTransaksi";
 const sections: Record<string, [string, string]> = {
   lamaran: [
     "Lamaran saya",
@@ -15,19 +16,21 @@ const sections: Record<string, [string, string]> = {
 };
 export default async function Section({
   params,
+  searchParams,
 }: {
   params: Promise<{ section: string }>;
+  searchParams: Promise<QueryDaftarTransaksi>;
 }) {
   const section = sections[(await params).section];
   if (!section) notFound();
   if ((await params).section === "pekerjaan") {
-    const data = await ambilTransaksiSaya({ peran: "TK", page: 1 });
     return (
-      <main>
-        <h1>{section[0]}</h1>
-        <p>{section[1]}</p>
-        <DaftarTransaksi items={data.items} detailPath="tk" />
-      </main>
+      <HalamanDaftarTransaksi
+        peran="TK"
+        title={section[0]}
+        description={section[1]}
+        query={await searchParams}
+      />
     );
   }
   return (

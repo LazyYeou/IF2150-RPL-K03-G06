@@ -1,3 +1,5 @@
+import { LABEL_STATUS_PEKERJAAN } from "@/lib/validation/common";
+
 export type JenisStatus =
   | "pekerjaan"
   | "pembayaran"
@@ -31,18 +33,10 @@ export type StatusPembayaran =
   | "DIKEMBALIKAN";
 
 export type StatusPencairan =
-  | "MENUNGGU_PROSES"
-  | "DIPROSES"
-  | "BERHASIL"
-  | "GAGAL"
-  | "DITOLAK";
+  "MENUNGGU_PROSES" | "DIPROSES" | "BERHASIL" | "GAGAL" | "DITOLAK";
 
 export type StatusPenawaran =
-  | "MENUNGGU"
-  | "DITERIMA"
-  | "DITOLAK"
-  | "DITARIK"
-  | "DITOLAK_OTOMATIS";
+  "MENUNGGU" | "DITERIMA" | "DITOLAK" | "DITARIK" | "DITOLAK_OTOMATIS";
 
 export type StatusTiket =
   | "DIAJUKAN"
@@ -54,67 +48,61 @@ export type StatusTiket =
   | "DIBATALKAN";
 
 export type StatusVerifikasi =
-  | "BELUM_TERVERIFIKASI"
-  | "MENUNGGU_VERIFIKASI"
-  | "TERVERIFIKASI"
-  | "DITOLAK";
+  "BELUM_TERVERIFIKASI" | "MENUNGGU_VERIFIKASI" | "TERVERIFIKASI" | "DITOLAK";
 
-const TRANSISI_STATUS: Record<JenisStatus, Readonly<Record<string, readonly string[]>>> =
-  {
-    pekerjaan: {
-      MENUNGGU_PEMBAYARAN: ["IN_PROGRESS", "DIBATALKAN"],
-      IN_PROGRESS: ["SUBMITTED", "DISENGKETAKAN", "DIBATALKAN"],
-      SUBMITTED: ["COMPLETED", "IN_PROGRESS", "DISENGKETAKAN", "DIBATALKAN"],
-      COMPLETED: ["DISENGKETAKAN"],
-      DISENGKETAKAN: ["COMPLETED", "IN_PROGRESS", "DIBATALKAN"],
-      DIBATALKAN: [],
-    },
-    pembayaran: {
-      MENUNGGU_PEMBAYARAN: ["DIPROSES", "KEDALUWARSA", "GAGAL"],
-      DIPROSES: ["BERHASIL", "GAGAL", "KEDALUWARSA"],
-      BERHASIL: ["DIKEMBALIKAN"],
-      GAGAL: ["DIPROSES", "KEDALUWARSA"],
-      KEDALUWARSA: [],
-      DIKEMBALIKAN: [],
-    },
-    pencairan: {
-      MENUNGGU_PROSES: ["DIPROSES", "DITOLAK"],
-      DIPROSES: ["BERHASIL", "GAGAL", "DITOLAK"],
-      BERHASIL: [],
-      GAGAL: ["MENUNGGU_PROSES"],
-      DITOLAK: [],
-    },
-    penawaran: {
-      MENUNGGU: ["DITERIMA", "DITOLAK", "DITARIK", "DITOLAK_OTOMATIS"],
-      DITERIMA: [],
-      DITOLAK: [],
-      DITARIK: [],
-      DITOLAK_OTOMATIS: [],
-    },
-    tiket: {
-      DIAJUKAN: ["DITINJAU", "DIBATALKAN", "DITOLAK"],
-      DITINJAU: ["MENUNGGU_BALASAN", "DIPROSES", "DITUTUP", "DITOLAK"],
-      MENUNGGU_BALASAN: ["DITINJAU", "DIPROSES", "DITUTUP", "DITOLAK"],
-      DIPROSES: ["MENUNGGU_BALASAN", "DITUTUP", "DITOLAK"],
-      DITUTUP: [],
-      DITOLAK: [],
-      DIBATALKAN: [],
-    },
-    verifikasi: {
-      BELUM_TERVERIFIKASI: ["MENUNGGU_VERIFIKASI", "DITOLAK"],
-      MENUNGGU_VERIFIKASI: ["TERVERIFIKASI", "DITOLAK", "BELUM_TERVERIFIKASI"],
-      TERVERIFIKASI: [],
-      DITOLAK: ["BELUM_TERVERIFIKASI", "MENUNGGU_VERIFIKASI"],
-    },
-  };
+const TRANSISI_STATUS: Record<
+  JenisStatus,
+  Readonly<Record<string, readonly string[]>>
+> = {
+  pekerjaan: {
+    MENUNGGU_PEMBAYARAN: ["IN_PROGRESS"],
+    IN_PROGRESS: ["SUBMITTED", "DISENGKETAKAN"],
+    SUBMITTED: ["COMPLETED", "IN_PROGRESS", "DISENGKETAKAN"],
+    COMPLETED: [],
+    DISENGKETAKAN: ["COMPLETED", "IN_PROGRESS", "SUBMITTED", "DIBATALKAN"],
+    DIBATALKAN: [],
+  },
+  pembayaran: {
+    MENUNGGU_PEMBAYARAN: ["DIPROSES", "KEDALUWARSA"],
+    DIPROSES: ["BERHASIL", "GAGAL", "KEDALUWARSA"],
+    BERHASIL: ["DIKEMBALIKAN"],
+    GAGAL: [],
+    KEDALUWARSA: [],
+    DIKEMBALIKAN: [],
+  },
+  pencairan: {
+    MENUNGGU_PROSES: ["DIPROSES", "DITOLAK"],
+    DIPROSES: ["BERHASIL", "GAGAL"],
+    BERHASIL: [],
+    GAGAL: [],
+    DITOLAK: [],
+  },
+  penawaran: {
+    MENUNGGU: ["DITERIMA", "DITOLAK", "DITARIK", "DITOLAK_OTOMATIS"],
+    DITERIMA: [],
+    DITOLAK: [],
+    DITARIK: [],
+    DITOLAK_OTOMATIS: [],
+  },
+  tiket: {
+    DIAJUKAN: ["DITINJAU", "MENUNGGU_BALASAN", "DIBATALKAN", "DITOLAK"],
+    DITINJAU: ["MENUNGGU_BALASAN", "DIPROSES", "DITOLAK"],
+    MENUNGGU_BALASAN: ["DITINJAU"],
+    DIPROSES: ["DITUTUP"],
+    DITUTUP: [],
+    DITOLAK: [],
+    DIBATALKAN: [],
+  },
+  verifikasi: {
+    BELUM_TERVERIFIKASI: ["MENUNGGU_VERIFIKASI"],
+    MENUNGGU_VERIFIKASI: ["TERVERIFIKASI", "DITOLAK"],
+    TERVERIFIKASI: [],
+    DITOLAK: ["MENUNGGU_VERIFIKASI"],
+  },
+};
 
 const LABEL_STATUS: Readonly<Record<Status, string>> = {
-  MENUNGGU_PEMBAYARAN: "Menunggu pembayaran",
-  IN_PROGRESS: "Sedang dikerjakan",
-  SUBMITTED: "Menunggu pemeriksaan",
-  COMPLETED: "Selesai",
-  DISENGKETAKAN: "Disengketakan",
-  DIBATALKAN: "Dibatalkan",
+  ...LABEL_STATUS_PEKERJAAN,
   DIPROSES: "Diproses",
   BERHASIL: "Berhasil",
   GAGAL: "Gagal",
@@ -146,4 +134,3 @@ export function transisiDiizinkan(
 export function labelStatus(status: Status): string {
   return LABEL_STATUS[status] ?? status;
 }
-

@@ -1,6 +1,4 @@
-import {
-  ambilTransaksiSaya,
-} from "@/controllers/TransaksiPekerjaanController";
+import { ambilTransaksiSaya } from "@/controllers/TransaksiPekerjaanController";
 import { toResponse } from "@/lib/errors";
 
 export async function GET(req: Request) {
@@ -10,6 +8,7 @@ export async function GET(req: Request) {
       await ambilTransaksiSaya({
         peran: url.searchParams.get("peran") ?? undefined,
         page: url.searchParams.get("page") ?? undefined,
+        status: url.searchParams.get("status") ?? undefined,
       }),
     );
   } catch (e) {
