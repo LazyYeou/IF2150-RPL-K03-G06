@@ -1,7 +1,7 @@
-import { ambilDompetSaya } from "@/controllers/DompetController";
+import { ambilDataHalamanDompet } from "@/controllers/DompetController";
 import DompetUI from "./DompetUI";
 
 export default async function HalamanDompet() {
-  const dompet = await ambilDompetSaya();
-  return <DompetUI dompet={dompet} />;
+  const { dompet, statusVerifikasi } = await ambilDataHalamanDompet();
+  return <DompetUI dompet={dompet} statusVerifikasi={statusVerifikasi} />;
 }

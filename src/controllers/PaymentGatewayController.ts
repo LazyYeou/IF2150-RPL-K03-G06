@@ -8,6 +8,7 @@ import {
   cariTagihanBerdasarkanId,
   ubahStatusTagihan,
 } from "@/models/TagihanPembayaran";
+import { cariPencairanBerdasarkanId } from "@/models/PencairanDana";
 import { ambilInfoTransaksi } from "@/controllers/TagihanPembayaranController";
 import type { StatusTagihan } from "@/lib/validation/tagihan";
 
@@ -35,17 +36,151 @@ export async function prosesNotifikasiWebhook(
     throw new AppError("BAD_REQUEST", 400, "Payload JSON tidak valid");
   }
 
-  const idTagihan = String(payload.idTagihan ?? payload.referensiId ?? "");
+  const jenis = String(payload.jenis ?? "").toUpperCase();
+  const referensiId = String(
+    payload.referensiId ?? payload.idTagihan ?? payload.idPencairan ?? "",
+  );
   const statusRaw = String(payload.status ?? "").toUpperCase();
-  const nominal = payload.nominal !== undefined ? Number(payload.nominal) : undefined;
+  const nominal =
+    payload.nominal !== undefined ? Number(payload.nominal) : undefined;
 
-  if (!idTagihan) {
-    throw new AppError("BAD_REQUEST", 400, "idTagihan tidak disertakan");
+  if (!referensiId) {
+    throw new AppError("BAD_REQUEST", 400, "referensiId tidak disertakan");
   }
 
-  const statusValid: StatusTagihan[] = ["BERHASIL", "GAGAL", "KEDALUWARSA", "DIPROSES"];
+  const isPencairan =
+    jenis === "PENCAIRAN" ||
+    Boolean(payload.idPencairan) ||
+    Boolean(cariPencairanBerdasarkanId(referensiId));
+
+  if (isPencairan) {
+    return prosesWebhookPencairan(referensiId, statusRaw, nominal, payload);
+  }
+
+  return prosesWebhookPembayaran(referensiId, statusRaw, nominal, payload);
+}
+
+function prosesWebhookPencairan(
+  idPencairan: string,
+  statusRaw: string,
+  nominal: number | undefined,
+  payload: Record<string, unknown>,
+): WebhookResult {
+  const statusValid = ["BERHASIL", "GAGAL", "DITOLAK", "DIPROSES"];
+  if (!statusValid.includes(statusRaw)) {
+    throw new AppError(
+      "BAD_REQUEST",
+      400,
+      `Status webhook '${statusRaw}' tidak dikenal untuk pencairan`,
+    );
+  }
+
+  const pencairan = cariPencairanBerdasarkanId(idPencairan);
+  if (!pencairan) {
+    throw new AppError("NOT_FOUND", 404, "Pencairan dana tidak ditemukan");
+  }
+
+  if (nominal !== undefined && nominal !== pencairan.nominal) {
+    throw new AppError(
+      "BAD_REQUEST",
+      400,
+      "Nominal tidak sesuai pengajuan pencairan",
+    );
+  }
+
+  catatLog(
+    "CALLBACK",
+    idPencairan,
+    payload,
+    (process.env.PAYMENT_PROVIDER ?? "mock").toUpperCase(),
+  );
+
+  return tx(() => {
+    const current = cariPencairanBerdasarkanId(idPencairan);
+    if (!current) {
+      throw new Error("Pencairan dana tidak ditemukan dalam transaksi");
+    }
+
+    if (current.status === statusRaw) {
+      return { received: true, duplicate: true, status: statusRaw };
+    }
+
+    if (
+      current.status === "BERHASIL" ||
+      current.status === "GAGAL" ||
+      current.status === "DITOLAK"
+    ) {
+      return { received: true, ignored: true, status: current.status };
+    }
+
+    db.prepare(
+      `UPDATE pencairan_dana
+       SET status_pencairan = ?
+       WHERE id_pencairan = ?`,
+    ).run(statusRaw, idPencairan);
+
+    const tkRow = db
+      .prepare(
+        `SELECT id_pengguna FROM tenaga_kerja WHERE id_tenaga_kerja = ?`,
+      )
+      .get(current.idTenagaKerja) as { id_pengguna: string } | undefined;
+
+    if (statusRaw === "BERHASIL") {
+      const mutasi = db
+        .prepare(
+          `INSERT INTO mutasi_saldo (kunci_operasi, id_tenaga_kerja, nominal, created_at)
+           VALUES (?, ?, ?, datetime('now'))
+           ON CONFLICT(kunci_operasi) DO NOTHING`,
+        )
+        .run(`cair:${idPencairan}`, current.idTenagaKerja, -current.nominal);
+
+      if (mutasi.changes === 1) {
+        db.prepare(
+          `UPDATE tenaga_kerja
+           SET saldo_pendapatan = saldo_pendapatan - ?
+           WHERE id_tenaga_kerja = ?`,
+        ).run(current.nominal, current.idTenagaKerja);
+      }
+
+      if (tkRow) {
+        Notifikasi.buat(
+          tkRow.id_pengguna,
+          `Pencairan dana sebesar Rp ${current.nominal.toLocaleString("id-ID")} berhasil diproses.`,
+          "/tk/dompet",
+        );
+      }
+    } else if (statusRaw === "GAGAL" || statusRaw === "DITOLAK") {
+      if (tkRow) {
+        Notifikasi.buat(
+          tkRow.id_pengguna,
+          `Pencairan dana sebesar Rp ${current.nominal.toLocaleString("id-ID")} gagal diproses. Saldo Anda telah dipulihkan.`,
+          "/tk/dompet",
+        );
+      }
+    }
+
+    return { received: true, status: statusRaw };
+  });
+}
+
+function prosesWebhookPembayaran(
+  idTagihan: string,
+  statusRaw: string,
+  nominal: number | undefined,
+  payload: Record<string, unknown>,
+): WebhookResult {
+  const statusValid: StatusTagihan[] = [
+    "BERHASIL",
+    "GAGAL",
+    "KEDALUWARSA",
+    "DIPROSES",
+  ];
   if (!statusValid.includes(statusRaw as StatusTagihan)) {
-    throw new AppError("BAD_REQUEST", 400, `Status webhook '${statusRaw}' tidak dikenal`);
+    throw new AppError(
+      "BAD_REQUEST",
+      400,
+      `Status webhook '${statusRaw}' tidak dikenal`,
+    );
   }
   const status = statusRaw as StatusTagihan;
 
