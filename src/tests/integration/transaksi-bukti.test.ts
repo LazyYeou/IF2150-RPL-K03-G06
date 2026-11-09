@@ -7,7 +7,15 @@ import {
 } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
+import {
+  afterAll,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
 
 const jar = vi.hoisted(() => new Map<string, string>());
 vi.mock("next/headers", () => ({
@@ -27,12 +35,17 @@ let dir: string;
 let db: Db;
 let route: typeof import("@/app/api/transaksi/[id]/bukti/route");
 let Transaksi: typeof import("@/models/TransaksiPekerjaan");
+let detail: typeof import("@/app/api/transaksi/[id]/route");
+let berkas: typeof import("@/app/api/berkas/bukti/[id]/route");
 
 const one = <T>(sql: string, ...params: unknown[]) =>
   db.prepare(sql).get(...params) as T;
 const file = (bytes = PNG, name = "bukti.png", type = "image/png") =>
   new File([new Uint8Array(bytes)], name, { type });
-const form = (berkas: File | null = file(), deskripsi = "Pekerjaan sudah selesai sesuai kriteria.") => {
+const form = (
+  berkas: File | null = file(),
+  deskripsi = "Pekerjaan sudah selesai sesuai kriteria.",
+) => {
   const f = new FormData();
   f.set("deskripsi", deskripsi);
   if (berkas) f.set("berkas", berkas);
@@ -55,15 +68,12 @@ const kirim = (id: string, formData: FormData) =>
     }),
     { params: Promise.resolve({ id }) },
   );
-const code = async (response: Response) =>
-  (await response.json()).error?.code;
+const code = async (response: Response) => (await response.json()).error?.code;
 const jumlahBerkas = (folder: string): number => {
   if (!existsSync(folder)) return 0;
   return readdirSync(folder).reduce((jumlah, nama) => {
     const target = path.join(folder, nama);
-    return jumlah + (statSync(target).isDirectory()
-      ? jumlahBerkas(target)
-      : 1);
+    return jumlah + (statSync(target).isDirectory() ? jumlahBerkas(target) : 1);
   }, 0);
 };
 
@@ -81,6 +91,8 @@ beforeAll(async () => {
   ({ db } = await import("@/lib/db"));
   Transaksi = await import("@/models/TransaksiPekerjaan");
   route = await import("@/app/api/transaksi/[id]/bukti/route");
+  detail = await import("@/app/api/transaksi/[id]/route");
+  berkas = await import("@/app/api/berkas/bukti/[id]/route");
 });
 afterAll(() => {
   db.close();
@@ -108,7 +120,9 @@ beforeEach(() => {
     )
     .all() as Array<{ id: string }>;
   for (const target of targets) {
-    db.prepare("DELETE FROM bukti_penyerahan WHERE id_transaksi = ?").run(target.id);
+    db.prepare("DELETE FROM bukti_penyerahan WHERE id_transaksi = ?").run(
+      target.id,
+    );
     db.prepare(
       "UPDATE transaksi_pekerjaan SET status_pekerjaan = 'IN_PROGRESS' WHERE id_transaksi = ?",
     ).run(target.id);
@@ -127,21 +141,37 @@ describe("POST /api/transaksi/:id/bukti", () => {
     const id = transaksiInProgress();
     const response = await kirim(id, form());
     expect(response.status).toBe(201);
-    expect(await response.json()).toMatchObject({
-      idTransaksi: id,
+    const body = await response.json();
+    expect(body).toMatchObject({
+      id,
       status: "SUBMITTED",
+      tenagaKerja: { nama: expect.any(String) },
+      penyediaKerja: { nama: expect.any(String) },
+      bukti: [
+        {
+          deskripsi: "Pekerjaan sudah selesai sesuai kriteria.",
+          urlBerkas: expect.stringMatching(/^\/api\/berkas\/bukti\//),
+        },
+      ],
     });
+    const { TransaksiDetail } = await import("@/lib/validation/transaksi");
+    expect(TransaksiDetail.safeParse(body).success).toBe(true);
+    expect(JSON.stringify(body)).not.toContain("file_path");
 
     const bukti = one<{ path: string }>(
       "SELECT file_path AS path FROM bukti_penyerahan WHERE id_transaksi = ?",
       id,
     );
-    expect(existsSync(path.join(process.env.STORAGE_DIR!, bukti.path))).toBe(true);
+    expect(existsSync(path.join(process.env.STORAGE_DIR!, bukti.path))).toBe(
+      true,
+    );
     expect(
-      db.prepare(
-        `SELECT status_pekerjaan AS status FROM transaksi_pekerjaan
+      db
+        .prepare(
+          `SELECT status_pekerjaan AS status FROM transaksi_pekerjaan
          WHERE id_transaksi = ?`,
-      ).get(id),
+        )
+        .get(id),
     ).toMatchObject({ status: "SUBMITTED" });
     const notif = one<{ email: string }>(
       `SELECT p.email AS email FROM notifikasi n
@@ -151,6 +181,64 @@ describe("POST /api/transaksi/:id/bukti", () => {
       `/pk/transaksi/${id}`,
     );
     expect(notif.email).toBe("pk1@kerjain.test");
+  });
+
+  it("TK, PK, dan CS melihat bukti terbaru dan dapat membuka berkas; non-peserta ditolak", async () => {
+    await masuk("tk1@kerjain.test");
+    const id = transaksiInProgress();
+    const deskripsi =
+      "Seluruh pekerjaan telah diselesaikan. Foto hasil terlampir.";
+    const upload = await kirim(
+      id,
+      form(file(PDF, "hasil.pdf", "application/pdf"), deskripsi),
+    );
+    expect(upload.status).toBe(201);
+    const uploaded = await upload.json();
+    const idBukti = uploaded.bukti[0].id;
+    const getDetail = () =>
+      detail.GET(new Request(`http://localhost/api/transaksi/${id}`), {
+        params: Promise.resolve({ id }),
+      });
+    const getBerkas = () =>
+      berkas.GET(new Request(`http://localhost/api/berkas/bukti/${idBukti}`), {
+        params: Promise.resolve({ id: idBukti }),
+      });
+    for (const email of [
+      "tk1@kerjain.test",
+      "pk1@kerjain.test",
+      "cs1@kerjain.test",
+    ]) {
+      await masuk(email);
+      const response = await getDetail();
+      expect(response.status).toBe(200);
+      expect((await response.json()).bukti).toEqual(uploaded.bukti);
+      const download = await getBerkas();
+      expect(download.status).toBe(200);
+      expect(download.headers.get("Cache-Control")).toBe("no-store");
+      expect(new Uint8Array(await download.arrayBuffer())).toEqual(
+        new Uint8Array(PDF),
+      );
+    }
+    await masuk("tk2@kerjain.test");
+    expect((await getDetail()).status).toBe(403);
+    expect((await getBerkas()).status).toBe(403);
+    jar.clear();
+    expect((await getBerkas()).status).toBe(401);
+  });
+
+  it("menerima deskripsi 1000 karakter dan menolak 1001 sebelum menyimpan berkas", async () => {
+    await masuk("tk1@kerjain.test");
+    const id = transaksiInProgress();
+    const awal = jumlahBerkas(process.env.STORAGE_DIR!);
+    expect((await kirim(id, form(file(), "a".repeat(1001)))).status).toBe(400);
+    expect(jumlahBerkas(process.env.STORAGE_DIR!)).toBe(awal);
+    expect(
+      one<{ status: string }>(
+        "SELECT status_pekerjaan AS status FROM transaksi_pekerjaan WHERE id_transaksi = ?",
+        id,
+      ).status,
+    ).toBe("IN_PROGRESS");
+    expect((await kirim(id, form(file(), "a".repeat(1000)))).status).toBe(201);
   });
 
   it("menerima PNG, JPEG, dan PDF dengan tipe yang sesuai", async () => {
@@ -189,7 +277,10 @@ describe("POST /api/transaksi/:id/bukti", () => {
 
   it("berkas >10 MB ditolak", async () => {
     await masuk("tk1@kerjain.test");
-    const besar = file([...PNG, ...new Array(10 * 1024 * 1024).fill(0)], "besar.png");
+    const besar = file(
+      [...PNG, ...new Array(10 * 1024 * 1024).fill(0)],
+      "besar.png",
+    );
     expect((await kirim(transaksiInProgress(), form(besar))).status).toBe(400);
   });
 

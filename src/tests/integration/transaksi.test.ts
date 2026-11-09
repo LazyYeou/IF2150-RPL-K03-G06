@@ -65,8 +65,12 @@ describe("API transaksi", () => {
     );
     expect(detailRes.status).toBe(200);
     const body = await detailRes.json();
-    expect(body.timeline.some((item: { aktif: boolean }) => item.aktif)).toBe(true);
-    expect(body.timeline.some((item: { label: string }) => item.label.length > 0)).toBe(true);
+    expect(body.timeline.some((item: { aktif: boolean }) => item.aktif)).toBe(
+      true,
+    );
+    expect(
+      body.timeline.some((item: { label: string }) => item.label.length > 0),
+    ).toBe(true);
   });
 
   it("peran bukan peserta ditolak 403", async () => {
@@ -188,5 +192,48 @@ describe("API transaksi", () => {
     expect(body.items.map((item: { id: string }) => item.id).sort()).toEqual(
       milikPk.map((item) => item.id).sort(),
     );
+  });
+
+  it("detail mengikuti kontrak dan ulasanSaya mengikuti pengguna yang sedang login", async () => {
+    const transaksi = one<{ id: string }>(
+      "SELECT id_transaksi AS id FROM transaksi_pekerjaan WHERE status_pekerjaan = 'COMPLETED' LIMIT 1",
+    );
+    const tk = one<{ id: string }>(
+      "SELECT id_pengguna AS id FROM pengguna WHERE email = 'tk1@kerjain.test'",
+    );
+    const pk = one<{ id: string }>(
+      "SELECT id_pengguna AS id FROM pengguna WHERE email = 'pk1@kerjain.test'",
+    );
+    db.prepare(
+      "INSERT INTO ulasan_rating (id_ulasan, id_transaksi, id_penilai, id_penerima, nilai) VALUES (?, ?, ?, ?, 4)",
+    ).run(randomUUID(), transaksi.id, tk.id, pk.id);
+    db.prepare(
+      "INSERT INTO catatan_revisi (id_revisi, id_transaksi, catatan) VALUES (?, ?, ?)",
+    ).run(randomUUID(), transaksi.id, "Mohon rapikan kembali bagian tepi.");
+    const { buatSesi } = await import("@/lib/auth/session");
+    const { TransaksiDetail } = await import("@/lib/validation/transaksi");
+    for (const [idPengguna, ulasanSaya] of [
+      [tk.id, { nilai: 4 }],
+      [pk.id, null],
+    ] as const) {
+      await buatSesi(idPengguna);
+      const response = await detail.GET(
+        new Request(`http://localhost/api/transaksi/${transaksi.id}`),
+        { params: Promise.resolve({ id: transaksi.id }) },
+      );
+      expect(response.status).toBe(200);
+      const body = await response.json();
+      expect(TransaksiDetail.safeParse(body).success).toBe(true);
+      expect(body.ulasanSaya).toEqual(ulasanSaya);
+      expect(body.revisi).toEqual([
+        {
+          catatan: "Mohon rapikan kembali bagian tepi.",
+          waktu: expect.any(String),
+        },
+      ]);
+      expect(body.tagihan.status).toBe("BERHASIL");
+      expect(body.bukti.length).toBeGreaterThan(0);
+      expect(body.tiketAktif).toBeNull();
+    }
   });
 });
