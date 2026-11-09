@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, Clock, ShieldCheck, AlertCircle } from "lucide-react";
+import { ArrowLeft, Clock, ShieldCheck, AlertCircle, RotateCcw } from "lucide-react";
 import type { MetodePembayaran, StatusTagihan } from "@/lib/validation/tagihan";
 
 export interface TagihanData {
@@ -76,6 +76,7 @@ export default function TagihanPembayaranUI({
   );
   const [pesanError, setPesanError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [membuatUlang, setMembuatUlang] = useState(false);
 
   const formatRupiah = (nilai: number) =>
     new Intl.NumberFormat("id-ID", {
@@ -98,12 +99,18 @@ export default function TagihanPembayaranUI({
 
   const isKedaluwarsa =
     tagihan.status === "KEDALUWARSA" ||
-    (tagihan.status === "MENUNGGU_PEMBAYARAN" &&
+    ((tagihan.status === "MENUNGGU_PEMBAYARAN" || tagihan.status === "DIPROSES") &&
       new Date(tagihan.expiry).getTime() <= Date.now());
+
+  const isGagal = tagihan.status === "GAGAL";
 
   const handleBayar = async () => {
     if (isKedaluwarsa) {
-      setPesanError("Tagihan ini telah kedaluwarsa. Silakan muat ulang halaman.");
+      setPesanError("Tagihan ini telah kedaluwarsa. Silakan buat tagihan baru.");
+      return;
+    }
+    if (isGagal) {
+      setPesanError("Tagihan ini telah gagal. Silakan buat tagihan baru.");
       return;
     }
     if (!metodeDipilih) {
@@ -139,6 +146,29 @@ export default function TagihanPembayaranUI({
     }
   };
 
+  const handleBuatTagihanBaru = async () => {
+    setMembuatUlang(true);
+    setPesanError(null);
+
+    try {
+      const res = await fetch(`/api/transaksi/${transaksi.id}/tagihan`, {
+        method: "POST",
+      });
+
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        throw new Error(data.message || data.error || "Gagal membuat tagihan baru");
+      }
+
+      // Berhasil membuat tagihan baru, muat ulang halaman untuk menampilkan tagihan baru
+      window.location.reload();
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Gagal membuat tagihan baru";
+      setPesanError(msg);
+      setMembuatUlang(false);
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* Tombol Kembali */}
@@ -170,12 +200,18 @@ export default function TagihanPembayaranUI({
             className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold ${
               isKedaluwarsa
                 ? "bg-rose-50 text-rose-800 border-rose-200"
+                : isGagal
+                ? "bg-rose-50 text-rose-800 border-rose-200"
                 : tagihan.status === "BERHASIL"
                 ? "bg-emerald-50 text-emerald-800 border-emerald-200"
                 : "bg-amber-50 text-amber-800 border-amber-200"
             }`}
           >
-            {isKedaluwarsa ? "Kedaluwarsa" : formatLabelStatus(tagihan.status)}
+            {isKedaluwarsa
+              ? "Kedaluwarsa"
+              : isGagal
+              ? "Gagal"
+              : formatLabelStatus(tagihan.status)}
           </span>
         </div>
 
@@ -223,23 +259,29 @@ export default function TagihanPembayaranUI({
       {/* Batas Waktu Pembayaran */}
       <div
         className={`rounded-xl border p-4 sm:p-5 flex items-start gap-3 ${
-          isKedaluwarsa
+          isKedaluwarsa || isGagal
             ? "bg-rose-50 border-rose-200 text-rose-900"
             : "bg-amber-50 border-amber-200 text-amber-900"
         }`}
       >
-        {isKedaluwarsa ? (
+        {isKedaluwarsa || isGagal ? (
           <AlertCircle className="size-5 shrink-0 text-rose-600 mt-0.5" aria-hidden="true" />
         ) : (
           <Clock className="size-5 shrink-0 text-amber-600 mt-0.5" aria-hidden="true" />
         )}
         <div className="text-sm">
           <h3 className="font-semibold">
-            {isKedaluwarsa ? "Batas Waktu Telah Berakhir" : "Batas Waktu Pembayaran"}
+            {isKedaluwarsa
+              ? "Batas Waktu Telah Berakhir"
+              : isGagal
+              ? "Status Pembayaran Gagal"
+              : "Batas Waktu Pembayaran"}
           </h3>
           <p className="mt-0.5">
             {isKedaluwarsa ? (
               <span>Tagihan ini telah kedaluwarsa pada {formatWaktu(tagihan.expiry)}.</span>
+            ) : isGagal ? (
+              <span>Pembayaran tagihan ini dinyatakan gagal oleh sistem gateway pembayaran.</span>
             ) : (
               <span>
                 Harap selesaikan pembayaran sebelum{" "}
@@ -250,8 +292,45 @@ export default function TagihanPembayaranUI({
         </div>
       </div>
 
-      {/* Pilihan Metode Pembayaran */}
-      {!isKedaluwarsa && tagihan.status === "MENUNGGU_PEMBAYARAN" && (
+      {/* Pesan UI dan Tombol Buat Tagihan Baru untuk Gagal / Kedaluwarsa (UC07 alt1/alt2) */}
+      {(isKedaluwarsa || isGagal) && (
+        <div className="rounded-xl border border-border bg-card p-5 sm:p-6 shadow-xs space-y-4">
+          <div>
+            <h2 className="text-base font-semibold text-foreground">
+              {isGagal ? "Coba Pembayaran Kembali" : "Perbarui Tagihan"}
+            </h2>
+            <p className="text-sm text-muted-foreground mt-1">
+              {isGagal
+                ? "Pembayaran sebelumnya tidak berhasil. Anda dapat membuat tagihan baru untuk mencoba metode pembayaran lain atau mengulang proses pembayaran."
+                : "Karena batas waktu pembayaran telah lewat, silakan buat tagihan baru dengan batas waktu 24 jam ke depan."}
+            </p>
+          </div>
+
+          {pesanError && (
+            <div
+              className="rounded-lg bg-rose-50 p-3 text-sm text-rose-700 border border-rose-200"
+              role="alert"
+            >
+              {pesanError}
+            </div>
+          )}
+
+          <div className="pt-2">
+            <button
+              type="button"
+              onClick={handleBuatTagihanBaru}
+              disabled={membuatUlang}
+              className="inline-flex items-center justify-center gap-2 rounded-lg bg-brand-orange px-6 py-3 text-sm font-semibold text-white shadow-xs hover:bg-orange-600 transition-colors disabled:opacity-50"
+            >
+              <RotateCcw className="size-4" aria-hidden="true" />
+              {membuatUlang ? "Membuat Tagihan Baru..." : "Buat Tagihan Baru / Bayar Ulang"}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Pilihan Metode Pembayaran jika Masih Aktif */}
+      {!isKedaluwarsa && !isGagal && tagihan.status === "MENUNGGU_PEMBAYARAN" && (
         <div className="rounded-xl border border-border bg-card p-5 sm:p-6 shadow-xs space-y-4">
           <h2 className="text-base font-semibold text-foreground">
             Pilih Metode Pembayaran

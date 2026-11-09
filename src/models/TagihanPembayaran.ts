@@ -43,6 +43,15 @@ function keDTO(r: TagihanRow): TagihanDTO {
 }
 
 export function cariTagihanAktif(idTransaksi: string): TagihanDTO | null {
+  // Evaluasi kedaluwarsa lazy: jika ada tagihan aktif yang telah melewati expiry, ubah ke KEDALUWARSA
+  db.prepare(
+    `UPDATE tagihan_pembayaran
+     SET status_pembayaran = 'KEDALUWARSA'
+     WHERE id_transaksi = ?
+       AND status_pembayaran IN ('MENUNGGU_PEMBAYARAN', 'DIPROSES')
+       AND expiry_timestamp < datetime('now')`,
+  ).run(idTransaksi);
+
   const row = db
     .prepare(
       `SELECT id_tagihan, id_transaksi, nominal_upah, commission_fee,
@@ -56,6 +65,22 @@ export function cariTagihanAktif(idTransaksi: string): TagihanDTO | null {
 
   if (!row) return null;
   return keDTO(row);
+}
+
+export function cariTagihanTerakhir(idTransaksi: string): TagihanDTO | null {
+  const row = db
+    .prepare(
+      `SELECT id_tagihan, id_transaksi, nominal_upah, commission_fee,
+              total_bayar, metode, expiry_timestamp, status_pembayaran, created_at
+       FROM tagihan_pembayaran
+       WHERE id_transaksi = ?
+       ORDER BY created_at DESC, rowid DESC
+       LIMIT 1`,
+    )
+    .get(idTransaksi) as TagihanRow | undefined;
+
+  if (!row) return null;
+  return periksaKedaluwarsaLazy(keDTO(row));
 }
 
 export function cariTagihanBerdasarkanId(idTagihan: string): TagihanDTO | null {
@@ -114,13 +139,13 @@ export function buatTagihan(
 }
 
 export function periksaKedaluwarsaLazy(tagihan: TagihanDTO): TagihanDTO {
-  if (tagihan.status === "MENUNGGU_PEMBAYARAN") {
+  if (tagihan.status === "MENUNGGU_PEMBAYARAN" || tagihan.status === "DIPROSES") {
     const expired = db
       .prepare(
         `UPDATE tagihan_pembayaran
          SET status_pembayaran = 'KEDALUWARSA'
          WHERE id_tagihan = ?
-           AND status_pembayaran = 'MENUNGGU_PEMBAYARAN'
+           AND status_pembayaran IN ('MENUNGGU_PEMBAYARAN', 'DIPROSES')
            AND expiry_timestamp < datetime('now')
          RETURNING id_tagihan`,
       )
@@ -133,9 +158,6 @@ export function periksaKedaluwarsaLazy(tagihan: TagihanDTO): TagihanDTO {
   return tagihan;
 }
 
-/**
- * C09: Memperbarui status pembayaran tagihan (dan metode opsional)
- */
 export function ubahStatusTagihan(
   idTagihan: string,
   status: StatusTagihan,
