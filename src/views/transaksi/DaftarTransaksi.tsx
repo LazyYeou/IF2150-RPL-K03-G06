@@ -1,29 +1,17 @@
 import Link from "next/link";
+import {
+  LABEL_STATUS_PEKERJAAN,
+  type StatusPekerjaan,
+} from "@/lib/validation/common";
+import type { z } from "zod";
 
 type Item = {
   id: string;
   judul: string;
-  status: string;
+  status: z.infer<typeof StatusPekerjaan>;
   nominalUpah: number;
   createdAt: string;
 };
-
-function formatStatus(status: string): string {
-  const map: Record<string, string> = {
-    MENUNGGU_PEMBAYARAN: "Menunggu pembayaran",
-    IN_PROGRESS: "Sedang dikerjakan",
-    SUBMITTED: "Menunggu pemeriksaan",
-    COMPLETED: "Selesai",
-    DISENGKETAKAN: "Disengketakan",
-    DIBATALKAN: "Dibatalkan",
-    DIPROSES: "Diproses",
-    BERHASIL: "Berhasil",
-    GAGAL: "Gagal",
-    KEDALUWARSA: "Kedaluwarsa",
-    DIKEMBALIKAN: "Dikembalikan",
-  };
-  return map[status] ?? status.replace(/_/g, " ");
-}
 
 function badgeClass(status: string): string {
   switch (status) {
@@ -61,18 +49,23 @@ export default function DaftarTransaksi({
 
   if (items.length === 0) {
     return (
-      <div className="rounded-xl border border-dashed border-border p-8 text-center text-sm text-muted-foreground">
+      <div
+        role="region"
+        aria-label="Daftar transaksi"
+        className="rounded-xl border border-dashed border-border p-8 text-center text-sm text-muted-foreground"
+      >
         Belum ada transaksi pekerjaan.
       </div>
     );
   }
 
   return (
-    <div className="grid gap-3.5">
+    <div role="region" aria-label="Daftar transaksi" className="grid gap-3.5">
       {items.map((item) => {
         const linkDetail = `/${detailPath}/${detailPath === "tk" ? "pekerjaan" : "transaksi"}/${item.id}`;
         const linkBayar = `/${detailPath}/transaksi/${item.id}/bayar`;
-        const perluBayar = detailPath === "pk" && item.status === "MENUNGGU_PEMBAYARAN";
+        const perluBayar =
+          detailPath === "pk" && item.status === "MENUNGGU_PEMBAYARAN";
 
         return (
           <div
@@ -95,7 +88,7 @@ export default function DaftarTransaksi({
                     item.status,
                   )}`}
                 >
-                  {formatStatus(item.status)}
+                  {LABEL_STATUS_PEKERJAAN[item.status]}
                 </span>
 
                 {perluBayar && (

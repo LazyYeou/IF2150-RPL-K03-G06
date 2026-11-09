@@ -266,6 +266,7 @@ export default function DetailTransaksi({ transaksi, idTransaksi }: Props) {
           {transaksi.timeline.map((item) => (
             <li
               key={item.status}
+              aria-current={item.aktif ? "step" : undefined}
               className={`flex items-center gap-3 text-sm ${
                 item.aktif
                   ? "font-semibold text-foreground"
@@ -273,6 +274,12 @@ export default function DetailTransaksi({ transaksi, idTransaksi }: Props) {
               }`}
             >
               <span
+                role="img"
+                aria-label={
+                  item.tercapai
+                    ? "Tahap sudah tercapai"
+                    : "Tahap belum tercapai"
+                }
                 className={`flex size-6 shrink-0 items-center justify-center rounded-full text-xs font-bold ${
                   item.tercapai
                     ? "bg-emerald-100 text-emerald-700"
