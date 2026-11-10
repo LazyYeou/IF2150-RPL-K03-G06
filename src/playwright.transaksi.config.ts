@@ -22,15 +22,15 @@ export default defineConfig({
   testDir: "tests/e2e",
   testMatch,
   metadata: { fixtureDir },
-  globalSetup: "./tests/helpers/transaksi-e2e-setup.ts",
   workers: 1,
   timeout: 60000,
   use: { baseURL, channel: process.env.PLAYWRIGHT_CHANNEL },
   webServer: {
-    command: `node node_modules/next/dist/bin/next start -p ${port}`,
+    command: `npx tsx tests/helpers/transaksi-e2e-setup.ts && node node_modules/next/dist/bin/next start -p ${port}`,
     url: baseURL,
     reuseExistingServer: false,
     env: {
+      TRANSAKSI_E2E_DIR: fixtureDir,
       DATABASE_PATH: path.join(fixtureDir, "test.db"),
       STORAGE_DIR: path.join(fixtureDir, "storage"),
       APP_URL: baseURL,
