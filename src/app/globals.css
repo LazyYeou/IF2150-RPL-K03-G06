@@ -330,6 +330,64 @@ h1, h2, h3, p { margin-top: 0; }
 .verification-notice { display: grid; gap: 3px; margin-top: 12px; padding: 12px; border: 1px solid #e8cf99; border-radius: 8px; background: #fff9e9; color: var(--text); font-size: 12px; }
 .verification-notice p { margin: 0; }
 .verification-notice .text-link { color: var(--navy); font-weight: 700; }
+.cs-verification-page { padding-top: 42px; padding-bottom: 64px; }
+.cs-verification-header { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 25px; }
+.cs-verification-header h1 { margin: 0 0 8px; color: var(--navy); font-size: clamp(28px, 3vw, 36px); letter-spacing: -1px; line-height: 1.15; }
+.cs-verification-header .muted-copy { margin: 0; }
+.cs-verification-workspace { display: grid; grid-template-columns: minmax(280px, 360px) minmax(0, 1fr); gap: 22px; align-items: start; }
+.cs-verification-queue, .cs-verification-detail { min-width: 0; border: 1px solid var(--line); border-radius: 10px; background: var(--white); }
+.cs-verification-queue { overflow: hidden; }
+.cs-queue-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 18px 19px; border-bottom: 1px solid var(--line); }
+.cs-queue-heading h2, .cs-detail-heading h2 { margin: 0; color: var(--navy); font-size: 17px; }
+.cs-queue-count { display: inline-flex; min-width: 27px; height: 27px; align-items: center; justify-content: center; border-radius: 999px; background: var(--blue-soft); color: var(--navy); font-size: 12px; font-weight: 700; }
+.cs-queue-list { margin: 0; padding: 0; list-style: none; }
+.cs-queue-list li + li { border-top: 1px solid #edf1f5; }
+.cs-queue-item { display: grid; width: 100%; grid-template-columns: 40px minmax(0, 1fr) 12px; align-items: center; gap: 11px; padding: 15px 16px; border: 0; background: var(--white); color: var(--text); text-align: left; }
+.cs-queue-item:hover, .cs-queue-item.is-selected { background: #f3f7fc; }
+.cs-queue-item.is-selected { box-shadow: inset 3px 0 var(--navy); }
+.cs-queue-avatar { display: grid; width: 40px; height: 40px; place-items: center; border-radius: 50%; background: var(--blue-soft); color: var(--navy); font-size: 16px; font-weight: 700; }
+.cs-queue-person { display: grid; min-width: 0; gap: 2px; }
+.cs-queue-person strong { overflow: hidden; color: var(--navy); font-size: 13px; text-overflow: ellipsis; white-space: nowrap; }
+.cs-queue-person > span, .cs-queue-person time { overflow: hidden; color: var(--muted); font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
+.cs-queue-chevron { color: var(--muted); font-size: 22px; line-height: 1; }
+.cs-verification-queue > .muted-copy, .cs-verification-queue > .cs-verification-error, .cs-verification-empty { margin: 18px; }
+.cs-verification-detail { padding: 21px; }
+.cs-detail-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 15px; margin-bottom: 16px; }
+.cs-detail-heading .eyebrow { margin-bottom: 4px; }
+.cs-detail-heading .muted-copy { margin: 3px 0 0; font-size: 12px; }
+.cs-pending-badge { flex: 0 0 auto; padding: 5px 10px; border: 1px solid #e8cf99; border-radius: 999px; background: var(--yellow); color: #79500a; font-size: 11px; font-weight: 700; }
+.cs-document-preview { display: grid; min-height: 310px; max-height: 570px; place-items: center; overflow: hidden; border: 1px solid var(--line); border-radius: 8px; background: #f1f4f8; }
+.cs-document-preview img { display: block; width: 100%; max-height: 570px; object-fit: contain; }
+.cs-document-preview.is-pdf { min-height: 480px; }
+.cs-document-preview iframe { width: 100%; height: 570px; border: 0; background: var(--white); }
+.cs-verification-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 17px; }
+.cs-verification-actions .button:disabled, .cs-verification-header .button:disabled, .cs-dialog-actions .button:disabled { cursor: not-allowed; opacity: .6; }
+.cs-reject-button { color: #8e2b23; border-color: #e6c6c1; }
+.cs-approve-button { background: var(--navy); color: var(--white); }
+.cs-approve-button:hover:not(:disabled) { background: var(--navy-deep); }
+.cs-verification-empty { display: grid; justify-items: start; gap: 5px; padding: 18px; border: 1px dashed var(--line); border-radius: 8px; background: var(--surface); }
+.cs-verification-empty > span { display: grid; width: 34px; height: 34px; place-items: center; border-radius: 50%; background: var(--mint); color: #17684e; font-weight: 700; }
+.cs-verification-empty strong { color: var(--navy); font-size: 13px; }
+.cs-verification-empty p, .cs-verification-error p { margin: 0; color: var(--muted); font-size: 12px; }
+.cs-verification-error { display: grid; justify-items: start; gap: 10px; }
+.cs-verification-error .button { min-height: 38px; padding-inline: 13px; font-size: 12px; }
+.cs-action-error { margin: 12px 0 0; color: #a52c1e; font-size: 12px; }
+.cs-verification-notice { margin: 14px 0 0; color: #17684e; font-size: 13px; }
+.cs-preview-placeholder { display: grid; min-height: 240px; place-items: center; padding: 20px; border: 1px dashed var(--line); border-radius: 8px; color: var(--muted); font-size: 13px; text-align: center; }
+.cs-reject-dialog { width: min(100% - 32px, 520px); max-width: 520px; max-height: min(90vh, 700px); padding: 25px; border: 1px solid var(--line); border-radius: 12px; background: var(--white); color: var(--text); box-shadow: 0 22px 70px rgba(9, 32, 68, .25); }
+.cs-reject-dialog::backdrop { background: rgba(9, 32, 68, .52); backdrop-filter: blur(3px); }
+.cs-reject-form { display: grid; gap: 12px; }
+.cs-dialog-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.cs-dialog-heading .eyebrow { margin-bottom: 3px; }
+.cs-dialog-heading h2 { margin: 0; color: var(--navy); font-size: 22px; letter-spacing: -.5px; }
+.cs-dialog-close { display: grid; width: 34px; height: 34px; flex: 0 0 auto; place-items: center; border: 1px solid var(--line); border-radius: 7px; background: var(--white); color: var(--navy); font-size: 23px; line-height: 1; }
+.cs-reject-form > .muted-copy { margin: 0 0 3px; font-size: 13px; }
+.cs-reject-label { color: var(--navy); font-size: 12px; font-weight: 700; }
+.cs-reject-form textarea { width: 100%; min-height: 140px; resize: vertical; padding: 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--white); color: var(--text); font-size: 13px; line-height: 1.6; }
+.cs-reject-form textarea[aria-invalid="true"] { border-color: #a52c1e; }
+.cs-reject-help { margin: -7px 0 0; color: var(--muted); font-size: 11px; }
+.cs-dialog-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 7px; }
+.cs-dialog-actions .button { min-height: 42px; padding-inline: 16px; }
 .not-found { display: grid; justify-items: center; align-content: center; min-height: 65vh; text-align: center; }
 .not-found h1 { margin-bottom: 8px; color: var(--navy); font-size: 30px; }
 .not-found p { margin-bottom: 20px; color: var(--muted); }
@@ -378,6 +436,22 @@ h1, h2, h3, p { margin-top: 0; }
 @media (max-width: 640px) {
   body { font-size: 14px; }
   .shell { width: min(100% - 32px, 520px); }
+  .cs-verification-page { padding-top: 26px; padding-bottom: 44px; }
+  .cs-verification-header { align-items: stretch; flex-direction: column; gap: 14px; margin-bottom: 18px; }
+  .cs-verification-header .button { align-self: flex-start; min-height: 40px; }
+  .cs-verification-workspace { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .cs-queue-heading { padding: 14px; }
+  .cs-queue-item { padding: 12px; }
+  .cs-verification-detail { padding: 15px; }
+  .cs-document-preview { min-height: 240px; max-height: 420px; }
+  .cs-document-preview img { max-height: 420px; }
+  .cs-document-preview.is-pdf { min-height: 390px; }
+  .cs-document-preview iframe { height: 420px; }
+  .cs-verification-actions { flex-direction: column-reverse; }
+  .cs-verification-actions .button { width: 100%; }
+  .cs-reject-dialog { padding: 19px; }
+  .cs-dialog-actions { flex-direction: column-reverse; }
+  .cs-dialog-actions .button { width: 100%; }
   .header-inner { min-height: 66px; }
   .brand-logo-header { width: 106px; height: 64px; }
   .menu-toggle {
