@@ -5,8 +5,11 @@ import { toResponse } from "@/lib/errors";
 export async function POST(req: Request) {
   try {
     const body = await bacaJson(req);
-    const result = await ajukanPencairanController(body);
-    return Response.json(result, { status: 201 });
+    const result = await ajukanPencairanController(
+      body,
+      req.headers.get("Idempotency-Key"),
+    );
+    return Response.json(result, { status: result.bisaCobaUlang ? 202 : 201 });
   } catch (e) {
     return toResponse(e);
   }

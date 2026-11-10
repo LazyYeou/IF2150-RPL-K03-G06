@@ -11,7 +11,7 @@ describe("helper database test (#40)", () => {
       dua = await dbSementara();
       expect(satu.file).not.toBe(dua.file);
       expect(satu.db.prepare("SELECT count(*) c FROM _migrasi").get()).toEqual({
-        c: 2,
+        c: 3,
       });
       expect(dua.db.prepare("SELECT count(*) c FROM pengguna").get()).toEqual({
         c: 5,

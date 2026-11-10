@@ -5,6 +5,8 @@ import type {
   PaymentGatewayAdapter,
   RefundParams,
 } from "./adapter";
+import { tx } from "@/lib/db";
+import { AppError } from "@/lib/errors";
 import { ambilLog, catatLog } from "@/models/LogGateway";
 
 export class MockPaymentGateway implements PaymentGatewayAdapter {
@@ -30,19 +32,32 @@ export class MockPaymentGateway implements PaymentGatewayAdapter {
    * Mensimulasikan instruksi pencairan dana (disbursement) ke rekening tujuan.
    */
   async disburse(p: DisburseParams): Promise<{ status: "DITERIMA" | "GAGAL" }> {
-    catatLog(
-      "DISBURSEMENT",
-      p.idPencairan,
-      {
-        idPencairan: p.idPencairan,
-        rekening: p.rekening,
-        nominal: p.nominal,
-        idempotencyKey: p.idPencairan,
-      },
-      "MOCK",
-    );
-
-    return { status: "DITERIMA" };
+    return tx(() => {
+      const existing = ambilLog(p.idPencairan).find(
+        (log) => log.jenis === "DISBURSEMENT",
+      );
+      if (existing) {
+        const payload = existing.payload as DisburseParams;
+        if (payload.nominal !== p.nominal || payload.rekening !== p.rekening) {
+          throw new AppError(
+            "IDEMPOTENCY_CONFLICT",
+            409,
+            "Instruksi pencairan berbeda untuk ID yang sama",
+          );
+        }
+        return { status: "DITERIMA" as const };
+      }
+      catatLog(
+        "DISBURSEMENT",
+        p.idPencairan,
+        {
+          ...p,
+          idempotencyKey: p.idPencairan,
+        },
+        "MOCK",
+      );
+      return { status: "DITERIMA" as const };
+    });
   }
 
   async refund(p: RefundParams): Promise<{ status: "BERHASIL" | "GAGAL" }> {
@@ -110,7 +125,8 @@ export function tandaTanganiWebhook(
   secretOverride?: string,
 ): { rawBody: string; signature: string } {
   const secret = secretOverride ?? process.env.PAYMENT_WEBHOOK_SECRET ?? "";
-  const rawBody = typeof payload === "string" ? payload : JSON.stringify(payload);
+  const rawBody =
+    typeof payload === "string" ? payload : JSON.stringify(payload);
   const signature = createHmac("sha256", secret).update(rawBody).digest("hex");
   return { rawBody, signature };
 }

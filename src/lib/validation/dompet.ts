@@ -14,6 +14,7 @@ export const PencairanItemSchema = z
     nominal: z.number().int().nonnegative(),
     rekeningMasked: z.string(),
     status: z.string(),
+    bisaCobaUlang: z.boolean().optional(),
     waktuPengajuan: z.string(),
   })
   .strict();
@@ -55,6 +56,7 @@ export const PencairanResponseSchema = z
     nominal: z.number().int().nonnegative(),
     rekeningMasked: z.string(),
     status: z.string(),
+    bisaCobaUlang: z.boolean().optional(),
   })
   .strict();
 

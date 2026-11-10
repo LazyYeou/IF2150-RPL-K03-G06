@@ -382,7 +382,10 @@ describe("Integrasi Pembayaran dan Saldo (Issue #42 / D2 / D4)", () => {
       const resPencairan = await pencairanRoute.POST(
         new Request("http://localhost/api/pencairan", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            "Idempotency-Key": randomUUID(),
+          },
           body: JSON.stringify({
             nominal: nominalTarik,
             rekeningTujuan: "BANK:1234567890",
@@ -475,7 +478,10 @@ describe("Integrasi Pembayaran dan Saldo (Issue #42 / D2 / D4)", () => {
       const res = await pencairanRoute.POST(
         new Request("http://localhost/api/pencairan", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            "Idempotency-Key": randomUUID(),
+          },
           body: JSON.stringify({
             nominal: saldoSaatIni + 100000,
             rekeningTujuan: "BANK:1234567890",
@@ -498,7 +504,10 @@ describe("Integrasi Pembayaran dan Saldo (Issue #42 / D2 / D4)", () => {
       const resPencairan1 = await pencairanRoute.POST(
         new Request("http://localhost/api/pencairan", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            "Idempotency-Key": randomUUID(),
+          },
           body: JSON.stringify({
             nominal: 50000,
             rekeningTujuan: "BANK:1234567890",
@@ -516,7 +525,10 @@ describe("Integrasi Pembayaran dan Saldo (Issue #42 / D2 / D4)", () => {
       const resPencairan2 = await pencairanRoute.POST(
         new Request("http://localhost/api/pencairan", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            "Idempotency-Key": randomUUID(),
+          },
           body: JSON.stringify({
             nominal: dompetSetelah1.saldoTersedia + 10000,
             rekeningTujuan: "BANK:1234567890",

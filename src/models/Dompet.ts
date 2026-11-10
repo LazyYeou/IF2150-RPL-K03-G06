@@ -74,12 +74,16 @@ export function bacaDataDompet(idTenagaKerja: string): DompetResponse {
 
   const pencairanRows = db
     .prepare(
-      `SELECT id_pencairan, nominal, rekening_tujuan, status_pencairan, waktu_pengajuan
-       FROM pencairan_dana
+      `SELECT p.id_pencairan, nominal, rekening_tujuan, status_pencairan, waktu_pengajuan,
+         CASE WHEN status_pencairan IN ('MENUNGGU_PROSES', 'DIPROSES') AND
+           (g.status IN ('SIAP', 'BELUM_PASTI') OR (g.status = 'MENGIRIM' AND g.batas_klaim <= ?))
+           THEN 1 ELSE 0 END AS bisa_ulang
+       FROM pencairan_dana p LEFT JOIN pengiriman_pencairan g ON g.id_pencairan = p.id_pencairan
        WHERE id_tenaga_kerja = ?
-       ORDER BY waktu_pengajuan DESC, rowid DESC`,
+       ORDER BY waktu_pengajuan DESC, p.rowid DESC`,
     )
-    .all(idTenagaKerja) as Array<{
+    .all(Date.now(), idTenagaKerja) as Array<{
+    bisa_ulang: number;
     id_pencairan: string;
     nominal: number;
     rekening_tujuan: string;
@@ -92,6 +96,7 @@ export function bacaDataDompet(idTenagaKerja: string): DompetResponse {
     nominal: r.nominal,
     rekeningMasked: maskerRekening(r.rekening_tujuan),
     status: r.status_pencairan,
+    bisaCobaUlang: !!r.bisa_ulang,
     waktuPengajuan: r.waktu_pengajuan.includes("T")
       ? r.waktu_pengajuan
       : keIso(r.waktu_pengajuan),
