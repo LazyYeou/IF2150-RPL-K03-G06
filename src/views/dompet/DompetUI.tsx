@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import {
   Wallet,
@@ -27,8 +27,57 @@ export default function DompetUI({
   dompet,
   statusVerifikasi = "BELUM_TERVERIFIKASI",
 }: Props) {
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const rekeningRef = useRef<HTMLInputElement>(null);
   const [tabAktif, setTabAktif] = useState<"mutasi" | "pencairan">("mutasi");
   const [bukaModal, setBukaModal] = useState(false);
+
+  useEffect(() => {
+    if (!bukaModal) return;
+    const dialog = dialogRef.current;
+    const trigger = triggerRef.current;
+    dialog?.showModal();
+    rekeningRef.current?.focus();
+    return () => {
+      dialog?.close();
+      trigger?.focus();
+    };
+  }, [bukaModal]);
+
+  const jagaFokusDialog = (event: React.KeyboardEvent<HTMLDialogElement>) => {
+    if (event.key !== "Tab") return;
+    const dialog = event.currentTarget;
+    const targets = Array.from(
+      dialog.querySelectorAll<HTMLElement>(
+        'button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])',
+      ),
+    ).filter(
+      (element) => element.tabIndex >= 0 && element.getClientRects().length > 0,
+    );
+    const first = targets[0],
+      last = targets[targets.length - 1];
+    if (!first || !last) {
+      event.preventDefault();
+      dialog.focus();
+      return;
+    }
+    if (
+      event.shiftKey &&
+      (document.activeElement === first ||
+        !dialog.contains(document.activeElement))
+    ) {
+      event.preventDefault();
+      last.focus();
+    } else if (
+      !event.shiftKey &&
+      (document.activeElement === last ||
+        !dialog.contains(document.activeElement))
+    ) {
+      event.preventDefault();
+      first.focus();
+    }
+  };
 
   // Form pencairan state
   const [tipeRekening, setTipeRekening] = useState<"BANK" | "EWALLET">("BANK");
@@ -312,7 +361,7 @@ export default function DompetUI({
       >
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="flex size-11 items-center justify-center rounded-lg bg-white/10 text-brand-orange">
+            <div className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-white/10 text-brand-orange">
               <Wallet className="size-6" aria-hidden="true" />
             </div>
             <div>
@@ -331,6 +380,7 @@ export default function DompetUI({
           <div>
             {terverifikasi ? (
               <button
+                ref={triggerRef}
                 type="button"
                 onClick={() => {
                   setPesanError(null);
@@ -338,7 +388,7 @@ export default function DompetUI({
                   setBukaModal(true);
                 }}
                 disabled={dompet.saldoTersedia < 10000}
-                className="inline-flex items-center justify-center gap-2 rounded-lg bg-brand-orange px-5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-brand-orange px-5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <ArrowUpRight className="size-4" aria-hidden="true" />
                 Tarik Dana
@@ -582,11 +632,15 @@ export default function DompetUI({
 
       {/* Modal / Dialog Form Pencairan Dana (UC10) */}
       {bukaModal && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs"
-          role="dialog"
-          aria-modal="true"
+        <dialog
+          ref={dialogRef}
+          onKeyDown={jagaFokusDialog}
+          onCancel={(event) => {
+            event.preventDefault();
+            setBukaModal(false);
+          }}
           aria-labelledby="modal-pencairan-title"
+          className="fixed inset-0 m-auto max-h-[90dvh] w-[calc(100%_-_2rem)] max-w-lg overflow-y-auto rounded-xl bg-card p-0 text-foreground backdrop:bg-black/60 backdrop:backdrop-blur-xs"
         >
           <div className="relative w-full max-w-lg rounded-xl border border-border bg-card p-6 shadow-xl space-y-5 animate-in fade-in-50 zoom-in-95">
             {/* Header Dialog */}
@@ -604,7 +658,7 @@ export default function DompetUI({
               <button
                 type="button"
                 onClick={() => setBukaModal(false)}
-                className="rounded-lg p-1 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                className="flex size-11 shrink-0 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
                 aria-label="Tutup dialog"
               >
                 <X className="size-5" aria-hidden="true" />
@@ -660,7 +714,7 @@ export default function DompetUI({
                       setTipeRekening("BANK");
                       setPesanError(null);
                     }}
-                    className={`flex items-center justify-center gap-2 rounded-lg border p-3 text-xs font-semibold transition-all ${
+                    className={`flex min-h-11 items-center justify-center gap-2 rounded-lg border p-3 text-xs font-semibold transition-all ${
                       tipeRekening === "BANK"
                         ? "border-brand-orange bg-orange-50 text-orange-950 font-bold"
                         : "border-border hover:bg-muted text-foreground"
@@ -678,7 +732,7 @@ export default function DompetUI({
                       setTipeRekening("EWALLET");
                       setPesanError(null);
                     }}
-                    className={`flex items-center justify-center gap-2 rounded-lg border p-3 text-xs font-semibold transition-all ${
+                    className={`flex min-h-11 items-center justify-center gap-2 rounded-lg border p-3 text-xs font-semibold transition-all ${
                       tipeRekening === "EWALLET"
                         ? "border-brand-orange bg-orange-50 text-orange-950 font-bold"
                         : "border-border hover:bg-muted text-foreground"
@@ -704,6 +758,7 @@ export default function DompetUI({
                     : "Nomor E-Wallet (Diawali 08, 10–13 digit)"}
                 </label>
                 <input
+                  ref={rekeningRef}
                   id="nomorRekening"
                   type="text"
                   required
@@ -714,7 +769,7 @@ export default function DompetUI({
                   }
                   value={nomorRekening}
                   onChange={(e) => setNomorRekening(e.target.value)}
-                  className="w-full rounded-lg border border-border bg-background px-3.5 py-2.5 text-sm text-foreground focus:outline-hidden focus:ring-2 focus:ring-brand-orange"
+                  className="min-h-11 w-full rounded-lg border border-border bg-background px-3.5 py-2.5 text-sm text-foreground focus:outline-hidden focus:ring-2 focus:ring-brand-orange"
                 />
                 <p className="mt-1 text-xs text-muted-foreground flex justify-between">
                   <span>Pratinjau tampilan:</span>
@@ -746,7 +801,7 @@ export default function DompetUI({
                       e.target.value === "" ? "" : Number(e.target.value),
                     )
                   }
-                  className="w-full rounded-lg border border-border bg-background px-3.5 py-2.5 text-sm text-foreground focus:outline-hidden focus:ring-2 focus:ring-brand-orange font-semibold"
+                  className="min-h-11 w-full rounded-lg border border-border bg-background px-3.5 py-2.5 text-sm text-foreground focus:outline-hidden focus:ring-2 focus:ring-brand-orange font-semibold"
                 />
                 {/* Chip Pilihan Cepat */}
                 <div className="mt-2 flex flex-wrap gap-2 text-xs">
@@ -756,7 +811,7 @@ export default function DompetUI({
                       type="button"
                       disabled={dompet.saldoTersedia < nominal}
                       onClick={() => setNominalTarik(nominal)}
-                      className="rounded-md border border-border px-2.5 py-1 text-muted-foreground hover:bg-muted disabled:opacity-40"
+                      className="min-h-11 min-w-11 rounded-md border border-border px-2.5 py-1 text-muted-foreground hover:bg-muted disabled:opacity-40"
                     >
                       {formatRupiah(nominal)}
                     </button>
@@ -765,7 +820,7 @@ export default function DompetUI({
                     <button
                       type="button"
                       onClick={() => setNominalTarik(dompet.saldoTersedia)}
-                      className="rounded-md border border-brand-orange bg-orange-50 px-2.5 py-1 text-brand-orange font-semibold hover:bg-orange-100"
+                      className="min-h-11 min-w-11 rounded-md border border-brand-orange bg-orange-50 px-2.5 py-1 text-brand-orange font-semibold hover:bg-orange-100"
                     >
                       Tarik Semua
                     </button>
@@ -779,21 +834,21 @@ export default function DompetUI({
                   type="button"
                   onClick={() => setBukaModal(false)}
                   disabled={loadingTarik}
-                  className="rounded-lg border border-border px-4 py-2.5 text-sm font-semibold text-foreground hover:bg-muted transition-colors"
+                  className="min-h-11 rounded-lg border border-border px-4 py-2.5 text-sm font-semibold text-foreground hover:bg-muted transition-colors"
                 >
                   Batal
                 </button>
                 <button
                   type="submit"
                   disabled={loadingTarik || dompet.saldoTersedia < 10000}
-                  className="rounded-lg bg-brand-orange px-5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-orange-600 transition-colors disabled:opacity-50"
+                  className="min-h-11 rounded-lg bg-brand-orange px-5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-orange-600 transition-colors disabled:opacity-50"
                 >
                   {loadingTarik ? "Memproses..." : "Ajukan Pencairan"}
                 </button>
               </div>
             </form>
           </div>
-        </div>
+        </dialog>
       )}
     </div>
   );

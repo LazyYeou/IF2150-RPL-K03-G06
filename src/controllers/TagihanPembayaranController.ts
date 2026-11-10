@@ -1,17 +1,17 @@
 import "server-only";
 import { db, tx } from "@/lib/db";
-import { requireUser } from "@/lib/auth/guards";
+import { requireCS, requireUser } from "@/lib/auth/guards";
 import { AppError } from "@/lib/errors";
 import {
   buatTagihan,
   cariTagihanBerdasarkanId,
   cariTagihanTerakhir,
-  cariTagihanUntukRefund,
   periksaKedaluwarsaLazy,
   ubahStatusTagihan,
   type TagihanDTO,
 } from "@/models/TagihanPembayaran";
-import * as Notifikasi from "@/models/Notifikasi";
+import { refundSengketa } from "@/models/RefundSengketa";
+import { z } from "zod";
 import { MetodePembayaran } from "@/lib/validation/tagihan";
 import { getPaymentAdapter } from "@/lib/payment/adapter";
 
@@ -65,7 +65,11 @@ export async function buatTagihanTransaksi(
     throw new AppError("FORBIDDEN", 403, "Anda bukan pemilik transaksi ini");
   }
   if (user.peran !== "PK" && user.peran !== "CS") {
-    throw new AppError("FORBIDDEN", 403, "Hanya penyedia kerja yang dapat membuat tagihan");
+    throw new AppError(
+      "FORBIDDEN",
+      403,
+      "Hanya penyedia kerja yang dapat membuat tagihan",
+    );
   }
 
   if (trx.statusPekerjaan !== "MENUNGGU_PEMBAYARAN") {
@@ -79,7 +83,9 @@ export async function buatTagihanTransaksi(
   return tx(() => buatTagihan(idTransaksi, trx.nominalUpah));
 }
 
-export async function ambilDetailTagihan(idTagihan: string): Promise<TagihanDTO> {
+export async function ambilDetailTagihan(
+  idTagihan: string,
+): Promise<TagihanDTO> {
   const user = await requireUser();
 
   const tagihan = cariTagihanBerdasarkanId(idTagihan);
@@ -181,7 +187,10 @@ export async function bayarTagihan(
     );
   }
 
-  if (tagihanCek.status !== "MENUNGGU_PEMBAYARAN" && tagihanCek.status !== "DIPROSES") {
+  if (
+    tagihanCek.status !== "MENUNGGU_PEMBAYARAN" &&
+    tagihanCek.status !== "DIPROSES"
+  ) {
     throw new AppError(
       "STATUS_TIDAK_VALID",
       409,
@@ -222,92 +231,13 @@ export async function ambilDataMockGateway(idTagihan: string) {
   return { tagihan, transaksi: trx };
 }
 
+/** Integrasi #39: pemanggil memilih REFUND secara eksplisit; otorisasi tetap diperiksa di sini. */
 export async function prosesRefundTagihan(
   idTransaksi: string,
   idTiket: string,
-): Promise<{
-  ok: boolean;
-  status: string;
-  idTagihan: string;
-  nominal: number;
-  idTiket: string;
-  idempotent?: boolean;
-}> {
-  const tagihan = cariTagihanUntukRefund(idTransaksi);
-  if (!tagihan) {
-    throw new AppError(
-      "NOT_FOUND",
-      404,
-      "Tagihan tidak ditemukan untuk transaksi ini",
-    );
-  }
-
-  if (tagihan.status === "DIKEMBALIKAN") {
-    return {
-      ok: true,
-      status: "DIKEMBALIKAN",
-      idTagihan: tagihan.id,
-      nominal: tagihan.totalBayar,
-      idTiket,
-      idempotent: true,
-    };
-  }
-
-  if (tagihan.status !== "BERHASIL") {
-    throw new AppError(
-      "STATUS_TIDAK_VALID",
-      409,
-      `Tagihan dengan status ${tagihan.status} tidak dapat direfund`,
-    );
-  }
-
-  const idempotencyKey = `refund:${idTiket}`;
-  const adapter = getPaymentAdapter();
-
-  const hasilRefund = await adapter.refund({
-    idempotencyKey,
-    idTagihan: tagihan.id,
-    nominal: tagihan.totalBayar,
-  });
-
-  if (hasilRefund.status !== "BERHASIL") {
-    throw new AppError(
-      "BAD_GATEWAY",
-      502,
-      "Gagal memproses refund pada payment gateway",
-    );
-  }
-
-  tx(() => {
-    const current = cariTagihanBerdasarkanId(tagihan.id);
-    if (current?.status === "DIKEMBALIKAN") return;
-
-    ubahStatusTagihan(tagihan.id, "DIKEMBALIKAN");
-
-    db.prepare(
-      `UPDATE transaksi_pekerjaan
-       SET status_pekerjaan = 'DIBATALKAN'
-       WHERE id_transaksi = ? AND status_pekerjaan = 'DISENGKETAKAN'`,
-    ).run(idTransaksi);
-
-    const trx = ambilInfoTransaksi(idTransaksi);
-    if (trx) {
-      Notifikasi.buat(
-        trx.idPenggunaPK,
-        `Pengembalian dana (refund) sebesar Rp ${tagihan.totalBayar.toLocaleString("id-ID")} untuk pekerjaan "${trx.judulLowongan}" telah berhasil diproses.`,
-        `/pk/transaksi/${idTransaksi}`,
-      );
-    }
-  });
-
-  return {
-    ok: true,
-    status: "DIKEMBALIKAN",
-    idTagihan: tagihan.id,
-    nominal: tagihan.totalBayar,
-    idTiket,
-  };
+  catatan: string = "Pengembalian dana sesuai keputusan CS",
+) {
+  const user = await requireCS();
+  const alasan = z.string().trim().min(10).max(1000).parse(catatan);
+  return refundSengketa(idTransaksi, idTiket, user.id, alasan);
 }
-
-
-

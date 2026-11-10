@@ -5,6 +5,7 @@ import type {
   PaymentGatewayAdapter,
   RefundParams,
 } from "./adapter";
+import { sidikRekening } from "@/lib/rekening";
 import { tx } from "@/lib/db";
 import { AppError } from "@/lib/errors";
 import { ambilLog, catatLog } from "@/models/LogGateway";
@@ -37,8 +38,14 @@ export class MockPaymentGateway implements PaymentGatewayAdapter {
         (log) => log.jenis === "DISBURSEMENT",
       );
       if (existing) {
-        const payload = existing.payload as DisburseParams;
-        if (payload.nominal !== p.nominal || payload.rekening !== p.rekening) {
+        const payload = existing.payload as {
+          nominal: number;
+          rekeningFingerprint: string;
+        };
+        if (
+          payload.nominal !== p.nominal ||
+          payload.rekeningFingerprint !== sidikRekening(p.rekening)
+        ) {
           throw new AppError(
             "IDEMPOTENCY_CONFLICT",
             409,
@@ -62,34 +69,35 @@ export class MockPaymentGateway implements PaymentGatewayAdapter {
 
   async refund(p: RefundParams): Promise<{ status: "BERHASIL" | "GAGAL" }> {
     const idempotencyKey = p.idempotencyKey || `refund:${p.idTagihan}`;
-
-    // Cek idempotensi pada log: jika sudah pernah direfund dengan idempotencyKey ini, jangan catat log ganda
-    const existingLogs = ambilLog(p.idTagihan);
-    const sudahAda = existingLogs.find(
-      (l) =>
-        l.jenis === "REFUND" &&
-        typeof l.payload === "object" &&
-        l.payload !== null &&
-        (l.payload as { idempotencyKey?: string }).idempotencyKey ===
-          idempotencyKey,
-    );
-
-    if (sudahAda) {
-      return { status: "BERHASIL" };
-    }
-
-    catatLog(
-      "REFUND",
-      p.idTagihan,
-      {
-        idTagihan: p.idTagihan,
-        nominal: p.nominal,
-        idempotencyKey,
-      },
-      "MOCK",
-    );
-
-    return { status: "BERHASIL" };
+    return tx(() => {
+      const existing = ambilLog(p.idTagihan).find(
+        (log) => log.jenis === "REFUND",
+      );
+      if (existing) {
+        const payload = existing.payload as {
+          idempotencyKey: string;
+          nominal: number;
+        };
+        if (
+          payload.idempotencyKey !== idempotencyKey ||
+          payload.nominal !== p.nominal
+        ) {
+          throw new AppError(
+            "IDEMPOTENCY_CONFLICT",
+            409,
+            "Tagihan sudah direfund dengan instruksi berbeda",
+          );
+        }
+        return { status: "BERHASIL" as const };
+      }
+      catatLog(
+        "REFUND",
+        p.idTagihan,
+        { idTagihan: p.idTagihan, nominal: p.nominal, idempotencyKey },
+        "MOCK",
+      );
+      return { status: "BERHASIL" as const };
+    });
   }
 
   /**

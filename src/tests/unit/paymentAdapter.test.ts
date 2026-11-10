@@ -46,7 +46,9 @@ describe("Payment Gateway Adapter & LogGateway (Issue #15)", () => {
 
     it("melemparkan error informatif jika provider 'midtrans' dipilih (belum dikonfigurasi)", () => {
       process.env.PAYMENT_PROVIDER = "midtrans";
-      expect(() => getPaymentAdapter()).toThrow(/Midtrans belum dikonfigurasi/i);
+      expect(() => getPaymentAdapter()).toThrow(
+        /Midtrans belum dikonfigurasi/i,
+      );
     });
 
     it("melemparkan error jika provider tidak dikenal", () => {
@@ -93,7 +95,8 @@ describe("Payment Gateway Adapter & LogGateway (Issue #15)", () => {
       expect(logs[0].jenis).toBe("DISBURSEMENT");
       expect(logs[0].payload).toMatchObject({
         idPencairan: "cair-001",
-        rekening: "BCA:1234567890",
+        rekeningMasked: "****7890",
+        rekeningFingerprint: expect.any(String),
         nominal: 50000,
         idempotencyKey: "cair-001",
       });
@@ -196,7 +199,9 @@ describe("Payment Gateway Adapter & LogGateway (Issue #15)", () => {
 
       // Verifikasi trigger immutability mencegah UPDATE
       expect(() => {
-        db.prepare("UPDATE log_gateway SET provider = 'HACK' WHERE id_log = ?").run(id);
+        db.prepare(
+          "UPDATE log_gateway SET provider = 'HACK' WHERE id_log = ?",
+        ).run(id);
       }).toThrow(/append-only/i);
 
       // Verifikasi trigger immutability mencegah DELETE

@@ -1,4 +1,5 @@
 import "server-only";
+import { enkripsiRekening, dekripsiRekening } from "@/lib/rekening";
 import { randomUUID } from "node:crypto";
 import { db, tx } from "@/lib/db";
 import { AppError } from "@/lib/errors";
@@ -40,7 +41,10 @@ export function cariPencairanBerdasarkanId(
     id: row.id_pencairan,
     idTenagaKerja: row.id_tenaga_kerja,
     nominal: row.nominal,
-    rekeningTujuan: row.rekening_tujuan,
+    rekeningTujuan: dekripsiRekening(
+      row.rekening_tujuan,
+      `pencairan:${row.id_pencairan}`,
+    ),
     status: row.status_pencairan,
     waktuPengajuan: row.waktu_pengajuan,
   };
@@ -192,7 +196,12 @@ export async function ajukanPencairanDana(
       `INSERT INTO pencairan_dana
       (id_pencairan, id_tenaga_kerja, nominal, rekening_tujuan, status_pencairan)
       VALUES (?, ?, ?, ?, 'DIPROSES')`,
-    ).run(idPencairan, idTenagaKerja, nominal, rekeningTujuan);
+    ).run(
+      idPencairan,
+      idTenagaKerja,
+      nominal,
+      enkripsiRekening(rekeningTujuan, `pencairan:${idPencairan}`),
+    );
     db.prepare(
       "INSERT INTO pengiriman_pencairan (id_pencairan, status) VALUES (?, 'SIAP')",
     ).run(idPencairan);

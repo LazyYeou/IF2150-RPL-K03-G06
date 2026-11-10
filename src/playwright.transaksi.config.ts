@@ -11,7 +11,11 @@ const baseURL = `http://localhost:${port}`;
 
 export default defineConfig({
   testDir: "tests/e2e",
-  testMatch: ["transaksi-paginasi.spec.ts", "transaksi-akses.spec.ts"],
+  testMatch: [
+    "transaksi-paginasi.spec.ts",
+    "transaksi-akses.spec.ts",
+    "dompet-dialog.spec.ts",
+  ],
   metadata: { fixtureDir },
   globalSetup: "./tests/helpers/transaksi-e2e-setup.ts",
   workers: 1,
