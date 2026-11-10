@@ -6,10 +6,12 @@ import {
   buatTagihan,
   cariTagihanBerdasarkanId,
   cariTagihanTerakhir,
+  cariTagihanUntukRefund,
   periksaKedaluwarsaLazy,
   ubahStatusTagihan,
   type TagihanDTO,
 } from "@/models/TagihanPembayaran";
+import * as Notifikasi from "@/models/Notifikasi";
 import { MetodePembayaran } from "@/lib/validation/tagihan";
 import { getPaymentAdapter } from "@/lib/payment/adapter";
 
@@ -136,10 +138,6 @@ export async function ambilDataHalamanBayar(idTransaksi: string) {
   };
 }
 
-/**
- * C39: Memproses pembayaran tagihan dengan memilih metode pembayaran.
- * Mengubah status tagihan menjadi DIPROSES dan memanggil adapter gateway.
- */
 export async function bayarTagihan(
   idTagihan: string,
   metodeInput: unknown,
@@ -223,5 +221,93 @@ export async function ambilDataMockGateway(idTagihan: string) {
 
   return { tagihan, transaksi: trx };
 }
+
+export async function prosesRefundTagihan(
+  idTransaksi: string,
+  idTiket: string,
+): Promise<{
+  ok: boolean;
+  status: string;
+  idTagihan: string;
+  nominal: number;
+  idTiket: string;
+  idempotent?: boolean;
+}> {
+  const tagihan = cariTagihanUntukRefund(idTransaksi);
+  if (!tagihan) {
+    throw new AppError(
+      "NOT_FOUND",
+      404,
+      "Tagihan tidak ditemukan untuk transaksi ini",
+    );
+  }
+
+  if (tagihan.status === "DIKEMBALIKAN") {
+    return {
+      ok: true,
+      status: "DIKEMBALIKAN",
+      idTagihan: tagihan.id,
+      nominal: tagihan.totalBayar,
+      idTiket,
+      idempotent: true,
+    };
+  }
+
+  if (tagihan.status !== "BERHASIL") {
+    throw new AppError(
+      "STATUS_TIDAK_VALID",
+      409,
+      `Tagihan dengan status ${tagihan.status} tidak dapat direfund`,
+    );
+  }
+
+  const idempotencyKey = `refund:${idTiket}`;
+  const adapter = getPaymentAdapter();
+
+  const hasilRefund = await adapter.refund({
+    idempotencyKey,
+    idTagihan: tagihan.id,
+    nominal: tagihan.totalBayar,
+  });
+
+  if (hasilRefund.status !== "BERHASIL") {
+    throw new AppError(
+      "BAD_GATEWAY",
+      502,
+      "Gagal memproses refund pada payment gateway",
+    );
+  }
+
+  tx(() => {
+    const current = cariTagihanBerdasarkanId(tagihan.id);
+    if (current?.status === "DIKEMBALIKAN") return;
+
+    ubahStatusTagihan(tagihan.id, "DIKEMBALIKAN");
+
+    db.prepare(
+      `UPDATE transaksi_pekerjaan
+       SET status_pekerjaan = 'DIBATALKAN'
+       WHERE id_transaksi = ? AND status_pekerjaan = 'DISENGKETAKAN'`,
+    ).run(idTransaksi);
+
+    const trx = ambilInfoTransaksi(idTransaksi);
+    if (trx) {
+      Notifikasi.buat(
+        trx.idPenggunaPK,
+        `Pengembalian dana (refund) sebesar Rp ${tagihan.totalBayar.toLocaleString("id-ID")} untuk pekerjaan "${trx.judulLowongan}" telah berhasil diproses.`,
+        `/pk/transaksi/${idTransaksi}`,
+      );
+    }
+  });
+
+  return {
+    ok: true,
+    status: "DIKEMBALIKAN",
+    idTagihan: tagihan.id,
+    nominal: tagihan.totalBayar,
+    idTiket,
+  };
+}
+
 
 

@@ -5,17 +5,9 @@ import type {
   PaymentGatewayAdapter,
   RefundParams,
 } from "./adapter";
-import { catatLog } from "@/models/LogGateway";
+import { ambilLog, catatLog } from "@/models/LogGateway";
 
-/**
- * Implementasi Mock Payment Gateway (C15, C45).
- * Digunakan untuk lingkungan pengujian dan pengembangan lokal.
- */
 export class MockPaymentGateway implements PaymentGatewayAdapter {
-  /**
-   * Mensimulasikan pemrosesan charge/tagihan.
-   * Mengembalikan redirect URL ke halaman mock gateway lokal.
-   */
   async charge(p: ChargeParams): Promise<{ redirectUrl: string }> {
     catatLog(
       "CHARGE",
@@ -53,17 +45,31 @@ export class MockPaymentGateway implements PaymentGatewayAdapter {
     return { status: "DITERIMA" };
   }
 
-  /**
-   * Mensimulasikan pengembalian dana (refund) dari sengketa yang disetujui.
-   */
   async refund(p: RefundParams): Promise<{ status: "BERHASIL" | "GAGAL" }> {
+    const idempotencyKey = p.idempotencyKey || `refund:${p.idTagihan}`;
+
+    // Cek idempotensi pada log: jika sudah pernah direfund dengan idempotencyKey ini, jangan catat log ganda
+    const existingLogs = ambilLog(p.idTagihan);
+    const sudahAda = existingLogs.find(
+      (l) =>
+        l.jenis === "REFUND" &&
+        typeof l.payload === "object" &&
+        l.payload !== null &&
+        (l.payload as { idempotencyKey?: string }).idempotencyKey ===
+          idempotencyKey,
+    );
+
+    if (sudahAda) {
+      return { status: "BERHASIL" };
+    }
+
     catatLog(
       "REFUND",
       p.idTagihan,
       {
         idTagihan: p.idTagihan,
         nominal: p.nominal,
-        idempotencyKey: p.idempotencyKey,
+        idempotencyKey,
       },
       "MOCK",
     );
@@ -99,10 +105,6 @@ export class MockPaymentGateway implements PaymentGatewayAdapter {
   }
 }
 
-/**
- * Menghasilkan rawBody dan signature HMAC-SHA256 untuk webhook payload.
- * Digunakan oleh halaman mock gateway dan pengujian integrasi.
- */
 export function tandaTanganiWebhook(
   payload: Record<string, unknown> | string,
   secretOverride?: string,
