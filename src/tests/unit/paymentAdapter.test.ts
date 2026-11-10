@@ -44,10 +44,22 @@ describe("Payment Gateway Adapter & LogGateway (Issue #15)", () => {
       expect(adapter2).toBeInstanceOf(MockPaymentGateway);
     });
 
-    it("melemparkan error informatif jika provider 'midtrans' dipilih (belum dikonfigurasi)", () => {
+    it("mengembalikan MidtransPaymentGateway jika MIDTRANS_SERVER_KEY diset", () => {
       process.env.PAYMENT_PROVIDER = "midtrans";
+      process.env.MIDTRANS_SERVER_KEY = "SB-Mid-server-test-key-xxx";
+      try {
+        const adapter = getPaymentAdapter();
+        expect(adapter.constructor.name).toBe("MidtransPaymentGateway");
+      } finally {
+        delete process.env.MIDTRANS_SERVER_KEY;
+      }
+    });
+
+    it("melempar error jika provider midtrans tapi MIDTRANS_SERVER_KEY kosong", () => {
+      process.env.PAYMENT_PROVIDER = "midtrans";
+      delete process.env.MIDTRANS_SERVER_KEY;
       expect(() => getPaymentAdapter()).toThrow(
-        /Midtrans belum dikonfigurasi/i,
+        /MIDTRANS_SERVER_KEY wajib diisi/i,
       );
     });
 

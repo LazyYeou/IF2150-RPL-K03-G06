@@ -130,7 +130,11 @@ export default function TagihanPembayaranUI({
 
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        throw new Error(data.message || data.error || "Gagal memproses pembayaran");
+        const pesan =
+          (typeof data.error === "object" ? data.error?.message : data.error) ||
+          data.message ||
+          "Gagal memproses pembayaran";
+        throw new Error(pesan);
       }
 
       if (data.redirectUrl) {

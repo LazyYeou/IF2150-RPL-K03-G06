@@ -1,4 +1,5 @@
 import { MockPaymentGateway } from "./mock";
+import { MidtransPaymentGateway } from "./midtrans";
 
 export interface ChargeParams {
   idTagihan: string;
@@ -35,7 +36,7 @@ export function getPaymentAdapter(): PaymentGatewayAdapter {
     return new MockPaymentGateway();
   }
   if (provider === "midtrans") {
-    throw new Error("Adapter Midtrans belum dikonfigurasi (Issue #53)");
+    return new MidtransPaymentGateway();
   }
   throw new Error(`Payment provider '${provider}' tidak didukung`);
 }
