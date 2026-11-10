@@ -34,6 +34,7 @@ export function SiteHeader() {
         <nav aria-label="Navigasi utama" className={menuOpen ? "main-nav is-open" : "main-nav"}>
           <Link href="/jobs" onClick={() => setMenuOpen(false)}>Cari Pekerjaan</Link>
           <Link href="/#how-it-works" onClick={() => setMenuOpen(false)}>Cara Kerja</Link>
+          <Link href="/bantuan" onClick={() => setMenuOpen(false)}>Pusat Bantuan</Link>
           <Link className="button button-primary nav-search" href="/jobs" onClick={() => setMenuOpen(false)}>
             Cari Pekerjaan <span aria-hidden="true">→</span>
           </Link>
@@ -69,6 +70,7 @@ export function SiteFooter() {
           <div>
             <strong>Kenali Kerja-In</strong>
             <Link href="/#how-it-works">Cara kerja</Link>
+            <Link href="/bantuan">Pusat bantuan</Link>
             <Link href="/">Beranda</Link>
           </div>
         </div>
