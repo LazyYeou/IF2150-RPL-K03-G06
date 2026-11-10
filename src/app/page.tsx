@@ -6,7 +6,9 @@ import { CategoryIcon } from "@/components/category-icon";
 import { jobCategories, jobs } from "@/lib/jobs";
 
 export default function HomePage() {
-  const latestJobs = jobs.slice(0, 4);
+  const latestJobs = [...jobs]
+    .sort((first, second) => first.date.localeCompare(second.date))
+    .slice(0, 4);
 
   return (
     <main>
@@ -30,12 +32,12 @@ export default function HomePage() {
             </div>
           </div>
           <SearchBar />
-          <p className="popular-searches">
+          <nav aria-label="Pencarian kategori populer" className="popular-searches">
             <span>Sering dicari:</span>
-            <Link href="/jobs?category=kebersihan">Bersih-bersih ↗</Link>
-            <Link href="/jobs?category=pertukangan">Tukang ↗</Link>
-            <Link href="/jobs?category=angkut-barang">Pindahan ↗</Link>
-          </p>
+            <Link className="category-chip" href="/jobs?category=kebersihan">Bersih-bersih <span aria-hidden="true">↗</span></Link>
+            <Link className="category-chip" href="/jobs?category=pertukangan">Tukang <span aria-hidden="true">↗</span></Link>
+            <Link className="category-chip" href="/jobs?category=angkut-barang">Pindahan <span aria-hidden="true">↗</span></Link>
+          </nav>
         </div>
       </section>
 

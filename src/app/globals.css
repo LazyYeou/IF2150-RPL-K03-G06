@@ -2,10 +2,10 @@
   --navy: #102e56;
   --navy-deep: #092044;
   --orange: #f77a12;
-  --orange-dark: #e96808;
+  --orange-dark: #ad4b04;
   --teal: #168d8d;
   --text: #17385f;
-  --muted: #647995;
+  --muted: #586d85;
   --line: #dce5ef;
   --surface: #f6f9fc;
   --white: #fff;
@@ -34,7 +34,7 @@ a { color: inherit; text-decoration: none; }
 button, input, select { font: inherit; }
 button, select { cursor: pointer; }
 button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible {
-  outline: 3px solid #f7a34f;
+  outline: 3px solid var(--navy-deep);
   outline-offset: 3px;
 }
 
@@ -74,7 +74,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 .button:hover:not(:disabled) { transform: translateY(-1px); }
 .button-primary { background: var(--orange); color: var(--navy-deep); }
-.button-primary:hover:not(:disabled) { background: var(--orange-dark); }
+.button-primary:hover:not(:disabled) { background: #e96808; }
 .button-outline { background: transparent; border-color: var(--line); color: var(--navy); }
 .button-outline:hover { background: var(--white); border-color: #9eb1c8; }
 .nav-search { min-height: 42px; padding-inline: 18px; }
@@ -117,11 +117,25 @@ h1, h2, h3, p { margin-top: 0; }
 .field-copy { display: grid; min-width: 0; gap: 2px; }
 .field-label { color: var(--navy); font-size: 11px; font-weight: 700; }
 .search-field input { width: 100%; min-width: 0; padding: 0; border: 0; outline: 0; background: transparent; color: var(--text); font-size: 13px; }
-.search-field input::placeholder { color: #788ba4; opacity: 1; }
+.search-field input::placeholder { color: #62758d; opacity: 1; }
 .search-submit { min-width: 166px; }
 .search-submit > span { font-size: 21px; line-height: 1; }
 .popular-searches { display: flex; align-items: center; gap: 15px; flex-wrap: wrap; margin: 13px 0 0; color: var(--muted); font-size: 11px; }
 .popular-searches a:hover { color: var(--orange-dark); }
+.category-chip {
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 11px;
+  border: 1px solid #cbd7e4;
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--navy);
+  font-weight: 600;
+}
+.category-chip:hover { border-color: var(--navy); background: var(--blue-soft); }
+.category-chip span { color: var(--muted); }
 
 .category-section { padding-top: 48px; padding-bottom: 48px; }
 .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 20px; }
@@ -134,8 +148,8 @@ h1, h2, h3, p { margin-top: 0; }
 .category-tile + .category-tile { border-left: 1px solid var(--line); }
 .category-tile:hover { background: var(--surface); }
 .category-icon { display: grid; width: 42px; height: 42px; place-items: center; border-radius: 10px; }
-.tone-mint { background: var(--mint); color: #247c79; }
-.tone-peach { background: var(--peach); color: #b65b12; }
+.tone-mint { background: var(--mint); color: #1f6b68; }
+.tone-peach { background: var(--peach); color: #a64c08; }
 .tone-blue { background: var(--blue-soft); color: #234a77; }
 .tone-orange { background: #fff0e3; color: #ad4b04; }
 .tone-yellow { background: var(--yellow); color: #8d5a00; }
@@ -148,7 +162,7 @@ h1, h2, h3, p { margin-top: 0; }
 .eyebrow-dot::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--teal); }
 .locality { margin: 22px 0 7px; color: var(--muted); font-size: 11px; }
 .locality span { margin-right: 6px; color: var(--navy); }
-.list-hint { margin: 0 0 8px; color: #91a0b2; font-size: 10px; text-align: right; }
+.list-hint { margin: 0 0 8px; color: var(--muted); font-size: 10px; text-align: right; }
 .job-list { overflow: hidden; border: 1px solid var(--line); border-radius: 9px; background: var(--white); }
 .job-card { display: grid; grid-template-columns: 44px minmax(0, 1fr) 176px; gap: 16px; align-items: start; min-height: 126px; padding: 21px 23px; }
 .job-card + .job-card { border-top: 1px solid var(--line); }
@@ -220,7 +234,7 @@ h1, h2, h3, p { margin-top: 0; }
 .filter-group select, .sort-select {
   min-height: 42px;
   padding: 0 34px 0 12px;
-  border: 1px solid #aebdd0;
+  border: 1px solid #788ba4;
   border-radius: 7px;
   background: var(--white);
   color: var(--navy);
@@ -230,7 +244,7 @@ h1, h2, h3, p { margin-top: 0; }
 .saved-filter { padding: 18px 0; border-bottom: 1px solid var(--line); }
 .saved-mark { color: var(--navy); font-size: 19px; line-height: 1; }
 .filter-tip { margin-top: 22px; padding: 16px; border-radius: 8px; background: var(--mint); color: var(--navy); }
-.filter-tip > span { color: #327b74; font-size: 20px; }
+.filter-tip > span { color: #1f6b68; font-size: 20px; }
 .filter-tip p { margin: 7px 0 0; font-size: 11px; line-height: 1.7; }
 .results-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
 .results-count { margin: 0; color: var(--muted); font-size: 13px; }
@@ -308,6 +322,32 @@ h1, h2, h3, p { margin-top: 0; }
   .detail-layout { grid-template-columns: minmax(0, 1fr) 285px; gap: 28px; }
   .offer-panel { padding: 19px; }
   .job-card { grid-template-columns: 42px minmax(0, 1fr) 150px; gap: 12px; }
+}
+
+@media (max-width: 800px) {
+  .results-layout { grid-template-columns: 1fr; gap: 24px; }
+  .filter-panel {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0 18px;
+    padding: 16px;
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    background: #fbfcfe;
+  }
+  .filter-heading { grid-column: 1 / -1; padding-bottom: 8px; }
+  .filter-group:first-of-type {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0 12px;
+  }
+  .filter-group:first-of-type legend { grid-column: 1 / -1; }
+  .filter-group select { width: 100%; }
+  .saved-filter { align-self: end; padding: 17px 0; border-bottom: 1px solid var(--line); }
+  .filter-tip { display: none; }
+  .detail-layout { grid-template-columns: 1fr; gap: 20px; }
+  .offer-panel { position: static; order: -1; }
 }
 
 @media (max-width: 640px) {
@@ -429,6 +469,13 @@ h1, h2, h3, p { margin-top: 0; }
   .checkbox-row { gap: 7px; font-size: 10px; }
   .filter-group:first-of-type { gap: 0 5px; }
   .results-layout { gap: 17px; }
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --muted: #42566e;
+    --line: #9aacc0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
