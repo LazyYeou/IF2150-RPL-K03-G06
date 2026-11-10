@@ -96,7 +96,7 @@ Dipakai mock gateway (dan adapter Midtrans bila ada). Pemilik: Karmel.
 | Endpoint | `POST /api/webhooks/payment` (tanpa cookie, tanpa cek `Origin`) |
 | Signature | Header `x-signature` = hex HMAC-SHA256 dari **raw body** dengan `PAYMENT_WEBHOOK_SECRET`; dibandingkan dengan `timingSafeEqual` |
 | Body | `{ "jenis": "PEMBAYARAN" \| "PENCAIRAN" \| "REFUND", "referensiId": "<idTagihan\|idPencairan\|idTiket>", "status": "BERHASIL" \| "GAGAL" \| "KEDALUWARSA", "nominal": 52500, "waktu": "<ISO 8601>" }` |
-| Validasi | Signature → `referensiId` ada → `nominal` sama dengan data di DB; gagal → 401/400, data tidak berubah |
+| Validasi | Signature → body objek JSON → `nominal` wajib angka bulat positif dalam rentang integer aman → `referensiId` ada → nominal sama dengan data di DB. Nilai hilang, null, string, pecahan, nol, negatif, atau tidak cocok ditolak; gagal → 401/400, data tidak berubah |
 | Idempotensi | Status sama dengan yang tersimpan → no-op 200. Bertentangan dengan status final → hanya dicatat di `log_gateway`, 200 |
 | Log | Setiap callback dicatat `log_gateway` jenis `CALLBACK` (payload lengkap) |
 | Efek | `PEMBAYARAN BERHASIL`: tagihan `BERHASIL` + transaksi `IN_PROGRESS` dalam satu `tx()`, lalu notifikasi TK. `PENCAIRAN BERHASIL`: `mutasi_saldo('cair:'||id, −nominal)` + debit saldo + `BERHASIL`. `PENCAIRAN GAGAL`: `GAGAL` (reservasi lepas) |

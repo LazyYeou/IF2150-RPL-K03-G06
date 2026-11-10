@@ -11,6 +11,7 @@ import {
 import { cariPencairanBerdasarkanId } from "@/models/PencairanDana";
 import { ambilInfoTransaksi } from "@/controllers/TagihanPembayaranController";
 import type { StatusTagihan } from "@/lib/validation/tagihan";
+import { NominalWebhook } from "@/lib/validation/payment";
 
 export interface WebhookResult {
   received: boolean;
@@ -35,14 +36,26 @@ export async function prosesNotifikasiWebhook(
   } catch {
     throw new AppError("BAD_REQUEST", 400, "Payload JSON tidak valid");
   }
+  if (!payload || typeof payload !== "object" || Array.isArray(payload))
+    throw new AppError(
+      "BAD_REQUEST",
+      400,
+      "Payload webhook harus berupa objek",
+    );
+  const nominalParsed = NominalWebhook.safeParse(payload.nominal);
+  if (!nominalParsed.success)
+    throw new AppError(
+      "BAD_REQUEST",
+      400,
+      "Nominal webhook wajib berupa bilangan bulat positif yang valid",
+    );
 
   const jenis = String(payload.jenis ?? "").toUpperCase();
   const referensiId = String(
     payload.referensiId ?? payload.idTagihan ?? payload.idPencairan ?? "",
   );
   const statusRaw = String(payload.status ?? "").toUpperCase();
-  const nominal =
-    payload.nominal !== undefined ? Number(payload.nominal) : undefined;
+  const nominal = nominalParsed.data;
 
   if (!referensiId) {
     throw new AppError("BAD_REQUEST", 400, "referensiId tidak disertakan");
@@ -63,7 +76,7 @@ export async function prosesNotifikasiWebhook(
 function prosesWebhookPencairan(
   idPencairan: string,
   statusRaw: string,
-  nominal: number | undefined,
+  nominal: number,
   payload: Record<string, unknown>,
 ): WebhookResult {
   const statusValid = ["BERHASIL", "GAGAL", "DITOLAK", "DIPROSES"];
@@ -80,7 +93,7 @@ function prosesWebhookPencairan(
     throw new AppError("NOT_FOUND", 404, "Pencairan dana tidak ditemukan");
   }
 
-  if (nominal !== undefined && nominal !== pencairan.nominal) {
+  if (nominal !== pencairan.nominal) {
     throw new AppError(
       "BAD_REQUEST",
       400,
@@ -120,9 +133,7 @@ function prosesWebhookPencairan(
     ).run(statusRaw, idPencairan);
 
     const tkRow = db
-      .prepare(
-        `SELECT id_pengguna FROM tenaga_kerja WHERE id_tenaga_kerja = ?`,
-      )
+      .prepare(`SELECT id_pengguna FROM tenaga_kerja WHERE id_tenaga_kerja = ?`)
       .get(current.idTenagaKerja) as { id_pengguna: string } | undefined;
 
     if (statusRaw === "BERHASIL") {
@@ -166,7 +177,7 @@ function prosesWebhookPencairan(
 function prosesWebhookPembayaran(
   idTagihan: string,
   statusRaw: string,
-  nominal: number | undefined,
+  nominal: number,
   payload: Record<string, unknown>,
 ): WebhookResult {
   const statusValid: StatusTagihan[] = [
@@ -189,7 +200,7 @@ function prosesWebhookPembayaran(
     throw new AppError("NOT_FOUND", 404, "Tagihan tidak ditemukan");
   }
 
-  if (nominal !== undefined && nominal !== tagihan.totalBayar) {
+  if (nominal !== tagihan.totalBayar) {
     throw new AppError("BAD_REQUEST", 400, "Nominal tidak sesuai tagihan");
   }
 

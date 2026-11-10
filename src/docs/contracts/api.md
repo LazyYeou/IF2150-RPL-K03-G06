@@ -169,6 +169,7 @@ Endpoint yang memakai gate `requireVerifiedTK` (→ 403 `NOT_VERIFIED`): `POST /
 | `GET /tagihan/:id` | PK pemilik | – | 200 `Tagihan` (kedaluwarsa dicek lazy) | 403, 404 |
 | `POST /tagihan/:id/bayar` | PK pemilik | `{ metode: 'VA_BCA'\|'VA_BNI'\|'QRIS'\|'EWALLET' }` | 200 `{ redirectUrl }` (mock: `/mock-gateway/:idTagihan`) | 409 kedaluwarsa/bukan `MENUNGGU_PEMBAYARAN` |
 | `POST /webhooks/payment` | gateway | lihat [modules.md §3](modules.md#3-webhook-payment-gateway) | 200 `{ ok: true }` (duplikat juga 200) | 401 `SIGNATURE_TIDAK_VALID`, 400 nominal/id tidak cocok |
+| `POST /mock-gateway/trigger` | PK pemilik tagihan / TK pemilik pencairan; hanya provider `mock` | tepat satu dari `{ idTagihan, status? }` atau `{ idPencairan, status? }`; nominal diambil dari DB | 200 `{ success, status, redirectUrl }` | 401 tanpa sesi, 403 bukan pemilik/peran salah/provider non-mock, 400 input tidak valid, 404 referensi tidak ada |
 | `GET /dompet` | TK | – | 200 `{ saldo, saldoTersedia, mutasi: { kunciOperasi, nominal, createdAt }[], pencairan: { id, nominal, rekeningMasked, status, waktuPengajuan }[] }` | – |
 | `POST /pencairan` | TK✔ | `{ nominal (≥ 10.000), rekeningTujuan }` | 201 `{ id, nominal, rekeningMasked, status: 'DIPROSES' }` | 400 rekening tidak valid, 422 `SALDO_TIDAK_CUKUP` |
 

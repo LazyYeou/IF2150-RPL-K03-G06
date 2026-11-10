@@ -76,7 +76,11 @@ describe("Integrasi Pembayaran, Mock Gateway & Webhook HMAC (Issue #25 / UC07 / 
 
   it("POST /api/tagihan/:id/bayar: berhasil memproses bayar, mengubah status ke DIPROSES dan mengembalikan redirectUrl", async () => {
     // Siapkan transaksi MENUNGGU_PEMBAYARAN dan tagihan barunya
-    const trx = one<{ id_transaksi: string; id_pengguna: string; nominal_upah: number }>(
+    const trx = one<{
+      id_transaksi: string;
+      id_pengguna: string;
+      nominal_upah: number;
+    }>(
       `SELECT t.id_transaksi, pk.id_pengguna, t.nominal_upah
        FROM transaksi_pekerjaan t
        JOIN penyedia_kerja pk ON pk.id_penyedia_kerja = t.id_penyedia_kerja
@@ -90,7 +94,9 @@ describe("Integrasi Pembayaran, Mock Gateway & Webhook HMAC (Issue #25 / UC07 / 
     const fee = Math.round(0.05 * upah);
     const total = upah + fee;
 
-    db.prepare("DELETE FROM tagihan_pembayaran WHERE id_transaksi = ?").run(trx.id_transaksi);
+    db.prepare("DELETE FROM tagihan_pembayaran WHERE id_transaksi = ?").run(
+      trx.id_transaksi,
+    );
     db.prepare(
       `INSERT INTO tagihan_pembayaran (
          id_tagihan, id_transaksi, nominal_upah, commission_fee,
@@ -143,7 +149,11 @@ describe("Integrasi Pembayaran, Mock Gateway & Webhook HMAC (Issue #25 / UC07 / 
   });
 
   it("POST /api/webhooks/payment: signature salah ditolak 401 dan data di DB TIDAK BERUBAH", async () => {
-    const tagihan = one<{ id_tagihan: string; id_transaksi: string; total_bayar: number }>(
+    const tagihan = one<{
+      id_tagihan: string;
+      id_transaksi: string;
+      total_bayar: number;
+    }>(
       `SELECT id_tagihan, id_transaksi, total_bayar
        FROM tagihan_pembayaran
        WHERE status_pembayaran = 'DIPROSES'
@@ -207,7 +217,10 @@ describe("Integrasi Pembayaran, Mock Gateway & Webhook HMAC (Issue #25 / UC07 / 
       idempotencyKey: tagihan.id_tagihan,
     };
 
-    const { rawBody, signature } = paymentMock.tandaTanganiWebhook(payload, SECRET_KEY);
+    const { rawBody, signature } = paymentMock.tandaTanganiWebhook(
+      payload,
+      SECRET_KEY,
+    );
 
     const res = await webhookRoute.POST(
       new Request("http://localhost/api/webhooks/payment", {
@@ -258,7 +271,10 @@ describe("Integrasi Pembayaran, Mock Gateway & Webhook HMAC (Issue #25 / UC07 / 
       nominal: tagihan.total_bayar,
       status: "BERHASIL",
     };
-    const { rawBody, signature } = paymentMock.tandaTanganiWebhook(payload, SECRET_KEY);
+    const { rawBody, signature } = paymentMock.tandaTanganiWebhook(
+      payload,
+      SECRET_KEY,
+    );
 
     const res = await webhookRoute.POST(
       new Request("http://localhost/api/webhooks/payment", {
@@ -277,7 +293,11 @@ describe("Integrasi Pembayaran, Mock Gateway & Webhook HMAC (Issue #25 / UC07 / 
   });
 
   it("POST /api/webhooks/payment: callback bertentangan dengan status final dicatat saja dan tidak merusak data", async () => {
-    const tagihan = one<{ id_tagihan: string; id_transaksi: string; total_bayar: number }>(
+    const tagihan = one<{
+      id_tagihan: string;
+      id_transaksi: string;
+      total_bayar: number;
+    }>(
       "SELECT id_tagihan, id_transaksi, total_bayar FROM tagihan_pembayaran WHERE status_pembayaran = 'BERHASIL' LIMIT 1",
     );
 
@@ -287,7 +307,10 @@ describe("Integrasi Pembayaran, Mock Gateway & Webhook HMAC (Issue #25 / UC07 / 
       nominal: tagihan.total_bayar,
       status: "GAGAL",
     };
-    const { rawBody, signature } = paymentMock.tandaTanganiWebhook(payload, SECRET_KEY);
+    const { rawBody, signature } = paymentMock.tandaTanganiWebhook(
+      payload,
+      SECRET_KEY,
+    );
 
     const res = await webhookRoute.POST(
       new Request("http://localhost/api/webhooks/payment", {
@@ -328,7 +351,10 @@ describe("Integrasi Pembayaran, Mock Gateway & Webhook HMAC (Issue #25 / UC07 / 
       nominal: tagihan.total_bayar + 50000, // Nominal sengaja disalahkan
       status: "BERHASIL",
     };
-    const { rawBody, signature } = paymentMock.tandaTanganiWebhook(payload, SECRET_KEY);
+    const { rawBody, signature } = paymentMock.tandaTanganiWebhook(
+      payload,
+      SECRET_KEY,
+    );
 
     const res = await webhookRoute.POST(
       new Request("http://localhost/api/webhooks/payment", {
@@ -353,13 +379,27 @@ describe("Integrasi Pembayaran, Mock Gateway & Webhook HMAC (Issue #25 / UC07 / 
     );
 
     const idTagihanBaru = randomUUID();
-    db.prepare("DELETE FROM tagihan_pembayaran WHERE id_transaksi = ?").run(trx.id_transaksi);
+    db.prepare("DELETE FROM tagihan_pembayaran WHERE id_transaksi = ?").run(
+      trx.id_transaksi,
+    );
     db.prepare(
       `INSERT INTO tagihan_pembayaran (
          id_tagihan, id_transaksi, nominal_upah, commission_fee,
          total_bayar, expiry_timestamp, status_pembayaran
        ) VALUES (?, ?, ?, 5000, ?, datetime('now', '+24 hours'), 'DIPROSES')`,
-    ).run(idTagihanBaru, trx.id_transaksi, trx.nominal_upah, trx.nominal_upah + 5000);
+    ).run(
+      idTagihanBaru,
+      trx.id_transaksi,
+      trx.nominal_upah,
+      trx.nominal_upah + 5000,
+    );
+
+    const pemilik = one<{ id: string }>(
+      `SELECT pk.id_pengguna AS id FROM transaksi_pekerjaan t
+       JOIN penyedia_kerja pk USING (id_penyedia_kerja) WHERE t.id_transaksi = ?`,
+      trx.id_transaksi,
+    );
+    await sessionModule.buatSesi(pemilik.id);
 
     const res = await mockTriggerRoute.POST(
       new Request("http://localhost/api/mock-gateway/trigger", {
