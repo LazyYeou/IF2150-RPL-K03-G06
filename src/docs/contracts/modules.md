@@ -70,6 +70,12 @@ Setiap perubahan status lewat `transisiDiizinkan`. Transisi di luar tabel ini �
 ### 2.6 Pencairan
 `MENUNGGU_PROSES` → `DIPROSES` → `BERHASIL` | `GAGAL` · `MENUNGGU_PROSES` → `DITOLAK`. Implementasi #34 langsung menyisipkan `DIPROSES` lalu memanggil `disburse()`. Debit saldo hanya saat `BERHASIL`.
 
+Retry pencairan memakai `id_pencairan` yang sama (dari header UUID `Idempotency-Key`), termasuk rekening dan nominal yang sama. Key berbeda isian ditolak 409; key milik pengguna lain ditolak 403. Gateway `disburse` wajib idempoten berdasarkan ID ini, termasuk setelah timeout; mock mencatat satu instruksi per ID.
+
+Hasil `GAGAL` definitif mengubah pengajuan menjadi `GAGAL` dan melepaskan reservasi. Exception/timeout 10 detik hanya mengubah kepastian pengiriman menjadi `BELUM_PASTI`, mempertahankan `DIPROSES` dan reservasi. `DITERIMA` tetap menunggu webhook hasil akhir; debit hanya pada webhook `BERHASIL`. Callback final tidak ditimpa hasil panggilan adapter yang datang kemudian.
+
+Migrasi `0003_pengiriman_pencairan.sql` menyimpan status pengiriman dan klaim 30 detik. `BEGIN IMMEDIATE` memastikan satu pengirim aktif; klaim kedaluwarsa dapat dipulihkan setelah restart. Pengajuan aktif sebelum migrasi ditandai `BELUM_PASTI` dan dapat dicoba ulang dengan ID lama. Pengiriman yang sudah diterima atau pengajuan final tidak dikirim lagi. UI menampilkan tombol **Coba lagi** untuk pengiriman yang belum pasti/klaim kedaluwarsa, tanpa mengajukan penarikan baru.
+
 ### 2.7 Tiket sengketa
 `DIAJUKAN` → `DITINJAU` | `MENUNGGU_BALASAN` · `MENUNGGU_BALASAN` ↔ `DITINJAU` · `DITINJAU` → `DIPROSES` (keputusan dicatat) → `DITUTUP` · `DIAJUKAN`/`DITINJAU` → `DITOLAK` · `DIAJUKAN` → `DIBATALKAN` (pelapor). Final: `DITUTUP`, `DITOLAK`, `DIBATALKAN`.
 

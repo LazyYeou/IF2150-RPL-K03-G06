@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import {
   Wallet,
@@ -37,6 +37,44 @@ export default function DompetUI({
   const [loadingTarik, setLoadingTarik] = useState(false);
   const [pesanError, setPesanError] = useState<string | null>(null);
   const [pesanSukses, setPesanSukses] = useState<string | null>(null);
+
+  const pengajuan = useRef<{ key: string; body: string } | null>(null);
+  const sedangMengirim = useRef(false);
+  const [ulangAktif, setUlangAktif] = useState<string | null>(null);
+  const [pesanUlang, setPesanUlang] = useState<string | null>(null);
+
+  const ulangPencairan = async (id: string) => {
+    if (sedangMengirim.current) return;
+    sedangMengirim.current = true;
+    setUlangAktif(id);
+    setPesanUlang(null);
+    try {
+      const res = await fetch(
+        `/api/pencairan/${encodeURIComponent(id)}/ulang`,
+        { method: "POST" },
+      );
+      const data = await res.json();
+      if (!res.ok)
+        throw new Error(data.error?.message || "Gagal mengulangi pencairan");
+      setPesanUlang(
+        data.bisaCobaUlang
+          ? "Hasil gateway belum pasti. Saldo tetap ditahan; coba lagi melalui pengajuan yang sama."
+          : data.status === "GAGAL"
+            ? "Gateway menolak pencairan. Saldo tersedia kembali."
+            : "Status pencairan telah diperbarui.",
+      );
+      window.setTimeout(() => window.location.reload(), 2000);
+    } catch (error) {
+      setPesanUlang(
+        error instanceof Error
+          ? error.message
+          : "Koneksi terputus. Coba lagi pada pengajuan ini.",
+      );
+    } finally {
+      sedangMengirim.current = false;
+      setUlangAktif(null);
+    }
+  };
 
   const terverifikasi = statusVerifikasi === "TERVERIFIKASI";
 
@@ -131,6 +169,7 @@ export default function DompetUI({
 
   const handleAjukanPencairan = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (sedangMengirim.current) return;
     setPesanError(null);
     setPesanSukses(null);
 
@@ -150,31 +189,49 @@ export default function DompetUI({
     const digits = nomorRekening.trim().replace(/\D/g, "");
     if (tipeRekening === "BANK") {
       if (digits.length < 10 || digits.length > 16) {
-        setPesanError("Nomor rekening bank harus terdiri dari 10–16 digit angka");
+        setPesanError(
+          "Nomor rekening bank harus terdiri dari 10–16 digit angka",
+        );
         return;
       }
     } else {
-      if (!digits.startsWith("08") || digits.length < 10 || digits.length > 13) {
-        setPesanError("Nomor e-wallet harus diawali 08 dan memiliki panjang 10–13 digit");
+      if (
+        !digits.startsWith("08") ||
+        digits.length < 10 ||
+        digits.length > 13
+      ) {
+        setPesanError(
+          "Nomor e-wallet harus diawali 08 dan memiliki panjang 10–13 digit",
+        );
         return;
       }
     }
 
     const rekeningTujuan = `${tipeRekening}:${digits}`;
 
+    const body = JSON.stringify({ nominal: nominalAngka, rekeningTujuan });
+    if (pengajuan.current && pengajuan.current.body !== body) {
+      setPesanError(
+        "Hasil pengajuan sebelumnya belum diketahui. Muat ulang dan periksa riwayat pencairan sebelum membuat pengajuan lain.",
+      );
+      return;
+    }
+    pengajuan.current ??= { key: crypto.randomUUID(), body };
+    sedangMengirim.current = true;
     setLoadingTarik(true);
     try {
       const res = await fetch("/api/pencairan", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          nominal: nominalAngka,
-          rekeningTujuan,
-        }),
+        headers: {
+          "Content-Type": "application/json",
+          "Idempotency-Key": pengajuan.current.key,
+        },
+        body,
       });
 
       const data = await res.json();
       if (!res.ok) {
+        if (res.status >= 400 && res.status < 500) pengajuan.current = null;
         throw new Error(
           data.error?.message ||
             data.message ||
@@ -182,6 +239,16 @@ export default function DompetUI({
         );
       }
 
+      pengajuan.current = null;
+      if (data.bisaCobaUlang || data.status === "GAGAL") {
+        setPesanSukses(
+          data.bisaCobaUlang
+            ? "Hasil gateway belum pasti. Saldo tetap ditahan. Gunakan Coba lagi di riwayat pencairan setelah halaman dimuat ulang."
+            : "Gateway menolak pencairan. Saldo tersedia kembali; periksa rekening sebelum mengajukan ulang.",
+        );
+        window.setTimeout(() => window.location.reload(), 2000);
+        return;
+      }
       setPesanSukses(
         `Pengajuan pencairan dana sebesar ${formatRupiah(
           nominalAngka,
@@ -194,6 +261,8 @@ export default function DompetUI({
       const msg = err instanceof Error ? err.message : "Terjadi kesalahan";
       setPesanError(msg);
       setLoadingTarik(false);
+    } finally {
+      sedangMengirim.current = false;
     }
   };
 
@@ -215,13 +284,16 @@ export default function DompetUI({
       {/* Peringatan jika TK belum terverifikasi */}
       {!terverifikasi && (
         <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 sm:p-5 flex items-start gap-3 text-amber-900">
-          <ShieldAlert className="size-5 shrink-0 text-amber-600 mt-0.5" aria-hidden="true" />
+          <ShieldAlert
+            className="size-5 shrink-0 text-amber-600 mt-0.5"
+            aria-hidden="true"
+          />
           <div className="text-sm">
             <h3 className="font-semibold">Akun Belum Terverifikasi</h3>
             <p className="mt-0.5">
-              Identitas Anda belum terverifikasi oleh tim Customer Service. Untuk dapat
-              mengajukan penarikan dana ke rekening bank atau e-wallet, silakan lengkapi
-              verifikasi identitas Anda.
+              Identitas Anda belum terverifikasi oleh tim Customer Service.
+              Untuk dapat mengajukan penarikan dana ke rekening bank atau
+              e-wallet, silakan lengkapi verifikasi identitas Anda.
             </p>
             <Link
               href="/profil"
@@ -244,7 +316,10 @@ export default function DompetUI({
               <Wallet className="size-6" aria-hidden="true" />
             </div>
             <div>
-              <p id="saldo-title" className="text-xs font-medium text-slate-300">
+              <p
+                id="saldo-title"
+                className="text-xs font-medium text-slate-300"
+              >
                 Saldo tersedia
               </p>
               <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mt-1">
@@ -270,7 +345,10 @@ export default function DompetUI({
               </button>
             ) : (
               <span className="inline-flex items-center gap-1.5 rounded-lg bg-white/10 px-3.5 py-2 text-xs font-medium text-slate-300">
-                <ShieldAlert className="size-4 text-amber-400" aria-hidden="true" />
+                <ShieldAlert
+                  className="size-4 text-amber-400"
+                  aria-hidden="true"
+                />
                 Perlu Verifikasi KTP
               </span>
             )}
@@ -289,13 +367,16 @@ export default function DompetUI({
             <span>•</span>
             <span className="text-amber-300">
               Sedang dicairkan (DIPROSES):{" "}
-              <strong className="font-semibold">{formatRupiah(selisihTertahan)}</strong>
+              <strong className="font-semibold">
+                {formatRupiah(selisihTertahan)}
+              </strong>
             </span>
           </div>
         )}
 
         <p className="text-xs leading-relaxed text-slate-300 pt-1">
-          Penghasilan dapat dicairkan setelah pekerjaan selesai dan pembayaran dikonfirmasi.
+          Penghasilan dapat dicairkan setelah pekerjaan selesai dan pembayaran
+          dikonfirmasi.
         </p>
       </section>
 
@@ -335,6 +416,12 @@ export default function DompetUI({
         </nav>
       </div>
 
+      {pesanUlang && (
+        <p role="status" className="rounded-lg bg-muted p-3 text-sm">
+          {pesanUlang}
+        </p>
+      )}
+
       {/* Konten Tab 1: Riwayat Mutasi Saldo (Buku Besar) */}
       {tabAktif === "mutasi" && (
         <section
@@ -342,7 +429,10 @@ export default function DompetUI({
           aria-labelledby="mutasi-heading"
         >
           <div className="p-4 sm:p-5 border-b border-border">
-            <h2 id="mutasi-heading" className="text-base font-semibold text-foreground">
+            <h2
+              id="mutasi-heading"
+              className="text-base font-semibold text-foreground"
+            >
               Riwayat Mutasi Saldo
             </h2>
             <p className="text-xs text-muted-foreground mt-0.5">
@@ -373,7 +463,10 @@ export default function DompetUI({
                         }`}
                       >
                         {isKredit ? (
-                          <ArrowDownLeft className="size-5" aria-hidden="true" />
+                          <ArrowDownLeft
+                            className="size-5"
+                            aria-hidden="true"
+                          />
                         ) : (
                           <ArrowUpRight className="size-5" aria-hidden="true" />
                         )}
@@ -384,7 +477,9 @@ export default function DompetUI({
                         </p>
                         <p className="text-xs text-muted-foreground mt-0.5">
                           {formatWaktu(m.createdAt)} • Ref:{" "}
-                          <span className="font-mono text-[11px]">{m.kunciOperasi}</span>
+                          <span className="font-mono text-[11px]">
+                            {m.kunciOperasi}
+                          </span>
                         </p>
                       </div>
                     </div>
@@ -413,7 +508,10 @@ export default function DompetUI({
           aria-labelledby="pencairan-heading"
         >
           <div className="p-4 sm:p-5 border-b border-border">
-            <h2 id="pencairan-heading" className="text-base font-semibold text-foreground">
+            <h2
+              id="pencairan-heading"
+              className="text-base font-semibold text-foreground"
+            >
               Riwayat Pengajuan Pencairan
             </h2>
             <p className="text-xs text-muted-foreground mt-0.5">
@@ -448,7 +546,9 @@ export default function DompetUI({
                             className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[11px] font-semibold ${statusInfo.warna}`}
                           >
                             <StatusIcon className="size-3" aria-hidden="true" />
-                            {statusInfo.label}
+                            {p.bisaCobaUlang
+                              ? "Hasil belum pasti"
+                              : statusInfo.label}
                           </span>
                         </div>
                         <p className="text-xs text-muted-foreground mt-1">
@@ -461,6 +561,16 @@ export default function DompetUI({
                       <p className="text-sm sm:text-base font-bold text-foreground">
                         {formatRupiah(p.nominal)}
                       </p>
+                      {p.bisaCobaUlang && terverifikasi && (
+                        <button
+                          type="button"
+                          disabled={ulangAktif !== null}
+                          onClick={() => ulangPencairan(p.id)}
+                          className="mt-2 min-h-11 rounded-lg border px-4 text-sm font-semibold disabled:opacity-50"
+                        >
+                          {ulangAktif === p.id ? "Memproses..." : "Coba lagi"}
+                        </button>
+                      )}
                     </div>
                   </li>
                 );
@@ -485,7 +595,10 @@ export default function DompetUI({
                 id="modal-pencairan-title"
                 className="text-lg font-bold text-foreground flex items-center gap-2"
               >
-                <ArrowUpRight className="size-5 text-brand-orange" aria-hidden="true" />
+                <ArrowUpRight
+                  className="size-5 text-brand-orange"
+                  aria-hidden="true"
+                />
                 Tarik Dana ke Rekening / E-Wallet
               </h2>
               <button
@@ -504,7 +617,10 @@ export default function DompetUI({
                 className="rounded-lg bg-rose-50 p-3 text-sm text-rose-700 border border-rose-200 flex items-start gap-2"
                 role="alert"
               >
-                <AlertCircle className="size-4 shrink-0 mt-0.5" aria-hidden="true" />
+                <AlertCircle
+                  className="size-4 shrink-0 mt-0.5"
+                  aria-hidden="true"
+                />
                 <span>{pesanError}</span>
               </div>
             )}
@@ -514,7 +630,10 @@ export default function DompetUI({
                 className="rounded-lg bg-emerald-50 p-3 text-sm text-emerald-800 border border-emerald-200 flex items-start gap-2"
                 role="alert"
               >
-                <CheckCircle2 className="size-4 shrink-0 mt-0.5" aria-hidden="true" />
+                <CheckCircle2
+                  className="size-4 shrink-0 mt-0.5"
+                  aria-hidden="true"
+                />
                 <span>{pesanSukses}</span>
               </div>
             )}
@@ -547,7 +666,10 @@ export default function DompetUI({
                         : "border-border hover:bg-muted text-foreground"
                     }`}
                   >
-                    <Building2 className="size-4 text-brand-orange" aria-hidden="true" />
+                    <Building2
+                      className="size-4 text-brand-orange"
+                      aria-hidden="true"
+                    />
                     Rekening Bank
                   </button>
                   <button
@@ -562,7 +684,10 @@ export default function DompetUI({
                         : "border-border hover:bg-muted text-foreground"
                     }`}
                   >
-                    <Smartphone className="size-4 text-brand-orange" aria-hidden="true" />
+                    <Smartphone
+                      className="size-4 text-brand-orange"
+                      aria-hidden="true"
+                    />
                     E-Wallet (GoPay/DANA)
                   </button>
                 </div>
@@ -582,14 +707,20 @@ export default function DompetUI({
                   id="nomorRekening"
                   type="text"
                   required
-                  placeholder={tipeRekening === "BANK" ? "Contoh: 1234567890" : "Contoh: 08123456789"}
+                  placeholder={
+                    tipeRekening === "BANK"
+                      ? "Contoh: 1234567890"
+                      : "Contoh: 08123456789"
+                  }
                   value={nomorRekening}
                   onChange={(e) => setNomorRekening(e.target.value)}
                   className="w-full rounded-lg border border-border bg-background px-3.5 py-2.5 text-sm text-foreground focus:outline-hidden focus:ring-2 focus:ring-brand-orange"
                 />
                 <p className="mt-1 text-xs text-muted-foreground flex justify-between">
                   <span>Pratinjau tampilan:</span>
-                  <span className="font-mono font-semibold">{previewMasked()}</span>
+                  <span className="font-mono font-semibold">
+                    {previewMasked()}
+                  </span>
                 </p>
               </div>
 

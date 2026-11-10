@@ -94,7 +94,10 @@ describe("Integrasi Pencairan Dana & Webhook Disbursement (Issue #34 / UC10 / KF
     logout();
     const req = new Request("http://localhost/api/pencairan", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "Idempotency-Key": randomUUID(),
+      },
       body: JSON.stringify({
         nominal: 50000,
         rekeningTujuan: "BANK:1234567890",
@@ -111,7 +114,10 @@ describe("Integrasi Pencairan Dana & Webhook Disbursement (Issue #34 / UC10 / KF
     await loginSebagai(idPenggunaPK);
     const req = new Request("http://localhost/api/pencairan", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "Idempotency-Key": randomUUID(),
+      },
       body: JSON.stringify({
         nominal: 50000,
         rekeningTujuan: "BANK:1234567890",
@@ -128,7 +134,10 @@ describe("Integrasi Pencairan Dana & Webhook Disbursement (Issue #34 / UC10 / KF
     await loginSebagai(idPenggunaTKBelumVerif);
     const req = new Request("http://localhost/api/pencairan", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "Idempotency-Key": randomUUID(),
+      },
       body: JSON.stringify({
         nominal: 50000,
         rekeningTujuan: "BANK:1234567890",
@@ -146,7 +155,10 @@ describe("Integrasi Pencairan Dana & Webhook Disbursement (Issue #34 / UC10 / KF
 
     const req1 = new Request("http://localhost/api/pencairan", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "Idempotency-Key": randomUUID(),
+      },
       body: JSON.stringify({
         nominal: 50000,
         rekeningTujuan: "1234567890",
@@ -159,7 +171,10 @@ describe("Integrasi Pencairan Dana & Webhook Disbursement (Issue #34 / UC10 / KF
 
     const req2 = new Request("http://localhost/api/pencairan", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "Idempotency-Key": randomUUID(),
+      },
       body: JSON.stringify({
         nominal: 50000,
         rekeningTujuan: "BANK:12345678",
@@ -170,7 +185,10 @@ describe("Integrasi Pencairan Dana & Webhook Disbursement (Issue #34 / UC10 / KF
 
     const req3 = new Request("http://localhost/api/pencairan", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "Idempotency-Key": randomUUID(),
+      },
       body: JSON.stringify({
         nominal: 50000,
         rekeningTujuan: "EWALLET:0912345678",
@@ -184,7 +202,10 @@ describe("Integrasi Pencairan Dana & Webhook Disbursement (Issue #34 / UC10 / KF
     await loginSebagai(idPenggunaTKTerverifikasi);
     const req = new Request("http://localhost/api/pencairan", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "Idempotency-Key": randomUUID(),
+      },
       body: JSON.stringify({
         nominal: 5000,
         rekeningTujuan: "BANK:1234567890",
@@ -208,7 +229,10 @@ describe("Integrasi Pencairan Dana & Webhook Disbursement (Issue #34 / UC10 / KF
     // Coba tarik nominal melebihi saldo tersedia
     const req = new Request("http://localhost/api/pencairan", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "Idempotency-Key": randomUUID(),
+      },
       body: JSON.stringify({
         nominal: saldoTersedia + 50000,
         rekeningTujuan: "BANK:1234567890",
@@ -232,7 +256,10 @@ describe("Integrasi Pencairan Dana & Webhook Disbursement (Issue #34 / UC10 / KF
 
     const req = new Request("http://localhost/api/pencairan", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "Idempotency-Key": randomUUID(),
+      },
       body: JSON.stringify({
         nominal: nominalTarik,
         rekeningTujuan: rekeningInput,
@@ -277,7 +304,10 @@ describe("Integrasi Pencairan Dana & Webhook Disbursement (Issue #34 / UC10 / KF
     const nominalTarik = 75000;
     const reqPencairan = new Request("http://localhost/api/pencairan", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "Idempotency-Key": randomUUID(),
+      },
       body: JSON.stringify({
         nominal: nominalTarik,
         rekeningTujuan: "EWALLET:08123456789",
@@ -398,7 +428,10 @@ describe("Integrasi Pencairan Dana & Webhook Disbursement (Issue #34 / UC10 / KF
     const nominalTarik = 60000;
     const reqPencairan = new Request("http://localhost/api/pencairan", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "Idempotency-Key": randomUUID(),
+      },
       body: JSON.stringify({
         nominal: nominalTarik,
         rekeningTujuan: "BANK:987654321098",

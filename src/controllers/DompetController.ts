@@ -1,9 +1,13 @@
 import "server-only";
+import { z } from "zod";
 import { requireRole, requireVerifiedTK } from "@/lib/auth/guards";
 import { AppError } from "@/lib/errors";
 import { cariVerifikasi, idDariPengguna } from "@/models/TenagaKerja";
 import { bacaDataDompet, hitungSaldoRingkas } from "@/models/Dompet";
-import { ajukanPencairanDana } from "@/models/PencairanDana";
+import {
+  ajukanPencairanDana,
+  ulangPencairanDana,
+} from "@/models/PencairanDana";
 import {
   PencairanInputSchema,
   type DompetResponse,
@@ -53,9 +57,17 @@ export async function ambilRingkasanSaldoTK(idPengguna: string): Promise<{
 
 export async function ajukanPencairanController(
   input: unknown,
+  kunci: string | null,
 ): Promise<PencairanResponse> {
   const user = await requireVerifiedTK();
 
+  if (!z.string().uuid().safeParse(kunci).success) {
+    throw new AppError(
+      "VALIDATION_ERROR",
+      400,
+      "Header Idempotency-Key wajib berupa UUID",
+    );
+  }
   const parsed = PencairanInputSchema.safeParse(input);
   if (!parsed.success) {
     const fields: Record<string, string> = {};
@@ -75,5 +87,13 @@ export async function ajukanPencairanController(
     user.idTenagaKerja,
     parsed.data.nominal,
     parsed.data.rekeningTujuan,
+    kunci!,
   );
+}
+
+export async function ulangPencairanController(
+  id: string,
+): Promise<PencairanResponse> {
+  const user = await requireVerifiedTK();
+  return ulangPencairanDana(user.idTenagaKerja, id);
 }
