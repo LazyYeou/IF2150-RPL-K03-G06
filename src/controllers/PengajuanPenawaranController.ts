@@ -1,4 +1,5 @@
 import "server-only";
+import { bacaSesi } from "@/lib/auth/session";
 import {
   requireOwner,
   requireRole,
@@ -137,5 +138,17 @@ export async function prosesPemilihanPelamar(rawId: string) {
     idTransaksi: hasil.idTransaksi,
     statusLowongan: hasil.statusLowongan,
     sisaKuota: hasil.sisaKuota,
+  };
+}
+
+/** Data akses untuk UI publik; keputusan otorisasi mutasi tetap di requireVerifiedTK. */
+export async function konteksPenawaran() {
+  const user = await bacaSesi();
+  return {
+    idPengguna: user?.id ?? null,
+    peran: user?.peran ?? null,
+    terverifikasi:
+      user?.peran === "TK" &&
+      TenagaKerja.cariVerifikasi(user.id)?.status === "TERVERIFIKASI",
   };
 }

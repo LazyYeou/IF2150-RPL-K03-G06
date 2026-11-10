@@ -1,6 +1,6 @@
 import "server-only";
 import { db, tx } from "@/lib/db";
-import { requireUser } from "@/lib/auth/guards";
+import { requireCS, requireUser } from "@/lib/auth/guards";
 import { AppError } from "@/lib/errors";
 import {
   buatTagihan,
@@ -10,6 +10,8 @@ import {
   ubahStatusTagihan,
   type TagihanDTO,
 } from "@/models/TagihanPembayaran";
+import { refundSengketa } from "@/models/RefundSengketa";
+import { z } from "zod";
 import { MetodePembayaran } from "@/lib/validation/tagihan";
 import { getPaymentAdapter } from "@/lib/payment/adapter";
 
@@ -63,7 +65,11 @@ export async function buatTagihanTransaksi(
     throw new AppError("FORBIDDEN", 403, "Anda bukan pemilik transaksi ini");
   }
   if (user.peran !== "PK" && user.peran !== "CS") {
-    throw new AppError("FORBIDDEN", 403, "Hanya penyedia kerja yang dapat membuat tagihan");
+    throw new AppError(
+      "FORBIDDEN",
+      403,
+      "Hanya penyedia kerja yang dapat membuat tagihan",
+    );
   }
 
   if (trx.statusPekerjaan !== "MENUNGGU_PEMBAYARAN") {
@@ -77,7 +83,9 @@ export async function buatTagihanTransaksi(
   return tx(() => buatTagihan(idTransaksi, trx.nominalUpah));
 }
 
-export async function ambilDetailTagihan(idTagihan: string): Promise<TagihanDTO> {
+export async function ambilDetailTagihan(
+  idTagihan: string,
+): Promise<TagihanDTO> {
   const user = await requireUser();
 
   const tagihan = cariTagihanBerdasarkanId(idTagihan);
@@ -136,10 +144,6 @@ export async function ambilDataHalamanBayar(idTransaksi: string) {
   };
 }
 
-/**
- * C39: Memproses pembayaran tagihan dengan memilih metode pembayaran.
- * Mengubah status tagihan menjadi DIPROSES dan memanggil adapter gateway.
- */
 export async function bayarTagihan(
   idTagihan: string,
   metodeInput: unknown,
@@ -183,7 +187,10 @@ export async function bayarTagihan(
     );
   }
 
-  if (tagihanCek.status !== "MENUNGGU_PEMBAYARAN" && tagihanCek.status !== "DIPROSES") {
+  if (
+    tagihanCek.status !== "MENUNGGU_PEMBAYARAN" &&
+    tagihanCek.status !== "DIPROSES"
+  ) {
     throw new AppError(
       "STATUS_TIDAK_VALID",
       409,
@@ -224,4 +231,13 @@ export async function ambilDataMockGateway(idTagihan: string) {
   return { tagihan, transaksi: trx };
 }
 
-
+/** Integrasi #39: pemanggil memilih REFUND secara eksplisit; otorisasi tetap diperiksa di sini. */
+export async function prosesRefundTagihan(
+  idTransaksi: string,
+  idTiket: string,
+  catatan: string = "Pengembalian dana sesuai keputusan CS",
+) {
+  const user = await requireCS();
+  const alasan = z.string().trim().min(10).max(1000).parse(catatan);
+  return refundSengketa(idTransaksi, idTiket, user.id, alasan);
+}

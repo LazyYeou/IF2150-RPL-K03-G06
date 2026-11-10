@@ -1,6 +1,7 @@
-import { existsSync } from "node:fs";
+import { existsSync, readdirSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { dbAplikasiSementara, dbSementara } from "../helpers/db";
+import path from "node:path";
 import type Database from "better-sqlite3";
 
 describe("helper database test (#40)", () => {
@@ -11,7 +12,9 @@ describe("helper database test (#40)", () => {
       dua = await dbSementara();
       expect(satu.file).not.toBe(dua.file);
       expect(satu.db.prepare("SELECT count(*) c FROM _migrasi").get()).toEqual({
-        c: 2,
+        c: readdirSync(path.resolve("db/migrations")).filter((f) =>
+          f.endsWith(".sql"),
+        ).length,
       });
       expect(dua.db.prepare("SELECT count(*) c FROM pengguna").get()).toEqual({
         c: 5,

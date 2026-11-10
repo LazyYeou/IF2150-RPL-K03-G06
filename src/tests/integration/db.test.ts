@@ -1,3 +1,5 @@
+import { readdirSync } from "node:fs";
+import path from "node:path";
 import type Database from "better-sqlite3";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { migrate } from "@/scripts/migrate";
@@ -13,7 +15,11 @@ const hitung = (sql: string) => (db.prepare(sql).get() as { c: number }).c;
 describe("migrasi & seed (#4)", () => {
   it("migrasi idempoten: menjalankan ulang tidak menerapkan apa pun", () => {
     expect(migrate(db)).toEqual([]);
-    expect(hitung("SELECT count(*) c FROM _migrasi")).toBe(2);
+    expect(hitung("SELECT count(*) c FROM _migrasi")).toBe(
+      readdirSync(path.resolve("db/migrations")).filter((f) =>
+        f.endsWith(".sql"),
+      ).length,
+    );
   });
   it("seed membuat 5 akun, ±30 lowongan, transaksi di tiap status, 1 tiket aktif", () => {
     expect(hitung("SELECT count(*) c FROM pengguna")).toBe(5);

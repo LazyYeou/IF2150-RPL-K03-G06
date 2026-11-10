@@ -83,6 +83,23 @@ export function cariTagihanTerakhir(idTransaksi: string): TagihanDTO | null {
   return periksaKedaluwarsaLazy(keDTO(row));
 }
 
+export function cariTagihanUntukRefund(idTransaksi: string): TagihanDTO | null {
+  const row = db
+    .prepare(
+      `SELECT id_tagihan, id_transaksi, nominal_upah, commission_fee,
+              total_bayar, metode, expiry_timestamp, status_pembayaran, created_at
+       FROM tagihan_pembayaran
+       WHERE id_transaksi = ?
+         AND status_pembayaran IN ('BERHASIL', 'DIKEMBALIKAN')
+       ORDER BY created_at DESC, rowid DESC
+       LIMIT 1`,
+    )
+    .get(idTransaksi) as TagihanRow | undefined;
+
+  if (row) return keDTO(row);
+  return cariTagihanTerakhir(idTransaksi);
+}
+
 export function cariTagihanBerdasarkanId(idTagihan: string): TagihanDTO | null {
   const row = db
     .prepare(
@@ -122,7 +139,6 @@ export function buatTagihan(
 
   const idTagihan = randomUUID();
 
-  // Q-036: Insert tagihan baru
   db.prepare(
     `INSERT INTO tagihan_pembayaran (
        id_tagihan, id_transaksi, nominal_upah, commission_fee,

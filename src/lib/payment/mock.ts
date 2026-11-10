@@ -5,17 +5,12 @@ import type {
   PaymentGatewayAdapter,
   RefundParams,
 } from "./adapter";
-import { catatLog } from "@/models/LogGateway";
+import { sidikRekening } from "@/lib/rekening";
+import { tx } from "@/lib/db";
+import { AppError } from "@/lib/errors";
+import { ambilLog, catatLog } from "@/models/LogGateway";
 
-/**
- * Implementasi Mock Payment Gateway (C15, C45).
- * Digunakan untuk lingkungan pengujian dan pengembangan lokal.
- */
 export class MockPaymentGateway implements PaymentGatewayAdapter {
-  /**
-   * Mensimulasikan pemrosesan charge/tagihan.
-   * Mengembalikan redirect URL ke halaman mock gateway lokal.
-   */
   async charge(p: ChargeParams): Promise<{ redirectUrl: string }> {
     catatLog(
       "CHARGE",
@@ -38,37 +33,71 @@ export class MockPaymentGateway implements PaymentGatewayAdapter {
    * Mensimulasikan instruksi pencairan dana (disbursement) ke rekening tujuan.
    */
   async disburse(p: DisburseParams): Promise<{ status: "DITERIMA" | "GAGAL" }> {
-    catatLog(
-      "DISBURSEMENT",
-      p.idPencairan,
-      {
-        idPencairan: p.idPencairan,
-        rekening: p.rekening,
-        nominal: p.nominal,
-        idempotencyKey: p.idPencairan,
-      },
-      "MOCK",
-    );
-
-    return { status: "DITERIMA" };
+    return tx(() => {
+      const existing = ambilLog(p.idPencairan).find(
+        (log) => log.jenis === "DISBURSEMENT",
+      );
+      if (existing) {
+        const payload = existing.payload as {
+          nominal: number;
+          rekeningFingerprint: string;
+        };
+        if (
+          payload.nominal !== p.nominal ||
+          payload.rekeningFingerprint !== sidikRekening(p.rekening)
+        ) {
+          throw new AppError(
+            "IDEMPOTENCY_CONFLICT",
+            409,
+            "Instruksi pencairan berbeda untuk ID yang sama",
+          );
+        }
+        return { status: "DITERIMA" as const };
+      }
+      catatLog(
+        "DISBURSEMENT",
+        p.idPencairan,
+        {
+          ...p,
+          idempotencyKey: p.idPencairan,
+        },
+        "MOCK",
+      );
+      return { status: "DITERIMA" as const };
+    });
   }
 
-  /**
-   * Mensimulasikan pengembalian dana (refund) dari sengketa yang disetujui.
-   */
   async refund(p: RefundParams): Promise<{ status: "BERHASIL" | "GAGAL" }> {
-    catatLog(
-      "REFUND",
-      p.idTagihan,
-      {
-        idTagihan: p.idTagihan,
-        nominal: p.nominal,
-        idempotencyKey: p.idempotencyKey,
-      },
-      "MOCK",
-    );
-
-    return { status: "BERHASIL" };
+    const idempotencyKey = p.idempotencyKey || `refund:${p.idTagihan}`;
+    return tx(() => {
+      const existing = ambilLog(p.idTagihan).find(
+        (log) => log.jenis === "REFUND",
+      );
+      if (existing) {
+        const payload = existing.payload as {
+          idempotencyKey: string;
+          nominal: number;
+        };
+        if (
+          payload.idempotencyKey !== idempotencyKey ||
+          payload.nominal !== p.nominal
+        ) {
+          throw new AppError(
+            "IDEMPOTENCY_CONFLICT",
+            409,
+            "Tagihan sudah direfund dengan instruksi berbeda",
+          );
+        }
+        return { status: "BERHASIL" as const };
+      }
+      catatLog(
+        "REFUND",
+        p.idTagihan,
+        { idTagihan: p.idTagihan, nominal: p.nominal, idempotencyKey },
+        "MOCK",
+      );
+      return { status: "BERHASIL" as const };
+    });
   }
 
   /**
@@ -99,16 +128,13 @@ export class MockPaymentGateway implements PaymentGatewayAdapter {
   }
 }
 
-/**
- * Menghasilkan rawBody dan signature HMAC-SHA256 untuk webhook payload.
- * Digunakan oleh halaman mock gateway dan pengujian integrasi.
- */
 export function tandaTanganiWebhook(
   payload: Record<string, unknown> | string,
   secretOverride?: string,
 ): { rawBody: string; signature: string } {
   const secret = secretOverride ?? process.env.PAYMENT_WEBHOOK_SECRET ?? "";
-  const rawBody = typeof payload === "string" ? payload : JSON.stringify(payload);
+  const rawBody =
+    typeof payload === "string" ? payload : JSON.stringify(payload);
   const signature = createHmac("sha256", secret).update(rawBody).digest("hex");
   return { rawBody, signature };
 }

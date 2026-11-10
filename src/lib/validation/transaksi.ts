@@ -98,3 +98,19 @@ export const UlasanTransaksiInput = z
     deskripsi: z.string().trim().max(1000).optional(),
   })
   .strict();
+
+// Bentuk respons tindakan sesuai kontrak API #97.
+export const HasilSetujui = z
+  .object({ idTransaksi: Id, status: z.literal("COMPLETED") })
+  .strict();
+export const HasilRevisi = z
+  .object({ idTransaksi: Id, status: z.literal("IN_PROGRESS") })
+  .strict();
+export const HasilUlasan = z
+  .object({
+    id: Id,
+    idPenerima: Id,
+    nilai: z.number().int().min(1).max(5),
+    deskripsi: z.string().nullable(),
+  })
+  .strict();

@@ -3,6 +3,8 @@ import SectionPlaceholder from "@/views/dashboard/SectionPlaceholder";
 import HalamanDaftarTransaksi, {
   type QueryDaftarTransaksi,
 } from "@/views/transaksi/HalamanDaftarTransaksi";
+import HalamanDompet from "@/views/dompet/HalamanDompet";
+
 const sections: Record<string, [string, string]> = {
   lamaran: [
     "Lamaran saya",
@@ -14,6 +16,7 @@ const sections: Record<string, [string, string]> = {
   ],
   dompet: ["Dompet", "Lihat pendapatan dan kelola pencairan upahmu."],
 };
+
 export default async function Section({
   params,
   searchParams,
@@ -21,9 +24,11 @@ export default async function Section({
   params: Promise<{ section: string }>;
   searchParams: Promise<QueryDaftarTransaksi>;
 }) {
-  const section = sections[(await params).section];
+  const { section: sectionKey } = await params;
+  const section = sections[sectionKey];
   if (!section) notFound();
-  if ((await params).section === "pekerjaan") {
+
+  if (sectionKey === "pekerjaan") {
     return (
       <HalamanDaftarTransaksi
         peran="TK"
@@ -33,6 +38,11 @@ export default async function Section({
       />
     );
   }
+
+  if (sectionKey === "dompet") {
+    return <HalamanDompet />;
+  }
+
   return (
     <SectionPlaceholder
       title={section[0]}
