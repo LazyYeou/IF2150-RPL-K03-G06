@@ -190,6 +190,22 @@ export default function DetailTransaksi({
             </Link>
           </div>
         </div>
+        {(peran === "PK" || peran === "TK") &&
+          targetIdTransaksi &&
+          (transaksi.status === "IN_PROGRESS" ||
+            transaksi.status === "SUBMITTED") && (
+            <div className="flex flex-col gap-2 border-t pt-4 text-sm sm:flex-row sm:items-center sm:justify-between">
+              <p className="text-muted-foreground">
+                Ada kendala terkait pekerjaan atau transaksi ini?
+              </p>
+              <Link
+                href={`/bantuan?transaksiId=${encodeURIComponent(targetIdTransaksi)}`}
+                className="inline-flex min-h-11 items-center justify-center rounded-lg border border-border px-4 font-semibold text-foreground hover:bg-muted"
+              >
+                Ajukan keluhan
+              </Link>
+            </div>
+          )}
       </div>
 
       {peran === "TK" && transaksi.revisi.length > 0 && (
