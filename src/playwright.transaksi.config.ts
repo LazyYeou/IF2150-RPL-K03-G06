@@ -14,6 +14,7 @@ export default defineConfig({
   testMatch: [
     "transaksi-paginasi.spec.ts",
     "transaksi-akses.spec.ts",
+    "penawaran-ui.spec.ts",
     "dompet-dialog.spec.ts",
   ],
   metadata: { fixtureDir },
