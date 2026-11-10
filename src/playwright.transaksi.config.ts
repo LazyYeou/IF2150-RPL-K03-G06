@@ -11,7 +11,12 @@ const baseURL = `http://localhost:${port}`;
 const testMatch =
   process.env.TRANSAKSI_E2E_SUITE === "happy-path"
     ? ["transaksi-z-happy-path.spec.ts"]
-    : ["transaksi-paginasi.spec.ts", "transaksi-akses.spec.ts"];
+    : [
+        "transaksi-paginasi.spec.ts",
+        "transaksi-akses.spec.ts",
+        "penawaran-ui.spec.ts",
+        "dompet-dialog.spec.ts",
+      ];
 
 export default defineConfig({
   testDir: "tests/e2e",
