@@ -8,15 +8,19 @@ if (!fixtureDir)
   );
 const port = 3117;
 const baseURL = `http://localhost:${port}`;
+const testMatch =
+  process.env.TRANSAKSI_E2E_SUITE === "happy-path"
+    ? ["transaksi-z-happy-path.spec.ts"]
+    : [
+        "transaksi-paginasi.spec.ts",
+        "transaksi-akses.spec.ts",
+        "penawaran-ui.spec.ts",
+        "dompet-dialog.spec.ts",
+      ];
 
 export default defineConfig({
   testDir: "tests/e2e",
-  testMatch: [
-    "transaksi-paginasi.spec.ts",
-    "transaksi-akses.spec.ts",
-    "penawaran-ui.spec.ts",
-    "dompet-dialog.spec.ts",
-  ],
+  testMatch,
   metadata: { fixtureDir },
   globalSetup: "./tests/helpers/transaksi-e2e-setup.ts",
   workers: 1,
@@ -30,6 +34,8 @@ export default defineConfig({
       DATABASE_PATH: path.join(fixtureDir, "test.db"),
       STORAGE_DIR: path.join(fixtureDir, "storage"),
       APP_URL: baseURL,
+      PAYMENT_PROVIDER: "mock",
+      PAYMENT_WEBHOOK_SECRET: "kerjain-e2e-webhook-test-secret",
     },
   },
 });

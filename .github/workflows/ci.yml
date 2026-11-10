@@ -20,3 +20,9 @@ jobs:
       - run: npm run lint
       - run: npm run typecheck
       - run: npm test
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e:transaksi
+      - run: npm run test:e2e:transaksi
+        env:
+          TRANSAKSI_E2E_SUITE: happy-path
