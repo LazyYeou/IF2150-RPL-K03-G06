@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { SavedJobButton } from "@/components/saved-job-button";
+import { OfferDialog } from "@/features/offers/offer-workflow";
 import { formatIndonesianDate, formatRupiah, type Job } from "@/lib/jobs";
 
 export function JobDetail({ job }: { job: Job }) {
@@ -74,9 +75,7 @@ export function JobDetail({ job }: { job: Job }) {
             <div><dt>Kategori</dt><dd>{job.category}</dd></div>
             <div><dt>Durasi</dt><dd>{job.duration ?? "Belum tersedia"}</dd></div>
           </dl>
-          <button className="button button-primary offer-apply" disabled type="button">
-            Ajukan Penawaran <span aria-hidden="true">↗</span>
-          </button>
+          <OfferDialog job={job} />
           <div className="offer-save"><SavedJobButton jobId={job.id} /><span>Simpan pekerjaan</span></div>
           <p className="offer-reminder"><span aria-hidden="true">♢</span>Tinjau ruang lingkup dan sepakati upah sebelum mulai bekerja.</p>
         </aside>

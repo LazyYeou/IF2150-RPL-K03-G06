@@ -34,6 +34,7 @@ export function SiteHeader() {
         <nav aria-label="Navigasi utama" className={menuOpen ? "main-nav is-open" : "main-nav"}>
           <Link href="/jobs" onClick={() => setMenuOpen(false)}>Cari Pekerjaan</Link>
           <Link href="/#how-it-works" onClick={() => setMenuOpen(false)}>Cara Kerja</Link>
+          <Link href="/tk" onClick={() => setMenuOpen(false)}>Ruang kerja</Link>
           <Link className="button button-primary nav-search" href="/jobs" onClick={() => setMenuOpen(false)}>
             Cari Pekerjaan <span aria-hidden="true">→</span>
           </Link>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { OfferStoreProvider } from "@/components/offer-store";
 import { SavedJobsProvider } from "@/components/saved-jobs-provider";
 import { SiteFooter, SiteHeader } from "@/components/site";
 import "./globals.css";
@@ -16,9 +17,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html data-scroll-behavior="smooth" lang="id">
       <body>
         <SavedJobsProvider>
-          <SiteHeader />
-          {children}
-          <SiteFooter />
+          <OfferStoreProvider>
+            <SiteHeader />
+            {children}
+            <SiteFooter />
+          </OfferStoreProvider>
         </SavedJobsProvider>
       </body>
     </html>
