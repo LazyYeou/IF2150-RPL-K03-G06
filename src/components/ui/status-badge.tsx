@@ -14,6 +14,12 @@ const statuses: Record<string, { label: string; tone: string }> = {
     tone: "bg-amber-50 text-amber-900",
   },
   TERVERIFIKASI: { label: "Terverifikasi", tone: "bg-teal-50 text-teal-800" },
+  DITERIMA: { label: "Diterima", tone: "bg-teal-50 text-teal-800" },
+  DITARIK: { label: "Ditarik", tone: "bg-muted text-muted-foreground" },
+  DITOLAK_OTOMATIS: {
+    label: "Ditolak otomatis",
+    tone: "bg-red-50 text-red-800",
+  },
   DITOLAK: { label: "Ditolak", tone: "bg-red-50 text-red-800" },
   MENUNGGU_PEMBAYARAN: {
     label: "Menunggu pembayaran",

@@ -1,3 +1,5 @@
+import DialogPenawaran from "@/views/penawaran/DialogPenawaran";
+import { konteksPenawaran } from "@/controllers/PengajuanPenawaranController";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ambilDetailLowongan } from "@/controllers/LowonganPekerjaanController";
@@ -17,6 +19,7 @@ export default async function Detail({
     if (e instanceof AppError && e.status === 404) notFound();
     throw e;
   }
+  const konteks = await konteksPenawaran();
   return (
     <main
       id="main-content"
@@ -59,6 +62,12 @@ export default async function Detail({
           <p className="mt-5 text-sm leading-6 text-muted-foreground">
             Tinjau ruang lingkup dan sepakati upah sebelum mulai bekerja.
           </p>
+          <DialogPenawaran
+            key={`${item.id}:${konteks.idPengguna ?? "publik"}`}
+            lowongan={item}
+            peran={konteks.peran}
+            terverifikasi={konteks.terverifikasi}
+          />
         </aside>
       </div>
     </main>
