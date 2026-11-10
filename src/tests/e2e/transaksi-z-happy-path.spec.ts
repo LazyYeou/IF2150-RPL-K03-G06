@@ -125,7 +125,7 @@ test("PK dan TK menyelesaikan seluruh alur transaksi dan saling memberi ulasan",
     status: "MENUNGGU",
   });
   await expect(
-    page.getByText("Penawaranmu sedang menunggu tanggapan.", { exact: true }),
+    page.getByText("Penawaran sudah diajukan", { exact: true }),
   ).toBeVisible();
   await expect(
     page.getByRole("link", { name: "Lihat lamaran saya" }),
