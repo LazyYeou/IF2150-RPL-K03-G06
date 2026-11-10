@@ -305,6 +305,31 @@ h1, h2, h3, p { margin-top: 0; }
 .offer-save .save-button { margin-left: 4px; }
 .offer-reminder { display: flex; gap: 8px; margin: 17px 0; color: var(--muted); font-size: 10px; line-height: 1.55; }
 .offer-reminder span { color: var(--navy); font-size: 15px; }
+.verification-page { max-width: 860px; padding-top: 40px; padding-bottom: 64px; }
+.verification-intro { margin: 0 0 26px; }
+.verification-intro h1 { margin-bottom: 8px; color: var(--navy); font-size: 36px; letter-spacing: -1px; }
+.verification-intro .muted-copy { margin-bottom: 0; }
+.verification-card { margin-top: 18px; padding: 26px; border: 1px solid var(--line); border-radius: 10px; background: var(--white); }
+.verification-card h2 { margin-bottom: 12px; color: var(--navy); font-size: 20px; }
+.verification-status { padding: 15px 17px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+.verification-status strong { color: var(--navy); }
+.verification-status p { margin: 5px 0 0; color: var(--muted); font-size: 13px; }
+.status-terverifikasi { border-color: #9dcfc4; background: #edf8f5; }
+.status-ditolak { border-color: #e7b6ac; background: #fff5f2; }
+.verification-form { display: grid; gap: 13px; }
+.verification-file-field { display: grid; gap: 8px; color: var(--navy); font-size: 13px; font-weight: 650; }
+.verification-file-field input { width: 100%; min-height: 48px; padding: 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--white); color: var(--text); }
+.verification-field-help, .verification-file-name { margin: -5px 0 0; color: var(--muted); font-size: 12px; }
+.verification-consent { display: flex; align-items: flex-start; gap: 10px; color: var(--text); font-size: 13px; }
+.verification-consent input { flex: 0 0 auto; width: 18px; height: 18px; margin: 2px 0 0; accent-color: var(--navy); }
+.verification-field-error, .verification-error { margin: 0; color: #a52c1e; font-size: 13px; }
+.verification-error { display: grid; gap: 10px; justify-items: start; }
+.verification-success { margin: 0; color: #17684e; font-size: 13px; }
+.verification-form > .button { justify-self: start; }
+.verification-form > .button:disabled { cursor: not-allowed; opacity: .6; }
+.verification-notice { display: grid; gap: 3px; margin-top: 12px; padding: 12px; border: 1px solid #e8cf99; border-radius: 8px; background: #fff9e9; color: var(--text); font-size: 12px; }
+.verification-notice p { margin: 0; }
+.verification-notice .text-link { color: var(--navy); font-weight: 700; }
 .not-found { display: grid; justify-items: center; align-content: center; min-height: 65vh; text-align: center; }
 .not-found h1 { margin-bottom: 8px; color: var(--navy); font-size: 30px; }
 .not-found p { margin-bottom: 20px; color: var(--muted); }
@@ -454,6 +479,10 @@ h1, h2, h3, p { margin-top: 0; }
   .detail-section { padding: 22px 0 24px; margin-top: 22px; }
   .detail-section h2 { font-size: 19px; }
   .offer-panel { position: static; padding: 18px; }
+  .verification-page { padding-top: 25px; padding-bottom: 45px; }
+  .verification-intro h1 { font-size: 30px; }
+  .verification-card { padding: 19px 16px; }
+  .verification-form > .button { width: 100%; }
   .offer-price { font-size: 25px; }
   .not-found { min-height: 60vh; }
   .not-found h1 { font-size: 25px; }

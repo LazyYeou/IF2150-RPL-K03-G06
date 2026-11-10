@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { SavedJobButton } from "@/components/saved-job-button";
 import { formatIndonesianDate, formatRupiah, type Job } from "@/lib/jobs";
+import { VerificationNotice } from "@/features/verification/verification-notice";
 
 export function JobDetail({ job }: { job: Job }) {
   const initials = job.provider
@@ -77,6 +78,7 @@ export function JobDetail({ job }: { job: Job }) {
           <button className="button button-primary offer-apply" disabled type="button">
             Ajukan Penawaran <span aria-hidden="true">↗</span>
           </button>
+          <VerificationNotice />
           <div className="offer-save"><SavedJobButton jobId={job.id} /><span>Simpan pekerjaan</span></div>
           <p className="offer-reminder"><span aria-hidden="true">♢</span>Tinjau ruang lingkup dan sepakati upah sebelum mulai bekerja.</p>
         </aside>
