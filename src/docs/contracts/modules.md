@@ -104,7 +104,7 @@ Dipakai mock gateway (dan adapter Midtrans bila ada). Pemilik: Karmel.
 | Body | `{ "jenis": "PEMBAYARAN" \| "PENCAIRAN" \| "REFUND", "referensiId": "<idTagihan\|idPencairan\|idTiket>", "status": "BERHASIL" \| "GAGAL" \| "KEDALUWARSA", "nominal": 52500, "waktu": "<ISO 8601>" }` |
 | Validasi | Signature → body objek JSON → `nominal` wajib angka bulat positif dalam rentang integer aman → `referensiId` ada → nominal sama dengan data di DB. Nilai hilang, null, string, pecahan, nol, negatif, atau tidak cocok ditolak; gagal → 401/400, data tidak berubah |
 | Idempotensi | Status sama dengan yang tersimpan → no-op 200. Bertentangan dengan status final → hanya dicatat di `log_gateway`, 200 |
-| Log | Setiap callback dicatat `log_gateway` jenis `CALLBACK` (payload lengkap) |
+| Log | Setiap callback dicatat `log_gateway` jenis `CALLBACK` (payload bisnis tersanitasi; rekening masked/HMAC, kredensial dihapus) |
 | Efek | `PEMBAYARAN BERHASIL`: tagihan `BERHASIL` + transaksi `IN_PROGRESS` dalam satu `tx()`, lalu notifikasi TK. `PENCAIRAN BERHASIL`: `mutasi_saldo('cair:'||id, −nominal)` + debit saldo + `BERHASIL`. `PENCAIRAN GAGAL`: `GAGAL` (reservasi lepas) |
 
 Kunci idempoten:
@@ -138,7 +138,7 @@ Semua dibaca hanya di server. Template: `src/.env.example`; nilai lokal di `src/
 |---|---|---|
 | `DATABASE_PATH` | `./data/kerjain.db` | `lib/db` |
 | `STORAGE_DIR` | `./storage` | `lib/storage` |
-| `FILE_ENCRYPTION_KEY` | 64 karakter hex (32 byte) | enkripsi KTP |
+| `FILE_ENCRYPTION_KEY` | 64 karakter hex (32 byte) | enkripsi KTP dan subkey HKDF untuk rekening |
 | `APP_URL` | `http://localhost:3000` | cek `Origin`, tautan notifikasi/reset |
 | `COMMISSION_RATE` | `0.05` | `commission_fee = round(rate × upah)` |
 | `PAYMENT_EXPIRY_HOURS` | `24` | `expiry_timestamp` tagihan |
@@ -160,3 +160,11 @@ Menambah variabel = perbarui `.env.example`, tabel ini, dan README di PR yang sa
 | `/mock-gateway/[idTagihan]` | PK pemilik tagihan | hanya bila `PAYMENT_PROVIDER=mock` |
 
 Belum login → redirect `/masuk?next=<path>`. Middleware hanya untuk UX; otorisasi tetap di controller. Peta layar lengkap: rancangan §13.
+
+## 6. Penyelarasan review #95?#98
+
+Kebijakan KNF17: rekening disimpan terenkripsi AES-256-GCM, terikat ID baris melalui AAD, dengan subkey HKDF terpisah dari kunci KTP. `rekeningMasked` tetap bentuk publik. Log tidak menyimpan rekening lengkap; sidik HMAC menggantikan perbandingan rekening pada instruksi mock idempoten. Data lama diperbarui lewat maintenance `npm run db:protect-accounts`; lihat [prosedur dan batas transisi](../review-fixes.md).
+
+Refund sengketa tetap melalui `prosesRefundTagihan`: requireCS, tiket terkait dan belum final, tagihan BERHASIL, pekerjaan DISENGKETAKAN, tanpa kredit upah. Keputusan REFUND dan klaim disimpan sebelum gateway; timeout tidak membuka kunci untuk keputusan berbeda. Caller #39 harus memeriksa `ok/status`, tidak menganggap setiap hasil resolve sebagai sukses final. Finalisasi tagihan, pekerjaan, tiket, riwayat, dan notifikasi atomik. Detail status pending/retry ada di [review-fixes.md](../review-fixes.md#95-refund-sengketa).
+
+Dokumentasi ini mencatat usulan teknis pada PR; konfirmasi pemilik/pemakai kontrak dilakukan saat review, bukan diasumsikan sudah disepakati.

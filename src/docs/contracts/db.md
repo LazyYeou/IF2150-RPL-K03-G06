@@ -248,3 +248,9 @@ Plus ±30 lowongan multi-kategori, transaksi di setiap status pekerjaan, dan 1 t
 4. Perubahan skema = berkas baru `db/migrations/000N_<nama>.sql`. Migrasi yang sudah di-merge tidak diedit.
 5. Setiap perubahan skema memperbarui dokumen ini dan seed (`db/seed.ts`) di PR yang sama, direview pemilik tabel.
 6. Katalog query (Q-001…Q-105) dan terjemahan PostgreSQL → SQLite: rancangan §11.5.
+
+## Perubahan hasil review #95/#98
+
+Migrasi 0004 menambah `operasi_refund`: id_tagihan PK, id_transaksi UNIQUE, id_tiket UNIQUE, id_cs, catatan, status (MENGIRIM/BELUM_PASTI/GAGAL/BERHASIL), klaim, batas_klaim. Foreign key mengikat semua referensi. Trigger mengunci status tiket/pekerjaan selama operasi belum final dan melarang ledger upah untuk transaksi yang sudah diputus refund.
+
+`rekening_tujuan` pada pencairan_dana (dan data rekening profil lama yang dimigrasi) menyimpan ciphertext `enc:rekening:v1:...`, bukan nomor mentah. `log_gateway.payload` tersanitasi, rekening berupa last-four dan HMAC. Maintenance data lama mempertahankan ID/waktu log dan memastikan trigger append-only tetap aktif setelah selesai; prosedur di [review-fixes.md](../review-fixes.md).
