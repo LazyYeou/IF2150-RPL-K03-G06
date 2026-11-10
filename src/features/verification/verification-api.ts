@@ -10,6 +10,17 @@ export type VerificationStatusResponse = {
   alasanPenolakan: string | null;
 };
 
+export type CSVerificationQueueItem = {
+  idTenagaKerja: string;
+  nama: string;
+  email: string;
+  waktuPengajuan: string;
+};
+
+type CSVerificationQueueResponse = {
+  items: CSVerificationQueueItem[];
+};
+
 type VerificationSubmissionResponse = Pick<
   VerificationStatusResponse,
   "status" | "waktuPengajuan"
@@ -77,6 +88,23 @@ function isSubmissionResponse(
   );
 }
 
+function isCSVerificationQueueResponse(
+  value: unknown,
+): value is CSVerificationQueueResponse {
+  return (
+    isRecord(value) &&
+    Array.isArray(value.items) &&
+    value.items.every(
+      (item) =>
+        isRecord(item) &&
+        typeof item.idTenagaKerja === "string" &&
+        typeof item.nama === "string" &&
+        typeof item.email === "string" &&
+        typeof item.waktuPengajuan === "string",
+    )
+  );
+}
+
 async function throwApiError(response: Response): Promise<never> {
   let payload: unknown;
   try {
@@ -102,6 +130,88 @@ async function throwApiError(response: Response): Promise<never> {
     error?.code,
     fields,
   );
+}
+
+async function fetchCSVerification(
+  path: string,
+  init?: RequestInit,
+): Promise<Response> {
+  return fetch(`/api/cs/verifikasi${path}`, {
+    cache: "no-store",
+    credentials: "same-origin",
+    ...init,
+  });
+}
+
+export async function getCSVerificationQueue(
+  signal?: AbortSignal,
+): Promise<CSVerificationQueueResponse> {
+  const response = await fetchCSVerification("", { signal });
+  if (!response.ok) return throwApiError(response);
+
+  const result: unknown = await response.json();
+  if (!isCSVerificationQueueResponse(result)) {
+    throw new Error("Respons antrean verifikasi dari server tidak valid.");
+  }
+  return result;
+}
+
+export async function getCSVerificationDocument(
+  idTenagaKerja: string,
+  signal?: AbortSignal,
+): Promise<Blob> {
+  const response = await fetchCSVerification(
+    `/${encodeURIComponent(idTenagaKerja)}/dokumen`,
+    { signal },
+  );
+  if (!response.ok) return throwApiError(response);
+
+  const document = await response.blob();
+  if (
+    document.size === 0 ||
+    (!document.type.startsWith("image/") &&
+      document.type !== "application/pdf")
+  ) {
+    throw new Error("Dokumen tidak dapat ditampilkan sebagai gambar atau PDF.");
+  }
+  return document;
+}
+
+export async function approveCSVerification(
+  idTenagaKerja: string,
+): Promise<"TERVERIFIKASI"> {
+  const response = await fetchCSVerification(
+    `/${encodeURIComponent(idTenagaKerja)}/setujui`,
+    { method: "POST" },
+  );
+  if (!response.ok) return throwApiError(response);
+
+  const result: unknown = await response.json();
+  if (!isRecord(result) || result.status !== "TERVERIFIKASI") {
+    throw new Error("Respons persetujuan verifikasi dari server tidak valid.");
+  }
+  return result.status;
+}
+
+export async function rejectCSVerification(
+  idTenagaKerja: string,
+  reason: string,
+): Promise<"DITOLAK"> {
+  const response = await fetchCSVerification(
+    `/${encodeURIComponent(idTenagaKerja)}/tolak`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ alasan: reason }),
+    },
+  );
+  if (!response.ok) return throwApiError(response);
+
+  const result: unknown = await response.json();
+  if (!isRecord(result) || result.status !== "DITOLAK") {
+    throw new Error("Respons penolakan verifikasi dari server tidak valid.");
+  }
+  return result.status;
 }
 
 export async function getVerificationStatus(
