@@ -288,7 +288,12 @@ describe("Integrasi Pencairan Dana & Webhook Disbursement (Issue #34 / UC10 / KF
     };
     expect(row).toBeDefined();
     expect(row.status_pencairan).toBe("DIPROSES");
-    expect(row.rekening_tujuan).toBe(rekeningInput);
+    expect(row.rekening_tujuan).toMatch(/^enc:rekening:v1:/);
+    expect(row.rekening_tujuan).not.toContain(rekeningInput);
+    const { dekripsiRekening } = await import("@/lib/rekening");
+    expect(
+      dekripsiRekening(row.rekening_tujuan, `pencairan:${row.id_pencairan}`),
+    ).toBe(rekeningInput);
 
     const dompetSetelahRes = await dompetRoute.GET();
     const dompetSetelah = await dompetSetelahRes.json();

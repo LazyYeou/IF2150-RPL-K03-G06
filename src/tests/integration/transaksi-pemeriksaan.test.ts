@@ -1,8 +1,21 @@
+import {
+  HasilSetujui,
+  HasilRevisi,
+  HasilUlasan,
+} from "@/lib/validation/transaksi";
 import { randomUUID } from "node:crypto";
 import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
+import {
+  afterAll,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
 
 const jar = vi.hoisted(() => new Map<string, string>());
 vi.mock("next/headers", () => ({
@@ -99,7 +112,14 @@ async function buatTransaksiSubmitted() {
      (id_transaksi, id_lowongan, id_penawaran, id_tenaga_kerja,
       id_penyedia_kerja, nominal_upah, status_pekerjaan)
      VALUES (?, ?, ?, ?, ?, ?, 'SUBMITTED')`,
-  ).run(idTransaksi, idLowongan, idPenawaran, sumber.idTK, sumber.idPK, sumber.nominalUpah);
+  ).run(
+    idTransaksi,
+    idLowongan,
+    idPenawaran,
+    sumber.idTK,
+    sumber.idPK,
+    sumber.nominalUpah,
+  );
 
   const commissionFee = Math.round(sumber.nominalUpah * 0.05);
   db.prepare(
@@ -181,14 +201,13 @@ describe("pemeriksaan hasil transaksi (Issue #35)", () => {
 
     const pertama = await postSetujui(trx.idTransaksi);
     expect(pertama.status).toBe(200);
-    expect(await pertama.json()).toMatchObject({
+    expect(HasilSetujui.parse(await pertama.json())).toMatchObject({
       idTransaksi: trx.idTransaksi,
       status: "COMPLETED",
     });
 
-    const { kreditUpahDalamTx } = await import(
-      "@/controllers/TransaksiPekerjaanController"
-    );
+    const { kreditUpahDalamTx } =
+      await import("@/controllers/TransaksiPekerjaanController");
     const { tx } = await import("@/lib/db");
     expect(tx(() => kreditUpahDalamTx(db, trx.idTransaksi))).toBe(false);
     expect((await postSetujui(trx.idTransaksi)).status).toBe(409);
@@ -224,7 +243,9 @@ describe("pemeriksaan hasil transaksi (Issue #35)", () => {
       `UPDATE tagihan_pembayaran SET status_pembayaran = 'GAGAL'
        WHERE id_transaksi = ?`,
     ).run(transaksiTagihanGagal.idTransaksi);
-    expect((await postSetujui(transaksiTagihanGagal.idTransaksi)).status).toBe(409);
+    expect((await postSetujui(transaksiTagihanGagal.idTransaksi)).status).toBe(
+      409,
+    );
 
     const trx = await buatTransaksiSubmitted();
     await buatSesi(trx.idPenggunaPK);
@@ -266,15 +287,16 @@ describe("pemeriksaan hasil transaksi (Issue #35)", () => {
     );
 
     expect(
-      (
-        await postJson(revisiRoute, trx.idTransaksi, { catatan: "Pendek" })
-      ).status,
+      (await postJson(revisiRoute, trx.idTransaksi, { catatan: "Pendek" }))
+        .status,
     ).toBe(400);
 
     const catatan = "Mohon rapikan bagian sisi kiri sesuai kesepakatan.";
     const response = await postJson(revisiRoute, trx.idTransaksi, { catatan });
     expect(response.status).toBe(200);
-    expect(await response.json()).toMatchObject({ status: "IN_PROGRESS" });
+    expect(HasilRevisi.parse(await response.json())).toMatchObject({
+      status: "IN_PROGRESS",
+    });
     expect(
       one<{ jumlah: number }>(
         `SELECT COUNT(*) AS jumlah FROM notifikasi
@@ -312,9 +334,8 @@ describe("pemeriksaan hasil transaksi (Issue #35)", () => {
       ).status,
     ).toBe(409);
     expect((await postSetujui(trx.idTransaksi)).status).toBe(200);
-    const { ambilDataFormUlasan } = await import(
-      "@/controllers/TransaksiPekerjaanController"
-    );
+    const { ambilDataFormUlasan } =
+      await import("@/controllers/TransaksiPekerjaanController");
     expect(await ambilDataFormUlasan(trx.idTransaksi)).toMatchObject({
       peran: "PK",
       namaPenerima: trx.namaTK,
@@ -337,9 +358,7 @@ describe("pemeriksaan hasil transaksi (Issue #35)", () => {
       deskripsi: "Pekerjaan sesuai kesepakatan dan selesai tepat waktu.",
     });
     expect(
-      (
-        await postJson(ulasanRoute, trx.idTransaksi, { nilai: 5 })
-      ).status,
+      (await postJson(ulasanRoute, trx.idTransaksi, { nilai: 5 })).status,
     ).toBe(409);
     expect(await ambilDataFormUlasan(trx.idTransaksi)).toMatchObject({
       sudahDiulas: true,
@@ -361,7 +380,7 @@ describe("pemeriksaan hasil transaksi (Issue #35)", () => {
       deskripsi: "Komunikasi dan kesepakatan berjalan baik.",
     });
     expect(ulasanPenyedia.status).toBe(201);
-    expect(await ulasanPenyedia.json()).toMatchObject({
+    expect(HasilUlasan.parse(await ulasanPenyedia.json())).toMatchObject({
       idPenerima: trx.idPenggunaPK,
       nilai: 5,
     });
@@ -373,9 +392,8 @@ describe("pemeriksaan hasil transaksi (Issue #35)", () => {
       ),
     ).toMatchObject({ jumlah: 1, rating: 5 });
 
-    const { ambilProfilPublik } = await import(
-      "@/controllers/TransaksiPekerjaanController"
-    );
+    const { ambilProfilPublik } =
+      await import("@/controllers/TransaksiPekerjaanController");
     const profil = await ambilProfilPublik(trx.idPenggunaTK);
     expect(profil).toMatchObject({
       id: trx.idPenggunaTK,
@@ -386,8 +404,7 @@ describe("pemeriksaan hasil transaksi (Issue #35)", () => {
           namaPenilai: expect.any(String),
           judulPekerjaan: expect.any(String),
           nilai: 4,
-          deskripsi:
-            "Pekerjaan sesuai kesepakatan dan selesai tepat waktu.",
+          deskripsi: "Pekerjaan sesuai kesepakatan dan selesai tepat waktu.",
         },
       ],
     });

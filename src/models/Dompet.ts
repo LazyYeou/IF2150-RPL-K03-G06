@@ -1,4 +1,5 @@
 import "server-only";
+import { dekripsiRekening } from "@/lib/rekening";
 import { db } from "@/lib/db";
 import { keIso } from "@/lib/http";
 import type {
@@ -94,7 +95,9 @@ export function bacaDataDompet(idTenagaKerja: string): DompetResponse {
   const pencairan: PencairanItem[] = pencairanRows.map((r) => ({
     id: r.id_pencairan,
     nominal: r.nominal,
-    rekeningMasked: maskerRekening(r.rekening_tujuan),
+    rekeningMasked: maskerRekening(
+      dekripsiRekening(r.rekening_tujuan, `pencairan:${r.id_pencairan}`),
+    ),
     status: r.status_pencairan,
     bisaCobaUlang: !!r.bisa_ulang,
     waktuPengajuan: r.waktu_pengajuan.includes("T")

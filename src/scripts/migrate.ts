@@ -1,3 +1,4 @@
+import { loadEnvConfig } from "@next/env";
 import type Database from "better-sqlite3";
 import { readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
@@ -33,6 +34,7 @@ export function migrate(db: Database.Database, dir = DIR_MIGRASI): string[] {
 }
 
 if (require.main === module) {
+  loadEnvConfig(process.cwd());
   const db = bukaDb();
   const baru = migrate(db);
   console.log(

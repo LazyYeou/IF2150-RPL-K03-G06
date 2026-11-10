@@ -153,9 +153,9 @@ Endpoint yang memakai gate `requireVerifiedTK` (→ 403 `NOT_VERIFIED`): `POST /
 
 | Method & path | Peran | Request | Respons 2xx | Error khusus |
 |---|---|---|---|---|
-| `GET /transaksi` | user | query `peran: 'TK'\|'PK'`, `page?` | 200 paginasi transaksi ringkas (tanpa `bukti`, `revisi`) | – |
+| `GET /transaksi` | user | query `peran?: 'TK'\|'PK'`, `status?: StatusPekerjaan`, `page?` | 200 paginasi transaksi ringkas (tanpa `bukti`, `revisi`) | – |
 | `GET /transaksi/:id` | peserta / CS | – | 200 `Transaksi` (termasuk `bukti`, `revisi`, `tiketAktif`, `ulasanSaya`) | 403, 404 |
-| `POST /transaksi/:id/bukti` | TK✔ yang ditugaskan | multipart: `deskripsi` (10–1000), `berkas` (JPG/PNG/PDF ≤ 10 MB) | 201 `{ idTransaksi, status: 'SUBMITTED' }` | 400 `BERKAS_TIDAK_VALID`, 403, 409 bukan `IN_PROGRESS` |
+| `POST /transaksi/:id/bukti` | TK✔ yang ditugaskan | multipart: `deskripsi` (10–1000), `berkas` (JPG/PNG/PDF ≤ 10 MB) | 201 `TransaksiDetail` (objek transaksi lengkap: `id`, `status: 'SUBMITTED'`, `bukti`, `timeline`, dan field detail lainnya) | 400 `BERKAS_TIDAK_VALID`, 403, 409 bukan `IN_PROGRESS` |
 | `POST /transaksi/:id/setujui` | PK pemilik | – | 200 `{ idTransaksi, status: 'COMPLETED' }`; upah dikreditkan idempoten | 409 bukan `SUBMITTED`/tagihan belum `BERHASIL`/ada tiket aktif |
 | `POST /transaksi/:id/revisi` | PK pemilik | `{ catatan (10–1000) }` | 200 `{ idTransaksi, status: 'IN_PROGRESS' }` | 400, 409 |
 | `POST /transaksi/:id/ulasan` | peserta TK/PK | `{ nilai: 1–5 (wajib), deskripsi? (≤1000) }` | 201 `{ id, idPenerima, nilai, deskripsi }`; ulasan dan hitung ulang rating tersimpan atomik | 400 rating tidak valid, 403 bukan peserta, 409 `ULASAN_GANDA`/bukan `COMPLETED` |
@@ -213,3 +213,15 @@ UI melakukan polling `GET /notifikasi` tiap 30 detik.
 |---|---|---|
 | A1 | Format rekening: issue #34 menulis `BANK:no` / `EWALLET:08…`, komentar DDL menulis `BCA:1234567890` / `GOPAY:08…` | Pakai `<KODE>:<nomor>` dengan kode bank/e-wallet dari daftar tetap (`BCA`, `BNI`, `BRI`, `MANDIRI`, `GOPAY`, `OVO`, `DANA`); bank 10–16 digit, e-wallet `08` + 8–11 digit. Putuskan Karmel |
 | A2 | Panjang password, daftar `metode` bayar, batas `alasan`/`pesan` CS tidak ditentukan rancangan | Nilai di dokumen ini adalah usulan; difinalkan di skema Zod #7 |
+
+### Contoh respons transaksi (#97)
+
+`GET /api/transaksi?peran=TK&status=SUBMITTED&page=1` mengembalikan `{ items: TransaksiRingkas[], total, page: 1, pageSize: 12 }`. Status hanya menerima enum `StatusPekerjaan`; nilai di luar enum menghasilkan 400. TK/PK hanya melihat transaksi miliknya; CS dapat membaca sesuai peran yang diminta. Tanpa status, hasil tidak difilter.
+
+`POST /api/transaksi/:id/bukti` mengembalikan HTTP 201 **TransaksiDetail**, bukan ringkasan `{ idTransaksi, status }`. Contoh bagian respons: `{ id: "<idTransaksi>", status: "SUBMITTED", bukti: [{ id: "<idBukti>", deskripsi: "Pekerjaan selesai sesuai kriteria.", urlBerkas: "/api/berkas/bukti/<idBukti>", waktu: "2026-11-10T08:00:00.000Z" }], ... }`. Field lain mengikuti `TransaksiDetail` di `lib/validation/transaksi.ts`; tanda `...` di contoh ini bukan field JSON.
+
+Respons setujui: HTTP 200 `{ idTransaksi: "<id>", status: "COMPLETED" }`.
+Respons revisi: HTTP 200 `{ idTransaksi: "<id>", status: "IN_PROGRESS" }`.
+Respons ulasan: HTTP 201 `{ id: "<idUlasan>", idPenerima: "<idPengguna>", nilai: 5, deskripsi: "Hasil sesuai kesepakatan." }`; deskripsi opsional pada request dan `null` jika tidak diberikan. Skema respons tindakan: `HasilSetujui`, `HasilRevisi`, `HasilUlasan`.
+
+Keputusan implementasi #97 mempertahankan bentuk respons yang sudah dipakai klien dan tes; review PR menjadi tempat konfirmasi pemilik modul/pemakainya. Tidak mengubah payload endpoint.

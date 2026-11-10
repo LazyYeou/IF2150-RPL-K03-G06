@@ -15,6 +15,7 @@
     "test:e2e:penawaran": "tsx tests/helpers/run-transaksi-e2e.ts penawaran-ui.spec.ts",
     "prepare": "cd .. && husky src/.husky",
     "db:migrate": "tsx scripts/migrate.ts",
+    "db:protect-accounts": "tsx scripts/protect-accounts.ts",
     "db:reset": "tsx scripts/reset-db.ts",
     "predev": "tsx scripts/reset-db.ts --if-missing"
   },

@@ -15,6 +15,7 @@ export default defineConfig({
     "transaksi-paginasi.spec.ts",
     "transaksi-akses.spec.ts",
     "penawaran-ui.spec.ts",
+    "dompet-dialog.spec.ts",
   ],
   metadata: { fixtureDir },
   globalSetup: "./tests/helpers/transaksi-e2e-setup.ts",

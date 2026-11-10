@@ -1,12 +1,9 @@
 import "server-only";
+import { sanitasiLog } from "@/lib/rekening";
 import { db } from "@/lib/db";
 import { keIso } from "@/lib/http";
 
-export type JenisLogGateway =
-  | "CHARGE"
-  | "DISBURSEMENT"
-  | "REFUND"
-  | "CALLBACK";
+export type JenisLogGateway = "CHARGE" | "DISBURSEMENT" | "REFUND" | "CALLBACK";
 
 export interface LogGateway {
   idLog: number;
@@ -27,8 +24,16 @@ export function catatLog(
   payload: unknown,
   provider: string = "MOCK",
 ): number {
-  const payloadStr =
-    typeof payload === "string" ? payload : JSON.stringify(payload);
+  let isi: unknown = payload;
+  if (typeof payload === "string") {
+    try {
+      isi = JSON.parse(payload);
+    } catch {
+      /* teks bebas tetap disanitasi */
+    }
+  }
+  const aman = sanitasiLog(isi);
+  const payloadStr = typeof aman === "string" ? aman : JSON.stringify(aman);
 
   const result = db
     .prepare(
@@ -70,7 +75,7 @@ export function ambilLog(referensiId: string): LogGateway[] {
     }
     return {
       ...r,
-      payload: parsedPayload,
+      payload: sanitasiLog(parsedPayload),
       createdAt: keIso(r.createdAt),
     };
   });
