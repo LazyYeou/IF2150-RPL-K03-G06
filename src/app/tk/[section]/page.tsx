@@ -6,10 +6,6 @@ import HalamanDaftarTransaksi, {
 import HalamanDompet from "@/views/dompet/HalamanDompet";
 
 const sections: Record<string, [string, string]> = {
-  lamaran: [
-    "Lamaran saya",
-    "Pantau penawaran dan perkembangan lamaranmu di satu tempat.",
-  ],
   pekerjaan: [
     "Pekerjaan saya",
     "Pantau pekerjaan, hasil, dan status penyelesaiannya.",

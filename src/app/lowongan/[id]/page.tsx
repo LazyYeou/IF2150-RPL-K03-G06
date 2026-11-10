@@ -58,10 +58,23 @@ export default async function Detail({
           <p className="mt-3 text-3xl font-semibold">
             {formatRupiah(item.upah)}
           </p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            /{item.satuanUpah === "PER_HARI" ? "hari" : "tugas"}
+          </p>
           <p className="mt-3 text-sm">{item.kategori}</p>
           <p className="mt-5 text-sm leading-6 text-muted-foreground">
             Tinjau ruang lingkup dan sepakati upah sebelum mulai bekerja.
           </p>
+          <section className="mt-6 border-t pt-5" aria-labelledby="provider-title">
+            <h2 id="provider-title" className="text-sm font-semibold">
+              Penyedia kerja
+            </h2>
+            <p className="mt-2 text-sm">{item.penyedia.nama}</p>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Rating {item.penyedia.akumulasiRating.toFixed(1)} ·{" "}
+              {item.penyedia.jumlahUlasan} ulasan
+            </p>
+          </section>
           <DialogPenawaran
             key={`${item.id}:${konteks.idPengguna ?? "publik"}`}
             lowongan={item}
