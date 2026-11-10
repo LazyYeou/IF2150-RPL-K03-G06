@@ -94,7 +94,7 @@ test("PK dan TK menyelesaikan seluruh alur transaksi dan saling memberi ulasan",
   await login(page, emailTK);
   await page.goto(`/lowongan/${idLowongan}`);
   const tombolAjukan = page.getByRole("button", {
-    name: "Ajukan penawaran",
+    name: "Ajukan Penawaran",
     exact: true,
   });
   await expect(tombolAjukan).toBeVisible();
