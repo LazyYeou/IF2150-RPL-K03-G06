@@ -179,3 +179,44 @@ export function ringkasDenganPemilik(
   const { idPK, ...baris } = r;
   return { idPK, lowongan: ringkas(baris) };
 }
+
+/** #51: TK menyimpan lowongan OPEN; idempoten. */
+export function simpan(idPengguna: string, idLowongan: string): boolean {
+  const ada = db
+    .prepare(
+      "SELECT 1 FROM lowongan_pekerjaan WHERE id_lowongan = ? AND status_lowongan = 'OPEN'",
+    )
+    .get(idLowongan);
+  if (!ada) return false;
+  db.prepare(
+    "INSERT OR IGNORE INTO lowongan_tersimpan (id_pengguna, id_lowongan) VALUES (?, ?)",
+  ).run(idPengguna, idLowongan);
+  return true;
+}
+
+/** Idempoten: menghapus yang tidak tersimpan bukan error. */
+export function hapusSimpan(idPengguna: string, idLowongan: string) {
+  db.prepare(
+    "DELETE FROM lowongan_tersimpan WHERE id_pengguna = ? AND id_lowongan = ?",
+  ).run(idPengguna, idLowongan);
+}
+
+/** Semua status ditampilkan agar TK tahu lowongan tersimpan yang sudah penuh. Urut lowongan terbaru (skema tidak mencatat waktu simpan). */
+export function tersimpanMilik(idPengguna: string, page: number) {
+  const items = db
+    .prepare(
+      `SELECT ${KOLOM_RINGKAS} FROM lowongan_tersimpan s JOIN lowongan_pekerjaan l USING (id_lowongan)
+       WHERE s.id_pengguna = ? ORDER BY l.created_at DESC, l.id_lowongan LIMIT ? OFFSET ?`,
+    )
+    .all(
+      idPengguna,
+      UKURAN_HALAMAN,
+      (page - 1) * UKURAN_HALAMAN,
+    ) as BarisRingkas[];
+  const { total } = db
+    .prepare(
+      "SELECT COUNT(*) AS total FROM lowongan_tersimpan WHERE id_pengguna = ?",
+    )
+    .get(idPengguna) as { total: number };
+  return { items: items.map(ringkas), total, page, pageSize: UKURAN_HALAMAN };
+}
