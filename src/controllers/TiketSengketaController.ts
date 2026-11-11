@@ -155,8 +155,9 @@ const STATUS_FINAL = ["DITUTUP", "DITOLAK", "DIBATALKAN"];
 
 /** Notifikasi ke peserta tiket, dipanggil setelah commit. */
 async function beritahu(id: string, pesan: string) {
+  // Best-effort: state sudah commit, kegagalan notifikasi tidak boleh menggagalkan respons.
   for (const u of new Set(Tiket.pesertaTiket(id) ?? []))
-    await kirimNotifikasi(u, pesan, `/tiket/${id}`);
+    await kirimNotifikasi(u, pesan, `/tiket/${id}`).catch(() => {});
 }
 
 function hasilCS(h: Tiket.HasilKeputusan) {
@@ -170,13 +171,11 @@ function hasilCS(h: Tiket.HasilKeputusan) {
       );
 }
 
-export async function prosesKeputusanTiket(rawId: string, body: unknown) {
-  const user = await requireCS();
-  const id = idTiket(rawId);
-  const { keputusan, catatan } = PutuskanTiketInput.parse(body);
-  const t = Tiket.detail(id);
-  if (!t) throw tidakAda();
-  // Tiket final hanya boleh dikonfirmasi ulang untuk REFUND yang sama (idempoten di model refund).
+/** Tiket final hanya boleh dikonfirmasi ulang untuk REFUND yang sama (idempoten di model refund). */
+function pastikanBisaDiputuskan(
+  t: NonNullable<ReturnType<typeof Tiket.detail>>,
+  keputusan: "REFUND" | "PENCAIRAN",
+) {
   if (
     !t.idTransaksi ||
     (STATUS_FINAL.includes(t.status) &&
@@ -188,8 +187,18 @@ export async function prosesKeputusanTiket(rawId: string, body: unknown) {
       409,
       "Tiket sudah final/diputus atau tidak terkait transaksi",
     );
+  return t.idTransaksi;
+}
+
+export async function prosesKeputusanTiket(rawId: string, body: unknown) {
+  const user = await requireCS();
+  const id = idTiket(rawId);
+  const { keputusan, catatan } = PutuskanTiketInput.parse(body);
+  const t = Tiket.detail(id);
+  if (!t) throw tidakAda();
+  const idTransaksi = pastikanBisaDiputuskan(t, keputusan);
   if (keputusan === "REFUND")
-    await prosesRefundTagihan(t.idTransaksi, id, catatan);
+    await prosesRefundTagihan(idTransaksi, id, catatan);
   else {
     hasilCS(Tiket.cairkan(id, user.id, catatan));
     await beritahu(id, "Sengketa diputuskan: upah dicairkan ke tenaga kerja.");
