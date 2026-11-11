@@ -1,9 +1,17 @@
 import "server-only";
 import { requireCS, requireUser } from "@/lib/auth/guards";
 import { AppError } from "@/lib/errors";
+import { kirimNotifikasi } from "./NotifikasiController";
+import { prosesRefundTagihan } from "./TagihanPembayaranController";
 import { hapusBerkas, simpanBerkas } from "@/lib/storage";
 import { Id } from "@/lib/validation/common";
-import { BuatTiketInput, DaftarTiketQuery } from "@/lib/validation/sengketa";
+import {
+  BuatTiketInput,
+  DaftarTiketQuery,
+  MintaBuktiInput,
+  PutuskanTiketInput,
+  TolakTiketInput,
+} from "@/lib/validation/sengketa";
 import * as Tiket from "@/models/TiketSengketa";
 
 // C42, C43. UC12, KF24, KF26. Urutan: guard -> validasi -> simpan berkas -> tx() di model.
@@ -141,4 +149,68 @@ export async function ambilTiketUntukCS(rawId: string) {
   const t = Tiket.detail(idTiket(rawId));
   if (!t) throw tidakAda();
   return t;
+}
+
+const STATUS_FINAL = ["DITUTUP", "DITOLAK", "DIBATALKAN"];
+
+/** Notifikasi ke peserta tiket, dipanggil setelah commit. */
+async function beritahu(id: string, pesan: string) {
+  for (const u of new Set(Tiket.pesertaTiket(id) ?? []))
+    await kirimNotifikasi(u, pesan, `/tiket/${id}`);
+}
+
+function hasilCS(h: Tiket.HasilKeputusan) {
+  if (h.ok) return;
+  throw h.alasan === "TIDAK_ADA"
+    ? tidakAda()
+    : new AppError(
+        "STATUS_TIDAK_VALID",
+        409,
+        "Status tiket tidak mengizinkan tindakan ini",
+      );
+}
+
+export async function prosesKeputusanTiket(rawId: string, body: unknown) {
+  const user = await requireCS();
+  const id = idTiket(rawId);
+  const { keputusan, catatan } = PutuskanTiketInput.parse(body);
+  const t = Tiket.detail(id);
+  if (!t) throw tidakAda();
+  // Tiket final hanya boleh dikonfirmasi ulang untuk REFUND yang sama (idempoten di model refund).
+  if (
+    !t.idTransaksi ||
+    (STATUS_FINAL.includes(t.status) &&
+      !(keputusan === "REFUND" && t.keputusan === "REFUND")) ||
+    (t.keputusan && t.keputusan !== keputusan)
+  )
+    throw new AppError(
+      "STATUS_TIDAK_VALID",
+      409,
+      "Tiket sudah final/diputus atau tidak terkait transaksi",
+    );
+  if (keputusan === "REFUND")
+    await prosesRefundTagihan(t.idTransaksi, id, catatan);
+  else {
+    hasilCS(Tiket.cairkan(id, user.id, catatan));
+    await beritahu(id, "Sengketa diputuskan: upah dicairkan ke tenaga kerja.");
+  }
+  return Tiket.detail(id)!;
+}
+
+export async function prosesMintaBukti(rawId: string, body: unknown) {
+  const user = await requireCS();
+  const id = idTiket(rawId);
+  const { pesan } = MintaBuktiInput.parse(body);
+  hasilCS(Tiket.mintaBukti(id, user.id, pesan));
+  await beritahu(id, `CS meminta bukti tambahan: ${pesan}`);
+  return Tiket.detail(id)!;
+}
+
+export async function prosesTolakTiket(rawId: string, body: unknown) {
+  const user = await requireCS();
+  const id = idTiket(rawId);
+  const { alasan } = TolakTiketInput.parse(body);
+  hasilCS(Tiket.tolak(id, user.id, alasan));
+  await beritahu(id, `Tiket sengketa ditolak: ${alasan}`);
+  return Tiket.detail(id)!;
 }
