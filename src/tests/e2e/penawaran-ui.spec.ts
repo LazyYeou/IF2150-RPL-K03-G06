@@ -351,8 +351,8 @@ test("API 403 NOT_VERIFIED yang datang setelah form dibuka ditampilkan", async (
   await kirim(page);
   await expect(page.getByRole("alert")).toContainText("belum terverifikasi");
   await expect(
-    page.getByRole("link", { name: "Lihat status verifikasi" }),
-  ).toHaveAttribute("href", "/profil");
+    page.getByRole("link", { name: "Verifikasi identitas" }),
+  ).toHaveAttribute("href", "/tk/verifikasi");
 });
 
 test("lamaran memakai data akun sendiri, status, paginasi, dan refresh URL", async ({

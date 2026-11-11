@@ -5,10 +5,6 @@ import HalamanDaftarTransaksi, {
 } from "@/views/transaksi/HalamanDaftarTransaksi";
 
 const sections: Record<string, [string, string]> = {
-  lowongan: [
-    "Lowongan saya",
-    "Kelola kebutuhan pekerjaan dan temukan tenaga kerja yang sesuai.",
-  ],
   transaksi: [
     "Transaksi",
     "Pantau pekerjaan, pembayaran, dan hasil yang perlu ditinjau.",
