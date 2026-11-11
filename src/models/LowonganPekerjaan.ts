@@ -15,6 +15,11 @@ export const UKURAN_HALAMAN = 12;
 /** Lindungi karakter khusus LIKE agar `%`/`_` dari pengguna dicari apa adanya. */
 export const escapeLike = (s: string) => s.replace(/[\\%_]/g, "\\$&");
 
+/** Frasa FTS5 untuk indeks trigram: dikutip penuh agar operator FTS (AND, *, tanda kurung) dari pengguna tidak berlaku. */
+export const toFtsQuery = (s: string) => `"${s.replace(/"/g, '""')}"`;
+/** Trigram butuh minimal 3 karakter; query lebih pendek memakai LIKE (hasil sama, tanpa indeks). */
+const BISA_FTS = (s: string) => [...s].length >= 3;
+
 const KOLOM_RINGKAS = `l.id_lowongan AS id, l.judul, l.kategori, l.lokasi, l.tanggal_pekerjaan AS tanggalPekerjaan,
   l.upah, l.satuan_upah AS satuanUpah, l.kuota, l.jumlah_diterima AS jumlahDiterima,
   l.status_lowongan AS status, l.created_at AS createdAt`;
@@ -47,19 +52,21 @@ export function buat(idPK: string, v: BuatLowonganInput): string {
   return id;
 }
 
-/** Q-102a + Q-103: hanya lowongan OPEN (KF09). Diganti FTS5 (Q-102) setelah profiling #45. */
+/** Q-102 (FTS5 trigram, query >= 3 karakter; LIKE untuk yang lebih pendek) + Q-103: hanya lowongan OPEN (KF09). */
 export function cari(q: CariLowonganQuery) {
-  const p = {
-    q: q.q ? `%${escapeLike(q.q)}%` : null,
-    kategori: q.kategori ?? null,
-    upahMin: q.upahMin ?? null,
-    limit: UKURAN_HALAMAN,
-    offset: (q.page - 1) * UKURAN_HALAMAN,
-  };
-  const where = `l.status_lowongan = 'OPEN'
-    AND (@q IS NULL OR l.judul LIKE @q ESCAPE '\\' OR l.deskripsi LIKE @q ESCAPE '\\')
-    AND (@kategori IS NULL OR l.kategori = @kategori)
-    AND (@upahMin IS NULL OR l.upah >= @upahMin)`;
+  const fts = !!q.q && BISA_FTS(q.q);
+  const cocok = !q.q
+    ? "1"
+    : fts
+      ? "l.rowid IN (SELECT rowid FROM lowongan_fts WHERE lowongan_fts MATCH @q)"
+      : "(l.judul LIKE @q ESCAPE '\\' OR l.deskripsi LIKE @q ESCAPE '\\')";
+  const filter: Record<string, string | number> = {};
+  if (q.q) filter.q = fts ? toFtsQuery(q.q) : `%${escapeLike(q.q)}%`;
+  if (q.kategori) filter.kategori = q.kategori;
+  if (q.upahMin !== undefined) filter.upahMin = q.upahMin;
+  const where = `l.status_lowongan = 'OPEN' AND ${cocok}
+    ${q.kategori ? "AND l.kategori = @kategori" : ""}
+    ${q.upahMin !== undefined ? "AND l.upah >= @upahMin" : ""}`;
   const urut =
     q.urut === "upah_tertinggi"
       ? "l.upah DESC, l.created_at DESC"
@@ -68,12 +75,16 @@ export function cari(q: CariLowonganQuery) {
     .prepare(
       `SELECT ${KOLOM_RINGKAS} FROM lowongan_pekerjaan l WHERE ${where} ORDER BY ${urut} LIMIT @limit OFFSET @offset`,
     )
-    .all(p) as BarisRingkas[];
+    .all({
+      ...filter,
+      limit: UKURAN_HALAMAN,
+      offset: (q.page - 1) * UKURAN_HALAMAN,
+    }) as BarisRingkas[];
   const { total } = db
     .prepare(
       `SELECT COUNT(*) AS total FROM lowongan_pekerjaan l WHERE ${where}`,
     )
-    .get({ q: p.q, kategori: p.kategori, upahMin: p.upahMin }) as {
+    .get(filter) as {
     total: number;
   };
   return {

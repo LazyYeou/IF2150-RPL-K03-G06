@@ -18,7 +18,9 @@
     "db:protect-accounts": "tsx scripts/protect-accounts.ts",
     "midtrans:reconcile": "node --conditions=react-server --import tsx scripts/reconcile-midtrans-cli.ts",
     "db:reset": "tsx scripts/reset-db.ts",
-    "predev": "tsx scripts/reset-db.ts --if-missing"
+    "predev": "tsx scripts/reset-db.ts --if-missing",
+    "db:seed-besar": "tsx scripts/seed-besar.ts",
+    "db:profil-cari": "node --conditions=react-server --import tsx scripts/profil-pencarian.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
