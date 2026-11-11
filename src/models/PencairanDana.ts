@@ -5,6 +5,7 @@ import { db, tx } from "@/lib/db";
 import { AppError } from "@/lib/errors";
 import { maskerRekening } from "@/models/Dompet";
 import { getPaymentAdapter } from "@/lib/payment/adapter";
+import { validasiPencairanMidtrans } from "@/lib/payment/midtrans";
 import type { PencairanResponse } from "@/lib/validation/dompet";
 
 export interface PencairanDTO {
@@ -156,6 +157,8 @@ export async function ajukanPencairanDana(
 ): Promise<PencairanResponse> {
   // Kesalahan konfigurasi diketahui sebelum melakukan reservasi.
   getPaymentAdapter();
+  if (process.env.PAYMENT_PROVIDER?.toLowerCase() === "midtrans")
+    validasiPencairanMidtrans(rekeningTujuan);
   tx(() => {
     const existing = cariPencairanBerdasarkanId(idPencairan);
     if (existing) {

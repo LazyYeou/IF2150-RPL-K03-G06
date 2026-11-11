@@ -21,11 +21,13 @@ import type { DompetResponse } from "@/lib/validation/dompet";
 interface Props {
   dompet: DompetResponse;
   statusVerifikasi?: string;
+  hanyaBank?: boolean;
 }
 
 export default function DompetUI({
   dompet,
   statusVerifikasi = "BELUM_TERVERIFIKASI",
+  hanyaBank = false,
 }: Props) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -82,6 +84,7 @@ export default function DompetUI({
   // Form pencairan state
   const [tipeRekening, setTipeRekening] = useState<"BANK" | "EWALLET">("BANK");
   const [nomorRekening, setNomorRekening] = useState("");
+  const [bankTujuan, setBankTujuan] = useState("bca");
   const [nominalTarik, setNominalTarik] = useState<number | "">("");
   const [loadingTarik, setLoadingTarik] = useState(false);
   const [pesanError, setPesanError] = useState<string | null>(null);
@@ -256,7 +259,10 @@ export default function DompetUI({
       }
     }
 
-    const rekeningTujuan = `${tipeRekening}:${digits}`;
+    const rekeningTujuan =
+      tipeRekening === "BANK"
+        ? `BANK:${bankTujuan}:${digits}`
+        : `EWALLET:${digits}`;
 
     const body = JSON.stringify({ nominal: nominalAngka, rekeningTujuan });
     if (pengajuan.current && pengajuan.current.body !== body) {
@@ -726,28 +732,52 @@ export default function DompetUI({
                     />
                     Rekening Bank
                   </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setTipeRekening("EWALLET");
-                      setPesanError(null);
-                    }}
-                    className={`flex min-h-11 items-center justify-center gap-2 rounded-lg border p-3 text-xs font-semibold transition-all ${
-                      tipeRekening === "EWALLET"
-                        ? "border-brand-orange bg-orange-50 text-orange-950 font-bold"
-                        : "border-border hover:bg-muted text-foreground"
-                    }`}
-                  >
-                    <Smartphone
-                      className="size-4 text-brand-orange"
-                      aria-hidden="true"
-                    />
-                    E-Wallet (GoPay/DANA)
-                  </button>
+                  {!hanyaBank && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setTipeRekening("EWALLET");
+                        setPesanError(null);
+                      }}
+                      className={`flex min-h-11 items-center justify-center gap-2 rounded-lg border p-3 text-xs font-semibold transition-all ${
+                        tipeRekening === "EWALLET"
+                          ? "border-brand-orange bg-orange-50 text-orange-950 font-bold"
+                          : "border-border hover:bg-muted text-foreground"
+                      }`}
+                    >
+                      <Smartphone
+                        className="size-4 text-brand-orange"
+                        aria-hidden="true"
+                      />
+                      E-Wallet (GoPay/DANA)
+                    </button>
+                  )}
                 </div>
               </div>
 
               {/* Input Nomor Rekening / E-Wallet */}
+              {tipeRekening === "BANK" && (
+                <div>
+                  <label
+                    htmlFor="bankTujuan"
+                    className="mb-1 block text-xs font-semibold"
+                  >
+                    Bank tujuan
+                  </label>
+                  <select
+                    id="bankTujuan"
+                    value={bankTujuan}
+                    onChange={(event) => setBankTujuan(event.target.value)}
+                    className="min-h-11 w-full rounded-lg border bg-background px-3"
+                  >
+                    <option value="bca">BCA</option>
+                    <option value="bni">BNI</option>
+                    <option value="bri">BRI</option>
+                    <option value="mandiri">Mandiri</option>
+                    <option value="cimb">CIMB Niaga</option>
+                  </select>
+                </div>
+              )}
               <div>
                 <label
                   htmlFor="nomorRekening"

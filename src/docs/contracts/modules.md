@@ -97,6 +97,8 @@ Label status lain dibuat di `labelStatus()` dengan bahasa Indonesia yang setara 
 
 Dipakai mock gateway (dan adapter Midtrans bila ada). Pemilik: Karmel.
 
+Provider Midtrans menormalisasi payload native sebelum masuk handler internal: signature Core berasal dari body `signature_key`, bukan header HMAC mock. GET Core status / GET Iris payout detail terautentikasi menjadi sumber status dan nominal. Kontrak interface adapter tetap; hasil yang belum pasti dilempar sebagai error agar caller mempertahankan pending/reservasi. `operasi_midtrans` menyimpan idempotensi dan referensi provider lintas restart; jaringan tetap di luar `tx()`. Lihat [Midtrans](../midtrans.md) untuk approval payout, format bank, dan pemulihan timeout.
+
 | Hal | Aturan |
 |---|---|
 | Endpoint | `POST /api/webhooks/payment` (tanpa cookie, tanpa cek `Origin`) |

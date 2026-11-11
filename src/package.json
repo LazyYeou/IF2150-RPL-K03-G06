@@ -16,6 +16,7 @@
     "prepare": "cd .. && husky src/.husky",
     "db:migrate": "tsx scripts/migrate.ts",
     "db:protect-accounts": "tsx scripts/protect-accounts.ts",
+    "midtrans:reconcile": "node --conditions=react-server --import tsx scripts/reconcile-midtrans-cli.ts",
     "db:reset": "tsx scripts/reset-db.ts",
     "predev": "tsx scripts/reset-db.ts --if-missing"
   },
