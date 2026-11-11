@@ -532,6 +532,7 @@ export function JobPostingWizard() {
           )}
           {step < 3 ? (
             <button
+              key="lanjut"
               className="button button-primary job-wizard-next"
               onClick={continueStep}
               type="button"
@@ -540,6 +541,7 @@ export function JobPostingWizard() {
             </button>
           ) : (
             <button
+              key="terbitkan"
               className="button button-primary job-wizard-publish"
               disabled={isSubmitting}
               type="submit"

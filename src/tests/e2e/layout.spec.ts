@@ -11,7 +11,14 @@ for (const [akun, path, heading, menus] of [
     "tk1",
     "/tk",
     "Selamat datang, Siti.",
-    ["Dashboard", "Lamaran saya", "Pekerjaan saya", "Dompet", "Profil saya"],
+    [
+      "Dashboard",
+      "Lamaran saya",
+      "Pekerjaan saya",
+      "Verifikasi identitas",
+      "Dompet",
+      "Profil saya",
+    ],
   ],
   [
     "pk1",
@@ -22,7 +29,7 @@ for (const [akun, path, heading, menus] of [
   [
     "cs1",
     "/cs/verifikasi",
-    "Verifikasi identitas",
+    "Antrean verifikasi identitas",
     ["Verifikasi identitas", "Tiket & sengketa"],
   ],
 ] as const) {
@@ -55,8 +62,9 @@ test("CS: dialog pengajuan bisa ditutup dengan Escape dan fokus kembali", async 
   await masuk(page, "cs1@kerjain.test");
   await page.goto("/cs/verifikasi");
   const trigger = page
-    .getByRole("button", { name: "Tinjau pengajuan", exact: true })
+    .getByRole("button", { name: "Tolak pengajuan", exact: true })
     .first();
+  await expect(trigger).toBeVisible();
   await trigger.focus();
   await page.keyboard.press("Enter");
   const dialog = page.getByRole("dialog");
@@ -99,7 +107,9 @@ test("mobile: drawer, navigasi aktif, dan logout", async ({ page }) => {
     .getByRole("dialog")
     .getByRole("button", { name: "Keluar", exact: true })
     .click();
-  await expect(page.getByRole("status")).toContainText("sudah keluar");
+  await expect(
+    page.getByRole("status").filter({ hasText: "sudah keluar" }),
+  ).toBeVisible();
   await expect(page).toHaveURL(/\/masuk$/);
 });
 test("tanpa sesi dan sesi peran lain tidak dapat membuka halaman CS", async ({

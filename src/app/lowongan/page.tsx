@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { ArrowUpRight, BriefcaseBusiness, MapPin } from "lucide-react";
 import { prosesCariLowongan } from "@/controllers/LowonganPekerjaanController";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -6,6 +7,7 @@ import { StatusBadge } from "@/components/ui/status-badge";
 import { SearchFilters } from "@/features/jobs/search-filters";
 import { formatRupiah, formatTanggal } from "@/lib/format";
 import { KATEGORI } from "@/lib/validation/common";
+import { CariLowonganQuery } from "@/lib/validation/lowongan";
 
 type SearchParams = Record<string, string | string[] | undefined>;
 
@@ -44,13 +46,16 @@ export default async function Lowongan({
   const requestedSort = firstValue(params.urut);
   const sort = requestedSort === "upah_tertinggi" ? requestedSort : "terbaru";
   const requestedPage = firstValue(params.page);
-  const result = await prosesCariLowongan({
+  const query = {
     q: keyword || undefined,
     kategori: category,
     upahMin: minimumWage || undefined,
     urut: sort,
     page: requestedPage || undefined,
-  });
+  };
+  // Parameter URL tidak valid (page=0, upahMin=abc, q > 100): kembali ke pencarian tanpa filter, bukan 500.
+  if (!CariLowonganQuery.safeParse(query).success) redirect("/lowongan");
+  const result = await prosesCariLowongan(query);
   const totalPages = Math.max(1, Math.ceil(result.total / result.pageSize));
   const firstItem = result.total ? (result.page - 1) * result.pageSize + 1 : 0;
   const lastItem = Math.min(result.page * result.pageSize, result.total);
@@ -88,8 +93,8 @@ export default async function Lowongan({
                 Hasil pencarian
               </h2>
               <p aria-live="polite" className="mt-1 text-sm text-muted-foreground">
-                {result.total === 0
-                  ? "0 lowongan"
+                {result.items.length === 0
+                  ? `0 lowongan${result.total ? " di halaman ini" : ""}`
                   : `Menampilkan ${firstItem}–${lastItem} dari ${result.total} lowongan`}
               </p>
             </div>
