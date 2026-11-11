@@ -33,6 +33,9 @@ Mode default adalah **mock** — tidak memerlukan kunci apa pun. Untuk menggunak
 PAYMENT_PROVIDER=midtrans
 MIDTRANS_SERVER_KEY=SB-Mid-server-xxxxxxxxxxxx
 MIDTRANS_IS_PRODUCTION=false
+MIDTRANS_IRIS_API_KEY=<API key Iris Creator sandbox, berbeda dari Server Key>
 ```
 
 > **Catatan:** Kunci Midtrans **tidak** boleh di-commit ke repositori git. File `.env.local` sudah ada di `.gitignore`. Jika `PAYMENT_PROVIDER` tidak diset atau diset ke `mock`, aplikasi tetap berjalan normal menggunakan simulator mock gateway.
+
+Sebelum memakai versi perbaikan ini, jalankan `npm run db:migrate` untuk tabel operasi gateway. Panduan konfigurasi webhook, approval Iris, format bank, rekonsiliasi timeout, dan batasan ada di [docs/midtrans.md](docs/midtrans.md).

@@ -174,7 +174,7 @@ Endpoint yang memakai gate `requireVerifiedTK` (→ 403 `NOT_VERIFIED`): `POST /
 | `POST /pencairan` | TK terverifikasi | Header `Idempotency-Key: <UUID>` wajib; `{ nominal (>= 10.000), rekeningTujuan }` | 201 `{ id, nominal, rekeningMasked, status, bisaCobaUlang }`; 202 jika hasil gateway belum pasti | 400 input/key tidak valid, 403 key bukan milik sendiri, 409 key dengan isian berbeda, 422 `SALDO_TIDAK_CUKUP` |
 | `POST /pencairan/:id/ulang` | TK terverifikasi pemilik | Tanpa body; gunakan ID pengajuan sebelumnya | 200 bentuk pencairan yang sama; 202 jika hasil masih belum pasti | 401, 403 bukan pemilik/belum terverifikasi, 404 |
 
-Format `rekeningTujuan`: `BANK:<10–16 digit>` atau `EWALLET:08<8–11 digit>` (lihat Pertanyaan terbuka). Ditampilkan sebagai `rekeningMasked` (`****1234`).
+Format `rekeningTujuan`: `BANK:<kode bank>:<10–16 digit>` (contoh `BANK:bca:1234567890`); format lama `BANK:<10–16 digit>` dan `EWALLET:08<8–11 digit>` tetap diterima untuk mock. Midtrans membutuhkan kode bank eksplisit dan belum mendukung e-wallet; konfigurasi/tujuan yang tidak didukung ditolak sebelum reservasi saldo. Ditampilkan sebagai `rekeningMasked` (`****1234`). Detail: [Midtrans](../midtrans.md).
 
 ### 3.7 Sengketa (Ridwan) — UC12, KF24–KF26, I-23, I-36, I-37
 

@@ -12,6 +12,7 @@ import { cariPencairanBerdasarkanId } from "@/models/PencairanDana";
 import { ambilInfoTransaksi } from "@/controllers/TagihanPembayaranController";
 import type { StatusTagihan } from "@/lib/validation/tagihan";
 import { NominalWebhook } from "@/lib/validation/payment";
+import { normalisasiMidtrans } from "@/lib/payment/midtrans-webhook";
 
 export interface WebhookResult {
   received: boolean;
@@ -26,15 +27,27 @@ export async function prosesNotifikasiWebhook(
 ): Promise<WebhookResult> {
   const adapter = getPaymentAdapter();
 
-  if (!signature || !adapter.verifikasiWebhook(rawBody, signature)) {
+  const midtrans =
+    (process.env.PAYMENT_PROVIDER ?? "mock").toLowerCase() === "midtrans";
+  if (
+    !midtrans &&
+    (!signature || !adapter.verifikasiWebhook(rawBody, signature))
+  ) {
     throw new AppError("UNAUTHORIZED", 401, "Signature webhook tidak valid");
   }
 
   let payload: Record<string, unknown>;
-  try {
-    payload = JSON.parse(rawBody) as Record<string, unknown>;
-  } catch {
-    throw new AppError("BAD_REQUEST", 400, "Payload JSON tidak valid");
+  if (midtrans) {
+    const notification = await normalisasiMidtrans(rawBody);
+    if (!notification)
+      return { received: true, ignored: true, status: "REFUND" };
+    payload = notification;
+  } else {
+    try {
+      payload = JSON.parse(rawBody) as Record<string, unknown>;
+    } catch {
+      throw new AppError("BAD_REQUEST", 400, "Payload JSON tidak valid");
+    }
   }
   if (!payload || typeof payload !== "object" || Array.isArray(payload))
     throw new AppError(

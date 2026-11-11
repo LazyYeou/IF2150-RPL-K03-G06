@@ -59,7 +59,7 @@ export const sidikRekening = (value: string) =>
 export function sanitasiLog(value: unknown): unknown {
   if (typeof value === "string")
     return value.replace(
-      /(?:BANK|EWALLET|BCA|BNI|BRI|MANDIRI|GOPAY|DANA):\d{8,20}/gi,
+      /(?:BANK(?::[a-z0-9_]{2,30})?|EWALLET|BCA|BNI|BRI|MANDIRI|GOPAY|DANA):\d{8,20}/gi,
       (r) => masker(r),
     );
   if (Array.isArray(value)) return value.map(sanitasiLog);

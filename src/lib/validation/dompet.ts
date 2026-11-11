@@ -28,7 +28,9 @@ export const DompetResponseSchema = z
   })
   .strict();
 
-export const RekeningTujuanRegex = /^(BANK:\d{10,16}|EWALLET:08\d{8,11})$/;
+// Bentuk lama tetap dibaca untuk mock/data lama; Midtrans wajib kode bank eksplisit.
+export const RekeningTujuanRegex =
+  /^(BANK:(?:[a-z0-9_]{2,30}:)?\d{10,16}|EWALLET:08\d{8,11})$/;
 
 export const PencairanInputSchema = z
   .object({
@@ -45,7 +47,7 @@ export const PencairanInputSchema = z
       })
       .regex(
         RekeningTujuanRegex,
-        "Format rekening tujuan harus BANK:<10-16 digit> atau EWALLET:08<8-11 digit>",
+        "Format rekening tujuan harus BANK:<kode bank>:<10-16 digit> atau EWALLET:08<8-11 digit>",
       ),
   })
   .strict();
