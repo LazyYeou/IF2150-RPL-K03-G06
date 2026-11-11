@@ -30,16 +30,22 @@ export async function midtransRequest(
       503,
       "Konfigurasi kunci gateway belum lengkap",
     );
-  const response = await fetch(url, {
-    ...init,
-    signal: AbortSignal.timeout(8000),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: `Basic ${Buffer.from(`${key}:`).toString("base64")}`,
-      ...init.headers,
-    },
-  });
+  let response: Response;
+  try {
+    response = await fetch(url, {
+      ...init,
+      signal: AbortSignal.timeout(8000),
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Basic ${Buffer.from(`${key}:`).toString("base64")}`,
+        ...init.headers,
+      },
+    });
+  } catch {
+    // Network/abort errors are uncertain, not evidence that money did not move.
+    return gatewayError();
+  }
   let data: Record<string, unknown>;
   try {
     data = await response.json();
@@ -57,4 +63,19 @@ export function rupiah(value: unknown): number {
   const result = Number(value);
   if (!Number.isSafeInteger(result) || result <= 0) return gatewayError();
   return result;
+}
+
+/** GET Iris payout detail uses `bank`; retain the earlier field as an alias.
+ * Reject contradictory fields instead of choosing a potentially wrong bank. */
+export function bankPayout(data: Record<string, unknown>): string {
+  const bank = data.bank ?? data.beneficiary_bank;
+  if (
+    typeof bank !== "string" ||
+    !bank ||
+    (data.bank !== undefined &&
+      data.beneficiary_bank !== undefined &&
+      data.bank !== data.beneficiary_bank)
+  )
+    return gatewayError();
+  return bank;
 }

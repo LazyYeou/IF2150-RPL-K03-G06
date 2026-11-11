@@ -33,6 +33,10 @@ Adapter memvalidasi rekening melalui `/account_validation`, menggunakan nama pem
 
 Tabel `operasi_midtrans` menyimpan sidik instruksi, klaim, hasil, dan referensi provider; tidak menyimpan rekening mentah. Retry dengan isi berbeda ditolak. Replay yang sudah diterima tidak membuat payout baru.
 
+Respons payout yang datang setelah lease berpindah tetap menyimpan `reference_no` dan log sebagai bukti instruksi yang sama, tanpa menimpa klaim/status worker baru. Worker yang kehilangan klaim mengembalikan `GATEWAY_UNCERTAIN`; retry berikutnya menggunakan GET detail atas referensi tersimpan, bukan POST payout kedua. Error fetch/abort/timeout juga dipetakan ke 502 `GATEWAY_UNCERTAIN` tanpa detail upstream. Tidak ada migrasi tambahan untuk perbaikan ini.
+
+GET detail Iris menggunakan field `bank` (sesuai model respons SDK resmi); `beneficiary_bank` tetap diterima sebagai alias kompatibilitas. Jika keduanya ada tetapi berbeda, respons ditolak. `amount` tetap divalidasi sebagai string IDR bulat positif. Status `BERHASIL` pada operasi `DISBURSEMENT` berarti **instruksi diterima**, sedangkan hasil transfer tetap berada pada `pencairan_dana`; queued/approved/processed tidak mendebit saldo.
+
 Jika respons POST payout hilang sebelum `reference_no` tersimpan, jangan membuat pengajuan pengganti atau POST ulang secara buta. Operasi tetap `BELUM_PASTI`, reservasi dipertahankan. Operator mencari payout di dashboard Iris menggunakan notes `kerjain:<idPencairan>`, lalu menjalankan:
 
 ```sh

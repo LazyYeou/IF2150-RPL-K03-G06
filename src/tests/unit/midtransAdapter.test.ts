@@ -40,6 +40,7 @@ beforeAll(async () => {
 });
 afterAll(() => fixture?.tutup());
 afterEach(() => {
+  vi.restoreAllMocks();
   vi.unstubAllGlobals();
   vi.unstubAllEnvs();
 });
@@ -144,7 +145,10 @@ describe("Midtrans: permintaan jaringan dan idempotensi durable", () => {
       .mockResolvedValueOnce(response(paymentStatus(p.idTagihan)))
       .mockRejectedValueOnce(new Error("timeout"));
     vi.stubGlobal("fetch", fetch);
-    await expect(g.refund(p)).rejects.toThrow("timeout");
+    await expect(g.refund(p)).rejects.toMatchObject({
+      code: "GATEWAY_UNCERTAIN",
+      status: 502,
+    });
     fetch.mockResolvedValueOnce(
       response(
         paymentStatus(p.idTagihan, {
@@ -229,7 +233,10 @@ describe("Midtrans: permintaan jaringan dan idempotensi durable", () => {
       )
       .mockRejectedValueOnce(new Error("timeout"));
     vi.stubGlobal("fetch", fetch);
-    await expect(g.disburse(p)).rejects.toThrow("timeout");
+    await expect(g.disburse(p)).rejects.toMatchObject({
+      code: "GATEWAY_UNCERTAIN",
+      status: 502,
+    });
     await expect(new Gateway().disburse(p)).rejects.toMatchObject({
       status: 502,
     });
@@ -260,7 +267,10 @@ describe("Midtrans: permintaan jaringan dan idempotensi durable", () => {
         ),
       );
     vi.stubGlobal("fetch", fetch);
-    await expect(g.disburse(p)).rejects.toThrow("validation timeout");
+    await expect(g.disburse(p)).rejects.toMatchObject({
+      code: "GATEWAY_UNCERTAIN",
+      status: 502,
+    });
     expect(await new Gateway().disburse(p)).toEqual({ status: "DITERIMA" });
     expect(
       fetch.mock.calls.filter((call) => call[1]?.method === "POST"),
@@ -338,5 +348,150 @@ describe("Midtrans: permintaan jaringan dan idempotensi durable", () => {
     expect(g.verifikasiWebhook(JSON.stringify(p), "a".repeat(128))).toBe(false);
     expect(g.verifikasiWebhook(JSON.stringify(p), "a".repeat(64))).toBe(false);
     expect(g.verifikasiWebhook("not json", signature)).toBe(false);
+  });
+  it("respons payout setelah lease diambil worker lain menyimpan referensi dan dapat direkonsiliasi tanpa POST ulang", async () => {
+    const g = gateway(),
+      p = payout(),
+      ref = `late-${p.idPencairan}`;
+    let now = Date.now();
+    vi.spyOn(Date, "now").mockImplementation(() => now);
+    const fetch = vi
+      .fn()
+      .mockImplementation(async (url: string, init: RequestInit) => {
+        if (init.method === "POST") {
+          now += 31000;
+          await expect(new Gateway().disburse(p)).rejects.toMatchObject({
+            code: "GATEWAY_UNCERTAIN",
+            status: 502,
+          });
+          return response(
+            { payouts: [{ reference_no: ref, status: "queued" }] },
+            201,
+          );
+        }
+        if (url.includes("/payouts/"))
+          return response({
+            reference_no: ref,
+            status: "queued",
+            amount: "50000.00",
+            bank: "bca",
+            beneficiary_account: "1234567890",
+          });
+        return response({ account_no: "1234567890", account_name: "Pemilik" });
+      });
+    vi.stubGlobal("fetch", fetch);
+    await expect(g.disburse(p)).rejects.toMatchObject({
+      code: "GATEWAY_UNCERTAIN",
+      status: 502,
+    });
+    expect(
+      fixture.db
+        .prepare(
+          "SELECT status,referensi_provider FROM operasi_midtrans WHERE kunci=?",
+        )
+        .get(p.idPencairan),
+    ).toEqual({ status: "BELUM_PASTI", referensi_provider: ref });
+    expect(await new Gateway().disburse(p)).toEqual({ status: "DITERIMA" });
+    expect(
+      fetch.mock.calls.filter((call) => call[1]?.method === "POST"),
+    ).toHaveLength(1);
+    expect(
+      fixture.db
+        .prepare(
+          "SELECT count(*) n FROM log_gateway WHERE jenis='DISBURSEMENT' AND referensi_id=?",
+        )
+        .get(p.idPencairan),
+    ).toEqual({ n: 1 });
+  });
+  it("worker lama menyimpan bukti payout tanpa menghapus klaim/status worker baru", async () => {
+    const g = gateway(),
+      p = payout(),
+      ref = `new-owner-${p.idPencairan}`;
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockImplementation(async (_url: string, init: RequestInit) => {
+        if (init.method !== "POST")
+          return response({
+            account_no: "1234567890",
+            account_name: "Pemilik",
+          });
+        fixture.db
+          .prepare(
+            "UPDATE operasi_midtrans SET klaim='new-owner',status='MENGIRIM',batas_klaim=? WHERE kunci=?",
+          )
+          .run(Date.now() + 30000, p.idPencairan);
+        return response(
+          { payouts: [{ reference_no: ref, status: "queued" }] },
+          201,
+        );
+      }),
+    );
+    await expect(g.disburse(p)).rejects.toMatchObject({
+      code: "GATEWAY_UNCERTAIN",
+      status: 502,
+    });
+    expect(
+      fixture.db
+        .prepare(
+          "SELECT status,klaim,referensi_provider FROM operasi_midtrans WHERE kunci=?",
+        )
+        .get(p.idPencairan),
+    ).toEqual({
+      status: "MENGIRIM",
+      klaim: "new-owner",
+      referensi_provider: ref,
+    });
+  });
+  it("respons terlambat tidak boleh mengganti referensi payout yang sudah tersimpan", async () => {
+    const g = gateway(),
+      p = payout();
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockImplementation(async (_url: string, init: RequestInit) => {
+        if (init.method !== "POST")
+          return response({
+            account_no: "1234567890",
+            account_name: "Pemilik",
+          });
+        fixture.db
+          .prepare(
+            "UPDATE operasi_midtrans SET referensi_provider=? WHERE kunci=?",
+          )
+          .run(`existing-${p.idPencairan}`, p.idPencairan);
+        return response(
+          {
+            payouts: [
+              { reference_no: `different-${p.idPencairan}`, status: "queued" },
+            ],
+          },
+          201,
+        );
+      }),
+    );
+    await expect(g.disburse(p)).rejects.toMatchObject({ status: 502 });
+    expect(
+      fixture.db
+        .prepare(
+          "SELECT referensi_provider ref FROM operasi_midtrans WHERE kunci=?",
+        )
+        .get(p.idPencairan),
+    ).toEqual({ ref: `existing-${p.idPencairan}` });
+  });
+  it("key refund berbeda untuk invoice sama ditolak 409 sebelum POST kedua", async () => {
+    const g = gateway(),
+      p = refund();
+    const fetch = vi
+      .fn()
+      .mockResolvedValueOnce(response(paymentStatus(p.idTagihan)))
+      .mockResolvedValueOnce(response(refundSuccess(p)));
+    vi.stubGlobal("fetch", fetch);
+    const first = g.refund(p);
+    await expect(
+      new Gateway().refund({ ...p, idempotencyKey: `refund:${randomUUID()}` }),
+    ).rejects.toMatchObject({ code: "IDEMPOTENCY_CONFLICT", status: 409 });
+    expect(await first).toEqual({ status: "BERHASIL" });
+    expect(
+      fetch.mock.calls.filter((call) => call[1]?.method === "POST"),
+    ).toHaveLength(1);
   });
 });
