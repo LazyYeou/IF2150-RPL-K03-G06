@@ -14,6 +14,7 @@ export const roleMenus = {
     { label: "Dashboard", href: "/tk", icon: "dashboard" },
     { label: "Lamaran saya", href: "/tk/lamaran", icon: "file" },
     { label: "Pekerjaan saya", href: "/tk/pekerjaan", icon: "briefcase" },
+    { label: "Verifikasi identitas", href: "/tk/verifikasi", icon: "shield" },
     { label: "Dompet", href: "/tk/dompet", icon: "wallet" },
     { label: "Profil saya", href: "/profil", icon: "user" },
   ],

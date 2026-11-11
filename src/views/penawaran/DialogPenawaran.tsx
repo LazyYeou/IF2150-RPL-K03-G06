@@ -183,10 +183,10 @@ export default function DialogPenawaran({
         <div className="rounded-lg bg-amber-50 p-3 text-sm text-amber-950">
           Identitas harus terverifikasi sebelum mengajukan penawaran.
           <Link
-            href="/profil"
+            href="/tk/verifikasi"
             className="mt-2 flex min-h-11 items-center font-semibold underline"
           >
-            Lihat profil dan status verifikasi
+            Verifikasi identitas
           </Link>
         </div>
       ) : (
@@ -224,8 +224,8 @@ export default function DialogPenawaran({
               </Link>
             )}
             {code === "NOT_VERIFIED" && (
-              <Link href="/profil" className="mt-2 block underline">
-                Lihat status verifikasi
+              <Link href="/tk/verifikasi" className="mt-2 block underline">
+                Verifikasi identitas
               </Link>
             )}
             {code === "PENAWARAN_GANDA" && (

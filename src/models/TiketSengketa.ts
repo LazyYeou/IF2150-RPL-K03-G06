@@ -3,6 +3,7 @@ import { randomInt, randomUUID } from "node:crypto";
 import { db, tx } from "@/lib/db";
 import { keIso } from "@/lib/http";
 import type { Tiket } from "@/lib/validation/sengketa";
+import { kreditUpahDalamTx } from "./TransaksiPekerjaan";
 import { transisiDiizinkan } from "./statusMachine";
 
 // C12, C13. UC12, KF24, KF26. Riwayat append-only (trigger 0002): hanya INSERT.
@@ -259,4 +260,121 @@ export function daftarCS(status: string | undefined, page: number) {
     .prepare(`SELECT COUNT(*) AS total FROM tiket_sengketa t WHERE ${where}`)
     .get(p) as { total: number };
   return { items, total, page, pageSize: UKURAN_HALAMAN };
+}
+
+export type HasilKeputusan =
+  { ok: true } | { ok: false; alasan: "TIDAK_ADA" | "STATUS_TIDAK_VALID" };
+
+type StatusTiket = Parameters<typeof transisiDiizinkan>[1];
+
+const statusTiket = (id: string) =>
+  (
+    db
+      .prepare(
+        "SELECT status_tiket AS s FROM tiket_sengketa WHERE id_tiket = ?",
+      )
+      .get(id) as { s: StatusTiket } | undefined
+  )?.s;
+
+const pulihkanPekerjaan = (idTiket: string) =>
+  db
+    .prepare(
+      `UPDATE transaksi_pekerjaan SET status_pekerjaan = status_sebelum_sengketa, status_sebelum_sengketa = NULL
+       WHERE status_pekerjaan = 'DISENGKETAKAN' AND status_sebelum_sengketa IS NOT NULL
+         AND id_transaksi = (SELECT id_transaksi FROM tiket_sengketa WHERE id_tiket = ?)`,
+    )
+    .run(idTiket);
+
+/** CS meminta bukti tambahan: DIAJUKAN/DITINJAU -> MENUNGGU_BALASAN. */
+export function mintaBukti(
+  idTiket: string,
+  idCS: string,
+  pesan: string,
+): HasilKeputusan {
+  return tx(() => {
+    const s = statusTiket(idTiket);
+    if (!s) return { ok: false, alasan: "TIDAK_ADA" } as const;
+    if (!transisiDiizinkan("tiket", s, "MENUNGGU_BALASAN"))
+      return { ok: false, alasan: "STATUS_TIDAK_VALID" } as const;
+    db.prepare(
+      "UPDATE tiket_sengketa SET status_tiket = 'MENUNGGU_BALASAN' WHERE id_tiket = ?",
+    ).run(idTiket);
+    catat(idTiket, idCS, `CS meminta bukti tambahan: ${pesan}`);
+    return { ok: true } as const;
+  });
+}
+
+/** CS menolak tiket: DIAJUKAN/DITINJAU -> DITOLAK; pekerjaan kembali ke status sebelum sengketa. */
+export function tolak(
+  idTiket: string,
+  idCS: string,
+  alasan: string,
+): HasilKeputusan {
+  return tx(() => {
+    const s = statusTiket(idTiket);
+    if (!s) return { ok: false, alasan: "TIDAK_ADA" } as const;
+    if (!transisiDiizinkan("tiket", s, "DITOLAK"))
+      return { ok: false, alasan: "STATUS_TIDAK_VALID" } as const;
+    db.prepare(
+      "UPDATE tiket_sengketa SET status_tiket = 'DITOLAK' WHERE id_tiket = ?",
+    ).run(idTiket);
+    pulihkanPekerjaan(idTiket);
+    catat(idTiket, idCS, `Tiket ditolak CS: ${alasan}`);
+    return { ok: true } as const;
+  });
+}
+
+/**
+ * Keputusan PENCAIRAN: pekerjaan DISENGKETAKAN -> COMPLETED, upah dikredit ke TK (idempoten via kunci operasi),
+ * tiket DIPROSES -> DITUTUP. Satu tx(); refund yang sudah berjalan menolak kredit (trigger 0004).
+ */
+export function cairkan(
+  idTiket: string,
+  idCS: string,
+  catatan: string,
+): HasilKeputusan {
+  return tx(() => {
+    const t = db
+      .prepare(
+        `SELECT t.status_tiket AS s, t.id_transaksi AS trx, x.status_pekerjaan AS pekerjaan,
+           EXISTS (SELECT 1 FROM operasi_refund WHERE id_tiket = t.id_tiket) AS refund
+         FROM tiket_sengketa t LEFT JOIN transaksi_pekerjaan x ON x.id_transaksi = t.id_transaksi
+         WHERE t.id_tiket = ?`,
+      )
+      .get(idTiket) as
+      | {
+          s: string;
+          trx: string | null;
+          pekerjaan: string | null;
+          refund: number;
+        }
+      | undefined;
+    if (!t) return { ok: false, alasan: "TIDAK_ADA" } as const;
+    if (
+      !t.trx ||
+      t.refund ||
+      t.pekerjaan !== "DISENGKETAKAN" ||
+      !transisiDiizinkan("pekerjaan", "DISENGKETAKAN", "COMPLETED") ||
+      !["DIAJUKAN", "MENUNGGU_BALASAN", "DITINJAU"].includes(t.s)
+    )
+      return { ok: false, alasan: "STATUS_TIDAK_VALID" } as const;
+    if (t.s !== "DITINJAU") {
+      db.prepare(
+        "UPDATE tiket_sengketa SET status_tiket = 'DITINJAU' WHERE id_tiket = ?",
+      ).run(idTiket);
+      catat(idTiket, idCS, "Tiket ditinjau CS sebelum keputusan pencairan");
+    }
+    db.prepare(
+      "UPDATE tiket_sengketa SET status_tiket = 'DIPROSES', keputusan = 'PENCAIRAN' WHERE id_tiket = ?",
+    ).run(idTiket);
+    db.prepare(
+      "UPDATE transaksi_pekerjaan SET status_pekerjaan = 'COMPLETED', status_sebelum_sengketa = NULL WHERE id_transaksi = ?",
+    ).run(t.trx);
+    kreditUpahDalamTx(db, t.trx);
+    db.prepare(
+      "UPDATE tiket_sengketa SET status_tiket = 'DITUTUP' WHERE id_tiket = ?",
+    ).run(idTiket);
+    catat(idTiket, idCS, `Keputusan PENCAIRAN, upah dikreditkan: ${catatan}`);
+    return { ok: true } as const;
+  });
 }
