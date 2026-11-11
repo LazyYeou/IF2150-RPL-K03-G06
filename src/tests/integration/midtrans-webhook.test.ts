@@ -222,7 +222,7 @@ describe("Endpoint webhook Midtrans: payload native dan status gateway", () => {
         reference_no: ref,
         status: "completed",
         amount: "10000.00",
-        beneficiary_bank: "bca",
+        bank: "bca",
         beneficiary_account: "1234567890",
       }),
     );
@@ -245,6 +245,119 @@ describe("Endpoint webhook Midtrans: payload native dan status gateway", () => {
       ).status,
     ).toBe("BERHASIL");
     expect((await send({ reference_no: "unknown" })).status).toBe(404);
+  });
+  it.each(["queued", "approved", "processed"])(
+    "payout %s tetap pending tanpa debit saldo",
+    async (status) => {
+      const id = randomUUID(),
+        ref = `pending-${id}`;
+      fixture.db
+        .prepare(
+          "INSERT INTO pencairan_dana(id_pencairan,id_tenaga_kerja,nominal,rekening_tujuan,status_pencairan) VALUES (?,?,10000,'BANK:bca:1234567890','DIPROSES')",
+        )
+        .run(id, tk);
+      fixture.db
+        .prepare(
+          "INSERT INTO operasi_midtrans(jenis,kunci,referensi_id,sidik,status,referensi_provider) VALUES ('DISBURSEMENT',?,?,?,'BERHASIL',?)",
+        )
+        .run(id, id, "pending-fixture", ref);
+      const before = one<{ saldo: number }>(
+        "SELECT saldo_pendapatan saldo FROM tenaga_kerja WHERE id_tenaga_kerja=?",
+        tk,
+      ).saldo;
+      vi.stubGlobal(
+        "fetch",
+        vi
+          .fn()
+          .mockResolvedValue(
+            reply({
+              reference_no: ref,
+              status,
+              amount: "10000.00",
+              bank: "bca",
+              beneficiary_account: "1234567890",
+            }),
+          ),
+      );
+      expect(
+        await (await send({ reference_no: ref, status: "completed" })).json(),
+      ).toMatchObject({ status: "DIPROSES" });
+      expect(
+        one<{ status: string }>(
+          "SELECT status_pencairan status FROM pencairan_dana WHERE id_pencairan=?",
+          id,
+        ).status,
+      ).toBe("DIPROSES");
+      expect(
+        one<{ saldo: number }>(
+          "SELECT saldo_pendapatan saldo FROM tenaga_kerja WHERE id_tenaga_kerja=?",
+          tk,
+        ).saldo,
+      ).toBe(before);
+      expect(
+        one<{ n: number }>(
+          "SELECT count(*) n FROM mutasi_saldo WHERE kunci_operasi=?",
+          `cair:${id}`,
+        ).n,
+      ).toBe(0);
+    },
+  );
+  it("bank detail Iris yang berbeda ditolak tanpa menyelesaikan pencairan", async () => {
+    const id = randomUUID(),
+      ref = `bank-mismatch-${id}`;
+    fixture.db
+      .prepare(
+        "INSERT INTO pencairan_dana(id_pencairan,id_tenaga_kerja,nominal,rekening_tujuan,status_pencairan) VALUES (?,?,10000,'BANK:bca:1234567890','DIPROSES')",
+      )
+      .run(id, tk);
+    fixture.db
+      .prepare(
+        "INSERT INTO operasi_midtrans(jenis,kunci,referensi_id,sidik,status,referensi_provider) VALUES ('DISBURSEMENT',?,?,?,'BERHASIL',?)",
+      )
+      .run(id, id, "bank-fixture", ref);
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValue(
+          reply({
+            reference_no: ref,
+            status: "completed",
+            amount: "10000.00",
+            bank: "bni",
+            beneficiary_account: "1234567890",
+          }),
+        ),
+    );
+    expect((await send({ reference_no: ref })).status).toBe(502);
+    expect(
+      one<{ status: string }>(
+        "SELECT status_pencairan status FROM pencairan_dana WHERE id_pencairan=?",
+        id,
+      ).status,
+    ).toBe("DIPROSES");
+    expect(
+      one<{ n: number }>(
+        "SELECT count(*) n FROM mutasi_saldo WHERE kunci_operasi=?",
+        `cair:${id}`,
+      ).n,
+    ).toBe(0);
+  });
+  it("kegagalan jaringan pada webhook menjadi 502 GATEWAY_UNCERTAIN tanpa membocorkan detail", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockRejectedValue(
+          new TypeError("sensitive upstream connection details"),
+        ),
+    );
+    const res = await send(payload());
+    expect(res.status).toBe(502);
+    const body = await res.json();
+    expect(body).toMatchObject({ error: { code: "GATEWAY_UNCERTAIN" } });
+    expect(JSON.stringify(body)).not.toContain("sensitive upstream");
+    expect(snapshot()).toBe("DIPROSES");
   });
   it("refund pending tidak menutup sengketa; retry rekonsiliasi finalisasi sekali", async () => {
     const ticket = randomUUID();
@@ -334,7 +447,7 @@ describe("Endpoint webhook Midtrans: payload native dan status gateway", () => {
       reference_no: ref,
       status: "queued",
       amount: "10000.00",
-      beneficiary_bank: "bca",
+      bank: "bca",
       beneficiary_account: "1234567890",
       notes: `kerjain:${id}`,
     };
@@ -383,7 +496,7 @@ describe("Endpoint webhook Midtrans: payload native dan status gateway", () => {
       reference_no: ref,
       status: "queued",
       amount: "10000.00",
-      beneficiary_bank: "bca",
+      bank: "bca",
       beneficiary_account: "1234567890",
       notes: `kerjain:${id}`,
     };

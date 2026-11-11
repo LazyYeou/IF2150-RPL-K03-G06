@@ -16,6 +16,7 @@ import {
   gatewayError,
   midtransRequest,
   rupiah,
+  bankPayout,
 } from "./midtrans-http";
 
 type Operation = {
@@ -90,15 +91,30 @@ function claim(
   });
 }
 
-function finish(
-  row: Operation,
-  token: string,
-  status: string,
-  reference?: string,
-) {
-  db.prepare(
-    "UPDATE operasi_midtrans SET status = ?, referensi_provider = COALESCE(?,referensi_provider), klaim = NULL, batas_klaim = 0 WHERE jenis = ? AND kunci = ? AND klaim = ?",
-  ).run(status, reference ?? null, row.jenis, row.kunci, token);
+function finish(row: Operation, token: string, status: string) {
+  return (
+    db
+      .prepare(
+        "UPDATE operasi_midtrans SET status = ?, klaim = NULL, batas_klaim = 0 WHERE jenis = ? AND kunci = ? AND klaim = ?",
+      )
+      .run(status, row.jenis, row.kunci, token).changes === 1
+  );
+}
+
+function finishOwned(row: Operation, token: string, status: string) {
+  if (!finish(row, token, status)) return gatewayError();
+}
+
+/** A delayed response is evidence for this immutable instruction, even when its
+ * worker no longer owns the lease. Save only the reference, never a new worker's
+ * status/claim. Lease ownership is still required to report a final result. */
+function rememberPayoutReference(row: Operation, reference: string) {
+  const saved = db
+    .prepare(
+      "UPDATE operasi_midtrans SET referensi_provider = ? WHERE jenis = 'DISBURSEMENT' AND kunci = ? AND sidik = ? AND (referensi_provider IS NULL OR referensi_provider = ?)",
+    )
+    .run(reference, row.kunci, row.sidik, reference);
+  if (saved.changes !== 1) return gatewayError();
 }
 
 export class MidtransPaymentGateway implements PaymentGatewayAdapter {
@@ -174,11 +190,11 @@ export class MidtransPaymentGateway implements PaymentGatewayAdapter {
           detail.data.reference_no !== row.referensi_provider ||
           rupiah(detail.data.amount) !== p.nominal ||
           detail.data.beneficiary_account !== account ||
-          detail.data.beneficiary_bank !== bank
+          bankPayout(detail.data) !== bank
         )
           return gatewayError();
         if (["failed", "rejected"].includes(String(detail.data.status))) {
-          finish(row, token, "GAGAL");
+          finishOwned(row, token, "GAGAL");
           return { status: "GAGAL" };
         }
         if (
@@ -187,7 +203,7 @@ export class MidtransPaymentGateway implements PaymentGatewayAdapter {
           )
         )
           return gatewayError();
-        finish(row, token, "BERHASIL");
+        finishOwned(row, token, "BERHASIL");
         return { status: "DITERIMA" };
       }
       const validation = await midtransRequest(
@@ -200,7 +216,7 @@ export class MidtransPaymentGateway implements PaymentGatewayAdapter {
         typeof validation.data.account_name !== "string" ||
         !validation.data.account_name.trim()
       ) {
-        finish(row, token, "GAGAL");
+        finishOwned(row, token, "GAGAL");
         return { status: "GAGAL" };
       }
       // Jaringan di luar tx. Nama pemilik berasal dari validasi bank, bukan placeholder.
@@ -240,19 +256,10 @@ export class MidtransPaymentGateway implements PaymentGatewayAdapter {
         !payout.reference_no
       )
         return gatewayError();
-      if (["failed", "rejected"].includes(payout.status)) {
-        finish(row, token, "GAGAL", payout.reference_no);
-        return { status: "GAGAL" };
-      }
-      // Sebagian respons create Iris hanya memuat reference_no, tanpa status.
-      if (
-        payout.status !== undefined &&
-        !["queued", "approved", "processed", "completed"].includes(
-          payout.status,
-        )
-      )
-        return gatewayError();
+      // Persist outside the lease-owned finalization transaction. If a newer
+      // worker took over, rolling back that finalization must not lose the ref.
       tx(() => {
+        rememberPayoutReference(row, payout.reference_no);
         catatLog(
           "DISBURSEMENT",
           p.idPencairan,
@@ -264,8 +271,20 @@ export class MidtransPaymentGateway implements PaymentGatewayAdapter {
           },
           "MIDTRANS",
         );
-        finish(row, token, "BERHASIL", payout.reference_no);
       });
+      if (["failed", "rejected"].includes(payout.status)) {
+        finishOwned(row, token, "GAGAL");
+        return { status: "GAGAL" };
+      }
+      // Sebagian respons create Iris hanya memuat reference_no, tanpa status.
+      if (
+        payout.status !== undefined &&
+        !["queued", "approved", "processed", "completed"].includes(
+          payout.status,
+        )
+      )
+        return gatewayError();
+      finishOwned(row, token, "BERHASIL");
       // DITERIMA berarti instruksi dibuat di Iris. Approval mengikuti dashboard Iris;
       // saldo baru didebit setelah status akhir diverifikasi lewat GET payout detail.
       return { status: "DITERIMA" };
@@ -357,7 +376,7 @@ export class MidtransPaymentGateway implements PaymentGatewayAdapter {
             { idTagihan: p.idTagihan, nominal: p.nominal, idempotencyKey: key },
             "MIDTRANS",
           );
-          finish(row, token, "BERHASIL");
+          finishOwned(row, token, "BERHASIL");
         });
       return { status: "BERHASIL" };
     } catch (error) {

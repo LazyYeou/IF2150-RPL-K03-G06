@@ -9,6 +9,7 @@ import {
   gatewayError,
   midtransRequest,
   rupiah,
+  bankPayout,
 } from "./midtrans-http";
 
 type Notification = {
@@ -52,7 +53,7 @@ export async function normalisasiMidtrans(
       !payout ||
       data.reference_no !== payload.reference_no ||
       payout.rekeningTujuan !==
-        `BANK:${data.beneficiary_bank}:${data.beneficiary_account}` ||
+        `BANK:${bankPayout(data)}:${data.beneficiary_account}` ||
       rupiah(data.amount) !== payout.nominal
     )
       return gatewayError();

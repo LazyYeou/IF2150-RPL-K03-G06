@@ -1,6 +1,11 @@
 import { db, tx } from "../lib/db";
 import { cariPencairanBerdasarkanId } from "../models/PencairanDana";
-import { irisUrl, midtransRequest, rupiah } from "../lib/payment/midtrans-http";
+import {
+  irisUrl,
+  midtransRequest,
+  rupiah,
+  bankPayout,
+} from "../lib/payment/midtrans-http";
 import { AppError } from "../lib/errors";
 
 /** Operator mengambil reference_no dari dashboard Iris, lalu CLI memverifikasinya
@@ -17,7 +22,7 @@ export async function rekonsiliasiPayout(id: string, reference: string) {
     data.reference_no !== reference ||
     rupiah(data.amount) !== payout.nominal ||
     payout.rekeningTujuan !==
-      `BANK:${data.beneficiary_bank}:${data.beneficiary_account}` ||
+      `BANK:${bankPayout(data)}:${data.beneficiary_account}` ||
     data.notes !== `kerjain:${id}`
   )
     throw new AppError(
