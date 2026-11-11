@@ -77,3 +77,18 @@ test("wizard pasang lowongan: Lanjutkan di langkah 3 membuka Tinjau, tidak langs
   await page.waitForTimeout(500);
   expect(posts).toHaveLength(0);
 });
+
+test("kartu ringkasan detail lowongan PK berlatar terang, bukan warna teks", async ({
+  page,
+}) => {
+  await page.request.post("/api/auth/login", {
+    data: { email: "pk1@kerjain.test", password: "Password123!" },
+  });
+  const saya = await page.request.get("/api/lowongan/saya");
+  const { id } = (await saya.json()).items[0];
+  await page.goto(`/pk/lowongan/${id}`);
+  const kartu = page.locator(".managed-job-summary");
+  await expect(kartu).toBeVisible();
+  // --muted di scope halaman berarti warna teks (#60748e); latar harus --surface-muted (#f6f8fb)
+  await expect(kartu).toHaveCSS("background-color", "rgb(246, 248, 251)");
+});
