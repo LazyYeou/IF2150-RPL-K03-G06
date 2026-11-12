@@ -20,7 +20,8 @@
     "db:reset": "tsx scripts/reset-db.ts",
     "predev": "tsx scripts/reset-db.ts --if-missing",
     "db:seed-besar": "tsx scripts/seed-besar.ts",
-    "db:profil-cari": "node --conditions=react-server --import tsx scripts/profil-pencarian.ts"
+    "db:profil-cari": "node --conditions=react-server --import tsx scripts/profil-pencarian.ts",
+    "db:seed-demo": "node --conditions=react-server --import tsx scripts/seed-demo.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
