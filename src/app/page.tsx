@@ -11,6 +11,9 @@ import { StatusBadge } from "@/components/ui/status-badge";
 import { KATEGORI } from "@/lib/validation/common";
 import { formatRupiah, formatTanggal } from "@/lib/format";
 
+// Beranda membaca DB: tanpa ini Next membuatnya statis saat build (DB kosong -> "no such table", data basi)
+export const dynamic = "force-dynamic";
+
 function CategoryMark({ category }: { category: string }) {
   const common = {
     fill: "none",

@@ -1,0 +1,10 @@
+node_modules
+.next
+.env*
+!.env.example
+data
+storage
+test-results
+tests
+.husky
+*.tsbuildinfo
