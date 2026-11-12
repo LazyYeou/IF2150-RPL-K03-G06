@@ -1,5 +1,5 @@
 import "server-only";
-import { requireRole } from "@/lib/auth/guards";
+import { requireVerifiedTK } from "@/lib/auth/guards";
 import { AppError } from "@/lib/errors";
 import { Id } from "@/lib/validation/common";
 import { UnggahBuktiPekerjaanInput } from "@/lib/validation/transaksi";
@@ -11,7 +11,7 @@ export async function prosesUnggahBuktiPekerjaan(
   rawId: string,
   form: FormData,
 ) {
-  const user = await requireRole("TK");
+  const user = await requireVerifiedTK(); // KF06 -> 403 NOT_VERIFIED
   const id = Id.safeParse(rawId);
   if (!id.success)
     throw new AppError("NOT_FOUND", 404, "Transaksi tidak ditemukan");
