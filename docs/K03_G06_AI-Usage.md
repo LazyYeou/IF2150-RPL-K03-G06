@@ -80,6 +80,11 @@ Silakan catat penggunaan AI yang berdampak signifikan pada pengerjaan tugas (mis
 | *Gemini* | *Brainstorming kerangka dan masukan color pallete untuk software berikut* | *Tolong berikan saran layout dan color pallete mengenai software berikut* | *AI memberikan beberapa alternatif layout utama dan color pallete yang cocok* |
 | | | | | |
 
+### Milestone 9
+| Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
+| :--- | :--- | :--- | :--- |
+| *Gemini* | *Mencari saran implementasi desain UI/UX, rekomendasi ikon fitur utama, serta penyusunan struktur antarmuka yang responsif*  | *[Melampirkan screenshot desain Figma] Tolong berikan saran implementasi kode front-end untuk desain UI/UX ini beserta rekomendasi ikon yang tepat untuk fitur utamanya agar tampilan tetap responsif dan ramah pengguna* | *Menyesuaikan kode tata letak dengan desain Figma, memilih aset ikon yang paling relevan dan konsisten secara visual*
+
 ---
 ### Pernyataan Integritas dan Persetujuan
 
