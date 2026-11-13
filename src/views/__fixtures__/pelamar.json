@@ -1,0 +1,32 @@
+{
+  "lowongan": {
+    "id": "aaaaaaaa-0000-4000-8000-000000000001",
+    "judul": "Bersih-bersih rumah pindahan 2 lantai",
+    "kategori": "Kebersihan",
+    "lokasi": "Coblong, Bandung",
+    "tanggalPekerjaan": "2026-11-12",
+    "upah": 350000,
+    "satuanUpah": "PER_TUGAS",
+    "kuota": 2,
+    "jumlahDiterima": 0,
+    "status": "OPEN",
+    "createdAt": "2026-11-05T03:00:00Z"
+  },
+  "sisaKuota": 2,
+  "items": [
+    {
+      "idPenawaran": "cccccccc-0000-4000-8000-000000000001",
+      "tenagaKerja": {
+        "id": "dddddddd-0000-4000-8000-000000000001",
+        "nama": "Siti Aminah",
+        "akumulasiRating": 4.8,
+        "jumlahUlasan": 9
+      },
+      "hargaPenawaran": 330000,
+      "ketersediaan": "Kamis pagi, sore",
+      "pesan": "Siap membawa alat sendiri.",
+      "status": "MENUNGGU",
+      "createdAt": "2026-11-05T05:00:00Z"
+    }
+  ]
+}

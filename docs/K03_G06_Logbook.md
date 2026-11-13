@@ -33,6 +33,7 @@
     - [Milestone 6](#milestone-6)
     - [Milestone 7](#milestone-7)
     - [Milestone 8](#milestone-8)
+    - [Milestone 9](#milestone-9)
 
 
 ---
@@ -150,5 +151,74 @@ Diagram 4.3 | 2 | Done | - |
 
 ---
 
+
+### Milestone 9
+**Periode catatan:** 28 Oktober 2026 - 13 November 2026
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam, estimasi) | Status | Kendala / *Blocker* |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| 05-11-2026 | Muhammad Ridwan Nasir Firdaus | Menginisialisasi proyek Next.js, struktur folder, tooling, CI, serta templat issue dan pull request ([#3](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/3)) | 3 | Done | - |
+| 06-11-2026 | Muhammad Ridwan Nasir Firdaus<br>Davin Farel Santoso | Menyusun dan mereview skema SQLite, indeks dan trigger append-only, runner migrasi, serta seed akun dan data uji ([#4](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/4)) | 1<br>4 | Done | - |
+| 06-11-2026 | Muhammad Ridwan Nasir Firdaus<br>Davin Farel Santoso | Menyiapkan dan mereview koneksi DB, hash password, sesi, guard otorisasi, middleware, dan pemeriksaan Origin ([#5](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/5)) | 1<br>3 | Done | - |
+| 06-11-2026 | Davin Farel Santoso | Mengimplementasikan registrasi, validasi usia dan privasi, login, logout, cookie sesi, dan pembatasan percobaan autentikasi ([#8](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/8)) | 4 | Done | - |
+| 06-11-2026 | Davin Farel Santoso | Mengimplementasikan lupa dan reset kata sandi dengan token sekali pakai, batas waktu, serta penghapusan sesi lama ([#9](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/9)) | 2 | Done | - |
+| 07-11-2026 | Sebastio Nugroho | Mengimplementasikan state machine transisi status, label UI Indonesia, serta unit test transisi valid dan ilegal ([#17](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/17)) | 2 | Done | - |
+| 07-11-2026 | Davin Farel Santoso | Mengimplementasikan layout publik dan per peran, navbar/sidebar responsif, kerangka dashboard, serta komponen UI bersama ([#19](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/19)) | 5 | Done | - |
+| 07-11-2026 | Davin Farel Santoso | Mengimplementasikan API dan halaman profil, status verifikasi/rating, kebijakan privasi, syarat dan ketentuan, serta halaman 404 ([#27](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/27)) | 3 | Done | - |
+| 07-11-2026 | Davin Farel Santoso | Mengimplementasikan model, controller dan API notifikasi, pemeriksaan kepemilikan, lonceng, jumlah belum dibaca, serta polling ([#28](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/28)) | 2.5 | Done | - |
+| 08-11-2026 | Muhammad Ridwan Nasir Firdaus | Mengimplementasikan penyimpanan berkas lokal, validasi MIME dan magic bytes, enkripsi identitas, serta unduhan terotorisasi ([#10](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/10)) | 3 | Done | - |
+| 08-11-2026 | Muhammad Ridwan Nasir Firdaus | Mengimplementasikan API pembuatan lowongan, daftar lowongan PK, pencarian, filter, paginasi, dan detail lowongan ([#11](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/11)) | 3 | Done | - |
+| 08-11-2026 | Muhammad Ridwan Nasir Firdaus | Mengimplementasikan API unggah dokumen identitas terenkripsi, pengajuan ulang, dan status verifikasi TK ([#12](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/12)) | 2 | Done | - |
+| 08-11-2026 | Sebastio Nugroho | Mengimplementasikan API dan halaman detail transaksi TK/PK, otorisasi peserta/CS, daftar pekerjaan, serta timeline status ([#18](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/18)) | 4 | Done | - |
+| 08-11-2026 | Muhammad Ridwan Nasir Firdaus | Mengimplementasikan antrean verifikasi CS, pembacaan dokumen, persetujuan/penolakan, serta gate fitur bagi TK terverifikasi ([#20](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/20)) | 3 | Done | - |
+| 08-11-2026 | Muhammad Ridwan Nasir Firdaus | Mengimplementasikan API pengajuan dan penarikan penawaran, daftar lamaran milik sendiri, validasi duplikat, serta notifikasi PK ([#21](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/21)) | 2.5 | Done | - |
+| 08-11-2026 | Muhammad Ridwan Nasir Firdaus | Mengimplementasikan API daftar dan pemilihan pelamar secara transaksional, pengendalian kuota, pembuatan transaksi, serta notifikasi TK ([#22](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/22)) | 3 | Done | - |
+| 08-11-2026 | Davin Farel Santoso | Menulis unit test batas usia dan tahun kabisat, serta integrasi registrasi, login/logout, sesi kedaluwarsa, dan reset sandi ([#40](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/40)) | 3 | Done | - |
+| 09-11-2026 | Sebastio Nugroho | Mengimplementasikan form dan API bukti pekerjaan, kompresi gambar, penyimpanan berkas, perubahan status SUBMITTED, serta notifikasi PK ([#26](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/26)) | 3 | Done | - |
+| 09-11-2026 | Sebastio Nugroho | Mengimplementasikan persetujuan hasil kerja, kredit upah idempoten, permintaan revisi, dan notifikasi perubahan status ([#35](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/35)) | 3 | Done | - |
+| 09-11-2026 | Sebastio Nugroho | Mengimplementasikan rating dan ulasan setelah pekerjaan selesai, pencegahan ulasan ganda, serta pembaruan rata-rata rating ([#36](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/36)) | 2.5 | Done | - |
+| 09-11-2026 | Davin Farel Santoso | Memperbaiki respons dan tampilan bukti pekerjaan pada detail TK/PK, otorisasi berkas, batas deskripsi, serta kompresi unggahan ([#79](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/79)) | 2.5 | Done | - |
+| 09-11-2026 | Davin Farel Santoso | Memperbaiki penanganan akses terlarang/tanpa sesi pada detail transaksi dan menambahkan pengujian akses melalui halaman ([#80](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/80)) | 1.5 | Done | - |
+| 09-11-2026 | Davin Farel Santoso | Menyelaraskan transisi status dengan kontrak, memperbaiki timeline sengketa/pembatalan, serta menambahkan paginasi dan filter transaksi ([#81](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/81)) | 3 | Done | - |
+| 10-11-2026 | Muhammad Ridwan Nasir Firdaus<br>Sebastio Nugroho<br>Aditya Rasyid<br>Karmel Tua Haloho<br>Davin Farel Santoso | Memverifikasi setup lokal: clone repository, instalasi dependensi, konfigurasi environment, reset DB, dan menjalankan aplikasi ([#6](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/6)) | 1.5<br>1.5<br>1.5<br>1.5<br>1.5 | Done | - |
+| 10-11-2026 | Aditya Rasyid | Mengimplementasikan UI beranda, katalog, pencarian dan detail lowongan, filter URL, empty state, serta tampilan responsif ([#13](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/13)) | 4 | Done | - |
+| 10-11-2026 | Aditya Rasyid | Mengimplementasikan halaman verifikasi identitas, status pengajuan, validasi unggahan, dan pembatasan fitur TK di UI ([#14](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/14)) | 2.5 | Done | - |
+| 10-11-2026 | Karmel Tua Haloho | Mengimplementasikan interface adapter pembayaran, mock gateway, penandatanganan webhook HMAC, dan model log gateway ([#15](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/15)) | 2.5 | Done | - |
+| 10-11-2026 | Karmel Tua Haloho | Mengimplementasikan pembuatan tagihan idempoten dan halaman invoice dengan rincian upah, biaya layanan, total, serta batas pembayaran ([#16](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/16)) | 3 | Done | - |
+| 10-11-2026 | Aditya Rasyid | Mengimplementasikan wizard pasang pekerjaan, validasi tiap langkah, pernyataan risiko, tinjau/terbitkan, dan daftar lowongan PK ([#23](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/23)) | 4 | Done | - |
+| 10-11-2026 | Aditya Rasyid | Mengimplementasikan dialog pengajuan/tinjau penawaran, daftar lamaran, konfirmasi penarikan, dan penanganan fokus keyboard ([#24](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/24)) | 3 | Done | - |
+| 10-11-2026 | Karmel Tua Haloho | Mengimplementasikan pembayaran tagihan, simulator mock gateway, webhook HMAC, perubahan status pekerjaan, dan idempotensi callback ([#25](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/25)) | 3.5 | Done | - |
+| 10-11-2026 | Muhammad Ridwan Nasir Firdaus | Mengimplementasikan API pembuatan tiket sengketa, unggah bukti, pembatalan, daftar/detail tiket, serta riwayat penanganan ([#29](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/29)) | 3.5 | Done | - |
+| 10-11-2026 | Aditya Rasyid | Mengimplementasikan UI daftar pelamar dan dialog konfirmasi pemilihan TK dengan penanganan kuota dan respons API ([#30](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/30)) | 2.5 | Done | - |
+| 10-11-2026 | Aditya Rasyid | Mengimplementasikan dashboard CS untuk antrean verifikasi, pemeriksaan dokumen, serta persetujuan dan penolakan ([#31](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/31)) | 2.5 | Done | - |
+| 10-11-2026 | Karmel Tua Haloho | Mengimplementasikan penanganan tagihan kedaluwarsa dan pembuatan tagihan baru untuk pembayaran ulang ([#32](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/32)) | 1.5 | Done | - |
+| 10-11-2026 | Karmel Tua Haloho | Mengimplementasikan halaman dompet TK, saldo tersedia, dan riwayat mutasi saldo ([#33](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/33)) | 2 | Done | - |
+| 10-11-2026 | Karmel Tua Haloho | Mengimplementasikan pengajuan pencairan, validasi rekening dan saldo, reservasi dana, serta webhook disbursement ([#34](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/34)) | 4 | Done | - |
+| 10-11-2026 | Aditya Rasyid | Mengimplementasikan UI pusat bantuan, form keluhan, daftar/detail tiket CS, dan timeline riwayat sengketa ([#37](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/37)) | 4 | Done | - |
+| 10-11-2026 | Karmel Tua Haloho | Mengimplementasikan refund tagihan untuk keputusan sengketa melalui adapter gateway dengan idempotency key ([#38](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/38)) | 2.5 | Done | - |
+| 10-11-2026 | Karmel Tua Haloho | Menulis pengujian integrasi pembayaran dan saldo, termasuk callback, nominal, pencairan, refund, dan idempotensi ([#42](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/42)) | 3 | Done | - |
+| 10-11-2026 | Sebastio Nugroho | Menulis alur happy path Playwright dan mengintegrasikan pengujian browser ke CI ([#43](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/43)) | 4 | Done | - |
+| 10-11-2026 | Davin Farel Santoso | Mengamankan trigger mock gateway dengan autentikasi/kepemilikan serta mewajibkan nominal webhook yang valid dan sesuai DB ([#93](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/93)) | 1.5 | Done | - |
+| 10-11-2026 | Davin Farel Santoso | Memperbaiki kegagalan gateway, reservasi saldo, serta rekonsiliasi dan retry pencairan menggunakan ID yang sama ([#94](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/94)) | 3 | Done | - |
+| 10-11-2026 | Davin Farel Santoso | Memvalidasi prasyarat refund sengketa dan otorisasi CS, mencegah konflik keputusan, serta menjaga konsistensi status dan idempotensi ([#95](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/95)) | 3 | Done | - |
+| 10-11-2026 | Davin Farel Santoso | Memperbaiki fokus, navigasi Tab/Shift+Tab, Escape, pengembalian fokus, serta target sentuh dialog pencairan ([#96](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/96)) | 1.5 | Done | - |
+| 10-11-2026 | Davin Farel Santoso | Menyinkronkan kontrak filter transaksi dan respons bukti, persetujuan, revisi, serta ulasan dengan implementasi ([#97](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/97)) | 1 | Done | - |
+| 10-11-2026 | Davin Farel Santoso | Menyelaraskan perlindungan rekening dengan KNF17 melalui enkripsi penyimpanan, sanitasi log, masking respons, dan migrasi data lama ([#98](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/98)) | 3 | Done | - |
+| 10-11-2026 | Davin Farel Santoso | Mengintegrasikan UI penawaran dengan API/database di src, menghapus ketergantungan localStorage, serta mempertahankan sesi, layout, dan notifikasi ([#101](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/101)) | 4 | Done | - |
+| 11-11-2026 | Muhammad Ridwan Nasir Firdaus | Menyusun kontrak API, skema validasi Zod, dan fixture domain lowongan, penawaran, verifikasi, serta sengketa ([#7](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/7)) | 2.5 | Done | - |
+| 11-11-2026 | Muhammad Ridwan Nasir Firdaus | Mengimplementasikan keputusan CS untuk refund/pencairan, permintaan bukti tambahan, penolakan tiket, dan riwayat keputusan ([#39](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/39)) | 4 | Done | - |
+| 11-11-2026 | Aditya Rasyid | Melakukan pengujian komponen form dan audit Lighthouse pada tampilan mobile ([#44](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/44)) | 2.5 | Done | - |
+| 11-11-2026 | Muhammad Ridwan Nasir Firdaus | Melakukan profiling pencarian 20.000 lowongan dan mengoptimalkan pencarian menggunakan indeks FTS5 trigram ([#45](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/45)) | 3 | Done | - |
+| 11-11-2026 | Muhammad Ridwan Nasir Firdaus<br>Aditya Rasyid | Mengembangkan fitur lowongan tersimpan: API simpan/hapus/daftar, tombol simpan, dan filter lowongan tersimpan (Could) ([#51](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/51)) | 2<br>1 | In Progress | - |
+| 11-11-2026 | Muhammad Ridwan Nasir Firdaus<br>Aditya Rasyid | Mengembangkan pencarian dan profil TK publik, ulasan, serta undangan pekerjaan melalui notifikasi (Could) ([#52](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/52)) | 3<br>1 | In Progress | - |
+| 11-11-2026 | Karmel Tua Haloho | Mengimplementasikan adapter Midtrans sandbox, pemilihan provider melalui environment, dan dokumentasi konfigurasi opsional (Could) ([#53](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/53)) | 3 | Done | - |
+| 11-11-2026 | Davin Farel Santoso | Memperbaiki integrasi webhook native Midtrans, refund dan pencairan nyata pada adapter, verifikasi status/signature, idempotensi, serta rekonsiliasi timeout ([#115](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/115)) | 6 | Done | - |
+| 12-11-2026 | Muhammad Ridwan Nasir Firdaus | Menulis pengujian integrasi domain lowongan, penawaran, verifikasi, sengketa, pembatasan rute CS, dan kuota lintas koneksi ([#41](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/41)) | 4 | Done | - |
+| 13-11-2026 | Sebastio Nugroho | Melakukan bug bash, uji silang modul, pencatatan bug, dan rekap known issues untuk laporan implementasi ([#46](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/46)) | 2 | Done | - |
+| 13-11-2026 | Davin Farel Santoso | Melengkapi README aplikasi, troubleshooting, tautan deployment, panduan akun/data uji, serta catatan pemeriksaan clone bersih ([#47](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/47)) | 3 | Done | - |
+| 13-11-2026 | Davin Farel Santoso | Menyiapkan rilis awal v9.0 dengan target main, pemeriksaan CI, serta rekap issue Must dan known issues ([#48](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/48)) | 0.5 | Done | - |
+| 13-11-2026 | Aditya Rasyid | Menyusun laporan implementasi M9 B.1–B.5, kontribusi anggota, traceability kelas, serta dokumentasi penggunaan AI ([#49](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/49)) | 4 | Done | - |
+| 13-11-2026 | Davin Farel Santoso | Menyiapkan rilis final v9.1 dengan target main, kelengkapan README/laporan, pemeriksaan CI, dan verifikasi tag ([#50](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/50)) | 1 | Done | - |
+
+---
 
 ``Gunakan format penulisan Logbook yang sama untuk setiap Milestone dan pastikan pembuatan Daftar Isi juga sudah sesuai sebelum Logbook dikumpulkan. ``

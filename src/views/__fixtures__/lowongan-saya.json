@@ -1,0 +1,21 @@
+{
+  "items": [
+    {
+      "id": "aaaaaaaa-0000-4000-8000-000000000001",
+      "judul": "Bersih-bersih rumah pindahan 2 lantai",
+      "kategori": "Kebersihan",
+      "lokasi": "Coblong, Bandung",
+      "tanggalPekerjaan": "2026-11-12",
+      "upah": 350000,
+      "satuanUpah": "PER_TUGAS",
+      "kuota": 2,
+      "jumlahDiterima": 0,
+      "status": "OPEN",
+      "createdAt": "2026-11-05T03:00:00Z",
+      "jumlahPelamarMenunggu": 3
+    }
+  ],
+  "total": 1,
+  "page": 1,
+  "pageSize": 12
+}

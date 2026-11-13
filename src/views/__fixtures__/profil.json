@@ -1,0 +1,11 @@
+{
+  "id": "00000000-0000-4000-8000-000000000001",
+  "nama": "Pengguna Uji",
+  "email": "profil@kerjain.test",
+  "peran": "TK",
+  "statusVerifikasi": "TERVERIFIKASI",
+  "areaLayanan": "Bandung dan sekitarnya",
+  "bio": "Membantu pekerjaan harian dengan rapi.",
+  "akumulasiRating": 4.5,
+  "jumlahUlasan": 2
+}

@@ -1,0 +1,233 @@
+import "server-only";
+import { randomUUID } from "node:crypto";
+import { db } from "@/lib/db";
+import { keIso } from "@/lib/http";
+import type {
+  BuatLowonganInput,
+  CariLowonganQuery,
+  LowonganDetail,
+  LowonganRingkas,
+} from "@/lib/validation/lowongan";
+
+// C05. Query SQL ber-parameter saja; mapping snake_case -> camelCase di sini.
+export const UKURAN_HALAMAN = 12;
+
+/** Lindungi karakter khusus LIKE agar `%`/`_` dari pengguna dicari apa adanya. */
+export const escapeLike = (s: string) => s.replace(/[\\%_]/g, "\\$&");
+
+/** Frasa FTS5 untuk indeks trigram: dikutip penuh agar operator FTS (AND, *, tanda kurung) dari pengguna tidak berlaku. */
+export const toFtsQuery = (s: string) => `"${s.replace(/"/g, '""')}"`;
+/** Trigram butuh minimal 3 karakter; query lebih pendek memakai LIKE (hasil sama, tanpa indeks). */
+const BISA_FTS = (s: string) => [...s].length >= 3;
+
+const KOLOM_RINGKAS = `l.id_lowongan AS id, l.judul, l.kategori, l.lokasi, l.tanggal_pekerjaan AS tanggalPekerjaan,
+  l.upah, l.satuan_upah AS satuanUpah, l.kuota, l.jumlah_diterima AS jumlahDiterima,
+  l.status_lowongan AS status, l.created_at AS createdAt`;
+
+type BarisRingkas = Omit<LowonganRingkas, "createdAt"> & { createdAt: string };
+const ringkas = <T extends BarisRingkas>(r: T): T => ({
+  ...r,
+  createdAt: keIso(r.createdAt),
+});
+
+export function idPenyediaKerja(idPengguna: string): string | null {
+  const r = db
+    .prepare(
+      "SELECT id_penyedia_kerja AS id FROM penyedia_kerja WHERE id_pengguna = ?",
+    )
+    .get(idPengguna) as { id: string } | undefined;
+  return r?.id ?? null;
+}
+
+/** KF07: status awal OPEN dan jumlah_diterima 0 (default kolom) selalu ditentukan di sini. */
+export function buat(idPK: string, v: BuatLowonganInput): string {
+  const id = randomUUID();
+  db.prepare(
+    `INSERT INTO lowongan_pekerjaan (id_lowongan, id_penyedia_kerja, judul, deskripsi, ruang_lingkup, kriteria_hasil,
+       kategori, lokasi, tanggal_pekerjaan, estimasi_durasi, upah, satuan_upah, kuota, jumlah_diterima,
+       pernyataan_risiko, status_lowongan)
+     VALUES (@id, @idPK, @judul, @deskripsi, @ruangLingkup, @kriteriaHasil, @kategori, @lokasi, @tanggalPekerjaan,
+       @estimasiDurasi, @upah, @satuanUpah, @kuota, 0, @risiko, 'OPEN')`,
+  ).run({ ...v, id, idPK, risiko: v.pernyataanRisiko ? 1 : 0 });
+  return id;
+}
+
+/** Q-102 (FTS5 trigram, query >= 3 karakter; LIKE untuk yang lebih pendek) + Q-103: hanya lowongan OPEN (KF09). */
+export function cari(q: CariLowonganQuery) {
+  const fts = !!q.q && BISA_FTS(q.q);
+  const cocok = !q.q
+    ? "1"
+    : fts
+      ? "l.rowid IN (SELECT rowid FROM lowongan_fts WHERE lowongan_fts MATCH @q)"
+      : "(l.judul LIKE @q ESCAPE '\\' OR l.deskripsi LIKE @q ESCAPE '\\')";
+  const filter: Record<string, string | number> = {};
+  if (q.q) filter.q = fts ? toFtsQuery(q.q) : `%${escapeLike(q.q)}%`;
+  if (q.kategori) filter.kategori = q.kategori;
+  if (q.upahMin !== undefined) filter.upahMin = q.upahMin;
+  const where = `l.status_lowongan = 'OPEN' AND ${cocok}
+    ${q.kategori ? "AND l.kategori = @kategori" : ""}
+    ${q.upahMin !== undefined ? "AND l.upah >= @upahMin" : ""}`;
+  const urut =
+    q.urut === "upah_tertinggi"
+      ? "l.upah DESC, l.created_at DESC"
+      : "l.created_at DESC, l.id_lowongan";
+  const items = db
+    .prepare(
+      `SELECT ${KOLOM_RINGKAS} FROM lowongan_pekerjaan l WHERE ${where} ORDER BY ${urut} LIMIT @limit OFFSET @offset`,
+    )
+    .all({
+      ...filter,
+      limit: UKURAN_HALAMAN,
+      offset: (q.page - 1) * UKURAN_HALAMAN,
+    }) as BarisRingkas[];
+  const { total } = db
+    .prepare(
+      `SELECT COUNT(*) AS total FROM lowongan_pekerjaan l WHERE ${where}`,
+    )
+    .get(filter) as {
+    total: number;
+  };
+  return {
+    items: items.map(ringkas),
+    total,
+    page: q.page,
+    pageSize: UKURAN_HALAMAN,
+  };
+}
+
+/** Lowongan milik satu PK beserta jumlah pelamar yang masih menunggu. */
+export function milikPK(idPK: string, page: number) {
+  const items = db
+    .prepare(
+      `SELECT ${KOLOM_RINGKAS},
+         (SELECT COUNT(*) FROM pengajuan_penawaran p
+           WHERE p.id_lowongan = l.id_lowongan AND p.status_penawaran = 'MENUNGGU') AS jumlahPelamarMenunggu
+       FROM lowongan_pekerjaan l WHERE l.id_penyedia_kerja = ?
+       ORDER BY l.created_at DESC, l.id_lowongan LIMIT ? OFFSET ?`,
+    )
+    .all(idPK, UKURAN_HALAMAN, (page - 1) * UKURAN_HALAMAN) as (BarisRingkas & {
+    jumlahPelamarMenunggu: number;
+  })[];
+  const { total } = db
+    .prepare(
+      "SELECT COUNT(*) AS total FROM lowongan_pekerjaan WHERE id_penyedia_kerja = ?",
+    )
+    .get(idPK) as { total: number };
+  return { items: items.map(ringkas), total, page, pageSize: UKURAN_HALAMAN };
+}
+
+/** Detail publik; `idPenggunaTK` (opsional) menambahkan penawaran aktif milik TK yang melihat. */
+export function detail(
+  id: string,
+  idPenggunaTK?: string,
+): LowonganDetail | null {
+  const r = db
+    .prepare(
+      `SELECT ${KOLOM_RINGKAS}, l.deskripsi, l.ruang_lingkup AS ruangLingkup, l.kriteria_hasil AS kriteriaHasil,
+         l.estimasi_durasi AS estimasiDurasi, l.pernyataan_risiko AS pernyataanRisiko,
+         u.id_pengguna AS idPenyedia, u.nama AS namaPenyedia, u.akumulasi_rating AS rating, u.jumlah_ulasan AS ulasan
+       FROM lowongan_pekerjaan l
+       JOIN penyedia_kerja pk USING (id_penyedia_kerja)
+       JOIN pengguna u ON u.id_pengguna = pk.id_pengguna
+       WHERE l.id_lowongan = ?`,
+    )
+    .get(id) as
+    | (BarisRingkas & {
+        deskripsi: string;
+        ruangLingkup: string;
+        kriteriaHasil: string;
+        estimasiDurasi: string;
+        pernyataanRisiko: number;
+        idPenyedia: string;
+        namaPenyedia: string;
+        rating: number;
+        ulasan: number;
+      })
+    | undefined;
+  if (!r) return null;
+
+  const {
+    idPenyedia,
+    namaPenyedia,
+    rating,
+    ulasan,
+    pernyataanRisiko,
+    ...sisa
+  } = r;
+  const hasil: LowonganDetail = {
+    ...ringkas(sisa),
+    pernyataanRisiko: pernyataanRisiko === 1,
+    penyedia: {
+      id: idPenyedia,
+      nama: namaPenyedia,
+      akumulasiRating: rating,
+      jumlahUlasan: ulasan,
+    },
+  };
+  if (idPenggunaTK) {
+    const p = db
+      .prepare(
+        `SELECT p.id_penawaran AS id, p.status_penawaran AS status
+         FROM pengajuan_penawaran p JOIN tenaga_kerja tk USING (id_tenaga_kerja)
+         WHERE p.id_lowongan = ? AND tk.id_pengguna = ? AND p.status_penawaran IN ('MENUNGGU','DITERIMA')`,
+      )
+      .get(id, idPenggunaTK) as LowonganDetail["penawaranSaya"];
+    if (p) hasil.penawaranSaya = p;
+  }
+  return hasil;
+}
+
+/** Ringkasan satu lowongan beserta id profil PK pemilik (untuk cek kepemilikan di controller). */
+export function ringkasDenganPemilik(
+  id: string,
+): { idPK: string; lowongan: LowonganRingkas } | null {
+  const r = db
+    .prepare(
+      `SELECT ${KOLOM_RINGKAS}, l.id_penyedia_kerja AS idPK FROM lowongan_pekerjaan l WHERE l.id_lowongan = ?`,
+    )
+    .get(id) as (BarisRingkas & { idPK: string }) | undefined;
+  if (!r) return null;
+  const { idPK, ...baris } = r;
+  return { idPK, lowongan: ringkas(baris) };
+}
+
+/** #51: TK menyimpan lowongan OPEN; idempoten. */
+export function simpan(idPengguna: string, idLowongan: string): boolean {
+  const ada = db
+    .prepare(
+      "SELECT 1 FROM lowongan_pekerjaan WHERE id_lowongan = ? AND status_lowongan = 'OPEN'",
+    )
+    .get(idLowongan);
+  if (!ada) return false;
+  db.prepare(
+    "INSERT OR IGNORE INTO lowongan_tersimpan (id_pengguna, id_lowongan) VALUES (?, ?)",
+  ).run(idPengguna, idLowongan);
+  return true;
+}
+
+/** Idempoten: menghapus yang tidak tersimpan bukan error. */
+export function hapusSimpan(idPengguna: string, idLowongan: string) {
+  db.prepare(
+    "DELETE FROM lowongan_tersimpan WHERE id_pengguna = ? AND id_lowongan = ?",
+  ).run(idPengguna, idLowongan);
+}
+
+/** Semua status ditampilkan agar TK tahu lowongan tersimpan yang sudah penuh. Urut lowongan terbaru (skema tidak mencatat waktu simpan). */
+export function tersimpanMilik(idPengguna: string, page: number) {
+  const items = db
+    .prepare(
+      `SELECT ${KOLOM_RINGKAS} FROM lowongan_tersimpan s JOIN lowongan_pekerjaan l USING (id_lowongan)
+       WHERE s.id_pengguna = ? ORDER BY l.created_at DESC, l.id_lowongan LIMIT ? OFFSET ?`,
+    )
+    .all(
+      idPengguna,
+      UKURAN_HALAMAN,
+      (page - 1) * UKURAN_HALAMAN,
+    ) as BarisRingkas[];
+  const { total } = db
+    .prepare(
+      "SELECT COUNT(*) AS total FROM lowongan_tersimpan WHERE id_pengguna = ?",
+    )
+    .get(idPengguna) as { total: number };
+  return { items: items.map(ringkas), total, page, pageSize: UKURAN_HALAMAN };
+}

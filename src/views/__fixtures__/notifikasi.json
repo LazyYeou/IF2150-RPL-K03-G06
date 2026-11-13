@@ -1,0 +1,12 @@
+{
+  "items": [
+    {
+      "id": "00000000-0000-4000-8000-000000000028",
+      "pesan": "Identitas Anda telah terverifikasi.",
+      "tautan": "/tk",
+      "dibaca": false,
+      "waktuKirim": "2026-11-07T03:00:00Z"
+    }
+  ],
+  "jumlahBelumDibaca": 1
+}
