@@ -60,13 +60,23 @@ Dipersiapkan oleh:
     - [4.2.11 Kelas BuktiPenyerahanController](#4211-kelas-buktipenyerahancontroller)
     - [4.2.12 Kelas UlasanRatingController](#4212-kelas-ulasanratingcontroller)
     - [4.2.13 Kelas NotifikasiController](#4213-kelas-notifikasicontroller)
+    - [4.2.14 Kelas LowonganPekerjaan](#4214-kelas-lowonganpekerjaan)
+    - [4.2.15 Kelas PengajuanPenawaran](#4215-kelas-pengajuanpenawaran)
+    - [4.2.16 Kelas TiketSengketa](#4216-kelas-tiketsengketa)
+    - [4.2.17 Kelas RiwayatSengketa](#4217-kelas-riwayatsengketa)
+    - [4.2.18 Kelas PengajuanPenawaranController](#4218-kelas-pengajuanpenawarancontroller)
+    - [4.2.19 Kelas TiketSengketaController](#4219-kelas-tiketsengketacontroller)
+    - [4.2.20 Kelas RiwayatSengketaController](#4220-kelas-riwayatsengketacontroller)
   - [4.3 Pengujian Integrasi](#43-pengujian-integrasi)
   - [4.4 Pengujian Use Case](#44-pengujian-use-case)
     - [4.4.1 Use Case Melakukan Registrasi](#441-use-case-melakukan-registrasi)
     - [4.4.2 Use Case Mengelola Verifikasi Identitas](#442-use-case-mengelola-verifikasi-identitas)
+    - [4.4.5 Use Case Mengajukan Penawaran Pekerjaan](#445-use-case-mengajukan-penawaran-pekerjaan)
+    - [4.4.6 Use Case Memilih Tenaga Kerja](#446-use-case-memilih-tenaga-kerja)
     - [4.4.8 Use Case Menyerahkan Hasil Pekerjaan](#448-use-case-menyerahkan-hasil-pekerjaan)
     - [4.4.9 Use Case Memverifikasi Penyelesaian Pekerjaan](#449-use-case-memverifikasi-penyelesaian-pekerjaan)
     - [4.4.11 Use Case Memberikan Penilaian Kerja](#4411-use-case-memberikan-penilaian-kerja)
+    - [4.4.12 Use Case Menangani Keluhan](#4412-use-case-menangani-keluhan)
   - [4.5 Pengujian Kebutuhan Non-Fungsional (KNF)](#45-pengujian-kebutuhan-non-fungsional-knf)
   - [4.6 Tangkapan Layar dan Bukti Hasil Pengujian](#46-tangkapan-layar-dan-bukti-hasil-pengujian)
 - [BAB 5: Traceability](#bab-5-traceability)
@@ -313,7 +323,7 @@ Tabel 3.4. File Lain
 
 # BAB 4: Hasil Pengujian
 
-Pengujian mencakup UC01 (registrasi dan login), UC02 (verifikasi identitas), UC08 (menyerahkan hasil pekerjaan), UC09 (memverifikasi penyelesaian pekerjaan), dan UC11 (memberikan penilaian kerja).
+Pengujian mencakup UC01 (registrasi dan login), UC02 (verifikasi identitas), UC05 (mengajukan penawaran pekerjaan), UC06 (memilih tenaga kerja), UC08 (menyerahkan hasil pekerjaan), UC09 (memverifikasi penyelesaian pekerjaan), UC11 (memberikan penilaian kerja), dan UC12 (menangani keluhan).
 
 ## 4.1 Strategi dan Kedalaman Pengujian Kelas
 
@@ -325,22 +335,32 @@ Tabel 4.1.1. Identifikasi Tingkat Pengujian Kelas
 | C02 | TenagaKerja | Mendalam | Aturan transisi verifikasi | INT-TC04, INT-TC05 |
 | C03 | PenyediaKerja | Tidak perlu | Data peran berupa tabel, tanpa kelas domain terpisah | INT-TC01, INT-TC02 |
 | C04 | CustomerService | Tidak perlu | Data peran berupa tabel, tanpa kelas domain terpisah | INT-TC04, INT-TC05 |
+| C05 | LowonganPekerjaan | Mendalam | Sisa kuota, penutupan otomatis menjadi Closed/Full, dan batas jumlah diterima | INT-TC09, INT-TC10 |
+| C06 | PengajuanPenawaran | Mendalam | Satu penawaran aktif per tenaga kerja, penarikan, dan transisi status penawaran | C07-UT04, INT-TC08, INT-TC09, INT-TC10 |
 | C07 | TransaksiPekerjaan | Mendalam | Transisi status dan kredit upah | C07-UT01, C07-UT02, C07-UT03, C07-UT04, C07-UT05, C07-UT06, C07-UT07, C07-UT08, C07-UT09, C07-UT10, INT-TC11, INT-TC12 |
 | C08 | BuktiPenyerahan | Mendalam | Validasi dan penyimpanan bukti | C08-UT01, C08-UT02, C08-UT03, C08-UT04, C08-UT05, C08-UT06, C08-UT07, C08-UT08, C08-UT09, INT-TC14, INT-TC15 |
 | C11 | UlasanRating | Sedang | Pencatatan atau delegasi ke operasi domain | INT-TC25, INT-TC12 |
+| C12 | TiketSengketa | Mendalam | Pembuatan tiket atomik, satu tiket aktif per transaksi, dan transisi status tiket | C07-UT05, INT-TC26, INT-TC27, INT-TC28 |
+| C13 | RiwayatSengketa | Mendalam | Catatan kronologis yang hanya dapat bertambah (append-only) | INT-TC26, INT-TC27, INT-TC28, KNF20-TC01 |
 | C14 | Notifikasi | Sedang | Pencatatan atau delegasi ke operasi domain | INT-TC29 |
 | C16 | PenggunaUI | Tidak perlu | Antarmuka React diuji melalui alur pengguna | UC01-TC01, UC01-TC02, UC01-TC03 |
 | C17 | TenagaKerjaUI | Tidak perlu | Antarmuka React diuji melalui alur pengguna | UC02-TC01, UC02-TC02, UC02-TC04 |
-| C19 | CustomerServiceUI | Tidak perlu | Antarmuka React diuji melalui alur pengguna | UC02-TC01, UC02-TC03 |
+| C19 | CustomerServiceUI | Tidak perlu | Antarmuka React diuji melalui alur pengguna | UC02-TC01, UC02-TC03, UC12-TC01, UC12-TC02, UC12-TC03 |
+| C21 | PengajuanPenawaranUI | Tidak perlu | Antarmuka React diuji melalui alur pengguna | UC05-TC01, UC05-TC02, UC05-TC03, UC06-TC01, UC06-TC02, UC06-TC03 |
 | C22 | TransaksiPekerjaanUI | Tidak perlu | Antarmuka React diuji melalui alur pengguna | UC09-TC01, UC09-TC02, UC09-TC03 |
 | C23 | BuktiPenyerahanUI | Tidak perlu | Antarmuka React diuji melalui alur pengguna | UC08-TC01, UC08-TC02, UC08-TC03 |
 | C26 | UlasanRatingUI | Tidak perlu | Antarmuka React diuji melalui alur pengguna | UC11-TC01, UC11-TC02, UC11-TC03 |
+| C27 | TiketSengketaUI | Tidak perlu | Antarmuka React diuji melalui alur pengguna | UC12-TC01, UC12-TC02, UC12-TC03, UC12-TC04 |
+| C28 | RiwayatSengketaUI | Tidak perlu | Antarmuka React diuji melalui alur pengguna | UC12-TC01, UC12-TC02, UC12-TC03, UC12-TC04 |
 | C31 | PenggunaController | Mendalam | Validasi usia, kredensial dan autentikasi | INT-TC01, INT-TC02 |
 | C32 | TenagaKerjaController | Mendalam | Validasi dokumen dan status pengajuan | INT-TC04, INT-TC05 |
-| C34 | CustomerServiceController | Mendalam | Otorisasi dan keputusan verifikasi | INT-TC04, INT-TC05 |
+| C34 | CustomerServiceController | Mendalam | Otorisasi dan keputusan verifikasi | INT-TC04, INT-TC05, INT-TC26, INT-TC27, INT-TC28 |
+| C36 | PengajuanPenawaranController | Mendalam | Otorisasi peran, validasi akun terverifikasi, dan pemilihan pelamar secara transaksional | INT-TC08, INT-TC09, INT-TC10 |
 | C37 | TransaksiPekerjaanController | Mendalam | Validasi perubahan status, kredit dan ulasan | INT-TC11, INT-TC12 |
 | C38 | BuktiPenyerahanController | Mendalam | Otorisasi dan validasi bukti penyerahan | INT-TC14, INT-TC15 |
 | C41 | UlasanRatingController | Mendalam | Validasi dan pencegahan ulasan ganda | INT-TC25, INT-TC12 |
+| C42 | TiketSengketaController | Mendalam | Otorisasi, validasi bukti, dan eksekusi keputusan refund atau pencairan | INT-TC26, INT-TC27, INT-TC28 |
+| C43 | RiwayatSengketaController | Sedang | Pencatatan atau delegasi ke operasi domain | INT-TC26, INT-TC27 |
 | C44 | NotifikasiController | Sedang | Pencatatan atau delegasi ke operasi domain | INT-TC29 |
 
 ## 4.2 Pengujian Unit Kelas
@@ -633,6 +653,146 @@ Tabel 4.2.13. Hasil Pengujian Unit Kelas C44
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | — | — | — | — | — | Uji integrasi: INT-TC29 | Dilaporkan di 4.3 |
 
+Kelas C05, C06, C12, C13, C36, C42, dan C43 tidak memiliki berkas uji unit tersendiri. Logikanya berjalan di dalam transaksi SQLite (`tx()`) dan menyentuh basis data, sehingga diuji pada suite integrasi di Subbab 4.3 dengan komponen nyata. Cakupan diukur dengan Vitest dan V8 dari seluruh suite unit dan integrasi (`npm test -- --coverage`). Transisi status penawaran dan tiket diuji pada C07-UT04 dan C07-UT05 (`tests/unit/statusMachine.test.ts`).
+
+### 4.2.14 Kelas LowonganPekerjaan
+
+**ID Kelas:** C05<br>
+**Nama Kelas:** LowonganPekerjaan<br>
+**Tingkat:** Mendalam
+
+Tabel 4.2.14. Hasil Pengujian Unit Kelas C05
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| — | — | — | — | — | Uji integrasi: INT-TC09, INT-TC10 | Belum ada uji unit khusus. UC05 dan UC06 hanya menyentuh kuota dan status lowongan; formulir dan pencarian diuji pada UC03 dan UC04 |
+
+Tabel 4.2.14b. Ringkasan Cakupan Kelas C05
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | validasiIsianFormulir, simpanLowongan, setStatusDefault, tampilkanDaftarLowongan, cekStatusOpen, tampilkanTombolAjukan, cekKuotaSisa, updateStatusLowongan, kurangiKuota |
+| Operasi yang diuji | — |
+| ID Algoritma yang tercakup | — |
+| Coverage (target ≥ 70%) | `src/models/LowonganPekerjaan.ts`: 100% baris / 97.5% cabang<br>`src/controllers/LowonganPekerjaanController.ts`: 88.23% baris / 93.75% cabang |
+
+### 4.2.15 Kelas PengajuanPenawaran
+
+**ID Kelas:** C06<br>
+**Nama Kelas:** PengajuanPenawaran<br>
+**Tingkat:** Mendalam
+
+Tabel 4.2.15. Hasil Pengujian Unit Kelas C06
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| — | — | — | — | — | Uji integrasi: INT-TC08, INT-TC09, INT-TC10 | Belum ada uji unit khusus |
+
+Tabel 4.2.15b. Ringkasan Cakupan Kelas C06
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | simpanPengajuan, validasiStatusAkun, setStatusPersetujuan |
+| Operasi yang diuji | — |
+| ID Algoritma yang tercakup | — |
+| Coverage (target ≥ 70%) | `src/models/PengajuanPenawaran.ts`: 100% baris / 97.56% cabang |
+
+### 4.2.16 Kelas TiketSengketa
+
+**ID Kelas:** C12<br>
+**Nama Kelas:** TiketSengketa<br>
+**Tingkat:** Mendalam
+
+Tabel 4.2.16. Hasil Pengujian Unit Kelas C12
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| — | — | — | — | — | Uji integrasi: INT-TC26, INT-TC27, INT-TC28 | Belum ada uji unit khusus |
+
+Tabel 4.2.16b. Ringkasan Cakupan Kelas C12
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | buatTiket, updateStatus |
+| Operasi yang diuji | — |
+| ID Algoritma yang tercakup | — |
+| Coverage (target ≥ 70%) | `src/models/TiketSengketa.ts`: 100% baris / 90.47% cabang<br>`src/models/BuktiSengketa.ts`: 93.75% baris / 66.66% cabang (cabang di bawah target)<br>`src/models/RefundSengketa.ts`: 97.05% baris / 84.72% cabang |
+
+### 4.2.17 Kelas RiwayatSengketa
+
+**ID Kelas:** C13<br>
+**Nama Kelas:** RiwayatSengketa<br>
+**Tingkat:** Mendalam
+
+Tabel 4.2.17. Hasil Pengujian Unit Kelas C13
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| — | — | — | — | — | Uji integrasi: INT-TC26, INT-TC27, INT-TC28; trigger append-only pada KNF20-TC01 | Belum ada uji unit khusus |
+
+Tabel 4.2.17b. Ringkasan Cakupan Kelas C13
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | catatRiwayat |
+| Operasi yang diuji | — |
+| ID Algoritma yang tercakup | — |
+| Coverage (target ≥ 70%) | Riwayat ditulis di dalam `src/models/TiketSengketa.ts` (100% baris / 90.47% cabang); trigger `riwayat_no_update` dan `riwayat_no_delete` ada di `src/db/migrations/0002_immutability.sql` |
+
+### 4.2.18 Kelas PengajuanPenawaranController
+
+**ID Kelas:** C36<br>
+**Nama Kelas:** PengajuanPenawaranController<br>
+**Tingkat:** Mendalam
+
+Tabel 4.2.18. Hasil Pengujian Unit Kelas C36
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| — | — | — | — | — | Uji integrasi: INT-TC08, INT-TC09, INT-TC10 | Belum ada uji unit khusus |
+
+Tabel 4.2.18b. Ringkasan Cakupan Kelas C36
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | Lihat Tabel 4.1 DPPL2 |
+| Operasi yang diuji | — |
+| ID Algoritma yang tercakup | — |
+| Coverage (target ≥ 70%) | `src/controllers/PengajuanPenawaranController.ts`: 88.8% baris / 95.23% cabang |
+
+### 4.2.19 Kelas TiketSengketaController
+
+**ID Kelas:** C42<br>
+**Nama Kelas:** TiketSengketaController<br>
+**Tingkat:** Mendalam
+
+Tabel 4.2.19. Hasil Pengujian Unit Kelas C42
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| — | — | — | — | — | Uji integrasi: INT-TC26, INT-TC27, INT-TC28 | Belum ada uji unit khusus |
+
+Tabel 4.2.19b. Ringkasan Cakupan Kelas C42
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | Lihat Tabel 4.1 DPPL2 |
+| Operasi yang diuji | — |
+| ID Algoritma yang tercakup | — |
+| Coverage (target ≥ 70%) | `src/controllers/TiketSengketaController.ts`: 96.23% baris / 90.8% cabang |
+
+### 4.2.20 Kelas RiwayatSengketaController
+
+**ID Kelas:** C43<br>
+**Nama Kelas:** RiwayatSengketaController<br>
+**Tingkat:** Sedang
+
+Tabel 4.2.20. Hasil Pengujian Unit Kelas C43
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| — | — | — | — | — | Uji integrasi: INT-TC26, INT-TC27 | Dilaporkan di 4.3 |
+
 ## 4.3 Pengujian Integrasi
 
 Vitest menggunakan controller, model, dan SQLite uji. Sejumlah suite menggantikan akses cookie pada batas Next.js. Pengujian browser memakai sesi dan HTTP aplikasi.
@@ -643,9 +803,11 @@ Tabel 4.3.1. Daftar Antarmuka Antarkomponen
 | :--- | :--- | :--- | :--- | :--- |
 | AI-01 | PenggunaController | Pengguna, autentikasi dan sesi | Controller – Model | INT-TC01, INT-TC02 |
 | AI-02 | TenagaKerjaController / CustomerServiceController | TenagaKerja dan penyimpanan berkas | Controller – Model – Berkas | INT-TC04, INT-TC05 |
+| AI-04 | PengajuanPenawaranUI / PengajuanPenawaranController | PengajuanPenawaran, LowonganPekerjaan, dan TransaksiPekerjaan | Route Handler – Controller – Model | INT-TC08, INT-TC09, INT-TC10 |
 | AI-05 | TransaksiPekerjaanUI / TransaksiPekerjaanController | TransaksiPekerjaan | Route Handler – Controller – Model | INT-TC11, INT-TC12, INT-TC13 |
 | AI-06 | TransaksiBuktiController / BerkasController | BuktiPenyerahan dan penyimpanan berkas | Controller – Model – Berkas | INT-TC14, INT-TC15 |
 | AI-10 | UlasanRatingUI / TransaksiPekerjaanController | Ulasan dan Profil | Controller – Model | INT-TC25 |
+| AI-11 | TiketSengketaUI / TiketSengketaController | TiketSengketa, RiwayatSengketa, dan penyimpanan berkas | Route Handler – Controller – Model – Berkas | INT-TC26, INT-TC27, INT-TC28 |
 | AI-12 | NotifikasiUI / NotifikasiController | Notifikasi | Controller – Model | INT-TC29 |
 
 Tabel 4.3.2. Hasil Pengujian Integrasi
@@ -656,12 +818,18 @@ Tabel 4.3.2. Hasil Pengujian Integrasi
 | INT-TC02 | AI-01 | auth | `tests/integration/auth.test.ts` | hash Argon2id, verifikasi benar/salah, hash rusak = false; DB menyimpan SHA-256 token, bukan token mentah; cookie HttpOnly diset | 18/18 kasus lulus | Pass |
 | INT-TC04 | AI-02 | verifikasi | `tests/integration/verifikasi.test.ts` | TK belum terverifikasi: 201, status menunggu, berkas tersimpan terenkripsi; GET /status mengembalikan status terkini | 7/7 kasus lulus | Pass |
 | INT-TC05 | AI-02 | verifikasi-cs | `tests/integration/verifikasi-cs.test.ts` | CS melihat antrean MENUNGGU sesuai skema; non-CS -> 403, tanpa sesi -> 401 | 7/7 kasus lulus | Pass |
+| INT-TC08 | AI-04 | penawaran | `tests/integration/penawaran.test.ts` | TK terverifikasi mengajukan penawaran: 201, status MENUNGGU, PK dinotifikasi; penawaran ganda 409; TK belum terverifikasi 403 NOT_VERIFIED; lowongan penuh 409 KUOTA_PENUH; hanya pemilik yang dapat menarik dan boleh mengajukan ulang | 9/9 kasus lulus | Pass |
+| INT-TC09 | AI-04 | pilih-pelamar | `tests/integration/pilih-pelamar.test.ts` | PK pemilik menerima pelamar: transaksi MENUNGGU_PEMBAYARAN dan kuota bertambah; penerimaan terakhir menutup lowongan (CLOSED_FULL) dan sisa pelamar DITOLAK_OTOMATIS; kuota penuh 409 KUOTA_PENUH tanpa transaksi baru; PK lain 403; dua penerimaan bersamaan hanya satu berhasil | 9/9 kasus lulus | Pass |
+| INT-TC10 | AI-04 | domain-lintas | `tests/integration/domain-lintas.test.ts` | kuota terakhir dari dua koneksi DB pada dua proses hanya diberikan kepada satu TK; TK belum terverifikasi ditolak 403 pada bukti pekerjaan; setiap rute `/api/cs/*` hanya untuk CS (tanpa sesi 401, TK dan PK 403) | 4/4 kasus lulus | Pass |
 | INT-TC11 | AI-05 | transaksi | `tests/integration/transaksi.test.ts` | peserta dapat melihat daftar dan detail status Indonesia; peran bukan peserta ditolak 403 | 8/8 kasus lulus | Pass |
 | INT-TC12 | AI-05 | transaksi-pemeriksaan | `tests/integration/transaksi-pemeriksaan.test.ts` | mengkredit upah tepat sekali, meskipun helper saldo dipanggil ulang; menolak persetujuan bila tagihan belum berhasil atau tiket masih aktif | 4/4 kasus lulus | Pass |
 | INT-TC13 | AI-05 | transaksi-paginasi | `tests/integration/transaksi-paginasi.test.ts` | TK: semua transaksi dapat dijangkau tanpa duplikasi walaupun waktu dibuat sama; TK: filter berlaku pada items, total, dan setiap halaman | 13/13 kasus lulus | Pass |
 | INT-TC14 | AI-06 | transaksi-bukti | `tests/integration/transaksi-bukti.test.ts` | TK terverifikasi yang ditugaskan dapat mengirim bukti; TK, PK, dan CS melihat bukti terbaru dan dapat membuka berkas; non-peserta ditolak | 10/10 kasus lulus | Pass |
 | INT-TC15 | AI-06 | berkas | `tests/integration/berkas.test.ts` | peserta (TK dan PK) dan CS boleh mengunduh, tanpa cache; bukan peserta -> 403 (KNF06); tanpa sesi -> 401 | 5/5 kasus lulus | Pass |
 | INT-TC25 | AI-10 | profil | `tests/integration/profil.test.ts` | fixture frontend mengikuti skema respons; GET/PATCH tanpa sesi ditolak 401 | 11/11 kasus lulus | Pass |
+| INT-TC26 | AI-11 | tiket-sengketa | `tests/integration/tiket-sengketa.test.ts` | tiket bantuan umum dan tiket dari transaksi (pekerjaan DISENGKETAKAN, status asal tersimpan, berkas tersimpan); tiket ganda 409; bukan peserta 403; bukti tambahan mengembalikan MENUNGGU_BALASAN ke DITINJAU; pelapor membatalkan tiket DIAJUKAN; antrean dan detail CS; UPDATE dan DELETE pada riwayat ditolak basis data | 17/17 kasus lulus | Pass |
+| INT-TC27 | AI-11 | sengketa-putusan | `tests/integration/sengketa-putusan.test.ts` | CS memutuskan PENCAIRAN: upah dikredit sekali, tiket DITUTUP, kedua pihak dinotifikasi; keputusan berbeda 409; minta bukti dan tolak tiket memulihkan status pekerjaan; non-CS 403, tanpa sesi 401 | 6/6 kasus lulus | Pass |
+| INT-TC28 | AI-11 | refund | `tests/integration/refund.test.ts` | refund sukses menyelesaikan tagihan, transaksi, tiket, riwayat, dan notifikasi tepat sekali; gagal atau timeout tidak menghasilkan sukses palsu; percobaan ulang memakai kunci yang sama; permintaan bersamaan hanya mengirim satu instruksi | 16/16 kasus lulus | Pass |
 | INT-TC29 | AI-12 | notifikasi | `tests/integration/notifikasi.test.ts` | fixture UI mengikuti kontrak respons; GET dan POST tanpa sesi menghasilkan 401 | 11/11 kasus lulus | Pass |
 
 ## 4.4 Pengujian Use Case
@@ -694,6 +862,32 @@ Tabel 4.4.2. Hasil Pengujian Use Case UC02
 | UC02-TC02 | KF04, KF05, KF06 | Alternatif 1: Format atau Ukuran Dokumen Tidak Valid | 1. Tenaga Kerja memilih menu verifikasi identitas<br>2. Tenaga Kerja mengunggah file dengan ekstensi yang tidak didukung (misal: .exe) atau melebihi batas ukuran (misal: > 5MB) | Berkas .exe | Sistem menampilkan antarmuka pengunggahan dokumen identitas<br>Sistem menolak unggahan dan menampilkan pesan error format/ukuran file tidak sesuai | Unggahan ditolak dengan HTTP 400. | Pass |
 | UC02-TC03 | KF04, KF05, KF06 | Alternatif 2: Dokumen Ditolak oleh Customer Service | 1. Tenaga Kerja memilih menu verifikasi identitas<br>2. Tenaga Kerja mengunggah dokumen yang buram atau data tidak cocok<br>3. Customer Service menolak verifikasi pada dashboard dengan memberikan alasan | PDF uji dan alasan penolakan | Sistem menampilkan antarmuka pengunggahan dokumen identitas<br>Sistem menyimpan dokumen sebagai "Menunggu Persetujuan"<br>Sistem memperbarui status menjadi "Ditolak", mengirim notifikasi revisi beserta alasan, dan fitur utama tetap dibatasi | CS menolak dokumen; status DITOLAK tampil. | Pass |
 | UC02-TC04 | KF04, KF05, KF06 | Alternatif 3: Mengakses Fitur Utama Sebelum Terverifikasi | 1. Tenaga Kerja (dengan status belum terverifikasi) mencoba menekan menu fitur utama platform<br>2. Sistem memblokir akses ke halaman tersebut | TK belum terverifikasi | Sistem mendeteksi status akun belum disetujui<br>Sistem menampilkan pop-up peringatan bahwa akun harus diverifikasi dan mengarahkan pengguna ke halaman verifikasi | Penawaran ditolak dengan HTTP 403. | Pass |
+
+### 4.4.5 Use Case Mengajukan Penawaran Pekerjaan
+
+**ID Use Case:** UC05<br>
+**Nama Use Case:** Mengajukan Penawaran Pekerjaan
+
+Tabel 4.4.5. Hasil Pengujian Use Case UC05
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| UC05-TC01 | KF10, KF11 | Normal | 1. Tenaga Kerja dengan akun Terverifikasi membuka halaman detail lowongan yang berstatus Open.<br>2. Tenaga Kerja menekan tombol "Ajukan Penawaran".<br>3. Tenaga Kerja mengisi upah penawaran, ketersediaan, dan pesan, menekan "Tinjau penawaran", lalu menekan "Ajukan penawaran". | Akun tk1 (terverifikasi), upah penawaran, ketersediaan, dan pesan yang valid | Sistem memvalidasi status akun dan menampilkan tombol "Ajukan Penawaran"<br>Sistem menampilkan antarmuka formulir pengajuan penawaran<br>Sistem menyimpan data pengajuan (ID Tenaga Kerja, ID Lowongan, pesan, dan timestamp) ke basis data, lalu menampilkan notifikasi keberhasilan | Penawaran tersimpan dengan status MENUNGGU, kartu lowongan menampilkan "Penawaran sudah diajukan", dan Penyedia Kerja menerima notifikasi. Uji Playwright 16/16 lulus. | Pass |
+| UC05-TC02 | KF10, KF11 | Alternatif 1: Akun Belum Terverifikasi | 1. Tenaga Kerja dengan akun Belum Terverifikasi membuka halaman detail lowongan yang berstatus Open. | Akun tk2 (BELUM_TERVERIFIKASI) | Sistem tidak menampilkan tombol "Ajukan Penawaran" dan memunculkan peringatan bahwa pengguna harus menyelesaikan verifikasi identitas terlebih dahulu | Tombol tidak tampil; peringatan "Identitas harus terverifikasi sebelum mengajukan penawaran." dan tautan ke halaman verifikasi tampil. Permintaan API langsung ditolak HTTP 403 NOT_VERIFIED. | Pass |
+| UC05-TC03 | KF10, KF11 | Alternatif 2: Pembatalan Pengajuan | 1. Tenaga Kerja menekan tombol "Ajukan Penawaran".<br>2. Tenaga Kerja menutup formulir dengan tombol "Tutup dialog" atau tombol Escape. | Formulir dibuka lalu ditutup tanpa mengirim | Sistem menutup formulir dan mengembalikan tampilan ke halaman detail pekerjaan tanpa menyimpan data apa pun | Formulir tertutup, fokus kembali ke tombol "Ajukan Penawaran", dan tidak ada permintaan POST yang dikirim. Hasil sama pada lebar 360, 768, dan 1280 piksel. Tombol penutup berlabel "Tutup dialog", bukan "Batal". | Pass |
+
+### 4.4.6 Use Case Memilih Tenaga Kerja
+
+**ID Use Case:** UC06<br>
+**Nama Use Case:** Memilih Tenaga Kerja
+
+Tabel 4.4.6. Hasil Pengujian Use Case UC06
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| UC06-TC01 | KF12, KF13 | Normal | 1. Penyedia Kerja membuka halaman "Daftar pelamar" pada lowongan miliknya.<br>2. Penyedia Kerja menekan tombol "Pilih" pada satu pelamar.<br>3. Penyedia Kerja menekan "Ya, pilih pelamar" pada dialog konfirmasi. | Lowongan berkuota 1 dengan dua pelamar berstatus MENUNGGU | Sistem menampilkan daftar pelamar beserta rating dan pesan penawaran<br>Sistem menampilkan dialog konfirmasi beserta sisa kuota<br>Sistem memvalidasi sisa kuota, membuat ID Transaksi Pekerjaan yang unik, mengubah status pelamar menjadi Accepted, lalu mengubah status lowongan menjadi Closed/Full karena kuota terpenuhi | Dialog "Pilih tenaga kerja ini?" tampil. Setelah konfirmasi, Penyedia Kerja diarahkan ke halaman transaksi berstatus "Menunggu pembayaran". Pelamar terpilih DITERIMA, pelamar lain DITOLAK_OTOMATIS, lowongan CLOSED_FULL (1/1). | Pass |
+| UC06-TC02 | KF12, KF13 | Alternatif 1: Kuota Lowongan Sudah Penuh Saat Konfirmasi | 1. Penyedia Kerja menekan "Pilih" pada satu pelamar sehingga dialog konfirmasi terbuka.<br>2. Dari sesi lain, pelamar lain pada lowongan yang sama diterima sehingga kuota habis.<br>3. Penyedia Kerja menekan "Ya, pilih pelamar". | Lowongan berkuota 1 dengan dua pelamar, satu pelamar diterima lewat API sebelum konfirmasi | Sistem mendeteksi kuota penuh, membatalkan aksi, memperbarui status lowongan menjadi Closed/Full, dan menampilkan pesan error bahwa kuota telah penuh | Aksi ditolak dengan pesan "Kuota pekerjaan sudah penuh. Muat ulang daftar untuk melihat status terbaru." dan banner "Kuota lowongan sudah penuh. Pelamar tidak dapat dipilih lagi." Sisa kuota 0, lowongan CLOSED_FULL, dan hanya satu transaksi yang ada untuk lowongan tersebut. | Pass |
+| UC06-TC03 | KF12, KF13 | Alternatif 2: Penyedia Kerja Membatalkan Pemilihan | 1. Penyedia Kerja menekan "Pilih" pada satu pelamar.<br>2. Penyedia Kerja menekan "Batal" pada dialog konfirmasi. | Lowongan berkuota 1 dengan satu pelamar | Sistem menutup dialog dan mempertahankan status daftar pelamar tanpa perubahan data | Dialog tertutup. Lowongan tetap OPEN dengan jumlah diterima 0, dan pelamar tetap berstatus MENUNGGU. | Pass |
 
 ### 4.4.8 Use Case Menyerahkan Hasil Pekerjaan
 
@@ -734,6 +928,20 @@ Tabel 4.4.11. Hasil Pengujian Use Case UC11
 | UC11-TC02 | KF21, KF22, KF23 | Alternatif 1: Pengiriman Ulasan Ganda | 1. Pengguna yang sudah pernah mengirim ulasan mencoba membuka kembali formulir ulasan untuk pekerjaan yang sama. | Ulasan kedua dari akun yang sama | Sistem mendeteksi bahwa ulasan untuk pekerjaan tersebut sudah pernah dikirim.<br>Sistem mengunci formulir, menampilkan pesan bahwa ulasan sudah pernah diberikan, dan menolak pengiriman ulasan tambahan. | Pengiriman ulang ditolak dengan HTTP 409. | Pass |
 | UC11-TC03 | KF21, KF22, KF23 | Alternatif 2: Rating Tidak Diisi | 1. Pengguna mengosongkan kolom rating dan langsung menekan "Kirim Ulasan". | Tidak mengisi rating | Sistem mendeteksi rating wajib belum dipilih.<br>Sistem menampilkan pesan peringatan bahwa rating wajib diisi dan menggagalkan pengiriman formulir. | Rating kosong ditolak dengan HTTP 400. | Pass |
 
+### 4.4.12 Use Case Menangani Keluhan
+
+**ID Use Case:** UC12<br>
+**Nama Use Case:** Menangani Keluhan
+
+Tabel 4.4.12. Hasil Pengujian Use Case UC12
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| UC12-TC01 | KF24, KF25, KF26 | Normal | 1. Penyedia Kerja membuka halaman pekerjaan berstatus In Progress dan menekan "Ajukan keluhan".<br>2. Penyedia Kerja mengisi kategori dan deskripsi keluhan, melampirkan bukti, lalu menekan "Kirim laporan".<br>3. Customer Service membuka tiket pada dashboard, menekan "Putuskan", memilih "Cairkan upah kepada Tenaga Kerja", mengisi catatan, lalu mengonfirmasi. | Kategori "Hasil pekerjaan", deskripsi 20–1.000 karakter, bukti PNG, keputusan PENCAIRAN | Sistem menampilkan formulir laporan<br>Sistem menerbitkan tiket sengketa, menyimpan bukti, dan menampilkannya pada dashboard Customer Service<br>Sistem mengeksekusi keputusan, mencatat riwayat secara kronologis, dan mengirim notifikasi kepada kedua pihak | Tiket KIN-xxxxxx terbit dan pekerjaan berstatus DISENGKETAKAN, dengan bukti terlampir tersimpan. Setelah keputusan, upah dikreditkan, pekerjaan COMPLETED, tiket DITUTUP dengan keputusan PENCAIRAN, riwayat mencatat pengajuan, peninjauan, dan keputusan, dan Tenaga Kerja menerima notifikasi. Keputusan REFUND diuji pada INT-TC28. | Pass |
+| UC12-TC02 | KF24, KF25, KF26 | Alternatif 1: Permintaan Bukti Tambahan | 1. Customer Service menekan "Minta bukti" pada tiket.<br>2. Customer Service mengisi pesan permintaan dan menekan "Kirim permintaan".<br>3. Pelapor mengunggah bukti tambahan. | Pesan "Mohon lengkapi foto kondisi area sebelum pekerjaan." dan berkas PNG | Sistem mengirim notifikasi permintaan bukti kepada pihak terkait dan mencatatnya dalam riwayat<br>Sistem menyimpan bukti baru dan kembali ke tahap peninjauan | Tiket berstatus MENUNGGU_BALASAN dan pelapor menerima notifikasi. Setelah bukti diunggah (permintaan API, HTTP 201), tiket kembali DITINJAU dengan 2 bukti. Unggah lewat antarmuka diuji pada INT-TC26. | Pass |
+| UC12-TC03 | KF24, KF25, KF26 | Alternatif 2: Keluhan Ditolak karena Bukti Tidak Cukup | 1. Customer Service menekan "Tolak laporan" pada tiket.<br>2. Customer Service mengisi alasan penolakan dan menekan "Tolak laporan". | Alasan "Bukti belum mencukupi untuk penanganan." | Sistem mengubah status tiket menjadi "Ditolak", mencatat alasan pada riwayat, dan tidak mengeksekusi refund atau pencairan | Tiket DITOLAK tanpa keputusan, pekerjaan kembali ke IN_PROGRESS, dan riwayat mencatat permintaan bukti, unggahan bukti, dan penolakan. Notifikasi penolakan dikirim controller tetapi belum diperiksa otomatis. | Pass |
+| UC12-TC04 | KF24, KF26 | Alternatif 3: Pengguna Membatalkan Tiket Keluhan | 1. Pelapor membuka tiket berstatus "Diajukan" dan menekan "Batalkan laporan".<br>2. Pelapor menekan "Ya, batalkan". | Tiket bantuan umum (tanpa transaksi) | Sistem mengubah status tiket menjadi "Dibatalkan", mencatat pembatalan pada riwayat, dan melepas penahanan dana pekerjaan (jika ada) | Tiket DIBATALKAN dan riwayat mencatat pembatalan (2 entri). Pembatalan tiket dari transaksi, termasuk pemulihan status pekerjaan, diuji pada INT-TC26. | Pass |
+
 ## 4.5 Pengujian Kebutuhan Non-Fungsional (KNF)
 
 Tabel 4.5. Hasil Pengujian KNF
@@ -743,11 +951,19 @@ Tabel 4.5. Hasil Pengujian KNF
 | KNF01-TC01 | KNF01 | Security | Kata sandi berupa hash dan token sesi tidak tersimpan sebagai teks biasa | Vitest, pemeriksaan SQLite | Hash Argon2id; token mentah tidak ditemukan pada penyimpanan sesi. | Pass |
 | KNF02-TC01 | KNF02 | Security | Dokumen identitas tersimpan terenkripsi | Vitest, baca berkas penyimpanan uji | Unggahan diterima dan berkas tersimpan terenkripsi. | Pass |
 | KNF03-TC01 | KNF03 | Response time | Pemeriksaan status akses < 1.000 ms | Playwright HTTP, 5 permintaan status setelah pemanasan | 5 pengukuran: rata-rata 31.03 ms, maksimum 37.05 ms. | Pass |
+| KNF05-TC01 | KNF05 | Ergonomy | Kontrol interaktif berukuran sentuh minimal 44 px dan halaman tanpa gulir horizontal pada layar ponsel | Playwright, pengukuran bounding box pada Chromium 390 × 844 dan 1440 × 900; uji e2e dialog penawaran pada 360, 768, dan 1280 px | Dialog penawaran: tombol "Ajukan Penawaran" 300 × 44 px (ponsel) dan 250 × 44 px (desktop), seluruh kontrol dialog bertinggi ≥ 44 px, gulir horizontal 0 px. Daftar pelamar: tombol "Pilih" 104 × 42 px. | Pass untuk UC05. Belum terpenuhi untuk tombol "Pilih" pada UC06 (42 px, kurang 2 px). Tambahkan tinggi minimum 44 px. |
+| KNF06-TC01 | KNF06 | Security | Manipulasi ID untuk menerima atau melihat pelamar lowongan milik PK lain diblokir di backend | HTTP ke aplikasi: PK lain, TK, dan tanpa sesi memanggil `POST /api/penawaran/:id/terima` dan `GET /api/lowongan/:id/pelamar`; Vitest `pilih-pelamar` | PK lain: 403 (terima) dan 403 (pelamar); TK: 403; tanpa sesi: 401. Lowongan tetap OPEN dengan jumlah diterima 0. | Pass |
+| KNF07-TC01 | KNF07 | Reliability | Dua persetujuan serentak pada sisa satu kuota hanya menghasilkan satu penerimaan | 5 kali dua permintaan `terima` serentak (`Promise.all`) pada lowongan berkuota 1; Vitest dua koneksi DB pada dua proses | Pada kelima percobaan: satu respons 200 dan satu respons 409, jumlah diterima 1, status CLOSED_FULL. Uji dua proses (INT-TC10) lulus. | Pass |
+| KNF08-TC01 | KNF08 | Memory | Memori RAM peramban ≤ 150 MB saat memuat daftar lowongan atau daftar pelamar dalam jumlah banyak | Chromium 390 × 844, CDP `Performance.getMetrics` (`JSHeapUsedSize`), 5 kali pemuatan; daftar pelamar 60 baris | Daftar pelamar 60 baris: 4.5–4.8 MB (maks 4.8 MB). Daftar lowongan: 3.0 MB. | Pass untuk JS heap. Pengukuran tidak mencakup memori proses peramban secara keseluruhan (DOM dan gambar). |
+| KNF10-TC01 | KNF10 | Availability | Gangguan basis data lowongan ≤ 24 jam per bulan | Perlu pemantauan uptime pada lingkungan deploy | Belum ada data pemantauan pada lingkungan deploy. | Belum diuji. Pasang pemantauan ketersediaan setelah deploy dan catat gangguan per bulan. |
 | KNF13-TC01 | KNF13 | Response Time | Waktu respons unggah bukti | Playwright HTTP, 1 unggahan PDF uji dan pembacaan ulang | Respons unggah 129.24 ms; status SUBMITTED. | Terukur. SKPL belum menetapkan batas waktu lulus. |
 | KNF14-TC01 | KNF14 | Security | Hanya TK yang ditugaskan dapat mengirim bukti | Vitest, TK yang ditugaskan dan akun lain | TK yang ditugaskan dapat mengirim; akun yang tidak berhak ditolak. | Pass |
 | KNF15-TC01 | KNF15 | Reliability | Tidak ada kredit upah sebelum persetujuan atau keputusan sengketa | Vitest, inspeksi saldo dan mutasi transaksi | Kredit hanya terjadi setelah tindakan sah; kredit ulang tidak menggandakan mutasi. | Pass |
 | KNF18-TC01 | KNF18 | Response time | Waktu pembaruan agregat rating setelah ulasan dikirim | Playwright HTTP, 1 pengiriman ulasan | Respons pengiriman ulasan 440.97 ms. Waktu render rating pada profil belum diukur. | Pengukuran parsial. Tetapkan batas lulus dan ukur sampai rating tampil. |
+| KNF19-TC01 | KNF19 | Security | Modul penindakan sengketa hanya dapat diakses peran Customer Service yang terautentikasi | HTTP ke `/api/cs/tiket` dan `/api/cs/verifikasi` dengan empat jenis akses; Vitest `domain-lintas` untuk setiap rute `/api/cs/*` | Tanpa sesi: 401, TK: 403, PK: 403, CS: 200 pada kedua rute. Uji INT-TC10 lulus untuk seluruh rute CS. | Pass |
+| KNF20-TC01 | KNF20 | Reliability | Riwayat penanganan sengketa tidak dapat diubah atau dihapus | SQL `UPDATE` dan `DELETE` langsung pada `riwayat_sengketa` di SQLite; Vitest `tiket-sengketa` dan `db` | UPDATE dan DELETE ditolak dengan pesan "riwayat_sengketa append-only"; jumlah baris riwayat tetap 42. | Pass |
 | KNF21-TC01 | KNF21 | Portability | Formulir registrasi dapat digunakan pada layar kecil dan desktop | Playwright pada Windows: Edge 390 × 844 dan Chrome 1440 × 900 | Kolom registrasi dapat diisi tanpa gulir horizontal pada kedua ukuran. | Pass untuk formulir registrasi pada dua profil yang diuji. |
+| KNF21-TC02 | KNF21 | Portability | Dialog penawaran dan daftar pelamar tampil adaptif tanpa gulir horizontal | Playwright pada Chromium 390 × 844 dan 1440 × 900, selisih `scrollWidth` dan `clientWidth` | Gulir horizontal 0 px pada halaman detail, dialog penawaran, dan daftar pelamar pada kedua ukuran. | Pass untuk dua profil pada Chromium. Edge dan perangkat sungguhan belum diuji. |
 | KNF22-TC01 | KNF22 | Memory | Dokumen dan bukti dikompresi otomatis hingga ≤ 10 MB | Inspeksi alur unggah dan uji penolakan bukti > 10 MiB | Gambar bukti pekerjaan dikompresi. Unggahan bukti yang melebihi batas ditolak. | Belum terpenuhi untuk semua jenis berkas. Uji kompresi per format atau sesuaikan batasan di SKPL. |
 | KNF23-TC01 | KNF23 | Availability | Uptime akses status verifikasi ≥ 99,9% | Pemantauan endpoint status verifikasi | Belum tersedia data uptime yang representatif. | Belum diuji. Catat permintaan berhasil dan gagal secara berkala di lingkungan yang digunakan. |
 
@@ -761,12 +977,18 @@ Tabel 4.6. Bukti Hasil Pengujian
 | INT-TC02 | [Vitest · auth](./assets/layar/integration-auth.png) |
 | INT-TC04 | [Vitest · verifikasi](./assets/layar/integration-verifikasi.png) |
 | INT-TC05 | [Vitest · verifikasi-cs](./assets/layar/integration-verifikasi-cs.png) |
+| INT-TC08 | [Vitest · penawaran](./assets/layar/integration-penawaran.png) |
+| INT-TC09 | [Vitest · pilih-pelamar](./assets/layar/integration-pilih-pelamar.png) |
+| INT-TC10 | [Vitest · domain-lintas](./assets/layar/integration-domain-lintas.png) |
 | INT-TC11 | [Vitest · transaksi](./assets/layar/integration-transaksi.png) |
 | INT-TC12 | [Vitest · transaksi-pemeriksaan](./assets/layar/integration-transaksi-pemeriksaan.png) |
 | INT-TC13 | [Vitest · transaksi-paginasi](./assets/layar/integration-transaksi-paginasi.png) |
 | INT-TC14 | [Vitest · transaksi-bukti](./assets/layar/integration-transaksi-bukti.png) |
 | INT-TC15 | [Vitest · berkas](./assets/layar/integration-berkas.png) |
 | INT-TC25 | [Vitest · profil](./assets/layar/integration-profil.png) |
+| INT-TC26 | [Vitest · tiket-sengketa](./assets/layar/integration-tiket-sengketa.png) |
+| INT-TC27 | [Vitest · sengketa-putusan](./assets/layar/integration-sengketa-putusan.png) |
+| INT-TC28 | [Vitest · refund](./assets/layar/integration-refund.png) |
 | INT-TC29 | [Vitest · notifikasi](./assets/layar/integration-notifikasi.png) |
 | C01-UT01, C01-UT02, C01-UT03, C01-UT04, C01-UT05, C01-UT06, C01-UT07, C01-UT08, C01-UT09, C01-UT10, C01-UT11, C01-UT12, C01-UT13, C01-UT14, C01-UT15, C01-UT16, C01-UT17, C01-UT18, C01-UT19, C01-UT20, C01-UT21, C01-UT22, C01-UT23, C01-UT24 | [Vitest · usia](./assets/layar/unit-usia.png)<br>[![C01-unit](./assets/layar/C01-unit.png)](./assets/layar/C01-unit.png) |
 | C01 (coverage) | [Cakupan V8 UC01–UC02](./assets/layar/coverage-uc01-uc02.png) |
@@ -781,6 +1003,12 @@ Tabel 4.6. Bukti Hasil Pengujian
 | C37 (coverage) | [Cakupan V8 · Controller](./assets/layar/coverage-controllers.png) |
 | C38 (coverage) | [Cakupan V8 · Controller](./assets/layar/coverage-controllers.png) |
 | C41 (coverage) | [Cakupan V8 · Controller](./assets/layar/coverage-controllers.png) |
+| C05 (coverage) | [Cakupan V8 · Model](./assets/layar/coverage-models.png)<br>[Cakupan V8 · Controller](./assets/layar/coverage-controllers.png) |
+| C06 (coverage) | [Cakupan V8 · Model](./assets/layar/coverage-models.png) |
+| C12 (coverage) | [Cakupan V8 · Model](./assets/layar/coverage-models.png) |
+| C13 (coverage) | [Cakupan V8 · Model](./assets/layar/coverage-models.png) |
+| C36 (coverage) | [Cakupan V8 · Controller](./assets/layar/coverage-controllers.png) |
+| C42 (coverage) | [Cakupan V8 · Controller](./assets/layar/coverage-controllers.png) |
 | UC01-TC01 | [![UC01-TC01](./assets/layar/UC01-TC01.png)](./assets/layar/UC01-TC01.png) |
 | UC01-TC02 | [![UC01-TC02](./assets/layar/UC01-TC02.png)](./assets/layar/UC01-TC02.png) |
 | UC01-TC03 | [![UC01-TC03](./assets/layar/UC01-TC03.png)](./assets/layar/UC01-TC03.png) |
@@ -788,6 +1016,12 @@ Tabel 4.6. Bukti Hasil Pengujian
 | UC02-TC02 | [![UC02-TC02](./assets/layar/UC02-TC02.png)](./assets/layar/UC02-TC02.png) |
 | UC02-TC03 | [![UC02-TC03](./assets/layar/UC02-TC03.png)](./assets/layar/UC02-TC03.png) |
 | UC02-TC04 | [![UC02-TC04](./assets/layar/UC02-TC04.png)](./assets/layar/UC02-TC04.png) |
+| UC05-TC01 | [![UC05-TC01](./assets/layar/UC05-TC01.png)](./assets/layar/UC05-TC01.png)<br>[Hasil asersi Playwright](./assets/layar/playwright-penawaran.png) |
+| UC05-TC02 | [![UC05-TC02](./assets/layar/UC05-TC02.png)](./assets/layar/UC05-TC02.png)<br>[Hasil asersi Playwright](./assets/layar/playwright-penawaran.png) |
+| UC05-TC03 | [![UC05-TC03](./assets/layar/UC05-TC03.png)](./assets/layar/UC05-TC03.png)<br>[Hasil asersi Playwright](./assets/layar/playwright-penawaran.png) |
+| UC06-TC01 | [![UC06-TC01](./assets/layar/UC06-TC01.png)](./assets/layar/UC06-TC01.png)<br>[Hasil pengujian antarmuka](./assets/layar/uji-ui-uc06-uc12.png) |
+| UC06-TC02 | [![UC06-TC02](./assets/layar/UC06-TC02.png)](./assets/layar/UC06-TC02.png)<br>[Hasil pengujian antarmuka](./assets/layar/uji-ui-uc06-uc12.png) |
+| UC06-TC03 | [![UC06-TC03](./assets/layar/UC06-TC03.png)](./assets/layar/UC06-TC03.png)<br>[Hasil pengujian antarmuka](./assets/layar/uji-ui-uc06-uc12.png) |
 | UC08-TC01 | [![UC08-TC01](./assets/layar/UC08-TC01.png)](./assets/layar/UC08-TC01.png)<br>[Hasil asersi Playwright](./assets/layar/playwright-5.png) |
 | UC08-TC02 | [![UC08-TC02](./assets/layar/UC08-TC02.png)](./assets/layar/UC08-TC02.png)<br>[Hasil asersi Playwright](./assets/layar/playwright-5.png) |
 | UC08-TC03 | [![UC08-TC03](./assets/layar/UC08-TC03.png)](./assets/layar/UC08-TC03.png)<br>[Hasil asersi Playwright](./assets/layar/playwright-5.png) |
@@ -797,14 +1031,26 @@ Tabel 4.6. Bukti Hasil Pengujian
 | UC11-TC01 | [![UC11-TC01](./assets/layar/UC11-TC01.png)](./assets/layar/UC11-TC01.png)<br>[Hasil asersi Playwright](./assets/layar/playwright-9.png)<br>[![UC11-TC01-form](./assets/layar/UC11-TC01-form.png)](./assets/layar/UC11-TC01-form.png)<br>[Vitest · profil](./assets/layar/integration-profil.png) |
 | UC11-TC02 | [![UC11-TC02](./assets/layar/UC11-TC02.png)](./assets/layar/UC11-TC02.png)<br>[Hasil asersi Playwright](./assets/layar/playwright-9.png) |
 | UC11-TC03 | [![UC11-TC03](./assets/layar/UC11-TC03.png)](./assets/layar/UC11-TC03.png)<br>[Hasil asersi Playwright](./assets/layar/playwright-9.png) |
+| UC12-TC01 | [![UC12-TC01](./assets/layar/UC12-TC01.png)](./assets/layar/UC12-TC01.png)<br>[Hasil pengujian antarmuka](./assets/layar/uji-ui-uc06-uc12.png) |
+| UC12-TC02 | [![UC12-TC02](./assets/layar/UC12-TC02.png)](./assets/layar/UC12-TC02.png)<br>[Hasil pengujian antarmuka](./assets/layar/uji-ui-uc06-uc12.png) |
+| UC12-TC03 | [![UC12-TC03](./assets/layar/UC12-TC03.png)](./assets/layar/UC12-TC03.png)<br>[Hasil pengujian antarmuka](./assets/layar/uji-ui-uc06-uc12.png) |
+| UC12-TC04 | [![UC12-TC04](./assets/layar/UC12-TC04.png)](./assets/layar/UC12-TC04.png)<br>[Hasil pengujian antarmuka](./assets/layar/uji-ui-uc06-uc12.png) |
 | KNF01-TC01 | [Vitest · auth-flow](./assets/layar/integration-auth-flow.png) |
 | KNF02-TC01 | [Vitest · verifikasi](./assets/layar/integration-verifikasi.png) |
 | KNF03-TC01 | [Pengukuran status verifikasi](./assets/layar/KNF03-verifikasi.png) |
+| KNF05-TC01 | [Pengukuran ukuran kontrol](./assets/layar/pengukuran-uc05-uc12.png)<br>[Dialog penawaran ponsel](./assets/layar/KNF05-penawaran-ponsel.png)<br>[Dialog penawaran desktop](./assets/layar/KNF05-penawaran-desktop.png) |
+| KNF06-TC01 | [Pengukuran akses lintas pemilik](./assets/layar/pengukuran-uc05-uc12.png)<br>[Vitest · pilih-pelamar](./assets/layar/integration-pilih-pelamar.png) |
+| KNF07-TC01 | [Pengukuran persetujuan serentak](./assets/layar/pengukuran-uc05-uc12.png)<br>[Vitest · domain-lintas](./assets/layar/integration-domain-lintas.png) |
+| KNF08-TC01 | [Pengukuran JS heap](./assets/layar/pengukuran-uc05-uc12.png) |
+| KNF10-TC01 | Belum ada bukti pengukuran uptime. |
 | KNF13-TC01 | [![pengukuran](./assets/layar/pengukuran.png)](./assets/layar/pengukuran.png) |
 | KNF14-TC01 | [Vitest · transaksi-bukti](./assets/layar/integration-transaksi-bukti.png) |
 | KNF15-TC01 | [Vitest · transaksi-pemeriksaan](./assets/layar/integration-transaksi-pemeriksaan.png) |
 | KNF18-TC01 | [![pengukuran](./assets/layar/pengukuran.png)](./assets/layar/pengukuran.png) |
+| KNF19-TC01 | [Pengukuran akses modul CS](./assets/layar/pengukuran-uc05-uc12.png)<br>[Vitest · domain-lintas](./assets/layar/integration-domain-lintas.png) |
+| KNF20-TC01 | [Pengukuran penolakan UPDATE dan DELETE](./assets/layar/pengukuran-uc05-uc12.png)<br>[Vitest · tiket-sengketa](./assets/layar/integration-tiket-sengketa.png) |
 | KNF21-TC01 | [Registrasi ponsel](./assets/layar/KNF21-daftar-ponsel.png)<br>[Registrasi desktop](./assets/layar/KNF21-daftar-desktop.png) |
+| KNF21-TC02 | [Pengukuran gulir horizontal](./assets/layar/pengukuran-uc05-uc12.png)<br>[Daftar pelamar ponsel](./assets/layar/KNF21-pelamar-ponsel.png)<br>[Daftar pelamar desktop](./assets/layar/KNF21-pelamar-desktop.png)<br>[Dialog penawaran ponsel](./assets/layar/KNF21-dialog-ponsel.png)<br>[Dialog penawaran desktop](./assets/layar/KNF21-dialog-desktop.png) |
 | KNF22-TC01 | [`verification-page.tsx`](../../src/features/verification/verification-page.tsx) · batas ukuran dokumen identitas<br>[Vitest · batas unggah bukti](./assets/layar/integration-transaksi-bukti.png) |
 | KNF23-TC01 | Belum ada bukti pengukuran uptime. |
 
