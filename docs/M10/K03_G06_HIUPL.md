@@ -47,8 +47,26 @@ Dipersiapkan oleh:
 - [BAB 4: Hasil Pengujian](#bab-4-hasil-pengujian)
   - [4.1 Strategi dan Kedalaman Pengujian Kelas](#41-strategi-dan-kedalaman-pengujian-kelas)
   - [4.2 Pengujian Unit Kelas](#42-pengujian-unit-kelas)
+    - [4.2.1 Kelas Pengguna](#421-kelas-pengguna)
+    - [4.2.2 Kelas TenagaKerja](#422-kelas-tenagakerja)
+    - [4.2.3 Kelas TransaksiPekerjaan](#423-kelas-transaksipekerjaan)
+    - [4.2.4 Kelas BuktiPenyerahan](#424-kelas-buktipenyerahan)
+    - [4.2.5 Kelas UlasanRating](#425-kelas-ulasanrating)
+    - [4.2.6 Kelas Notifikasi](#426-kelas-notifikasi)
+    - [4.2.7 Kelas PenggunaController](#427-kelas-penggunacontroller)
+    - [4.2.8 Kelas TenagaKerjaController](#428-kelas-tenagakerjacontroller)
+    - [4.2.9 Kelas CustomerServiceController](#429-kelas-customerservicecontroller)
+    - [4.2.10 Kelas TransaksiPekerjaanController](#4210-kelas-transaksipekerjaancontroller)
+    - [4.2.11 Kelas BuktiPenyerahanController](#4211-kelas-buktipenyerahancontroller)
+    - [4.2.12 Kelas UlasanRatingController](#4212-kelas-ulasanratingcontroller)
+    - [4.2.13 Kelas NotifikasiController](#4213-kelas-notifikasicontroller)
   - [4.3 Pengujian Integrasi](#43-pengujian-integrasi)
   - [4.4 Pengujian Use Case](#44-pengujian-use-case)
+    - [4.4.1 Use Case Melakukan Registrasi](#441-use-case-melakukan-registrasi)
+    - [4.4.2 Use Case Mengelola Verifikasi Identitas](#442-use-case-mengelola-verifikasi-identitas)
+    - [4.4.8 Use Case Menyerahkan Hasil Pekerjaan](#448-use-case-menyerahkan-hasil-pekerjaan)
+    - [4.4.9 Use Case Memverifikasi Penyelesaian Pekerjaan](#449-use-case-memverifikasi-penyelesaian-pekerjaan)
+    - [4.4.11 Use Case Memberikan Penilaian Kerja](#4411-use-case-memberikan-penilaian-kerja)
   - [4.5 Pengujian Kebutuhan Non-Fungsional (KNF)](#45-pengujian-kebutuhan-non-fungsional-knf)
   - [4.6 Tangkapan Layar dan Bukti Hasil Pengujian](#46-tangkapan-layar-dan-bukti-hasil-pengujian)
 - [BAB 5: Traceability](#bab-5-traceability)
@@ -127,7 +145,7 @@ Tabel 1.4. Aturan Penomoran
 
 ## 1.6 Deskripsi Umum Dokumen (Ikhtisar)
 
-Bab 1 memuat tujuan dan acuan. Bab 2 menggambarkan perangkat lunak. Bab 3 mencatat lingkungan, modul, antarmuka, dan file implementasi. Bab 4 memuat pengujian unit, integrasi, use case, dan KNF terkait UC01 dan UC02 beserta buktinya. Bab 5 memetakan kebutuhan ke implementasi dan test case.
+Bab 1 memuat tujuan dan acuan. Bab 2 menggambarkan perangkat lunak. Bab 3 mencatat lingkungan, modul, antarmuka, dan file implementasi. Bab 4 memuat pengujian unit, integrasi, use case, dan KNF terkait UC01, UC02, UC08, UC09, dan UC11 beserta buktinya. Bab 5 memetakan kebutuhan ke implementasi dan test case.
 
 <br>
 
@@ -295,7 +313,7 @@ Tabel 3.4. File Lain
 
 # BAB 4: Hasil Pengujian
 
-Pengujian mencakup UC01 (registrasi dan login) dan UC02 (verifikasi identitas). Vitest mencatat 75 kasus lulus dari 75 kasus pada lima file uji terkait.
+Pengujian mencakup UC01 (registrasi dan login), UC02 (verifikasi identitas), UC08 (menyerahkan hasil pekerjaan), UC09 (memverifikasi penyelesaian pekerjaan), dan UC11 (memberikan penilaian kerja).
 
 ## 4.1 Strategi dan Kedalaman Pengujian Kelas
 
@@ -307,12 +325,23 @@ Tabel 4.1.1. Identifikasi Tingkat Pengujian Kelas
 | C02 | TenagaKerja | Mendalam | Aturan transisi verifikasi | INT-TC04, INT-TC05 |
 | C03 | PenyediaKerja | Tidak perlu | Data peran berupa tabel, tanpa kelas domain terpisah | INT-TC01, INT-TC02 |
 | C04 | CustomerService | Tidak perlu | Data peran berupa tabel, tanpa kelas domain terpisah | INT-TC04, INT-TC05 |
+| C07 | TransaksiPekerjaan | Mendalam | Transisi status dan kredit upah | C07-UT01, C07-UT02, C07-UT03, C07-UT04, C07-UT05, C07-UT06, C07-UT07, C07-UT08, C07-UT09, C07-UT10, INT-TC11, INT-TC12 |
+| C08 | BuktiPenyerahan | Mendalam | Validasi dan penyimpanan bukti | C08-UT01, C08-UT02, C08-UT03, C08-UT04, C08-UT05, C08-UT06, C08-UT07, C08-UT08, C08-UT09, INT-TC14, INT-TC15 |
+| C11 | UlasanRating | Sedang | Pencatatan atau delegasi ke operasi domain | INT-TC25, INT-TC12 |
+| C14 | Notifikasi | Sedang | Pencatatan atau delegasi ke operasi domain | INT-TC29 |
 | C16 | PenggunaUI | Tidak perlu | Antarmuka React diuji melalui alur pengguna | UC01-TC01, UC01-TC02, UC01-TC03 |
 | C17 | TenagaKerjaUI | Tidak perlu | Antarmuka React diuji melalui alur pengguna | UC02-TC01, UC02-TC02, UC02-TC04 |
 | C19 | CustomerServiceUI | Tidak perlu | Antarmuka React diuji melalui alur pengguna | UC02-TC01, UC02-TC03 |
+| C22 | TransaksiPekerjaanUI | Tidak perlu | Antarmuka React diuji melalui alur pengguna | UC09-TC01, UC09-TC02, UC09-TC03 |
+| C23 | BuktiPenyerahanUI | Tidak perlu | Antarmuka React diuji melalui alur pengguna | UC08-TC01, UC08-TC02, UC08-TC03 |
+| C26 | UlasanRatingUI | Tidak perlu | Antarmuka React diuji melalui alur pengguna | UC11-TC01, UC11-TC02, UC11-TC03 |
 | C31 | PenggunaController | Mendalam | Validasi usia, kredensial dan autentikasi | INT-TC01, INT-TC02 |
 | C32 | TenagaKerjaController | Mendalam | Validasi dokumen dan status pengajuan | INT-TC04, INT-TC05 |
 | C34 | CustomerServiceController | Mendalam | Otorisasi dan keputusan verifikasi | INT-TC04, INT-TC05 |
+| C37 | TransaksiPekerjaanController | Mendalam | Validasi perubahan status, kredit dan ulasan | INT-TC11, INT-TC12 |
+| C38 | BuktiPenyerahanController | Mendalam | Otorisasi dan validasi bukti penyerahan | INT-TC14, INT-TC15 |
+| C41 | UlasanRatingController | Mendalam | Validasi dan pencegahan ulasan ganda | INT-TC25, INT-TC12 |
+| C44 | NotifikasiController | Sedang | Pencatatan atau delegasi ke operasi domain | INT-TC29 |
 
 ## 4.2 Pengujian Unit Kelas
 
@@ -357,7 +386,7 @@ Tabel 4.2.1b. Ringkasan Cakupan Kelas C01
 
 | Informasi | Keterangan |
 | :--- | :--- |
-| Daftar operasi public pada DPPL | registrasi, validasiUsia, login, generateToken |
+| Daftar operasi public pada DPPL | registrasi, validasiUsia, login, generateToken, berikanUlasan |
 | Operasi yang diuji | validasiBatasUsia() |
 | ID Algoritma yang tercakup | Algo-001 |
 | Coverage (target ≥ 70%) | `src/models/Pengguna.ts`: 100% baris / 100% cabang<br>`src/controllers/PenggunaController.ts`: 100% baris / 100% cabang<br>`src/lib/validation/auth.ts`: 100% baris / 100% cabang |
@@ -378,24 +407,107 @@ Tabel 4.2.2b. Ringkasan Cakupan Kelas C02
 
 | Informasi | Keterangan |
 | :--- | :--- |
-| Daftar operasi public pada DPPL | ajukanVerifikasi, perbaruiStatusVerifikasi |
+| Daftar operasi public pada DPPL | ajukanVerifikasi, perbaruiStatusVerifikasi, serahkanPekerjaan, terimaUpah |
 | Operasi yang diuji | — |
 | ID Algoritma yang tercakup | — |
 | Coverage (target ≥ 70%) | `src/models/TenagaKerja.ts`: 92.55% baris / 91.66% cabang<br>`src/controllers/TenagaKerjaController.ts`: 87.75% baris / 77.77% cabang |
 
-### 4.2.3 Kelas PenggunaController
+### 4.2.3 Kelas TransaksiPekerjaan
+
+**ID Kelas:** C07<br>
+**Nama Kelas:** TransaksiPekerjaan<br>
+**Tingkat:** Mendalam
+
+Tabel 4.2.3. Hasil Pengujian Unit Kelas C07
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C07-UT01 | `transisiDiizinkan()` | Negatif | pekerjaan: seluruh pasangan valid diizinkan dan pasangan lainnya ditolak | Asersi berhasil | Asersi berhasil | Pass |
+| C07-UT02 | `transisiDiizinkan()` | Negatif | pembayaran: seluruh pasangan valid diizinkan dan pasangan lainnya ditolak | Asersi berhasil | Asersi berhasil | Pass |
+| C07-UT03 | `transisiDiizinkan()` | Negatif | pencairan: seluruh pasangan valid diizinkan dan pasangan lainnya ditolak | Asersi berhasil | Asersi berhasil | Pass |
+| C07-UT04 | `transisiDiizinkan()` | Negatif | penawaran: seluruh pasangan valid diizinkan dan pasangan lainnya ditolak | Asersi berhasil | Asersi berhasil | Pass |
+| C07-UT05 | `transisiDiizinkan()` | Negatif | tiket: seluruh pasangan valid diizinkan dan pasangan lainnya ditolak | Asersi berhasil | Asersi berhasil | Pass |
+| C07-UT06 | `transisiDiizinkan()` | Negatif | verifikasi: seluruh pasangan valid diizinkan dan pasangan lainnya ditolak | Asersi berhasil | Asersi berhasil | Pass |
+| C07-UT07 | `transisiDiizinkan()` | Normal | pemulihan sengketa ke SUBMITTED dan IN_PROGRESS diizinkan | Asersi berhasil | Asersi berhasil | Pass |
+| C07-UT08 | `transisiDiizinkan()` | Negatif | pekerjaan selesai tidak dapat disengketakan dan tidak boleh melewati pembayaran | Asersi berhasil | Asersi berhasil | Pass |
+| C07-UT09 | `transisiDiizinkan()` | Normal | menolak transisi lintas jenis | Asersi berhasil | Asersi berhasil | Pass |
+| C07-UT10 | `transisiDiizinkan()` | Normal | label pekerjaan sesuai §2.8 | Asersi berhasil | Asersi berhasil | Pass |
+
+Tabel 4.2.3b. Ringkasan Cakupan Kelas C07
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | buatTransaksiBaru, verifikasiSelesai, picuPembayaranUpah, cekStatusSelesai, validasiUlasanGanda, getDetailTransaksi |
+| Operasi yang diuji | transisiDiizinkan() |
+| ID Algoritma yang tercakup | — |
+| Coverage (target ≥ 70%) | `src/models/TransaksiPekerjaan.ts`: 99.69% baris / 72.05% cabang<br>`src/models/statusMachine.ts`: 100% baris / 80% cabang<br>`src/controllers/TransaksiPekerjaanController.ts`: 90.36% baris / 72.88% cabang |
+
+### 4.2.4 Kelas BuktiPenyerahan
+
+**ID Kelas:** C08<br>
+**Nama Kelas:** BuktiPenyerahan<br>
+**Tingkat:** Mendalam
+
+Tabel 4.2.4. Hasil Pengujian Unit Kelas C08
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C08-UT01 | `simpanBerkas() / bacaBerkas() / hapusBerkas()` | Normal | menyimpan PNG dengan nama UUID, bukan nama asli | Asersi berhasil | Asersi berhasil | Pass |
+| C08-UT02 | `simpanBerkas() / bacaBerkas() / hapusBerkas()` | Normal | menolak .exe yang di-rename .jpg (magic bytes) | Asersi berhasil | Asersi berhasil | Pass |
+| C08-UT03 | `simpanBerkas() / bacaBerkas() / hapusBerkas()` | Negatif | menolak MIME yang tidak cocok dengan isi | Asersi berhasil | Asersi berhasil | Pass |
+| C08-UT04 | `simpanBerkas() / bacaBerkas() / hapusBerkas()` | Normal | menolak berkas kosong | Asersi berhasil | Asersi berhasil | Pass |
+| C08-UT05 | `simpanBerkas() / bacaBerkas() / hapusBerkas()` | Batas | batas ukuran: identitas 5 MB, bukti 10 MB | Asersi berhasil | Asersi berhasil | Pass |
+| C08-UT06 | `simpanBerkas() / bacaBerkas() / hapusBerkas()` | Negatif | isi di disk tidak terbaca, tetapi bacaBerkas mengembalikan aslinya | Asersi berhasil | Asersi berhasil | Pass |
+| C08-UT07 | `simpanBerkas() / bacaBerkas() / hapusBerkas()` | Negatif | berkas yang diubah di disk gagal didekripsi (integritas GCM) | Asersi berhasil | Asersi berhasil | Pass |
+| C08-UT08 | `simpanBerkas() / bacaBerkas() / hapusBerkas()` | Normal | menolak path traversal | Asersi berhasil | Asersi berhasil | Pass |
+| C08-UT09 | `simpanBerkas() / bacaBerkas() / hapusBerkas()` | Normal | hapusBerkas menghapus dan idempoten | Asersi berhasil | Asersi berhasil | Pass |
+
+Tabel 4.2.4b. Ringkasan Cakupan Kelas C08
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | validasiUkuranFile, simpanBukti |
+| Operasi yang diuji | simpanBerkas() / bacaBerkas() / hapusBerkas() |
+| ID Algoritma yang tercakup | — |
+| Coverage (target ≥ 70%) | `src/models/BuktiPenyerahan.ts`: 100% baris / 100% cabang<br>`src/controllers/TransaksiBuktiController.ts`: 85.96% baris / 71.42% cabang<br>`src/controllers/BerkasController.ts`: 92.59% baris / 92.85% cabang<br>`src/lib/storage.ts`: 100% baris / 89.36% cabang |
+
+### 4.2.5 Kelas UlasanRating
+
+**ID Kelas:** C11<br>
+**Nama Kelas:** UlasanRating<br>
+**Tingkat:** Sedang
+
+Tabel 4.2.5. Hasil Pengujian Unit Kelas C11
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| — | — | — | — | — | Uji integrasi: INT-TC25, INT-TC12 | Dilaporkan di 4.3 |
+
+### 4.2.6 Kelas Notifikasi
+
+**ID Kelas:** C14<br>
+**Nama Kelas:** Notifikasi<br>
+**Tingkat:** Sedang
+
+Tabel 4.2.6. Hasil Pengujian Unit Kelas C14
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| — | — | — | — | — | Uji integrasi: INT-TC29 | Dilaporkan di 4.3 |
+
+### 4.2.7 Kelas PenggunaController
 
 **ID Kelas:** C31<br>
 **Nama Kelas:** PenggunaController<br>
 **Tingkat:** Mendalam
 
-Tabel 4.2.3. Hasil Pengujian Unit Kelas C31
+Tabel 4.2.7. Hasil Pengujian Unit Kelas C31
 
 | ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | — | — | — | — | — | Uji integrasi: INT-TC01, INT-TC02 | Belum ada uji unit khusus |
 
-Tabel 4.2.3b. Ringkasan Cakupan Kelas C31
+Tabel 4.2.7b. Ringkasan Cakupan Kelas C31
 
 | Informasi | Keterangan |
 | :--- | :--- |
@@ -404,19 +516,19 @@ Tabel 4.2.3b. Ringkasan Cakupan Kelas C31
 | ID Algoritma yang tercakup | — |
 | Coverage (target ≥ 70%) | `src/controllers/PenggunaController.ts`: 100% baris / 100% cabang |
 
-### 4.2.4 Kelas TenagaKerjaController
+### 4.2.8 Kelas TenagaKerjaController
 
 **ID Kelas:** C32<br>
 **Nama Kelas:** TenagaKerjaController<br>
 **Tingkat:** Mendalam
 
-Tabel 4.2.4. Hasil Pengujian Unit Kelas C32
+Tabel 4.2.8. Hasil Pengujian Unit Kelas C32
 
 | ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | — | — | — | — | — | Uji integrasi: INT-TC04, INT-TC05 | Belum ada uji unit khusus |
 
-Tabel 4.2.4b. Ringkasan Cakupan Kelas C32
+Tabel 4.2.8b. Ringkasan Cakupan Kelas C32
 
 | Informasi | Keterangan |
 | :--- | :--- |
@@ -425,19 +537,19 @@ Tabel 4.2.4b. Ringkasan Cakupan Kelas C32
 | ID Algoritma yang tercakup | — |
 | Coverage (target ≥ 70%) | `src/controllers/TenagaKerjaController.ts`: 87.75% baris / 77.77% cabang |
 
-### 4.2.5 Kelas CustomerServiceController
+### 4.2.9 Kelas CustomerServiceController
 
 **ID Kelas:** C34<br>
 **Nama Kelas:** CustomerServiceController<br>
 **Tingkat:** Mendalam
 
-Tabel 4.2.5. Hasil Pengujian Unit Kelas C34
+Tabel 4.2.9. Hasil Pengujian Unit Kelas C34
 
 | ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | — | — | — | — | — | Uji integrasi: INT-TC04, INT-TC05 | Belum ada uji unit khusus |
 
-Tabel 4.2.5b. Ringkasan Cakupan Kelas C34
+Tabel 4.2.9b. Ringkasan Cakupan Kelas C34
 
 | Informasi | Keterangan |
 | :--- | :--- |
@@ -445,6 +557,81 @@ Tabel 4.2.5b. Ringkasan Cakupan Kelas C34
 | Operasi yang diuji | — |
 | ID Algoritma yang tercakup | — |
 | Coverage (target ≥ 70%) | `src/controllers/CustomerServiceController.ts`: 93.33% baris / 95.23% cabang |
+
+### 4.2.10 Kelas TransaksiPekerjaanController
+
+**ID Kelas:** C37<br>
+**Nama Kelas:** TransaksiPekerjaanController<br>
+**Tingkat:** Mendalam
+
+Tabel 4.2.10. Hasil Pengujian Unit Kelas C37
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| — | — | — | — | — | Uji integrasi: INT-TC11, INT-TC12 | Belum ada uji unit khusus |
+
+Tabel 4.2.10b. Ringkasan Cakupan Kelas C37
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | Lihat Tabel 4.1 DPPL2 |
+| Operasi yang diuji | — |
+| ID Algoritma yang tercakup | — |
+| Coverage (target ≥ 70%) | `src/controllers/TransaksiPekerjaanController.ts`: 90.36% baris / 72.88% cabang |
+
+### 4.2.11 Kelas BuktiPenyerahanController
+
+**ID Kelas:** C38<br>
+**Nama Kelas:** BuktiPenyerahanController<br>
+**Tingkat:** Mendalam
+
+Tabel 4.2.11. Hasil Pengujian Unit Kelas C38
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| — | — | — | — | — | Uji integrasi: INT-TC14, INT-TC15 | Belum ada uji unit khusus |
+
+Tabel 4.2.11b. Ringkasan Cakupan Kelas C38
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | Lihat Tabel 4.1 DPPL2 |
+| Operasi yang diuji | — |
+| ID Algoritma yang tercakup | — |
+| Coverage (target ≥ 70%) | `src/controllers/TransaksiBuktiController.ts`: 85.96% baris / 71.42% cabang<br>`src/controllers/BerkasController.ts`: 92.59% baris / 92.85% cabang |
+
+### 4.2.12 Kelas UlasanRatingController
+
+**ID Kelas:** C41<br>
+**Nama Kelas:** UlasanRatingController<br>
+**Tingkat:** Mendalam
+
+Tabel 4.2.12. Hasil Pengujian Unit Kelas C41
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| — | — | — | — | — | Uji integrasi: INT-TC25, INT-TC12 | Belum ada uji unit khusus |
+
+Tabel 4.2.12b. Ringkasan Cakupan Kelas C41
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | Lihat Tabel 4.1 DPPL2 |
+| Operasi yang diuji | — |
+| ID Algoritma yang tercakup | — |
+| Coverage (target ≥ 70%) | `src/controllers/TransaksiPekerjaanController.ts`: 90.36% baris / 72.88% cabang |
+
+### 4.2.13 Kelas NotifikasiController
+
+**ID Kelas:** C44<br>
+**Nama Kelas:** NotifikasiController<br>
+**Tingkat:** Sedang
+
+Tabel 4.2.13. Hasil Pengujian Unit Kelas C44
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| — | — | — | — | — | Uji integrasi: INT-TC29 | Dilaporkan di 4.3 |
 
 ## 4.3 Pengujian Integrasi
 
@@ -456,6 +643,10 @@ Tabel 4.3.1. Daftar Antarmuka Antarkomponen
 | :--- | :--- | :--- | :--- | :--- |
 | AI-01 | PenggunaController | Pengguna, autentikasi dan sesi | Controller – Model | INT-TC01, INT-TC02 |
 | AI-02 | TenagaKerjaController / CustomerServiceController | TenagaKerja dan penyimpanan berkas | Controller – Model – Berkas | INT-TC04, INT-TC05 |
+| AI-05 | TransaksiPekerjaanUI / TransaksiPekerjaanController | TransaksiPekerjaan | Route Handler – Controller – Model | INT-TC11, INT-TC12, INT-TC13 |
+| AI-06 | TransaksiBuktiController / BerkasController | BuktiPenyerahan dan penyimpanan berkas | Controller – Model – Berkas | INT-TC14, INT-TC15 |
+| AI-10 | UlasanRatingUI / TransaksiPekerjaanController | Ulasan dan Profil | Controller – Model | INT-TC25 |
+| AI-12 | NotifikasiUI / NotifikasiController | Notifikasi | Controller – Model | INT-TC29 |
 
 Tabel 4.3.2. Hasil Pengujian Integrasi
 
@@ -465,6 +656,13 @@ Tabel 4.3.2. Hasil Pengujian Integrasi
 | INT-TC02 | AI-01 | auth | `tests/integration/auth.test.ts` | hash Argon2id, verifikasi benar/salah, hash rusak = false; DB menyimpan SHA-256 token, bukan token mentah; cookie HttpOnly diset | 18/18 kasus lulus | Pass |
 | INT-TC04 | AI-02 | verifikasi | `tests/integration/verifikasi.test.ts` | TK belum terverifikasi: 201, status menunggu, berkas tersimpan terenkripsi; GET /status mengembalikan status terkini | 7/7 kasus lulus | Pass |
 | INT-TC05 | AI-02 | verifikasi-cs | `tests/integration/verifikasi-cs.test.ts` | CS melihat antrean MENUNGGU sesuai skema; non-CS -> 403, tanpa sesi -> 401 | 7/7 kasus lulus | Pass |
+| INT-TC11 | AI-05 | transaksi | `tests/integration/transaksi.test.ts` | peserta dapat melihat daftar dan detail status Indonesia; peran bukan peserta ditolak 403 | 8/8 kasus lulus | Pass |
+| INT-TC12 | AI-05 | transaksi-pemeriksaan | `tests/integration/transaksi-pemeriksaan.test.ts` | mengkredit upah tepat sekali, meskipun helper saldo dipanggil ulang; menolak persetujuan bila tagihan belum berhasil atau tiket masih aktif | 4/4 kasus lulus | Pass |
+| INT-TC13 | AI-05 | transaksi-paginasi | `tests/integration/transaksi-paginasi.test.ts` | TK: semua transaksi dapat dijangkau tanpa duplikasi walaupun waktu dibuat sama; TK: filter berlaku pada items, total, dan setiap halaman | 13/13 kasus lulus | Pass |
+| INT-TC14 | AI-06 | transaksi-bukti | `tests/integration/transaksi-bukti.test.ts` | TK terverifikasi yang ditugaskan dapat mengirim bukti; TK, PK, dan CS melihat bukti terbaru dan dapat membuka berkas; non-peserta ditolak | 10/10 kasus lulus | Pass |
+| INT-TC15 | AI-06 | berkas | `tests/integration/berkas.test.ts` | peserta (TK dan PK) dan CS boleh mengunduh, tanpa cache; bukan peserta -> 403 (KNF06); tanpa sesi -> 401 | 5/5 kasus lulus | Pass |
+| INT-TC25 | AI-10 | profil | `tests/integration/profil.test.ts` | fixture frontend mengikuti skema respons; GET/PATCH tanpa sesi ditolak 401 | 11/11 kasus lulus | Pass |
+| INT-TC29 | AI-12 | notifikasi | `tests/integration/notifikasi.test.ts` | fixture UI mengikuti kontrak respons; GET dan POST tanpa sesi menghasilkan 401 | 11/11 kasus lulus | Pass |
 
 ## 4.4 Pengujian Use Case
 
@@ -497,6 +695,45 @@ Tabel 4.4.2. Hasil Pengujian Use Case UC02
 | UC02-TC03 | KF04, KF05, KF06 | Alternatif 2: Dokumen Ditolak oleh Customer Service | 1. Tenaga Kerja memilih menu verifikasi identitas<br>2. Tenaga Kerja mengunggah dokumen yang buram atau data tidak cocok<br>3. Customer Service menolak verifikasi pada dashboard dengan memberikan alasan | PDF uji dan alasan penolakan | Sistem menampilkan antarmuka pengunggahan dokumen identitas<br>Sistem menyimpan dokumen sebagai "Menunggu Persetujuan"<br>Sistem memperbarui status menjadi "Ditolak", mengirim notifikasi revisi beserta alasan, dan fitur utama tetap dibatasi | CS menolak dokumen; status DITOLAK tampil. | Pass |
 | UC02-TC04 | KF04, KF05, KF06 | Alternatif 3: Mengakses Fitur Utama Sebelum Terverifikasi | 1. Tenaga Kerja (dengan status belum terverifikasi) mencoba menekan menu fitur utama platform<br>2. Sistem memblokir akses ke halaman tersebut | TK belum terverifikasi | Sistem mendeteksi status akun belum disetujui<br>Sistem menampilkan pop-up peringatan bahwa akun harus diverifikasi dan mengarahkan pengguna ke halaman verifikasi | Penawaran ditolak dengan HTTP 403. | Pass |
 
+### 4.4.8 Use Case Menyerahkan Hasil Pekerjaan
+
+**ID Use Case:** UC08<br>
+**Nama Use Case:** Menyerahkan Hasil Pekerjaan
+
+Tabel 4.4.8. Hasil Pengujian Use Case UC08
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| UC08-TC01 | KF16 | Normal | 1. Tenaga Kerja membuka halaman detail pekerjaan aktif  yang berstatus "In Progress" dan menekan tombol "Serahkan Hasil Pekerjaan".<br>2. Tenaga Kerja mengisi deskripsi pengerjaan, mengunggah berkas bukti (foto/dokumen dengan limit ukuran file), dan menekan tombol "Kirim Hasil Pekerjaan".<br>3. Tenaga Kerja mengonfirmasi penyerahan pada bukti konfirmasi akhir. | PDF uji dan deskripsi | Sistem menampilkan formulir penyerahan pekerjaan yang berisi catatan penyelesaian dan kolom pengunggahan berkas bukti/lampiran.<br>Sistem memvalidasi kelengkapan isian serta format dan ukuran berkas yang diunggah.<br>Sistem menyimpan berkas lampiran, mencatat stempel waktu pengiriman (*timestamp*), mengubah status pekerjaan menjadi "Submitted", serta mengirimkan notifikasi peninjauan hasil kepada Penyedia Kerja. | HTTP 201; bukti tampil dan transaksi menjadi SUBMITTED. | Pass |
+| UC08-TC02 | KF16 | Alternatif 1: Ukuran Berkas Melebihi Batas Maksimal | 1. Tenaga Kerja memilih berkas bukti yang berukuran lebih besar dari batas ketentuan (misal > 10 MB).<br>2. Tenaga Kerja memilih berkas baru yang sesuai dengan batasan ukuran. | Berkas 10 MiB + 1 byte | Sistem mendeteksi ukuran berkas melebihi kuota penyimpanan yang diizinkan.<br>Sistem menggagalkan pengunggahan berkas, menampilkan pesan peringatan "Ukuran berkas melebihi batas maksimal 10 MB", dan meminta Tenaga Kerja memilih berkas lain.<br>Sistem memvalidasi berkas baru dan kembali ke langkah 2 skenario normal. | Unggahan melebihi 10 MiB ditolak. | Pass |
+| UC08-TC03 | KF16 | Alternatif 2: Tenaga Kerja Belum Mengunggah Berkas Wajib | 1. Tenaga Kerja mengosongkan kolom lampiran bukti dan langsung menekan tombol "Kirim Hasil Pekerjaan". | Deskripsi tanpa berkas | Sistem mendeteksi bahwa bukti pengerjaan wajib dilampirkan.<br>Sistem menampilkan pesan peringatan bahwa bukti pekerjaan tidak boleh kosong dan menolak pengiriman formulir hingga berkas diunggah. | Permintaan tanpa berkas ditolak. | Pass |
+
+### 4.4.9 Use Case Memverifikasi Penyelesaian Pekerjaan
+
+**ID Use Case:** UC09<br>
+**Nama Use Case:** Memverifikasi Penyelesaian Pekerjaan
+
+Tabel 4.4.9. Hasil Pengujian Use Case UC09
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| UC09-TC01 | KF17, KF18 | Normal | 1. Penyedia Kerja membuka halaman rincian pekerjaan yang berstatus "Submitted".<br>2. Penyedia Kerja memeriksa hasil kerja dan menekan tombol "Konfirmasi Selesai".<br>3. Penyedia Kerja mengonfirmasi persetujuan hasil kerja. | Bukti revisi dan persetujuan PK | Sistem menampilkan deskripsi hasil pekerjaan beserta lampiran bukti pengerjaan yang telah diunggah Tenaga Kerja.<br>Sistem menampilkan bukti konfirmasi penyelesaian pekerjaan dengan peringatan bahwa dana upah akan langsung diteruskan ke Tenaga Kerja.<br>Sistem mengubah status pekerjaan menjadi "Completed", memicu instruksi penyaluran upah ke akun Tenaga Kerja, memperbarui saldo pendapatan Tenaga Kerja, dan mengirimkan notifikasi penerimaan upah.<br>Sistem secara otomatis mengarahkan Penyedia Kerja ke antarmuka formulir rating dan ulasan (UC10). | Status COMPLETED dan saldo bertambah Rp125.000. Pencairan ke rekening harus diajukan terpisah. | Fail (KF17: pencairan rekening tidak otomatis; selaraskan alur atau SKPL) |
+| UC09-TC02 | KF17, KF18 | Alternatif 1: Hasil Pekerjaan Belum Sesuai (Penyedia Kerja Meminta Revisi) | 1. Penyedia Kerja memeriksa hasil kerja dan mendapati hasil pekerjaan belum sesuai kesepakatan.<br>2. Penyedia Kerja mengisi catatan kekurangan pekerjaan pada kolom deskripsi revisi dan menekan "Kirim Permintaan Revisi". | Catatan revisi | Penyedia Kerja menekan tombol "Minta Revisi / Perbaikan".<br>Sistem menyimpan catatan revisi, mengembalikan status pekerjaan menjadi "In Progress", serta mengirimkan notifikasi permintaan revisi kepada Tenaga Kerja. | Permintaan revisi diterima dan dicatat. | Pass |
+| UC09-TC03 | KF17, KF18 | Alternatif 2: Terjadi Ketidaksepakatan / Perselisihan Hasil Kerja | 1. Penyedia Kerja memeriksa hasil pekerjaan namun Tenaga Kerja tidak menyelesaikan tanggung jawab sama sekali atau melanggar kesepakatan. | Kategori hasil pekerjaan dan uraian sengketa | Penyedia Kerja menekan tombol "Ajukan Komplain".<br>Sistem mengarahkan Penyedia Kerja ke alur penanganan sengketa (UC11 / Menangani Keluhan dan Sengketa) serta menahan status dana pekerjaan. | Tiket terbit dan pekerjaan masuk peninjauan. | Pass |
+
+### 4.4.11 Use Case Memberikan Penilaian Kerja
+
+**ID Use Case:** UC11<br>
+**Nama Use Case:** Memberikan Penilaian Kerja
+
+Tabel 4.4.11. Hasil Pengujian Use Case UC11
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| UC11-TC01 | KF21, KF22, KF23 | Normal | 1. Pengguna membuka halaman pekerjaan berstatus "Completed" dan menekan "Beri Rating & Ulasan".<br>2. Pengguna memilih nilai rating, mengisi ulasan, dan menekan "Kirim Ulasan". | Bintang 5 dan ulasan | Sistem menampilkan formulir rating (skala 1–5) dan kolom ulasan teks.<br>Sistem memvalidasi kelengkapan isian dan menyimpan data rating serta ulasan ke basis data.<br>Sistem mengunci formulir ulasan untuk pekerjaan tersebut, menghitung ulang rata-rata rating pengguna yang dinilai, dan memperbarui tampilan portofolio pada profilnya. | Ulasan bintang 5 diterima dan profil penerima ditampilkan. | Pass |
+| UC11-TC02 | KF21, KF22, KF23 | Alternatif 1: Pengiriman Ulasan Ganda | 1. Pengguna yang sudah pernah mengirim ulasan mencoba membuka kembali formulir ulasan untuk pekerjaan yang sama. | Ulasan kedua dari akun yang sama | Sistem mendeteksi bahwa ulasan untuk pekerjaan tersebut sudah pernah dikirim.<br>Sistem mengunci formulir, menampilkan pesan bahwa ulasan sudah pernah diberikan, dan menolak pengiriman ulasan tambahan. | Pengiriman ulang ditolak dengan HTTP 409. | Pass |
+| UC11-TC03 | KF21, KF22, KF23 | Alternatif 2: Rating Tidak Diisi | 1. Pengguna mengosongkan kolom rating dan langsung menekan "Kirim Ulasan". | Tidak mengisi rating | Sistem mendeteksi rating wajib belum dipilih.<br>Sistem menampilkan pesan peringatan bahwa rating wajib diisi dan menggagalkan pengiriman formulir. | Rating kosong ditolak dengan HTTP 400. | Pass |
+
 ## 4.5 Pengujian Kebutuhan Non-Fungsional (KNF)
 
 Tabel 4.5. Hasil Pengujian KNF
@@ -506,8 +743,12 @@ Tabel 4.5. Hasil Pengujian KNF
 | KNF01-TC01 | KNF01 | Security | Kata sandi berupa hash dan token sesi tidak tersimpan sebagai teks biasa | Vitest, pemeriksaan SQLite | Hash Argon2id; token mentah tidak ditemukan pada penyimpanan sesi. | Pass |
 | KNF02-TC01 | KNF02 | Security | Dokumen identitas tersimpan terenkripsi | Vitest, baca berkas penyimpanan uji | Unggahan diterima dan berkas tersimpan terenkripsi. | Pass |
 | KNF03-TC01 | KNF03 | Response time | Pemeriksaan status akses < 1.000 ms | Playwright HTTP, 5 permintaan status setelah pemanasan | 5 pengukuran: rata-rata 31.03 ms, maksimum 37.05 ms. | Pass |
+| KNF13-TC01 | KNF13 | Response Time | Waktu respons unggah bukti | Playwright HTTP, 1 unggahan PDF uji dan pembacaan ulang | Respons unggah 129.24 ms; status SUBMITTED. | Terukur. SKPL belum menetapkan batas waktu lulus. |
+| KNF14-TC01 | KNF14 | Security | Hanya TK yang ditugaskan dapat mengirim bukti | Vitest, TK yang ditugaskan dan akun lain | TK yang ditugaskan dapat mengirim; akun yang tidak berhak ditolak. | Pass |
+| KNF15-TC01 | KNF15 | Reliability | Tidak ada kredit upah sebelum persetujuan atau keputusan sengketa | Vitest, inspeksi saldo dan mutasi transaksi | Kredit hanya terjadi setelah tindakan sah; kredit ulang tidak menggandakan mutasi. | Pass |
+| KNF18-TC01 | KNF18 | Response time | Waktu pembaruan agregat rating setelah ulasan dikirim | Playwright HTTP, 1 pengiriman ulasan | Respons pengiriman ulasan 440.97 ms. Waktu render rating pada profil belum diukur. | Pengukuran parsial. Tetapkan batas lulus dan ukur sampai rating tampil. |
 | KNF21-TC01 | KNF21 | Portability | Formulir registrasi dapat digunakan pada layar kecil dan desktop | Playwright pada Windows: Edge 390 × 844 dan Chrome 1440 × 900 | Kolom registrasi dapat diisi tanpa gulir horizontal pada kedua ukuran. | Pass untuk formulir registrasi pada dua profil yang diuji. |
-| KNF22-TC01 | KNF22 | Memory | Dokumen identitas dikompresi otomatis hingga ≤ 10 MB | Inspeksi alur unggah dokumen identitas | Formulir dan penyimpanan membatasi ukuran dokumen identitas hingga 5 MiB. Kompresi otomatis dokumen identitas belum tersedia. | Belum terpenuhi. Tambahkan kompresi pada format yang didukung atau sesuaikan SKPL. |
+| KNF22-TC01 | KNF22 | Memory | Dokumen dan bukti dikompresi otomatis hingga ≤ 10 MB | Inspeksi alur unggah dan uji penolakan bukti > 10 MiB | Gambar bukti pekerjaan dikompresi. Unggahan bukti yang melebihi batas ditolak. | Belum terpenuhi untuk semua jenis berkas. Uji kompresi per format atau sesuaikan batasan di SKPL. |
 | KNF23-TC01 | KNF23 | Availability | Uptime akses status verifikasi ≥ 99,9% | Pemantauan endpoint status verifikasi | Belum tersedia data uptime yang representatif. | Belum diuji. Catat permintaan berhasil dan gagal secara berkala di lingkungan yang digunakan. |
 
 ## 4.6 Tangkapan Layar dan Bukti Hasil Pengujian
@@ -520,12 +761,26 @@ Tabel 4.6. Bukti Hasil Pengujian
 | INT-TC02 | [Vitest · auth](./assets/layar/integration-auth.png) |
 | INT-TC04 | [Vitest · verifikasi](./assets/layar/integration-verifikasi.png) |
 | INT-TC05 | [Vitest · verifikasi-cs](./assets/layar/integration-verifikasi-cs.png) |
+| INT-TC11 | [Vitest · transaksi](./assets/layar/integration-transaksi.png) |
+| INT-TC12 | [Vitest · transaksi-pemeriksaan](./assets/layar/integration-transaksi-pemeriksaan.png) |
+| INT-TC13 | [Vitest · transaksi-paginasi](./assets/layar/integration-transaksi-paginasi.png) |
+| INT-TC14 | [Vitest · transaksi-bukti](./assets/layar/integration-transaksi-bukti.png) |
+| INT-TC15 | [Vitest · berkas](./assets/layar/integration-berkas.png) |
+| INT-TC25 | [Vitest · profil](./assets/layar/integration-profil.png) |
+| INT-TC29 | [Vitest · notifikasi](./assets/layar/integration-notifikasi.png) |
 | C01-UT01, C01-UT02, C01-UT03, C01-UT04, C01-UT05, C01-UT06, C01-UT07, C01-UT08, C01-UT09, C01-UT10, C01-UT11, C01-UT12, C01-UT13, C01-UT14, C01-UT15, C01-UT16, C01-UT17, C01-UT18, C01-UT19, C01-UT20, C01-UT21, C01-UT22, C01-UT23, C01-UT24 | [Vitest · usia](./assets/layar/unit-usia.png)<br>[![C01-unit](./assets/layar/C01-unit.png)](./assets/layar/C01-unit.png) |
 | C01 (coverage) | [Cakupan V8 UC01–UC02](./assets/layar/coverage-uc01-uc02.png) |
 | C02 (coverage) | [Cakupan V8 UC01–UC02](./assets/layar/coverage-uc01-uc02.png) |
+| C07-UT01, C07-UT02, C07-UT03, C07-UT04, C07-UT05, C07-UT06, C07-UT07, C07-UT08, C07-UT09, C07-UT10 | [Vitest · statusMachine](./assets/layar/unit-statusMachine.png)<br>[![C07-unit](./assets/layar/C07-unit.png)](./assets/layar/C07-unit.png) |
+| C07 (coverage) | [Cakupan V8 · Model](./assets/layar/coverage-models.png)<br>[Cakupan V8 · Controller](./assets/layar/coverage-controllers.png) |
+| C08-UT01, C08-UT02, C08-UT03, C08-UT04, C08-UT05, C08-UT06, C08-UT07, C08-UT08, C08-UT09 | [Vitest · storage](./assets/layar/unit-storage.png)<br>[![C08-unit](./assets/layar/C08-unit.png)](./assets/layar/C08-unit.png) |
+| C08 (coverage) | [Cakupan V8 · Model](./assets/layar/coverage-models.png)<br>[Cakupan V8 · Controller](./assets/layar/coverage-controllers.png)<br>[Cakupan V8 · Utilitas](./assets/layar/coverage-lib.png) |
 | C31 (coverage) | [Cakupan V8 UC01–UC02](./assets/layar/coverage-uc01-uc02.png) |
 | C32 (coverage) | [Cakupan V8 UC01–UC02](./assets/layar/coverage-uc01-uc02.png) |
 | C34 (coverage) | [Cakupan V8 UC01–UC02](./assets/layar/coverage-uc01-uc02.png) |
+| C37 (coverage) | [Cakupan V8 · Controller](./assets/layar/coverage-controllers.png) |
+| C38 (coverage) | [Cakupan V8 · Controller](./assets/layar/coverage-controllers.png) |
+| C41 (coverage) | [Cakupan V8 · Controller](./assets/layar/coverage-controllers.png) |
 | UC01-TC01 | [![UC01-TC01](./assets/layar/UC01-TC01.png)](./assets/layar/UC01-TC01.png) |
 | UC01-TC02 | [![UC01-TC02](./assets/layar/UC01-TC02.png)](./assets/layar/UC01-TC02.png) |
 | UC01-TC03 | [![UC01-TC03](./assets/layar/UC01-TC03.png)](./assets/layar/UC01-TC03.png) |
@@ -533,11 +788,24 @@ Tabel 4.6. Bukti Hasil Pengujian
 | UC02-TC02 | [![UC02-TC02](./assets/layar/UC02-TC02.png)](./assets/layar/UC02-TC02.png) |
 | UC02-TC03 | [![UC02-TC03](./assets/layar/UC02-TC03.png)](./assets/layar/UC02-TC03.png) |
 | UC02-TC04 | [![UC02-TC04](./assets/layar/UC02-TC04.png)](./assets/layar/UC02-TC04.png) |
+| UC08-TC01 | [![UC08-TC01](./assets/layar/UC08-TC01.png)](./assets/layar/UC08-TC01.png)<br>[Hasil asersi Playwright](./assets/layar/playwright-5.png) |
+| UC08-TC02 | [![UC08-TC02](./assets/layar/UC08-TC02.png)](./assets/layar/UC08-TC02.png)<br>[Hasil asersi Playwright](./assets/layar/playwright-5.png) |
+| UC08-TC03 | [![UC08-TC03](./assets/layar/UC08-TC03.png)](./assets/layar/UC08-TC03.png)<br>[Hasil asersi Playwright](./assets/layar/playwright-5.png) |
+| UC09-TC01 | [![UC09-TC01](./assets/layar/UC09-TC01.png)](./assets/layar/UC09-TC01.png)<br>[Hasil asersi Playwright](./assets/layar/playwright-9.png)<br>[![UC09-TC01-dompet](./assets/layar/UC09-TC01-dompet.png)](./assets/layar/UC09-TC01-dompet.png)<br>[Vitest · transaksi-pemeriksaan](./assets/layar/integration-transaksi-pemeriksaan.png) |
+| UC09-TC02 | [![UC09-TC02](./assets/layar/UC09-TC02.png)](./assets/layar/UC09-TC02.png)<br>[Hasil asersi Playwright](./assets/layar/playwright-9.png) |
+| UC09-TC03 | [![UC09-TC03](./assets/layar/UC09-TC03.png)](./assets/layar/UC09-TC03.png)<br>[Hasil asersi Playwright](./assets/layar/playwright-9.png) |
+| UC11-TC01 | [![UC11-TC01](./assets/layar/UC11-TC01.png)](./assets/layar/UC11-TC01.png)<br>[Hasil asersi Playwright](./assets/layar/playwright-9.png)<br>[![UC11-TC01-form](./assets/layar/UC11-TC01-form.png)](./assets/layar/UC11-TC01-form.png)<br>[Vitest · profil](./assets/layar/integration-profil.png) |
+| UC11-TC02 | [![UC11-TC02](./assets/layar/UC11-TC02.png)](./assets/layar/UC11-TC02.png)<br>[Hasil asersi Playwright](./assets/layar/playwright-9.png) |
+| UC11-TC03 | [![UC11-TC03](./assets/layar/UC11-TC03.png)](./assets/layar/UC11-TC03.png)<br>[Hasil asersi Playwright](./assets/layar/playwright-9.png) |
 | KNF01-TC01 | [Vitest · auth-flow](./assets/layar/integration-auth-flow.png) |
 | KNF02-TC01 | [Vitest · verifikasi](./assets/layar/integration-verifikasi.png) |
 | KNF03-TC01 | [Pengukuran status verifikasi](./assets/layar/KNF03-verifikasi.png) |
+| KNF13-TC01 | [![pengukuran](./assets/layar/pengukuran.png)](./assets/layar/pengukuran.png) |
+| KNF14-TC01 | [Vitest · transaksi-bukti](./assets/layar/integration-transaksi-bukti.png) |
+| KNF15-TC01 | [Vitest · transaksi-pemeriksaan](./assets/layar/integration-transaksi-pemeriksaan.png) |
+| KNF18-TC01 | [![pengukuran](./assets/layar/pengukuran.png)](./assets/layar/pengukuran.png) |
 | KNF21-TC01 | [Registrasi ponsel](./assets/layar/KNF21-daftar-ponsel.png)<br>[Registrasi desktop](./assets/layar/KNF21-daftar-desktop.png) |
-| KNF22-TC01 | [`verification-page.tsx`](../../src/features/verification/verification-page.tsx) · batas ukuran dokumen identitas |
+| KNF22-TC01 | [`verification-page.tsx`](../../src/features/verification/verification-page.tsx) · batas ukuran dokumen identitas<br>[Vitest · batas unggah bukti](./assets/layar/integration-transaksi-bukti.png) |
 | KNF23-TC01 | Belum ada bukti pengukuran uptime. |
 
 <br>
@@ -546,7 +814,7 @@ Tabel 4.6. Bukti Hasil Pengujian
 
 # BAB 5: Traceability
 
-Matriks mencakup seluruh kebutuhan. Hasil dan bukti pada Bab 4 terbatas pada pengujian yang terkait dengan UC01 dan UC02.
+Matriks mencakup seluruh kebutuhan. Hasil dan bukti pada Bab 4 terbatas pada pengujian yang terkait dengan UC01, UC02, UC08, UC09, dan UC11.
 
 Tabel 5.1. Matriks Kerunutan KF terhadap Implementasi dan Pengujian
 
