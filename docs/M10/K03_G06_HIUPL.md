@@ -73,10 +73,14 @@ Dipersiapkan oleh:
     - [4.2.24 Kelas TagihanPembayaranController](#4224-kelas-tagihanpembayarancontroller)
     - [4.2.25 Kelas PencairanDanaController](#4225-kelas-pencairandanacontroller)
     - [4.2.26 Kelas PaymentGatewayController](#4226-kelas-paymentgatewaycontroller)
+    - [4.2.27 Kelas PenyediaKerjaController](#4227-kelas-penyediakerjacontroller)
+    - [4.2.28 Kelas LowonganPekerjaanController](#4228-kelas-lowonganpekerjaancontroller)
   - [4.3 Pengujian Integrasi](#43-pengujian-integrasi)
   - [4.4 Pengujian Use Case](#44-pengujian-use-case)
     - [4.4.1 Use Case Melakukan Registrasi](#441-use-case-melakukan-registrasi)
     - [4.4.2 Use Case Mengelola Verifikasi Identitas](#442-use-case-mengelola-verifikasi-identitas)
+    - [4.4.3 Use Case Mengelola Lowongan Pekerjaan](#443-use-case-mengelola-lowongan-pekerjaan)
+    - [4.4.4 Use Case Mencari Lowongan Pekerjaan](#444-use-case-mencari-lowongan-pekerjaan)
     - [4.4.5 Use Case Mengajukan Penawaran Pekerjaan](#445-use-case-mengajukan-penawaran-pekerjaan)
     - [4.4.6 Use Case Memilih Tenaga Kerja](#446-use-case-memilih-tenaga-kerja)
     - [4.4.7 Use Case Melakukan Pembayaran Pekerjaan](#447-use-case-melakukan-pembayaran-pekerjaan)
@@ -163,7 +167,7 @@ Tabel 1.4. Aturan Penomoran
 
 ## 1.6 Deskripsi Umum Dokumen (Ikhtisar)
 
-Bab 1 memuat tujuan dan acuan. Bab 2 menggambarkan perangkat lunak. Bab 3 mencatat lingkungan, modul, antarmuka, dan file implementasi. Bab 4 memuat pengujian unit, integrasi, use case, dan KNF terkait UC01, UC02, UC05, UC06, UC07, UC08, UC09, UC10, UC11, dan UC12 beserta buktinya. Bab 5 memetakan kebutuhan ke implementasi dan test case.
+Bab 1 memuat tujuan dan acuan. Bab 2 menggambarkan perangkat lunak. Bab 3 mencatat lingkungan, modul, antarmuka, dan file implementasi. Bab 4 memuat pengujian unit, integrasi, use case, dan KNF terkait UC01–UC12 beserta buktinya. Bab 5 memetakan kebutuhan ke implementasi dan test case.
 
 <br>
 
@@ -331,7 +335,7 @@ Tabel 3.4. File Lain
 
 # BAB 4: Hasil Pengujian
 
-Pengujian mencakup UC01 (registrasi dan login), UC02 (verifikasi identitas), UC05 (mengajukan penawaran pekerjaan), UC06 (memilih tenaga kerja), UC07 (melakukan pembayaran pekerjaan), UC08 (menyerahkan hasil pekerjaan), UC09 (memverifikasi penyelesaian pekerjaan), UC10 (melakukan pencairan dana), UC11 (memberikan penilaian kerja), dan UC12 (menangani keluhan).
+Pengujian mencakup UC01–UC12. Vitest mencatat 487 dari 487 kasus lulus pada 44 file uji.
 
 ## 4.1 Strategi dan Kedalaman Pengujian Kelas
 
@@ -343,7 +347,7 @@ Tabel 4.1.1. Identifikasi Tingkat Pengujian Kelas
 | C02 | TenagaKerja | Mendalam | Aturan transisi verifikasi | INT-TC04, INT-TC05 |
 | C03 | PenyediaKerja | Tidak perlu | Data peran berupa tabel, tanpa kelas domain terpisah | INT-TC01, INT-TC02 |
 | C04 | CustomerService | Tidak perlu | Data peran berupa tabel, tanpa kelas domain terpisah | INT-TC04, INT-TC05 |
-| C05 | LowonganPekerjaan | Mendalam | Sisa kuota, penutupan otomatis menjadi Closed/Full, dan batas jumlah diterima | INT-TC09, INT-TC10 |
+| C05 | LowonganPekerjaan | Mendalam | Penyimpanan, pencarian, dan perubahan status berdasarkan kuota | INT-TC06, INT-TC07, INT-TC09, INT-TC10 |
 | C06 | PengajuanPenawaran | Mendalam | Satu penawaran aktif per tenaga kerja, penarikan, dan transisi status penawaran | C07-UT04, INT-TC08, INT-TC09, INT-TC10 |
 | C07 | TransaksiPekerjaan | Mendalam | Transisi status dan kredit upah | C07-UT01, C07-UT02, C07-UT03, C07-UT04, C07-UT05, C07-UT06, C07-UT07, C07-UT08, C07-UT09, C07-UT10, INT-TC11, INT-TC12 |
 | C08 | BuktiPenyerahan | Mendalam | Validasi dan penyimpanan bukti | C08-UT01, C08-UT02, C08-UT03, C08-UT04, C08-UT05, C08-UT06, C08-UT07, C08-UT08, C08-UT09, INT-TC14, INT-TC15 |
@@ -356,7 +360,9 @@ Tabel 4.1.1. Identifikasi Tingkat Pengujian Kelas
 | C15 | PaymentGateway | Mendalam | Adapter pembayaran dummy | C15-UT01, C15-UT04, C15-UT05, C15-UT06, C15-UT07, C15-UT08, C15-UT09, C15-UT10, C15-UT11, C15-UT12, C15-UT13, INT-TC19, INT-TC20 |
 | C16 | PenggunaUI | Tidak perlu | Antarmuka React diuji melalui alur pengguna | UC01-TC01, UC01-TC02, UC01-TC03 |
 | C17 | TenagaKerjaUI | Tidak perlu | Antarmuka React diuji melalui alur pengguna | UC02-TC01, UC02-TC02, UC02-TC04 |
+| C18 | PenyediaKerjaUI | Tidak perlu | Antarmuka React diuji melalui use case | UC03-TC01, UC03-TC02, UC03-TC03 |
 | C19 | CustomerServiceUI | Tidak perlu | Antarmuka React diuji melalui alur pengguna | UC02-TC01, UC02-TC03, UC12-TC01, UC12-TC02, UC12-TC03 |
+| C20 | LowonganPekerjaanUI | Tidak perlu | Antarmuka React diuji melalui use case | UC04-TC01, UC04-TC02 |
 | C21 | PengajuanPenawaranUI | Tidak perlu | Antarmuka React diuji melalui alur pengguna | UC05-TC01, UC05-TC02, UC05-TC03, UC06-TC01, UC06-TC02, UC06-TC03 |
 | C22 | TransaksiPekerjaanUI | Tidak perlu | Antarmuka React diuji melalui alur pengguna | UC09-TC01, UC09-TC02, UC09-TC03 |
 | C23 | BuktiPenyerahanUI | Tidak perlu | Antarmuka React diuji melalui alur pengguna | UC08-TC01, UC08-TC02, UC08-TC03 |
@@ -365,10 +371,13 @@ Tabel 4.1.1. Identifikasi Tingkat Pengujian Kelas
 | C26 | UlasanRatingUI | Tidak perlu | Antarmuka React diuji melalui alur pengguna | UC11-TC01, UC11-TC02, UC11-TC03 |
 | C27 | TiketSengketaUI | Tidak perlu | Antarmuka React diuji melalui alur pengguna | UC12-TC01, UC12-TC02, UC12-TC03, UC12-TC04 |
 | C28 | RiwayatSengketaUI | Tidak perlu | Antarmuka React diuji melalui alur pengguna | UC12-TC01, UC12-TC02, UC12-TC03, UC12-TC04 |
+| C29 | NotifikasiUI | Tidak perlu | Antarmuka React menampilkan notifikasi yang dihasilkan alur fitur | INT-TC29 |
 | C30 | PaymentGatewayUI | Tidak perlu | Antarmuka React diuji melalui alur pengguna | UC07-TC01 |
 | C31 | PenggunaController | Mendalam | Validasi usia, kredensial dan autentikasi | INT-TC01, INT-TC02 |
 | C32 | TenagaKerjaController | Mendalam | Validasi dokumen dan status pengajuan | INT-TC04, INT-TC05 |
+| C33 | PenyediaKerjaController | Sedang | Operasi penyedia didelegasikan ke controller lowongan dan penawaran | INT-TC06, INT-TC07, INT-TC09 |
 | C34 | CustomerServiceController | Mendalam | Otorisasi dan keputusan verifikasi | INT-TC04, INT-TC05, INT-TC26, INT-TC27, INT-TC28 |
+| C35 | LowonganPekerjaanController | Mendalam | Validasi masukan, hak akses, dan koordinasi pencarian lowongan | INT-TC06, INT-TC07 |
 | C36 | PengajuanPenawaranController | Mendalam | Otorisasi peran, validasi akun terverifikasi, dan pemilihan pelamar secara transaksional | INT-TC08, INT-TC09, INT-TC10 |
 | C37 | TransaksiPekerjaanController | Mendalam | Validasi perubahan status, kredit dan ulasan | INT-TC11, INT-TC12 |
 | C38 | BuktiPenyerahanController | Mendalam | Otorisasi dan validasi bukti penyerahan | INT-TC14, INT-TC15 |
@@ -682,7 +691,7 @@ Tabel 4.2.14. Hasil Pengujian Unit Kelas C05
 
 | ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| — | — | — | — | — | Uji integrasi: INT-TC09, INT-TC10 | Belum ada uji unit khusus. UC05 dan UC06 hanya menyentuh kuota dan status lowongan; formulir dan pencarian diuji pada UC03 dan UC04 |
+| — | — | — | — | — | Uji integrasi: INT-TC06, INT-TC07, INT-TC09, INT-TC10 | Belum ada uji unit khusus |
 
 Tabel 4.2.14b. Ringkasan Cakupan Kelas C05
 
@@ -948,6 +957,39 @@ Tabel 4.2.26b. Ringkasan Cakupan Kelas C45
 | ID Algoritma yang tercakup | — |
 | Coverage (target ≥ 70%) | `src/controllers/PaymentGatewayController.ts`: 89.42% baris / 77.77% cabang<br>`src/controllers/MockGatewayController.ts`: 94.28% baris / 75% cabang |
 
+### 4.2.27 Kelas PenyediaKerjaController
+
+**ID Kelas:** C33<br>
+**Nama Kelas:** PenyediaKerjaController<br>
+**Tingkat:** Sedang
+
+Tabel 4.2.27. Hasil Pengujian Unit Kelas C33
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| — | — | — | — | — | Operasi didelegasikan ke controller lowongan dan penawaran (INT-TC06, INT-TC07, INT-TC09). | Teruji melalui integrasi |
+
+### 4.2.28 Kelas LowonganPekerjaanController
+
+**ID Kelas:** C35<br>
+**Nama Kelas:** LowonganPekerjaanController<br>
+**Tingkat:** Mendalam
+
+Tabel 4.2.28. Hasil Pengujian Unit Kelas C35
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| — | — | — | — | — | Uji integrasi: INT-TC06, INT-TC07 | Belum ada uji unit khusus |
+
+Tabel 4.2.28b. Ringkasan Cakupan Kelas C35
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | Buat, cari, dan baca lowongan |
+| Operasi yang diuji | `prosesPembuatanLowongan()`, `ambilLowonganSaya()`, `prosesCariLowongan()`, `ambilDetailLowongan()` (integrasi) |
+| ID Algoritma yang tercakup | — |
+| Coverage (target ≥ 70%) | `src/controllers/LowonganPekerjaanController.ts`: 88.23% baris / 93.75% cabang |
+
 ## 4.3 Pengujian Integrasi
 
 Vitest menggunakan controller, model, dan SQLite uji. Sejumlah suite menggantikan akses cookie pada batas Next.js. Pengujian browser memakai sesi dan HTTP aplikasi. Integrasi pembayaran yang diuji memakai simulator lokal.
@@ -958,6 +1000,7 @@ Tabel 4.3.1. Daftar Antarmuka Antarkomponen
 | :--- | :--- | :--- | :--- | :--- |
 | AI-01 | PenggunaController | Pengguna, autentikasi dan sesi | Controller – Model | INT-TC01, INT-TC02 |
 | AI-02 | TenagaKerjaController / CustomerServiceController | TenagaKerja dan penyimpanan berkas | Controller – Model – Berkas | INT-TC04, INT-TC05 |
+| AI-03 | LowonganPekerjaanUI / LowonganPekerjaanController | LowonganPekerjaan | Route Handler – Controller – Model | INT-TC06, INT-TC07 |
 | AI-04 | PengajuanPenawaranUI / PengajuanPenawaranController | PengajuanPenawaran, LowonganPekerjaan, dan TransaksiPekerjaan | Route Handler – Controller – Model | INT-TC08, INT-TC09, INT-TC10 |
 | AI-05 | TransaksiPekerjaanUI / TransaksiPekerjaanController | TransaksiPekerjaan | Route Handler – Controller – Model | INT-TC11, INT-TC12, INT-TC13 |
 | AI-06 | TransaksiBuktiController / BerkasController | BuktiPenyerahan dan penyimpanan berkas | Controller – Model – Berkas | INT-TC14, INT-TC15 |
@@ -976,6 +1019,8 @@ Tabel 4.3.2. Hasil Pengujian Integrasi
 | INT-TC02 | AI-01 | auth | `tests/integration/auth.test.ts` | hash Argon2id, verifikasi benar/salah, hash rusak = false; DB menyimpan SHA-256 token, bukan token mentah; cookie HttpOnly diset | 18/18 kasus lulus | Pass |
 | INT-TC04 | AI-02 | verifikasi | `tests/integration/verifikasi.test.ts` | TK belum terverifikasi: 201, status menunggu, berkas tersimpan terenkripsi; GET /status mengembalikan status terkini | 7/7 kasus lulus | Pass |
 | INT-TC05 | AI-02 | verifikasi-cs | `tests/integration/verifikasi-cs.test.ts` | CS melihat antrean MENUNGGU sesuai skema; non-CS -> 403, tanpa sesi -> 401 | 7/7 kasus lulus | Pass |
+| INT-TC06 | AI-03 | Penyimpanan, daftar, dan detail lowongan | `tests/integration/lowongan.test.ts` | Simpan lowongan valid sebagai OPEN, tolak masukan tidak valid, dan tampilkan hanya lowongan OPEN pada daftar publik. | 13/13 kasus lulus | Pass |
+| INT-TC07 | AI-03 | Pencarian dan indeks FTS | `tests/integration/lowongan-fts.test.ts` | Terapkan kata kunci dan filter. Perbarui hasil ketika data berubah dan kecualikan lowongan tertutup. | 30/30 kasus lulus | Pass |
 | INT-TC08 | AI-04 | penawaran | `tests/integration/penawaran.test.ts` | TK terverifikasi mengajukan penawaran: 201, status MENUNGGU, PK dinotifikasi; penawaran ganda 409; TK belum terverifikasi 403 NOT_VERIFIED; lowongan penuh 409 KUOTA_PENUH; hanya pemilik yang dapat menarik dan boleh mengajukan ulang | 9/9 kasus lulus | Pass |
 | INT-TC09 | AI-04 | pilih-pelamar | `tests/integration/pilih-pelamar.test.ts` | PK pemilik menerima pelamar: transaksi MENUNGGU_PEMBAYARAN dan kuota bertambah; penerimaan terakhir menutup lowongan (CLOSED_FULL) dan sisa pelamar DITOLAK_OTOMATIS; kuota penuh 409 KUOTA_PENUH tanpa transaksi baru; PK lain 403; dua penerimaan bersamaan hanya satu berhasil | 9/9 kasus lulus | Pass |
 | INT-TC10 | AI-04 | domain-lintas | `tests/integration/domain-lintas.test.ts` | kuota terakhir dari dua koneksi DB pada dua proses hanya diberikan kepada satu TK; TK belum terverifikasi ditolak 403 pada bukti pekerjaan; setiap rute `/api/cs/*` hanya untuk CS (tanpa sesi 401, TK dan PK 403) | 4/4 kasus lulus | Pass |
@@ -1029,6 +1074,31 @@ Tabel 4.4.2. Hasil Pengujian Use Case UC02
 | UC02-TC02 | KF04, KF05, KF06 | Alternatif 1: Format atau Ukuran Dokumen Tidak Valid | 1. Tenaga Kerja memilih menu verifikasi identitas<br>2. Tenaga Kerja mengunggah file dengan ekstensi yang tidak didukung (misal: .exe) atau melebihi batas ukuran (misal: > 5MB) | Berkas .exe | Sistem menampilkan antarmuka pengunggahan dokumen identitas<br>Sistem menolak unggahan dan menampilkan pesan error format/ukuran file tidak sesuai | Unggahan ditolak dengan HTTP 400. | Pass |
 | UC02-TC03 | KF04, KF05, KF06 | Alternatif 2: Dokumen Ditolak oleh Customer Service | 1. Tenaga Kerja memilih menu verifikasi identitas<br>2. Tenaga Kerja mengunggah dokumen yang buram atau data tidak cocok<br>3. Customer Service menolak verifikasi pada dashboard dengan memberikan alasan | PDF uji dan alasan penolakan | Sistem menampilkan antarmuka pengunggahan dokumen identitas<br>Sistem menyimpan dokumen sebagai "Menunggu Persetujuan"<br>Sistem memperbarui status menjadi "Ditolak", mengirim notifikasi revisi beserta alasan, dan fitur utama tetap dibatasi | CS menolak dokumen; status DITOLAK tampil. | Pass |
 | UC02-TC04 | KF04, KF05, KF06 | Alternatif 3: Mengakses Fitur Utama Sebelum Terverifikasi | 1. Tenaga Kerja (dengan status belum terverifikasi) mencoba menekan menu fitur utama platform<br>2. Sistem memblokir akses ke halaman tersebut | TK belum terverifikasi | Sistem mendeteksi status akun belum disetujui<br>Sistem menampilkan pop-up peringatan bahwa akun harus diverifikasi dan mengarahkan pengguna ke halaman verifikasi | Penawaran ditolak dengan HTTP 403. | Pass |
+
+### 4.4.3 Use Case Mengelola Lowongan Pekerjaan
+
+**ID Use Case:** UC03<br>
+**Nama Use Case:** Mengelola Lowongan Pekerjaan
+
+Tabel 4.4.3. Hasil Pengujian Use Case UC03
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| UC03-TC01 | KF07 | Normal | Kirim data lowongan valid sebagai PK dan buka halaman detail. | bantu shifu testing, kuota 1, upah Rp125.000 | Lowongan tersimpan dengan status OPEN. | Lowongan tersimpan dan detailnya tampil dengan status OPEN. | Pass |
+| UC03-TC02 | KF08 | Alternatif 1: Isian Formulir Kosong atau Tidak Valid | Kirim data dengan judul kosong, kuota 0, dan upah negatif. | Judul kosong, kuota 0, upah negatif | Penyimpanan ditolak dan isian tidak valid ditunjukkan. | API menolak dengan HTTP 400 dan mengembalikan kesalahan pada judul, kuota, dan upah. | Pass |
+| UC03-TC03 | KF07 | Alternatif 2: Membatalkan Pembuatan Lowongan | Buka form pasang lowongan lalu kembali ke daftar tanpa menyimpan. | Form belum disimpan | Daftar lowongan tampil tanpa lowongan baru. | Jumlah lowongan tidak berubah. | Pass |
+
+### 4.4.4 Use Case Mencari Lowongan Pekerjaan
+
+**ID Use Case:** UC04<br>
+**Nama Use Case:** Mencari Lowongan Pekerjaan
+
+Tabel 4.4.4. Hasil Pengujian Use Case UC04
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| UC04-TC01 | KF09 | Normal | Buka pencarian lowongan dan terapkan kata kunci. | bantu shifu testing | Lowongan OPEN yang cocok muncul. | Lowongan uji muncul. Uji integrasi juga memastikan lowongan tertutup tidak muncul. | Pass |
+| UC04-TC02 | KF09 | Alternatif 1: Pencarian Tidak Ditemukan | Cari dengan kata kunci tanpa kecocokan. | Kata kunci unik tanpa kecocokan | Daftar kosong dan pesan hasil tidak ditemukan tampil. | Halaman menampilkan keadaan tanpa hasil. | Pass |
 
 ### 4.4.5 Use Case Mengajukan Penawaran Pekerjaan
 
@@ -1144,10 +1214,12 @@ Tabel 4.5. Hasil Pengujian KNF
 | KNF01-TC01 | KNF01 | Security | Kata sandi berupa hash dan token sesi tidak tersimpan sebagai teks biasa | Vitest, pemeriksaan SQLite | Hash Argon2id; token mentah tidak ditemukan pada penyimpanan sesi. | Pass |
 | KNF02-TC01 | KNF02 | Security | Dokumen identitas tersimpan terenkripsi | Vitest, baca berkas penyimpanan uji | Unggahan diterima dan berkas tersimpan terenkripsi. | Pass |
 | KNF03-TC01 | KNF03 | Response time | Pemeriksaan status akses < 1.000 ms | Playwright HTTP, 5 permintaan status setelah pemanasan | 5 pengukuran: rata-rata 31.03 ms, maksimum 37.05 ms. | Pass |
+| KNF04-TC01 | KNF04 | Response time | Hasil pencarian tampil dalam ≤ 5.000 ms | Playwright Edge, 5 pemuatan sampai jaringan tenang | Rata-rata 1.466,40 ms, maksimum 2.022,00 ms. | Pass |
 | KNF05-TC01 | KNF05 | Ergonomy | Kontrol interaktif berukuran sentuh minimal 44 px dan halaman tanpa gulir horizontal pada layar ponsel | Playwright, pengukuran bounding box pada Chromium 390 × 844 dan 1440 × 900; uji e2e dialog penawaran pada 360, 768, dan 1280 px | Dialog penawaran: tombol "Ajukan Penawaran" 300 × 44 px (ponsel) dan 250 × 44 px (desktop), seluruh kontrol dialog bertinggi ≥ 44 px, gulir horizontal 0 px. Daftar pelamar: tombol "Pilih" 104 × 42 px. | Pass untuk UC05. Belum terpenuhi untuk tombol "Pilih" pada UC06 (42 px, kurang 2 px). Tambahkan tinggi minimum 44 px. |
 | KNF06-TC01 | KNF06 | Security | Manipulasi ID untuk menerima atau melihat pelamar lowongan milik PK lain diblokir di backend | HTTP ke aplikasi: PK lain, TK, dan tanpa sesi memanggil `POST /api/penawaran/:id/terima` dan `GET /api/lowongan/:id/pelamar`; Vitest `pilih-pelamar` | PK lain: 403 (terima) dan 403 (pelamar); TK: 403; tanpa sesi: 401. Lowongan tetap OPEN dengan jumlah diterima 0. | Pass |
 | KNF07-TC01 | KNF07 | Reliability | Dua persetujuan serentak pada sisa satu kuota hanya menghasilkan satu penerimaan | 5 kali dua permintaan `terima` serentak (`Promise.all`) pada lowongan berkuota 1; Vitest dua koneksi DB pada dua proses | Pada kelima percobaan: satu respons 200 dan satu respons 409, jumlah diterima 1, status CLOSED_FULL. Uji dua proses (INT-TC10) lulus. | Pass |
 | KNF08-TC01 | KNF08 | Memory | Memori RAM peramban ≤ 150 MB saat memuat daftar lowongan atau daftar pelamar dalam jumlah banyak | Chromium 390 × 844, CDP `Performance.getMetrics` (`JSHeapUsedSize`), 5 kali pemuatan; daftar pelamar 60 baris | Daftar pelamar 60 baris: 4.5–4.8 MB (maks 4.8 MB). Daftar lowongan: 3.0 MB. | Pass untuk JS heap. Pengukuran tidak mencakup memori proses peramban secara keseluruhan (DOM dan gambar). |
+| KNF09-TC01 | KNF09 | Safety | Lowongan kelistrikan tidak tersimpan tanpa persetujuan risiko | Playwright pada Edge dan Chrome serta uji integrasi Vitest | Tanpa centang, wizard berhenti di langkah upah dan API menolak dengan HTTP 400. Setelah dicentang, halaman tinjau terbuka. | Pass |
 | KNF10-TC01 | KNF10 | Availability | Gangguan basis data lowongan ≤ 24 jam per bulan | Perlu pemantauan uptime pada lingkungan deploy | Belum ada data pemantauan pada lingkungan deploy. | Belum diuji. Pasang pemantauan ketersediaan setelah deploy dan catat gangguan per bulan. |
 | KNF11-TC01 | KNF11 | Reliability | Pembayaran/konfirmasi berulang tidak menghasilkan tagihan atau mutasi ganda | Vitest, pengulangan pembayaran dan callback | Tidak terbentuk dua tagihan aktif pada pengulangan; callback diproses sekali. | Pass pada simulator |
 | KNF12-TC01 | KNF12 | Security | Pengiriman data ke Payment Gateway melalui koneksi terenkripsi | Pemeriksaan konfigurasi uji lokal | Aplikasi memakai Payment Gateway dummy pada localhost. | Di luar lingkup simulasi lokal. |
@@ -1174,6 +1246,8 @@ Tabel 4.6. Bukti Hasil Pengujian
 | INT-TC02 | [Vitest · auth](./assets/layar/integration-auth.png) |
 | INT-TC04 | [Vitest · verifikasi](./assets/layar/integration-verifikasi.png) |
 | INT-TC05 | [Vitest · verifikasi-cs](./assets/layar/integration-verifikasi-cs.png) |
+| INT-TC06 | [Vitest · lowongan](./assets/layar/integration-lowongan.png) |
+| INT-TC07 | [Vitest · lowongan-fts](./assets/layar/integration-lowongan-fts.png) |
 | INT-TC08 | [Vitest · penawaran](./assets/layar/integration-penawaran.png) |
 | INT-TC09 | [Vitest · pilih-pelamar](./assets/layar/integration-pilih-pelamar.png) |
 | INT-TC10 | [Vitest · domain-lintas](./assets/layar/integration-domain-lintas.png) |
@@ -1220,6 +1294,7 @@ Tabel 4.6. Bukti Hasil Pengujian
 | C06 (coverage) | [Cakupan V8 · Model](./assets/layar/coverage-models.png) |
 | C12 (coverage) | [Cakupan V8 · Model](./assets/layar/coverage-models.png) |
 | C13 (coverage) | [Cakupan V8 · Model](./assets/layar/coverage-models.png) |
+| C35 (coverage) | [Cakupan V8 · Controller](./assets/layar/coverage-controllers.png) |
 | C36 (coverage) | [Cakupan V8 · Controller](./assets/layar/coverage-controllers.png) |
 | C42 (coverage) | [Cakupan V8 · Controller](./assets/layar/coverage-controllers.png) |
 | C45 (coverage) | [Cakupan V8 · Controller](./assets/layar/coverage-controllers.png) |
@@ -1230,6 +1305,11 @@ Tabel 4.6. Bukti Hasil Pengujian
 | UC02-TC02 | [![UC02-TC02](./assets/layar/UC02-TC02.png)](./assets/layar/UC02-TC02.png) |
 | UC02-TC03 | [![UC02-TC03](./assets/layar/UC02-TC03.png)](./assets/layar/UC02-TC03.png) |
 | UC02-TC04 | [![UC02-TC04](./assets/layar/UC02-TC04.png)](./assets/layar/UC02-TC04.png) |
+| UC03-TC01 | [![UC03-TC01](./assets/layar/UC03-TC01.png)](./assets/layar/UC03-TC01.png) |
+| UC03-TC02 | [![UC03-TC02](./assets/layar/UC03-TC02.png)](./assets/layar/UC03-TC02.png) |
+| UC03-TC03 | [![UC03-TC03](./assets/layar/UC03-TC03.png)](./assets/layar/UC03-TC03.png) |
+| UC04-TC01 | [![UC04-TC01](./assets/layar/UC04-TC01.png)](./assets/layar/UC04-TC01.png) |
+| UC04-TC02 | [![UC04-TC02](./assets/layar/UC04-TC02.png)](./assets/layar/UC04-TC02.png) |
 | UC05-TC01 | [![UC05-TC01](./assets/layar/UC05-TC01.png)](./assets/layar/UC05-TC01.png)<br>[Hasil asersi Playwright](./assets/layar/playwright-penawaran.png) |
 | UC05-TC02 | [![UC05-TC02](./assets/layar/UC05-TC02.png)](./assets/layar/UC05-TC02.png)<br>[Hasil asersi Playwright](./assets/layar/playwright-penawaran.png) |
 | UC05-TC03 | [![UC05-TC03](./assets/layar/UC05-TC03.png)](./assets/layar/UC05-TC03.png)<br>[Hasil asersi Playwright](./assets/layar/playwright-penawaran.png) |
@@ -1258,10 +1338,12 @@ Tabel 4.6. Bukti Hasil Pengujian
 | KNF01-TC01 | [Vitest · auth-flow](./assets/layar/integration-auth-flow.png) |
 | KNF02-TC01 | [Vitest · verifikasi](./assets/layar/integration-verifikasi.png) |
 | KNF03-TC01 | [Pengukuran status verifikasi](./assets/layar/KNF03-verifikasi.png) |
+| KNF04-TC01 | [Pengukuran waktu pencarian](./assets/layar/pengukuran.png) |
 | KNF05-TC01 | [Pengukuran ukuran kontrol](./assets/layar/pengukuran-uc05-uc12.png)<br>[Dialog penawaran ponsel](./assets/layar/KNF05-penawaran-ponsel.png)<br>[Dialog penawaran desktop](./assets/layar/KNF05-penawaran-desktop.png) |
 | KNF06-TC01 | [Pengukuran akses lintas pemilik](./assets/layar/pengukuran-uc05-uc12.png)<br>[Vitest · pilih-pelamar](./assets/layar/integration-pilih-pelamar.png) |
 | KNF07-TC01 | [Pengukuran persetujuan serentak](./assets/layar/pengukuran-uc05-uc12.png)<br>[Vitest · domain-lintas](./assets/layar/integration-domain-lintas.png) |
 | KNF08-TC01 | [Pengukuran JS heap](./assets/layar/pengukuran-uc05-uc12.png) |
+| KNF09-TC01 | [Checkbox ponsel](./assets/layar/KNF09-checkbox-ponsel.png)<br>[Checkbox desktop](./assets/layar/KNF09-checkbox-desktop.png)<br>[Vitest · lowongan](./assets/layar/integration-lowongan.png) |
 | KNF10-TC01 | Belum ada bukti pengukuran uptime. |
 | KNF11-TC01 | [Vitest · pembayaran-saldo](./assets/layar/integration-pembayaran-saldo.png) |
 | KNF12-TC01 | Tidak ada pengukuran TLS eksternal pada Payment Gateway dummy lokal. |
@@ -1283,8 +1365,6 @@ Tabel 4.6. Bukti Hasil Pengujian
 ---
 
 # BAB 5: Traceability
-
-Matriks mencakup seluruh kebutuhan. Hasil dan bukti pada Bab 4 terbatas pada pengujian yang terkait dengan UC01, UC02, UC05, UC06, UC07, UC08, UC09, UC10, UC11, dan UC12.
 
 Tabel 5.1. Matriks Kerunutan KF terhadap Implementasi dan Pengujian
 
