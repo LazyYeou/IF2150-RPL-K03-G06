@@ -67,14 +67,22 @@ Dipersiapkan oleh:
     - [4.2.18 Kelas PengajuanPenawaranController](#4218-kelas-pengajuanpenawarancontroller)
     - [4.2.19 Kelas TiketSengketaController](#4219-kelas-tiketsengketacontroller)
     - [4.2.20 Kelas RiwayatSengketaController](#4220-kelas-riwayatsengketacontroller)
+    - [4.2.21 Kelas TagihanPembayaran](#4221-kelas-tagihanpembayaran)
+    - [4.2.22 Kelas PencairanDana](#4222-kelas-pencairandana)
+    - [4.2.23 Kelas PaymentGateway](#4223-kelas-paymentgateway)
+    - [4.2.24 Kelas TagihanPembayaranController](#4224-kelas-tagihanpembayarancontroller)
+    - [4.2.25 Kelas PencairanDanaController](#4225-kelas-pencairandanacontroller)
+    - [4.2.26 Kelas PaymentGatewayController](#4226-kelas-paymentgatewaycontroller)
   - [4.3 Pengujian Integrasi](#43-pengujian-integrasi)
   - [4.4 Pengujian Use Case](#44-pengujian-use-case)
     - [4.4.1 Use Case Melakukan Registrasi](#441-use-case-melakukan-registrasi)
     - [4.4.2 Use Case Mengelola Verifikasi Identitas](#442-use-case-mengelola-verifikasi-identitas)
     - [4.4.5 Use Case Mengajukan Penawaran Pekerjaan](#445-use-case-mengajukan-penawaran-pekerjaan)
     - [4.4.6 Use Case Memilih Tenaga Kerja](#446-use-case-memilih-tenaga-kerja)
+    - [4.4.7 Use Case Melakukan Pembayaran Pekerjaan](#447-use-case-melakukan-pembayaran-pekerjaan)
     - [4.4.8 Use Case Menyerahkan Hasil Pekerjaan](#448-use-case-menyerahkan-hasil-pekerjaan)
     - [4.4.9 Use Case Memverifikasi Penyelesaian Pekerjaan](#449-use-case-memverifikasi-penyelesaian-pekerjaan)
+    - [4.4.10 Use Case Melakukan Pencairan Dana](#4410-use-case-melakukan-pencairan-dana)
     - [4.4.11 Use Case Memberikan Penilaian Kerja](#4411-use-case-memberikan-penilaian-kerja)
     - [4.4.12 Use Case Menangani Keluhan](#4412-use-case-menangani-keluhan)
   - [4.5 Pengujian Kebutuhan Non-Fungsional (KNF)](#45-pengujian-kebutuhan-non-fungsional-knf)
@@ -155,7 +163,7 @@ Tabel 1.4. Aturan Penomoran
 
 ## 1.6 Deskripsi Umum Dokumen (Ikhtisar)
 
-Bab 1 memuat tujuan dan acuan. Bab 2 menggambarkan perangkat lunak. Bab 3 mencatat lingkungan, modul, antarmuka, dan file implementasi. Bab 4 memuat pengujian unit, integrasi, use case, dan KNF terkait UC01, UC02, UC08, UC09, dan UC11 beserta buktinya. Bab 5 memetakan kebutuhan ke implementasi dan test case.
+Bab 1 memuat tujuan dan acuan. Bab 2 menggambarkan perangkat lunak. Bab 3 mencatat lingkungan, modul, antarmuka, dan file implementasi. Bab 4 memuat pengujian unit, integrasi, use case, dan KNF terkait UC01, UC02, UC05, UC06, UC07, UC08, UC09, UC10, UC11, dan UC12 beserta buktinya. Bab 5 memetakan kebutuhan ke implementasi dan test case.
 
 <br>
 
@@ -323,7 +331,7 @@ Tabel 3.4. File Lain
 
 # BAB 4: Hasil Pengujian
 
-Pengujian mencakup UC01 (registrasi dan login), UC02 (verifikasi identitas), UC05 (mengajukan penawaran pekerjaan), UC06 (memilih tenaga kerja), UC08 (menyerahkan hasil pekerjaan), UC09 (memverifikasi penyelesaian pekerjaan), UC11 (memberikan penilaian kerja), dan UC12 (menangani keluhan).
+Pengujian mencakup UC01 (registrasi dan login), UC02 (verifikasi identitas), UC05 (mengajukan penawaran pekerjaan), UC06 (memilih tenaga kerja), UC07 (melakukan pembayaran pekerjaan), UC08 (menyerahkan hasil pekerjaan), UC09 (memverifikasi penyelesaian pekerjaan), UC10 (melakukan pencairan dana), UC11 (memberikan penilaian kerja), dan UC12 (menangani keluhan).
 
 ## 4.1 Strategi dan Kedalaman Pengujian Kelas
 
@@ -339,33 +347,42 @@ Tabel 4.1.1. Identifikasi Tingkat Pengujian Kelas
 | C06 | PengajuanPenawaran | Mendalam | Satu penawaran aktif per tenaga kerja, penarikan, dan transisi status penawaran | C07-UT04, INT-TC08, INT-TC09, INT-TC10 |
 | C07 | TransaksiPekerjaan | Mendalam | Transisi status dan kredit upah | C07-UT01, C07-UT02, C07-UT03, C07-UT04, C07-UT05, C07-UT06, C07-UT07, C07-UT08, C07-UT09, C07-UT10, INT-TC11, INT-TC12 |
 | C08 | BuktiPenyerahan | Mendalam | Validasi dan penyimpanan bukti | C08-UT01, C08-UT02, C08-UT03, C08-UT04, C08-UT05, C08-UT06, C08-UT07, C08-UT08, C08-UT09, INT-TC14, INT-TC15 |
+| C09 | TagihanPembayaran | Mendalam | Perhitungan komisi dan masa berlaku | INT-TC16, INT-TC19, INT-TC17 |
+| C10 | PencairanDana | Mendalam | Transisi pencairan dan reservasi saldo | INT-TC22, INT-TC23, INT-TC24 |
 | C11 | UlasanRating | Sedang | Pencatatan atau delegasi ke operasi domain | INT-TC25, INT-TC12 |
 | C12 | TiketSengketa | Mendalam | Pembuatan tiket atomik, satu tiket aktif per transaksi, dan transisi status tiket | C07-UT05, INT-TC26, INT-TC27, INT-TC28 |
 | C13 | RiwayatSengketa | Mendalam | Catatan kronologis yang hanya dapat bertambah (append-only) | INT-TC26, INT-TC27, INT-TC28, KNF20-TC01 |
 | C14 | Notifikasi | Sedang | Pencatatan atau delegasi ke operasi domain | INT-TC29 |
+| C15 | PaymentGateway | Mendalam | Adapter pembayaran dummy | C15-UT01, C15-UT04, C15-UT05, C15-UT06, C15-UT07, C15-UT08, C15-UT09, C15-UT10, C15-UT11, C15-UT12, C15-UT13, INT-TC19, INT-TC20 |
 | C16 | PenggunaUI | Tidak perlu | Antarmuka React diuji melalui alur pengguna | UC01-TC01, UC01-TC02, UC01-TC03 |
 | C17 | TenagaKerjaUI | Tidak perlu | Antarmuka React diuji melalui alur pengguna | UC02-TC01, UC02-TC02, UC02-TC04 |
 | C19 | CustomerServiceUI | Tidak perlu | Antarmuka React diuji melalui alur pengguna | UC02-TC01, UC02-TC03, UC12-TC01, UC12-TC02, UC12-TC03 |
 | C21 | PengajuanPenawaranUI | Tidak perlu | Antarmuka React diuji melalui alur pengguna | UC05-TC01, UC05-TC02, UC05-TC03, UC06-TC01, UC06-TC02, UC06-TC03 |
 | C22 | TransaksiPekerjaanUI | Tidak perlu | Antarmuka React diuji melalui alur pengguna | UC09-TC01, UC09-TC02, UC09-TC03 |
 | C23 | BuktiPenyerahanUI | Tidak perlu | Antarmuka React diuji melalui alur pengguna | UC08-TC01, UC08-TC02, UC08-TC03 |
+| C24 | TagihanPembayaranUI | Tidak perlu | Antarmuka React diuji melalui alur pengguna | UC07-TC01, UC07-TC02, UC07-TC03 |
+| C25 | PencairanDanaUI | Tidak perlu | Antarmuka React diuji melalui alur pengguna | UC10-TC01, UC10-TC02, UC10-TC03 |
 | C26 | UlasanRatingUI | Tidak perlu | Antarmuka React diuji melalui alur pengguna | UC11-TC01, UC11-TC02, UC11-TC03 |
 | C27 | TiketSengketaUI | Tidak perlu | Antarmuka React diuji melalui alur pengguna | UC12-TC01, UC12-TC02, UC12-TC03, UC12-TC04 |
 | C28 | RiwayatSengketaUI | Tidak perlu | Antarmuka React diuji melalui alur pengguna | UC12-TC01, UC12-TC02, UC12-TC03, UC12-TC04 |
+| C30 | PaymentGatewayUI | Tidak perlu | Antarmuka React diuji melalui alur pengguna | UC07-TC01 |
 | C31 | PenggunaController | Mendalam | Validasi usia, kredensial dan autentikasi | INT-TC01, INT-TC02 |
 | C32 | TenagaKerjaController | Mendalam | Validasi dokumen dan status pengajuan | INT-TC04, INT-TC05 |
 | C34 | CustomerServiceController | Mendalam | Otorisasi dan keputusan verifikasi | INT-TC04, INT-TC05, INT-TC26, INT-TC27, INT-TC28 |
 | C36 | PengajuanPenawaranController | Mendalam | Otorisasi peran, validasi akun terverifikasi, dan pemilihan pelamar secara transaksional | INT-TC08, INT-TC09, INT-TC10 |
 | C37 | TransaksiPekerjaanController | Mendalam | Validasi perubahan status, kredit dan ulasan | INT-TC11, INT-TC12 |
 | C38 | BuktiPenyerahanController | Mendalam | Otorisasi dan validasi bukti penyerahan | INT-TC14, INT-TC15 |
+| C39 | TagihanPembayaranController | Mendalam | Pembuatan, pembayaran dan refund tagihan | INT-TC16, INT-TC19, INT-TC17 |
+| C40 | PencairanDanaController | Mendalam | Validasi rekening, saldo dan pencairan ulang | C40-UT01, C40-UT02, C40-UT03, INT-TC22, INT-TC23, INT-TC24 |
 | C41 | UlasanRatingController | Mendalam | Validasi dan pencegahan ulasan ganda | INT-TC25, INT-TC12 |
 | C42 | TiketSengketaController | Mendalam | Otorisasi, validasi bukti, dan eksekusi keputusan refund atau pencairan | INT-TC26, INT-TC27, INT-TC28 |
 | C43 | RiwayatSengketaController | Sedang | Pencatatan atau delegasi ke operasi domain | INT-TC26, INT-TC27 |
 | C44 | NotifikasiController | Sedang | Pencatatan atau delegasi ke operasi domain | INT-TC29 |
+| C45 | PaymentGatewayController | Mendalam | Verifikasi dan pemrosesan callback pembayaran dummy | INT-TC19, INT-TC20 |
 
 ## 4.2 Pengujian Unit Kelas
 
-Jalankan `npm test -- tests/unit/usia.test.ts` dari `src`. Cakupan per file diukur dengan Vitest dan V8 dari suite unit usia serta empat suite integrasi autentikasi dan verifikasi yang dicantumkan di Subbab 4.3.
+Jalankan `npm test -- tests/unit` dari `src`. Lokasi test `src/tests/unit/`. Cakupan V8 di bawah diukur dari seluruh suite unit dan integrasi, per file implementasi. Tabel kasus uji memuat kasus yang relevan dengan lingkup HIUPL.
 
 ### 4.2.1 Kelas Pengguna
 
@@ -793,9 +810,147 @@ Tabel 4.2.20. Hasil Pengujian Unit Kelas C43
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | — | — | — | — | — | Uji integrasi: INT-TC26, INT-TC27 | Dilaporkan di 4.3 |
 
+### 4.2.21 Kelas TagihanPembayaran
+
+**ID Kelas:** C09<br>
+**Nama Kelas:** TagihanPembayaran<br>
+**Tingkat:** Mendalam
+
+Tabel 4.2.21. Hasil Pengujian Unit Kelas C09
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| — | — | — | — | — | Uji integrasi: INT-TC16, INT-TC19, INT-TC17 | Belum ada uji unit khusus |
+
+Tabel 4.2.21b. Ringkasan Cakupan Kelas C09
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | hitungTotalTagihan, buatInvoice |
+| Operasi yang diuji | — |
+| ID Algoritma yang tercakup | — |
+| Coverage (target ≥ 70%) | `src/models/TagihanPembayaran.ts`: 90.9% baris / 84.61% cabang<br>`src/controllers/TagihanPembayaranController.ts`: 80.12% baris / 79.59% cabang |
+
+### 4.2.22 Kelas PencairanDana
+
+**ID Kelas:** C10<br>
+**Nama Kelas:** PencairanDana<br>
+**Tingkat:** Mendalam
+
+Tabel 4.2.22. Hasil Pengujian Unit Kelas C10
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| — | — | — | — | — | Uji integrasi: INT-TC22, INT-TC23, INT-TC24 | Belum ada uji unit khusus |
+
+Tabel 4.2.22b. Ringkasan Cakupan Kelas C10
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | buatTransaksiPencairan, updateStatusPencairan |
+| Operasi yang diuji | — |
+| ID Algoritma yang tercakup | — |
+| Coverage (target ≥ 70%) | `src/models/PencairanDana.ts`: 99.42% baris / 98.07% cabang<br>`src/controllers/DompetController.ts`: 74.28% baris / 86.66% cabang |
+
+### 4.2.23 Kelas PaymentGateway
+
+**ID Kelas:** C15<br>
+**Nama Kelas:** PaymentGateway<br>
+**Tingkat:** Mendalam
+
+Tabel 4.2.23. Hasil Pengujian Unit Kelas C15
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C15-UT01 | `getPaymentAdapter() / buatPembayaran() / buatPencairan()` | Normal | mengembalikan MockPaymentGateway jika env tidak diset atau 'mock' | Asersi berhasil | Asersi berhasil | Pass |
+| C15-UT04 | `getPaymentAdapter() / buatPembayaran() / buatPencairan()` | Negatif | melemparkan error jika provider tidak dikenal | Asersi berhasil | Asersi berhasil | Pass |
+| C15-UT05 | `getPaymentAdapter() / buatPembayaran() / buatPencairan()` | Normal | charge(): mengembalikan URL redirect mock dan mencatat log jenis CHARGE | Asersi berhasil | Asersi berhasil | Pass |
+| C15-UT06 | `getPaymentAdapter() / buatPembayaran() / buatPencairan()` | Normal | disburse(): mengembalikan status DITERIMA dan mencatat log jenis DISBURSEMENT | Asersi berhasil | Asersi berhasil | Pass |
+| C15-UT07 | `getPaymentAdapter() / buatPembayaran() / buatPencairan()` | Normal | refund(): mengembalikan status BERHASIL dan meneruskan idempotency key pada log REFUND | Asersi berhasil | Asersi berhasil | Pass |
+| C15-UT08 | `getPaymentAdapter() / buatPembayaran() / buatPencairan()` | Normal | memvalidasi signature yang sah dengan timingSafeEqual | Asersi berhasil | Asersi berhasil | Pass |
+| C15-UT09 | `getPaymentAdapter() / buatPembayaran() / buatPencairan()` | Negatif | menolak signature yang salah atau payload yang telah dimanipulasi | Asersi berhasil | Asersi berhasil | Pass |
+| C15-UT10 | `getPaymentAdapter() / buatPembayaran() / buatPencairan()` | Negatif | menolak jika signature memiliki panjang berbeda tanpa melempar error timingSafeEqual | Asersi berhasil | Asersi berhasil | Pass |
+| C15-UT11 | `getPaymentAdapter() / buatPembayaran() / buatPencairan()` | Negatif | menolak jika PAYMENT_WEBHOOK_SECRET tidak ada | Asersi berhasil | Asersi berhasil | Pass |
+| C15-UT12 | `getPaymentAdapter() / buatPembayaran() / buatPencairan()` | Normal | mencatat log dan mengambil kembali dengan format ISO | Asersi berhasil | Asersi berhasil | Pass |
+| C15-UT13 | `getPaymentAdapter() / buatPembayaran() / buatPencairan()` | Negatif | menjaga sifat immutability (KNF20): tidak mengizinkan UPDATE atau DELETE pada log_gateway | Asersi berhasil | Asersi berhasil | Pass |
+
+Tabel 4.2.23b. Ringkasan Cakupan Kelas C15
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | prosesPembayaran, dapatkanCallbackStatus, prosesTransferDana |
+| Operasi yang diuji | getPaymentAdapter() / buatPembayaran() / buatPencairan() |
+| ID Algoritma yang tercakup | — |
+| Coverage (target ≥ 70%) | `src/controllers/PaymentGatewayController.ts`: 89.42% baris / 77.77% cabang<br>`src/controllers/MockGatewayController.ts`: 94.28% baris / 75% cabang<br>`src/controllers/TagihanPembayaranController.ts`: 80.12% baris / 79.59% cabang<br>`src/lib/payment/adapter.ts`: 100% baris / 100% cabang |
+
+### 4.2.24 Kelas TagihanPembayaranController
+
+**ID Kelas:** C39<br>
+**Nama Kelas:** TagihanPembayaranController<br>
+**Tingkat:** Mendalam
+
+Tabel 4.2.24. Hasil Pengujian Unit Kelas C39
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| — | — | — | — | — | Uji integrasi: INT-TC16, INT-TC19, INT-TC17 | Belum ada uji unit khusus |
+
+Tabel 4.2.24b. Ringkasan Cakupan Kelas C39
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | Lihat Tabel 4.1 DPPL2 |
+| Operasi yang diuji | — |
+| ID Algoritma yang tercakup | — |
+| Coverage (target ≥ 70%) | `src/controllers/TagihanPembayaranController.ts`: 80.12% baris / 79.59% cabang |
+
+### 4.2.25 Kelas PencairanDanaController
+
+**ID Kelas:** C40<br>
+**Nama Kelas:** PencairanDanaController<br>
+**Tingkat:** Mendalam
+
+Tabel 4.2.25. Hasil Pengujian Unit Kelas C40
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C40-UT01 | `Enkripsi dan pembacaan rekening` | Normal | AES-GCM memakai nonce acak dan hanya dapat dibuka pada konteks asal | Asersi berhasil | Asersi berhasil | Pass |
+| C40-UT02 | `Enkripsi dan pembacaan rekening` | Negatif | kunci hilang, tidak valid atau berubah ditolak tanpa fallback produksi | Asersi berhasil | Asersi berhasil | Pass |
+| C40-UT03 | `Enkripsi dan pembacaan rekening` | Negatif | log nested disamarkan dan fingerprint stabil tidak memuat nomor rekening | Asersi berhasil | Asersi berhasil | Pass |
+
+Tabel 4.2.25b. Ringkasan Cakupan Kelas C40
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | Lihat Tabel 4.1 DPPL2 |
+| Operasi yang diuji | Enkripsi dan pembacaan rekening |
+| ID Algoritma yang tercakup | — |
+| Coverage (target ≥ 70%) | `src/controllers/DompetController.ts`: 74.28% baris / 86.66% cabang<br>`src/lib/rekening.ts`: 100% baris / 96.66% cabang |
+
+### 4.2.26 Kelas PaymentGatewayController
+
+**ID Kelas:** C45<br>
+**Nama Kelas:** PaymentGatewayController<br>
+**Tingkat:** Mendalam
+
+Tabel 4.2.26. Hasil Pengujian Unit Kelas C45
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| — | — | — | — | — | Uji integrasi callback dummy: INT-TC19, INT-TC20 | Belum ada uji unit khusus |
+
+Tabel 4.2.26b. Ringkasan Cakupan Kelas C45
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | Lihat Tabel 4.1 DPPL2 |
+| Operasi yang diuji | Pemrosesan dan validasi callback dummy (INT-TC19, INT-TC20) |
+| ID Algoritma yang tercakup | — |
+| Coverage (target ≥ 70%) | `src/controllers/PaymentGatewayController.ts`: 89.42% baris / 77.77% cabang<br>`src/controllers/MockGatewayController.ts`: 94.28% baris / 75% cabang |
+
 ## 4.3 Pengujian Integrasi
 
-Vitest menggunakan controller, model, dan SQLite uji. Sejumlah suite menggantikan akses cookie pada batas Next.js. Pengujian browser memakai sesi dan HTTP aplikasi.
+Vitest menggunakan controller, model, dan SQLite uji. Sejumlah suite menggantikan akses cookie pada batas Next.js. Pengujian browser memakai sesi dan HTTP aplikasi. Integrasi pembayaran yang diuji memakai simulator lokal.
 
 Tabel 4.3.1. Daftar Antarmuka Antarkomponen
 
@@ -806,6 +961,9 @@ Tabel 4.3.1. Daftar Antarmuka Antarkomponen
 | AI-04 | PengajuanPenawaranUI / PengajuanPenawaranController | PengajuanPenawaran, LowonganPekerjaan, dan TransaksiPekerjaan | Route Handler – Controller – Model | INT-TC08, INT-TC09, INT-TC10 |
 | AI-05 | TransaksiPekerjaanUI / TransaksiPekerjaanController | TransaksiPekerjaan | Route Handler – Controller – Model | INT-TC11, INT-TC12, INT-TC13 |
 | AI-06 | TransaksiBuktiController / BerkasController | BuktiPenyerahan dan penyimpanan berkas | Controller – Model – Berkas | INT-TC14, INT-TC15 |
+| AI-07 | TagihanPembayaranUI / TagihanPembayaranController | TagihanPembayaran | Controller – Model | INT-TC16, INT-TC17, INT-TC18 |
+| AI-08 | TagihanPembayaranController / PaymentGatewayController | Simulator pembayaran dan callback | Aplikasi – simulator gateway | INT-TC19, INT-TC20 |
+| AI-09 | DompetController / PaymentGatewayController | PencairanDana dan simulator pencairan | Controller – Model – simulator gateway | INT-TC21, INT-TC22, INT-TC23, INT-TC24 |
 | AI-10 | UlasanRatingUI / TransaksiPekerjaanController | Ulasan dan Profil | Controller – Model | INT-TC25 |
 | AI-11 | TiketSengketaUI / TiketSengketaController | TiketSengketa, RiwayatSengketa, dan penyimpanan berkas | Route Handler – Controller – Model – Berkas | INT-TC26, INT-TC27, INT-TC28 |
 | AI-12 | NotifikasiUI / NotifikasiController | Notifikasi | Controller – Model | INT-TC29 |
@@ -826,6 +984,15 @@ Tabel 4.3.2. Hasil Pengujian Integrasi
 | INT-TC13 | AI-05 | transaksi-paginasi | `tests/integration/transaksi-paginasi.test.ts` | TK: semua transaksi dapat dijangkau tanpa duplikasi walaupun waktu dibuat sama; TK: filter berlaku pada items, total, dan setiap halaman | 13/13 kasus lulus | Pass |
 | INT-TC14 | AI-06 | transaksi-bukti | `tests/integration/transaksi-bukti.test.ts` | TK terverifikasi yang ditugaskan dapat mengirim bukti; TK, PK, dan CS melihat bukti terbaru dan dapat membuka berkas; non-peserta ditolak | 10/10 kasus lulus | Pass |
 | INT-TC15 | AI-06 | berkas | `tests/integration/berkas.test.ts` | peserta (TK dan PK) dan CS boleh mengunduh, tanpa cache; bukan peserta -> 403 (KNF06); tanpa sesi -> 401 | 5/5 kasus lulus | Pass |
+| INT-TC16 | AI-07 | tagihan | `tests/integration/tagihan.test.ts` | POST /api/transaksi/:id/tagihan: berhasil membuat tagihan baru (201) dengan rumus komisi yang benar; POST /api/transaksi/:id/tagihan: jika tagihan aktif sudah ada, kembalikan tagihan yang sama (idempotent, 200); halaman pembayaran membuat dan menggunakan ulang satu tagihan, serta menolak transaksi tidak ditemukan (404) atau sedang berjalan (409) | 11/11 kasus lulus | Pass |
+| INT-TC17 | AI-07 | tagihan-kedaluwarsa-ulang | `tests/integration/tagihan-kedaluwarsa-ulang.test.ts` | Cek kedaluwarsa lazy saat dibaca: status MENUNGGU_PEMBAYARAN yang expiry < now otomatis menjadi KEDALUWARSA; Cek kedaluwarsa lazy saat dibayar: tagihan yang expiry < now ditolak 409 dan statusnya menjadi KEDALUWARSA | 5/5 kasus lulus | Pass |
+| INT-TC18 | AI-07 | pembayaran-saldo | `tests/integration/pembayaran-saldo.test.ts` | memanggil bayarTagihan / buatTagihan berulang kali tidak pernah menghasilkan dua tagihan aktif; Webhook signature salah → 401; dan data DB sama sekali tidak berubah | 7/7 kasus lulus | Pass |
+| INT-TC19 | AI-08 | pembayaran-webhook | `tests/integration/pembayaran-webhook.test.ts` | POST /api/tagihan/:id/bayar: berhasil memproses bayar, mengubah status ke DIPROSES dan mengembalikan redirectUrl; POST /api/tagihan/:id/bayar: PK lain ditolak 403 FORBIDDEN | 8/8 kasus lulus | Pass |
+| INT-TC20 | AI-08 | payment-security | `tests/integration/payment-security.test.ts` | tanpa sesi ditolak 401 tanpa mutasi; pemilik lain ditolak 403 tanpa mutasi | 21/21 kasus lulus | Pass |
+| INT-TC21 | AI-09 | dompet | `tests/integration/dompet.test.ts` | GET /api/dompet tanpa autentikasi mengembalikan 401 UNAUTHENTICATED; GET /api/dompet dengan peran bukan TK (misal PK) mengembalikan 403 FORBIDDEN | 6/6 kasus lulus | Pass |
+| INT-TC22 | AI-09 | pencairan | `tests/integration/pencairan.test.ts` | POST /api/pencairan tanpa autentikasi mengembalikan 401 UNAUTHENTICATED; POST /api/pencairan oleh peran PK mengembalikan 403 FORBIDDEN | 11/11 kasus lulus | Pass |
+| INT-TC23 | AI-09 | pencairan-retry | `tests/integration/pencairan-retry.test.ts` | GAGAL definitif membebaskan reservasi tanpa debit; replay tidak mengirim lagi; exception tidak melepas reservasi; retry memakai ID, rekening, dan nominal yang sama | 18/18 kasus lulus | Pass |
+| INT-TC24 | AI-09 | rekening | `tests/integration/rekening.test.ts` | pengajuan dan replay menyimpan ciphertext, log tanpa rekening lengkap, respons masked; migrasi rekening lama dan log append-only idempoten, menjaga identitas log dan saldo | 6/6 kasus lulus | Pass |
 | INT-TC25 | AI-10 | profil | `tests/integration/profil.test.ts` | fixture frontend mengikuti skema respons; GET/PATCH tanpa sesi ditolak 401 | 11/11 kasus lulus | Pass |
 | INT-TC26 | AI-11 | tiket-sengketa | `tests/integration/tiket-sengketa.test.ts` | tiket bantuan umum dan tiket dari transaksi (pekerjaan DISENGKETAKAN, status asal tersimpan, berkas tersimpan); tiket ganda 409; bukan peserta 403; bukti tambahan mengembalikan MENUNGGU_BALASAN ke DITINJAU; pelapor membatalkan tiket DIAJUKAN; antrean dan detail CS; UPDATE dan DELETE pada riwayat ditolak basis data | 17/17 kasus lulus | Pass |
 | INT-TC27 | AI-11 | sengketa-putusan | `tests/integration/sengketa-putusan.test.ts` | CS memutuskan PENCAIRAN: upah dikredit sekali, tiket DITUTUP, kedua pihak dinotifikasi; keputusan berbeda 409; minta bukti dan tolak tiket memulihkan status pekerjaan; non-CS 403, tanpa sesi 401 | 6/6 kasus lulus | Pass |
@@ -889,6 +1056,19 @@ Tabel 4.4.6. Hasil Pengujian Use Case UC06
 | UC06-TC02 | KF12, KF13 | Alternatif 1: Kuota Lowongan Sudah Penuh Saat Konfirmasi | 1. Penyedia Kerja menekan "Pilih" pada satu pelamar sehingga dialog konfirmasi terbuka.<br>2. Dari sesi lain, pelamar lain pada lowongan yang sama diterima sehingga kuota habis.<br>3. Penyedia Kerja menekan "Ya, pilih pelamar". | Lowongan berkuota 1 dengan dua pelamar, satu pelamar diterima lewat API sebelum konfirmasi | Sistem mendeteksi kuota penuh, membatalkan aksi, memperbarui status lowongan menjadi Closed/Full, dan menampilkan pesan error bahwa kuota telah penuh | Aksi ditolak dengan pesan "Kuota pekerjaan sudah penuh. Muat ulang daftar untuk melihat status terbaru." dan banner "Kuota lowongan sudah penuh. Pelamar tidak dapat dipilih lagi." Sisa kuota 0, lowongan CLOSED_FULL, dan hanya satu transaksi yang ada untuk lowongan tersebut. | Pass |
 | UC06-TC03 | KF12, KF13 | Alternatif 2: Penyedia Kerja Membatalkan Pemilihan | 1. Penyedia Kerja menekan "Pilih" pada satu pelamar.<br>2. Penyedia Kerja menekan "Batal" pada dialog konfirmasi. | Lowongan berkuota 1 dengan satu pelamar | Sistem menutup dialog dan mempertahankan status daftar pelamar tanpa perubahan data | Dialog tertutup. Lowongan tetap OPEN dengan jumlah diterima 0, dan pelamar tetap berstatus MENUNGGU. | Pass |
 
+### 4.4.7 Use Case Melakukan Pembayaran Pekerjaan
+
+**ID Use Case:** UC07<br>
+**Nama Use Case:** Melakukan Pembayaran Pekerjaan
+
+Tabel 4.4.7. Hasil Pengujian Use Case UC07
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| UC07-TC01 | KF14, KF15 | Normal | 1. Penyedia Kerja membuka rincian transaksi pekerjaan yang telah disepakati dan menekan tombol "Bayar".<br>2. Penyedia Kerja memilih metode pembayaran dan menekan "Lanjutkan Pembayaran".<br>3. Penyedia Kerja menyelesaikan pembayaran melalui metode pembayaran yang dipilih. | QRIS, callback BERHASIL | Sistem menghitung total rincian tagihan (upah tenaga kerja + *commission fee* platform) dan menampilkan rincian pembayaran beserta tombol instruksi pembayaran.<br>Sistem menghubungi API Payment Gateway dummy, menerbitkan ID tagihan/pembayaran, dan menampilkan kode pembayaran / tautan transaksi.<br>Sistem menerima notifikasi konfirmasi pembayaran berhasil dari Payment Gateway dummy.<br>Sistem memverifikasi pembayaran, mencatat riwayat transaksi, mengubah status pekerjaan dari "Assigned" menjadi "In Progress", serta mengirimkan notifikasi kepada Tenaga Kerja bahwa pekerjaan siap dimulai. | Simulasi berhasil; transaksi menjadi IN_PROGRESS. | Pass pada simulator |
+| UC07-TC02 | KF14, KF15 | Alternatif 1: Pembayaran Gagal atau Dibatalkan oleh Payment Gateway dummy | 1. Penyedia Kerja memilih metode pembayaran dan menekan "Lanjutkan Pembayaran".<br>2. Pembayaran gagal diproses oleh saluran pembayaran (misal: saldo tidak mencukupi atau transaksi ditolak).<br>3. Penyedia Kerja memilih opsi metode pembayaran lain. | Callback GAGAL | Sistem mengarahkan Penyedia Kerja ke halaman transaksi Payment Gateway dummy.<br>Sistem menerima notifikasi kegagalan transaksi dari Payment Gateway dummy, mencatat status transaksi sebagai "Failed", dan menampilkan pesan kesalahan kepada Penyedia Kerja beserta opsi untuk mencoba metode pembayaran lain.<br>Sistem kembali ke langkah 2 skenario normal untuk membuat instruksi pembayaran baru. | Callback gagal; pekerjaan tidak berubah ke IN_PROGRESS. | Pass |
+| UC07-TC03 | KF14, KF15 | Alternatif 2: Waktu Pembayaran Habis (Timeout / Expired) | 1. Penyedia Kerja mendapatkan kode pembayaran dengan batas waktu tertentu.<br>2. Penyedia Kerja tidak melakukan pembayaran hingga batas waktu terlewati. | Callback KEDALUWARSA | Sistem mencatat batas waktu pembayaran (*expiry timestamp*) dan menunggu konfirmasi pembayaran.<br>Sistem menerima notifikasi kedaluwarsa dari Payment Gateway dummy, mencatat status pembayaran "Expired", dan mengembalikan status transaksi ke antrean tagihan yang belum dibayar. | Callback kedaluwarsa diterima; status tagihan kedaluwarsa tercatat. | Pass |
+
 ### 4.4.8 Use Case Menyerahkan Hasil Pekerjaan
 
 **ID Use Case:** UC08<br>
@@ -914,6 +1094,19 @@ Tabel 4.4.9. Hasil Pengujian Use Case UC09
 | UC09-TC01 | KF17, KF18 | Normal | 1. Penyedia Kerja membuka halaman rincian pekerjaan yang berstatus "Submitted".<br>2. Penyedia Kerja memeriksa hasil kerja dan menekan tombol "Konfirmasi Selesai".<br>3. Penyedia Kerja mengonfirmasi persetujuan hasil kerja. | Bukti revisi dan persetujuan PK | Sistem menampilkan deskripsi hasil pekerjaan beserta lampiran bukti pengerjaan yang telah diunggah Tenaga Kerja.<br>Sistem menampilkan bukti konfirmasi penyelesaian pekerjaan dengan peringatan bahwa dana upah akan langsung diteruskan ke Tenaga Kerja.<br>Sistem mengubah status pekerjaan menjadi "Completed", memicu instruksi penyaluran upah ke akun Tenaga Kerja, memperbarui saldo pendapatan Tenaga Kerja, dan mengirimkan notifikasi penerimaan upah.<br>Sistem secara otomatis mengarahkan Penyedia Kerja ke antarmuka formulir rating dan ulasan (UC10). | Status COMPLETED dan saldo bertambah Rp125.000. Pencairan ke rekening harus diajukan terpisah. | Fail (KF17: pencairan rekening tidak otomatis; selaraskan alur atau SKPL) |
 | UC09-TC02 | KF17, KF18 | Alternatif 1: Hasil Pekerjaan Belum Sesuai (Penyedia Kerja Meminta Revisi) | 1. Penyedia Kerja memeriksa hasil kerja dan mendapati hasil pekerjaan belum sesuai kesepakatan.<br>2. Penyedia Kerja mengisi catatan kekurangan pekerjaan pada kolom deskripsi revisi dan menekan "Kirim Permintaan Revisi". | Catatan revisi | Penyedia Kerja menekan tombol "Minta Revisi / Perbaikan".<br>Sistem menyimpan catatan revisi, mengembalikan status pekerjaan menjadi "In Progress", serta mengirimkan notifikasi permintaan revisi kepada Tenaga Kerja. | Permintaan revisi diterima dan dicatat. | Pass |
 | UC09-TC03 | KF17, KF18 | Alternatif 2: Terjadi Ketidaksepakatan / Perselisihan Hasil Kerja | 1. Penyedia Kerja memeriksa hasil pekerjaan namun Tenaga Kerja tidak menyelesaikan tanggung jawab sama sekali atau melanggar kesepakatan. | Kategori hasil pekerjaan dan uraian sengketa | Penyedia Kerja menekan tombol "Ajukan Komplain".<br>Sistem mengarahkan Penyedia Kerja ke alur penanganan sengketa (UC11 / Menangani Keluhan dan Sengketa) serta menahan status dana pekerjaan. | Tiket terbit dan pekerjaan masuk peninjauan. | Pass |
+
+### 4.4.10 Use Case Melakukan Pencairan Dana
+
+**ID Use Case:** UC10<br>
+**Nama Use Case:** Melakukan Pencairan Dana
+
+Tabel 4.4.10. Hasil Pengujian Use Case UC10
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| UC10-TC01 | KF19, KF20 | Normal | 1. Tenaga Kerja membuka halaman saldo/dompet dan menekan tombol "Tarik Dana".<br>2. Tenaga Kerja memilih rekening tujuan, memasukkan nominal penarikan, dan menekan "Ajukan Pencairan".<br>3. Tenaga Kerja mengonfirmasi pengajuan pencairan. | Rekening uji dan Rp10.000 | Sistem menampilkan formulir pencairan dana beserta saldo yang tersedia dan kolom pilihan rekening bank/e-wallet tujuan.<br>Sistem memvalidasi data rekening tujuan dan nominal penarikan terhadap saldo yang tersedia.<br>Sistem mengubah status pencairan menjadi "Diproses".<br>Sistem menerima konfirmasi transfer berhasil dari Payment Gateway dummy, mencatat log pencairan (ID transaksi, nominal, identitas penerima, waktu, status transfer), mengurangi saldo, dan menampilkan notifikasi bahwa pencairan berhasil. | Permintaan Rp10.000 diterima; callback simulator berhasil; riwayat ada di dompet. | Pass pada simulator |
+| UC10-TC02 | KF19, KF20 | Alternatif 1: Data Rekening/E-wallet Tidak Valid | 1. Tenaga Kerja memasukkan nomor rekening/e-wallet dengan format tidak valid dan menekan "Ajukan Pencairan". | Format rekening tidak valid | Sistem gagal memvalidasi data rekening tujuan.<br>Sistem menampilkan pesan kesalahan bahwa data rekening tidak valid dan meminta Tenaga Kerja memeriksa kembali data tujuan. | Rekening tidak valid ditolak dengan HTTP 400. | Pass |
+| UC10-TC03 | KF19, KF20 | Alternatif 2: Nominal Penarikan Melebihi Saldo | 1. Tenaga Kerja memasukkan nominal penarikan yang lebih besar dari saldo yang tersedia. | Rp999.999.999 | Sistem mendeteksi nominal melebihi saldo tersedia.<br>Sistem menolak pengajuan, menampilkan pesan peringatan saldo tidak mencukupi, dan menggagalkan pengiriman instruksi ke Payment Gateway dummy. | Nominal di atas saldo ditolak. | Pass |
 
 ### 4.4.11 Use Case Memberikan Penilaian Kerja
 
@@ -956,9 +1149,13 @@ Tabel 4.5. Hasil Pengujian KNF
 | KNF07-TC01 | KNF07 | Reliability | Dua persetujuan serentak pada sisa satu kuota hanya menghasilkan satu penerimaan | 5 kali dua permintaan `terima` serentak (`Promise.all`) pada lowongan berkuota 1; Vitest dua koneksi DB pada dua proses | Pada kelima percobaan: satu respons 200 dan satu respons 409, jumlah diterima 1, status CLOSED_FULL. Uji dua proses (INT-TC10) lulus. | Pass |
 | KNF08-TC01 | KNF08 | Memory | Memori RAM peramban ≤ 150 MB saat memuat daftar lowongan atau daftar pelamar dalam jumlah banyak | Chromium 390 × 844, CDP `Performance.getMetrics` (`JSHeapUsedSize`), 5 kali pemuatan; daftar pelamar 60 baris | Daftar pelamar 60 baris: 4.5–4.8 MB (maks 4.8 MB). Daftar lowongan: 3.0 MB. | Pass untuk JS heap. Pengukuran tidak mencakup memori proses peramban secara keseluruhan (DOM dan gambar). |
 | KNF10-TC01 | KNF10 | Availability | Gangguan basis data lowongan ≤ 24 jam per bulan | Perlu pemantauan uptime pada lingkungan deploy | Belum ada data pemantauan pada lingkungan deploy. | Belum diuji. Pasang pemantauan ketersediaan setelah deploy dan catat gangguan per bulan. |
+| KNF11-TC01 | KNF11 | Reliability | Pembayaran/konfirmasi berulang tidak menghasilkan tagihan atau mutasi ganda | Vitest, pengulangan pembayaran dan callback | Tidak terbentuk dua tagihan aktif pada pengulangan; callback diproses sekali. | Pass pada simulator |
+| KNF12-TC01 | KNF12 | Security | Pengiriman data ke Payment Gateway melalui koneksi terenkripsi | Pemeriksaan konfigurasi uji lokal | Aplikasi memakai Payment Gateway dummy pada localhost. | Di luar lingkup simulasi lokal. |
 | KNF13-TC01 | KNF13 | Response Time | Waktu respons unggah bukti | Playwright HTTP, 1 unggahan PDF uji dan pembacaan ulang | Respons unggah 129.24 ms; status SUBMITTED. | Terukur. SKPL belum menetapkan batas waktu lulus. |
 | KNF14-TC01 | KNF14 | Security | Hanya TK yang ditugaskan dapat mengirim bukti | Vitest, TK yang ditugaskan dan akun lain | TK yang ditugaskan dapat mengirim; akun yang tidak berhak ditolak. | Pass |
 | KNF15-TC01 | KNF15 | Reliability | Tidak ada kredit upah sebelum persetujuan atau keputusan sengketa | Vitest, inspeksi saldo dan mutasi transaksi | Kredit hanya terjadi setelah tindakan sah; kredit ulang tidak menggandakan mutasi. | Pass |
+| KNF16-TC01 | KNF16 | Reliability | Tidak ada pencairan ganda ketika gateway timeout dan dilakukan pengulangan | Vitest, fixture kegagalan jaringan dan idempotensi | Retry memakai referensi yang sama; reservasi dan debit diperiksa pada SQLite uji. | Pass pada fixture |
+| KNF17-TC01 | KNF17 | Security | Data rekening tersimpan terenkripsi dan koneksi gateway memakai TLS 1.3 | Vitest untuk penyimpanan rekening dan pemeriksaan konfigurasi gateway | Rekening tersimpan sebagai ciphertext. Gateway dummy berjalan di localhost. | Enkripsi rekening: Pass. TLS eksternal di luar lingkup simulasi lokal. |
 | KNF18-TC01 | KNF18 | Response time | Waktu pembaruan agregat rating setelah ulasan dikirim | Playwright HTTP, 1 pengiriman ulasan | Respons pengiriman ulasan 440.97 ms. Waktu render rating pada profil belum diukur. | Pengukuran parsial. Tetapkan batas lulus dan ukur sampai rating tampil. |
 | KNF19-TC01 | KNF19 | Security | Modul penindakan sengketa hanya dapat diakses peran Customer Service yang terautentikasi | HTTP ke `/api/cs/tiket` dan `/api/cs/verifikasi` dengan empat jenis akses; Vitest `domain-lintas` untuk setiap rute `/api/cs/*` | Tanpa sesi: 401, TK: 403, PK: 403, CS: 200 pada kedua rute. Uji INT-TC10 lulus untuk seluruh rute CS. | Pass |
 | KNF20-TC01 | KNF20 | Reliability | Riwayat penanganan sengketa tidak dapat diubah atau dihapus | SQL `UPDATE` dan `DELETE` langsung pada `riwayat_sengketa` di SQLite; Vitest `tiket-sengketa` dan `db` | UPDATE dan DELETE ditolak dengan pesan "riwayat_sengketa append-only"; jumlah baris riwayat tetap 42. | Pass |
@@ -985,6 +1182,15 @@ Tabel 4.6. Bukti Hasil Pengujian
 | INT-TC13 | [Vitest · transaksi-paginasi](./assets/layar/integration-transaksi-paginasi.png) |
 | INT-TC14 | [Vitest · transaksi-bukti](./assets/layar/integration-transaksi-bukti.png) |
 | INT-TC15 | [Vitest · berkas](./assets/layar/integration-berkas.png) |
+| INT-TC16 | [Vitest · tagihan](./assets/layar/integration-tagihan.png) |
+| INT-TC17 | [Vitest · tagihan-kedaluwarsa-ulang](./assets/layar/integration-tagihan-kedaluwarsa-ulang.png) |
+| INT-TC18 | [Vitest · pembayaran-saldo](./assets/layar/integration-pembayaran-saldo.png) |
+| INT-TC19 | [Vitest · pembayaran-webhook](./assets/layar/integration-pembayaran-webhook.png) |
+| INT-TC20 | [Vitest · payment-security](./assets/layar/integration-payment-security.png) |
+| INT-TC21 | [Vitest · dompet](./assets/layar/integration-dompet.png) |
+| INT-TC22 | [Vitest · pencairan](./assets/layar/integration-pencairan.png) |
+| INT-TC23 | [Vitest · pencairan-retry](./assets/layar/integration-pencairan-retry.png) |
+| INT-TC24 | [Vitest · rekening](./assets/layar/integration-rekening.png) |
 | INT-TC25 | [Vitest · profil](./assets/layar/integration-profil.png) |
 | INT-TC26 | [Vitest · tiket-sengketa](./assets/layar/integration-tiket-sengketa.png) |
 | INT-TC27 | [Vitest · sengketa-putusan](./assets/layar/integration-sengketa-putusan.png) |
@@ -997,11 +1203,18 @@ Tabel 4.6. Bukti Hasil Pengujian
 | C07 (coverage) | [Cakupan V8 · Model](./assets/layar/coverage-models.png)<br>[Cakupan V8 · Controller](./assets/layar/coverage-controllers.png) |
 | C08-UT01, C08-UT02, C08-UT03, C08-UT04, C08-UT05, C08-UT06, C08-UT07, C08-UT08, C08-UT09 | [Vitest · storage](./assets/layar/unit-storage.png)<br>[![C08-unit](./assets/layar/C08-unit.png)](./assets/layar/C08-unit.png) |
 | C08 (coverage) | [Cakupan V8 · Model](./assets/layar/coverage-models.png)<br>[Cakupan V8 · Controller](./assets/layar/coverage-controllers.png)<br>[Cakupan V8 · Utilitas](./assets/layar/coverage-lib.png) |
+| C09 (coverage) | [Cakupan V8 · Model](./assets/layar/coverage-models.png)<br>[Cakupan V8 · Controller](./assets/layar/coverage-controllers.png) |
+| C10 (coverage) | [Cakupan V8 · Model](./assets/layar/coverage-models.png)<br>[Cakupan V8 · Controller](./assets/layar/coverage-controllers.png) |
+| C15-UT01, C15-UT04, C15-UT05, C15-UT06, C15-UT07, C15-UT08, C15-UT09, C15-UT10, C15-UT11, C15-UT12, C15-UT13 | [Vitest · paymentAdapter](./assets/layar/unit-paymentAdapter.png) |
+| C15 (coverage) | [Cakupan V8 · Controller](./assets/layar/coverage-controllers.png)<br>[Cakupan V8 · Utilitas](./assets/layar/coverage-lib.png) |
 | C31 (coverage) | [Cakupan V8 UC01–UC02](./assets/layar/coverage-uc01-uc02.png) |
 | C32 (coverage) | [Cakupan V8 UC01–UC02](./assets/layar/coverage-uc01-uc02.png) |
 | C34 (coverage) | [Cakupan V8 UC01–UC02](./assets/layar/coverage-uc01-uc02.png) |
 | C37 (coverage) | [Cakupan V8 · Controller](./assets/layar/coverage-controllers.png) |
 | C38 (coverage) | [Cakupan V8 · Controller](./assets/layar/coverage-controllers.png) |
+| C39 (coverage) | [Cakupan V8 · Controller](./assets/layar/coverage-controllers.png) |
+| C40-UT01, C40-UT02, C40-UT03 | [Vitest · rekening](./assets/layar/unit-rekening.png)<br>[![C40-unit](./assets/layar/C40-unit.png)](./assets/layar/C40-unit.png) |
+| C40 (coverage) | [Cakupan V8 · Controller](./assets/layar/coverage-controllers.png)<br>[Cakupan V8 · Utilitas](./assets/layar/coverage-lib.png) |
 | C41 (coverage) | [Cakupan V8 · Controller](./assets/layar/coverage-controllers.png) |
 | C05 (coverage) | [Cakupan V8 · Model](./assets/layar/coverage-models.png)<br>[Cakupan V8 · Controller](./assets/layar/coverage-controllers.png) |
 | C06 (coverage) | [Cakupan V8 · Model](./assets/layar/coverage-models.png) |
@@ -1009,6 +1222,7 @@ Tabel 4.6. Bukti Hasil Pengujian
 | C13 (coverage) | [Cakupan V8 · Model](./assets/layar/coverage-models.png) |
 | C36 (coverage) | [Cakupan V8 · Controller](./assets/layar/coverage-controllers.png) |
 | C42 (coverage) | [Cakupan V8 · Controller](./assets/layar/coverage-controllers.png) |
+| C45 (coverage) | [Cakupan V8 · Controller](./assets/layar/coverage-controllers.png) |
 | UC01-TC01 | [![UC01-TC01](./assets/layar/UC01-TC01.png)](./assets/layar/UC01-TC01.png) |
 | UC01-TC02 | [![UC01-TC02](./assets/layar/UC01-TC02.png)](./assets/layar/UC01-TC02.png) |
 | UC01-TC03 | [![UC01-TC03](./assets/layar/UC01-TC03.png)](./assets/layar/UC01-TC03.png) |
@@ -1022,12 +1236,18 @@ Tabel 4.6. Bukti Hasil Pengujian
 | UC06-TC01 | [![UC06-TC01](./assets/layar/UC06-TC01.png)](./assets/layar/UC06-TC01.png)<br>[Hasil pengujian antarmuka](./assets/layar/uji-ui-uc06-uc12.png) |
 | UC06-TC02 | [![UC06-TC02](./assets/layar/UC06-TC02.png)](./assets/layar/UC06-TC02.png)<br>[Hasil pengujian antarmuka](./assets/layar/uji-ui-uc06-uc12.png) |
 | UC06-TC03 | [![UC06-TC03](./assets/layar/UC06-TC03.png)](./assets/layar/UC06-TC03.png)<br>[Hasil pengujian antarmuka](./assets/layar/uji-ui-uc06-uc12.png) |
+| UC07-TC01 | [![UC07-TC01](./assets/layar/UC07-TC01.png)](./assets/layar/UC07-TC01.png)<br>[Hasil asersi Playwright](./assets/layar/playwright-5.png) |
+| UC07-TC02 | [![UC07-TC02](./assets/layar/UC07-TC02.png)](./assets/layar/UC07-TC02.png)<br>[Hasil asersi Playwright](./assets/layar/playwright-5.png) |
+| UC07-TC03 | [![UC07-TC03](./assets/layar/UC07-TC03.png)](./assets/layar/UC07-TC03.png)<br>[Hasil asersi Playwright](./assets/layar/playwright-5.png) |
 | UC08-TC01 | [![UC08-TC01](./assets/layar/UC08-TC01.png)](./assets/layar/UC08-TC01.png)<br>[Hasil asersi Playwright](./assets/layar/playwright-5.png) |
 | UC08-TC02 | [![UC08-TC02](./assets/layar/UC08-TC02.png)](./assets/layar/UC08-TC02.png)<br>[Hasil asersi Playwright](./assets/layar/playwright-5.png) |
 | UC08-TC03 | [![UC08-TC03](./assets/layar/UC08-TC03.png)](./assets/layar/UC08-TC03.png)<br>[Hasil asersi Playwright](./assets/layar/playwright-5.png) |
 | UC09-TC01 | [![UC09-TC01](./assets/layar/UC09-TC01.png)](./assets/layar/UC09-TC01.png)<br>[Hasil asersi Playwright](./assets/layar/playwright-9.png)<br>[![UC09-TC01-dompet](./assets/layar/UC09-TC01-dompet.png)](./assets/layar/UC09-TC01-dompet.png)<br>[Vitest · transaksi-pemeriksaan](./assets/layar/integration-transaksi-pemeriksaan.png) |
 | UC09-TC02 | [![UC09-TC02](./assets/layar/UC09-TC02.png)](./assets/layar/UC09-TC02.png)<br>[Hasil asersi Playwright](./assets/layar/playwright-9.png) |
 | UC09-TC03 | [![UC09-TC03](./assets/layar/UC09-TC03.png)](./assets/layar/UC09-TC03.png)<br>[Hasil asersi Playwright](./assets/layar/playwright-9.png) |
+| UC10-TC01 | [![UC10-TC01](./assets/layar/UC10-TC01.png)](./assets/layar/UC10-TC01.png)<br>[Hasil asersi Playwright](./assets/layar/playwright-9.png) |
+| UC10-TC02 | [![UC10-TC02](./assets/layar/UC10-TC02.png)](./assets/layar/UC10-TC02.png)<br>[Hasil asersi Playwright](./assets/layar/playwright-9.png) |
+| UC10-TC03 | [![UC10-TC03](./assets/layar/UC10-TC03.png)](./assets/layar/UC10-TC03.png)<br>[Hasil asersi Playwright](./assets/layar/playwright-9.png) |
 | UC11-TC01 | [![UC11-TC01](./assets/layar/UC11-TC01.png)](./assets/layar/UC11-TC01.png)<br>[Hasil asersi Playwright](./assets/layar/playwright-9.png)<br>[![UC11-TC01-form](./assets/layar/UC11-TC01-form.png)](./assets/layar/UC11-TC01-form.png)<br>[Vitest · profil](./assets/layar/integration-profil.png) |
 | UC11-TC02 | [![UC11-TC02](./assets/layar/UC11-TC02.png)](./assets/layar/UC11-TC02.png)<br>[Hasil asersi Playwright](./assets/layar/playwright-9.png) |
 | UC11-TC03 | [![UC11-TC03](./assets/layar/UC11-TC03.png)](./assets/layar/UC11-TC03.png)<br>[Hasil asersi Playwright](./assets/layar/playwright-9.png) |
@@ -1043,9 +1263,13 @@ Tabel 4.6. Bukti Hasil Pengujian
 | KNF07-TC01 | [Pengukuran persetujuan serentak](./assets/layar/pengukuran-uc05-uc12.png)<br>[Vitest · domain-lintas](./assets/layar/integration-domain-lintas.png) |
 | KNF08-TC01 | [Pengukuran JS heap](./assets/layar/pengukuran-uc05-uc12.png) |
 | KNF10-TC01 | Belum ada bukti pengukuran uptime. |
+| KNF11-TC01 | [Vitest · pembayaran-saldo](./assets/layar/integration-pembayaran-saldo.png) |
+| KNF12-TC01 | Tidak ada pengukuran TLS eksternal pada Payment Gateway dummy lokal. |
 | KNF13-TC01 | [![pengukuran](./assets/layar/pengukuran.png)](./assets/layar/pengukuran.png) |
 | KNF14-TC01 | [Vitest · transaksi-bukti](./assets/layar/integration-transaksi-bukti.png) |
 | KNF15-TC01 | [Vitest · transaksi-pemeriksaan](./assets/layar/integration-transaksi-pemeriksaan.png) |
+| KNF16-TC01 | [Vitest · pencairan-retry](./assets/layar/integration-pencairan-retry.png) |
+| KNF17-TC01 | [Vitest · rekening](./assets/layar/integration-rekening.png) |
 | KNF18-TC01 | [![pengukuran](./assets/layar/pengukuran.png)](./assets/layar/pengukuran.png) |
 | KNF19-TC01 | [Pengukuran akses modul CS](./assets/layar/pengukuran-uc05-uc12.png)<br>[Vitest · domain-lintas](./assets/layar/integration-domain-lintas.png) |
 | KNF20-TC01 | [Pengukuran penolakan UPDATE dan DELETE](./assets/layar/pengukuran-uc05-uc12.png)<br>[Vitest · tiket-sengketa](./assets/layar/integration-tiket-sengketa.png) |
@@ -1060,7 +1284,7 @@ Tabel 4.6. Bukti Hasil Pengujian
 
 # BAB 5: Traceability
 
-Matriks mencakup seluruh kebutuhan. Hasil dan bukti pada Bab 4 terbatas pada pengujian yang terkait dengan UC01, UC02, UC08, UC09, dan UC11.
+Matriks mencakup seluruh kebutuhan. Hasil dan bukti pada Bab 4 terbatas pada pengujian yang terkait dengan UC01, UC02, UC05, UC06, UC07, UC08, UC09, UC10, UC11, dan UC12.
 
 Tabel 5.1. Matriks Kerunutan KF terhadap Implementasi dan Pengujian
 
