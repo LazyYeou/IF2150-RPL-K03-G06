@@ -34,6 +34,7 @@
     - [Milestone 7](#milestone-7)
     - [Milestone 8](#milestone-8)
     - [Milestone 9](#milestone-9)
+    - [Milestone 10](#milestone-10)
 
 
 ---
@@ -218,6 +219,20 @@ Diagram 4.3 | 2 | Done | - |
 | 13-11-2026 | Davin Farel Santoso | Menyiapkan rilis awal v9.0 dengan target main, pemeriksaan CI, serta rekap issue Must dan known issues ([#48](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/48)) | 0.5 | Done | - |
 | 13-11-2026 | Aditya Rasyid | Menyusun laporan implementasi M9 B.1–B.5, kontribusi anggota, traceability kelas, serta dokumentasi penggunaan AI ([#49](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/49)) | 4 | Done | - |
 | 13-11-2026 | Davin Farel Santoso | Menyiapkan rilis final v9.1 dengan target main, kelengkapan README/laporan, pemeriksaan CI, dan verifikasi tag ([#50](https://github.com/LazyYeou/IF2150-RPL-K03-G06/issues/50)) | 1 | Done | - |
+
+### Milestone 10
+**Periode:** 13 November 2026 - 20 November 2026
+
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| 18-11-2026 | Davin Farel Santoso | Menyusun Bab 1, 2, 3, dan 5 HIUPL berdasarkan template, SKPL, DPPL, dan laporan implementasi. | 3 | Done | - |
+| 18-11-2026 | Karmel Tua Haloho | Memperbarui formulir asistensi Milestone 10. | 0.5 | Done | - |
+| 20-11-2026 | Davin Farel Santoso | Melengkapi hasil uji registrasi dan verifikasi identitas (UC01–UC02), laporan coverage, dan tangkapan layar. | 2.5 | Done | - |
+| 20-11-2026 | Davin Farel Santoso | Melengkapi hasil dan bukti uji UC03 dan UC04 pada HIUPL gabungan serta mencocokkan ID pengujian dengan matriks traceability. | 1.5 | Done | - |
+| 20-11-2026 | Muhammad Ridwan Nasir Firdaus | Menyusun hasil dan bukti uji pengajuan penawaran, pemilihan pelamar, dan penanganan keluhan (UC05, UC06, UC12). | 3.5 | Done | - |
+| 20-11-2026 | Karmel Tua Haloho | Menyusun hasil dan bukti uji pembayaran dan pencairan melalui gateway dummy (UC07 dan UC10). | 3 | Done | - |
+| 20-11-2026 | Sebastio Nugroho | Menyusun hasil dan bukti uji penyerahan hasil, pemeriksaan pekerjaan, dan penilaian (UC08, UC09, UC11). | 3.5 | Done | - |
+| — | Aditya Rasyid | Mengerjakan bagian awal pengujian UC04 (Mencari Lowongan Pekerjaan). | 1.5 | Done | - |
 
 ---
 
