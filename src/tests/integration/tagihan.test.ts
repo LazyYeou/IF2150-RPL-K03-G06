@@ -281,4 +281,59 @@ describe("Integrasi Tagihan Pembayaran & Invoice (Issue #16 / UC07 / I-33)", () 
       data.tagihan.nominalUpah + data.tagihan.commissionFee,
     );
   });
+
+  it("halaman pembayaran membuat satu tagihan untuk transaksi yang belum memiliki tagihan, lalu menggunakannya kembali", async () => {
+    const trx = one<{ id: string; pemilik: string; upah: number }>(
+      `SELECT t.id_transaksi AS id, pk.id_pengguna AS pemilik, t.nominal_upah AS upah
+       FROM transaksi_pekerjaan t
+       JOIN penyedia_kerja pk ON pk.id_penyedia_kerja = t.id_penyedia_kerja
+       WHERE t.status_pekerjaan = 'MENUNGGU_PEMBAYARAN'
+       LIMIT 1`,
+    );
+    await sessionModule.buatSesi(trx.pemilik);
+    db.prepare("DELETE FROM tagihan_pembayaran WHERE id_transaksi = ?").run(
+      trx.id,
+    );
+
+    const pertama = await controller.ambilDataHalamanBayar(trx.id);
+    const berikutnya = await controller.ambilDataHalamanBayar(trx.id);
+
+    expect(pertama.tagihan).toMatchObject({
+      idTransaksi: trx.id,
+      nominalUpah: trx.upah,
+      status: "MENUNGGU_PEMBAYARAN",
+    });
+    expect(berikutnya.tagihan.id).toBe(pertama.tagihan.id);
+    expect(
+      db
+        .prepare("SELECT id_tagihan FROM tagihan_pembayaran WHERE id_transaksi = ?")
+        .all(trx.id),
+    ).toEqual([{ id_tagihan: pertama.tagihan.id }]);
+  });
+
+  it("halaman pembayaran menolak transaksi yang tidak ditemukan dengan 404", async () => {
+    const pemilik = one<{ id: string }>(
+      "SELECT id_pengguna AS id FROM pengguna WHERE email = 'pk1@kerjain.test'",
+    );
+    await sessionModule.buatSesi(pemilik.id);
+
+    await expect(
+      controller.ambilDataHalamanBayar(randomUUID()),
+    ).rejects.toMatchObject({ code: "NOT_FOUND", status: 404 });
+  });
+
+  it("halaman pembayaran menolak transaksi yang sedang dikerjakan dengan 409", async () => {
+    const trx = one<{ id: string; pemilik: string }>(
+      `SELECT t.id_transaksi AS id, pk.id_pengguna AS pemilik
+       FROM transaksi_pekerjaan t
+       JOIN penyedia_kerja pk ON pk.id_penyedia_kerja = t.id_penyedia_kerja
+       WHERE t.status_pekerjaan = 'IN_PROGRESS'
+       LIMIT 1`,
+    );
+    await sessionModule.buatSesi(trx.pemilik);
+
+    await expect(
+      controller.ambilDataHalamanBayar(trx.id),
+    ).rejects.toMatchObject({ code: "STATUS_TIDAK_VALID", status: 409 });
+  });
 });

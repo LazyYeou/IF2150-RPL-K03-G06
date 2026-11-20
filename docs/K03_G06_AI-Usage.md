@@ -23,7 +23,16 @@
 
 ### Daftar Isi
 * [Milestone 1](#milestone-1)
-* Notes: Copy bagian Daftar Isi seperti Milestone 1 untuk Milestone berikutnya, contoh ``* [Milestone 2](#milestone-2)``. Ketika Daftar isi diklik maka akan langsung diarahkan ke bagian bawah sesuai dengan Milestone tujuan.
+* [Milestone 2](#milestone-2)
+* [Milestone 3](#milestone-3)
+* [Milestone 4](#milestone-4)
+* [Milestone 5](#milestone-5)
+* [Milestone 6](#milestone-6)
+* [Milestone 7](#milestone-7)
+* [Milestone 8](#milestone-8)
+* [Milestone 9](#milestone-9)
+* [Milestone 10](#milestone-10)
+* [Pernyataan Integritas dan Persetujuan](#pernyataan-integritas-dan-persetujuan)
 
 ---
 
@@ -84,6 +93,12 @@ Silakan catat penggunaan AI yang berdampak signifikan pada pengerjaan tugas (mis
 | Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
 | :--- | :--- | :--- | :--- |
 | *Gemini* | *Mencari saran implementasi desain UI/UX, rekomendasi ikon fitur utama, serta penyusunan struktur antarmuka yang responsif*  | *[Melampirkan screenshot desain Figma] Tolong berikan saran implementasi kode front-end untuk desain UI/UX ini beserta rekomendasi ikon yang tepat untuk fitur utamanya agar tampilan tetap responsif dan ramah pengguna* | *Menyesuaikan kode tata letak dengan desain Figma, memilih aset ikon yang paling relevan dan konsisten secara visual*
+
+### Milestone 10
+| Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
+| :--- | :--- | :--- | :--- |
+| Codex | Brainstorming pembagian pekerjaan dan membantu menyusun draf HIUPL sesuai template. | Bagaimana membagi pengerjaan HIUPL untuk lima anggota? | Pembagian dan cakupan laporan disesuaikan dengan pekerjaan yang tercatat di logbook tim. |
+| Codex | Mengecek kelengkapan skenario, hasil, coverage, bukti pengujian, dan matriks traceability. | Apakah masih ada bagian pengujian yang masih kurang atau tidak sesuai template. | Hasil yang dicantumkan diperiksa dengan acuan SKPL, keluaran Vitest dan Playwright, serta bukti tangkapan layar. Pengujian yang belum terlaksana juga dicatat sesuai statusnya. |
 
 ---
 ### Pernyataan Integritas dan Persetujuan
